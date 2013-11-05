@@ -516,46 +516,17 @@ class Gurk
 
 # -----------------------------------------------------------------------------
 
-App = {}
-
-window.App = App;
-
-App.init = (platform) ->
-  console.log('App init...')
-  `
-  /*
-  function relMouseCoords(event){
-    var totalOffsetX = 0;
-    var totalOffsetY = 0;
-    var canvasX = 0;
-    var canvasY = 0;
-    var currentElement = this;
-
-    do{
-        totalOffsetX += currentElement.offsetLeft;
-        totalOffsetY += currentElement.offsetTop;
-    }
-    while(currentElement = currentElement.offsetParent)
-
-    canvasX = event.pageX - totalOffsetX;
-    canvasY = event.pageY - totalOffsetY;
-
-    return {x:canvasX, y:canvasY}
-  }
-  */
-  function relMouseCoords(event) {
-    //console.log("event.pageY: " + event.pageY + ", this.offsetTop: " + this.offsetTop);
-    var x;
-    var y;
-    if ("ios" == platform) {
-      x = event.pageX * 2 - this.offsetLeft;
-      y = event.pageY * 2 - this.offsetTop;
-    } else {
-      x = event.pageX - this.offsetLeft;
-      y = event.pageY - this.offsetTop;
-    }
-    return {"x":x, "y":y};
-  }
-  HTMLCanvasElement.prototype.relMouseCoords = relMouseCoords;`
-  console.log('Starting E.B.U.R.P...')
-  App.gurk = new Gurk()
+window.App = App =
+  init : (platform) ->
+    console.log('App init...')
+    HTMLCanvasElement.prototype.relMouseCoords = (event) ->
+      #console.log("event.pageY: " + event.pageY + ", this.offsetTop: " + this.offsetTop);
+      if platform == "ios"
+        x = event.pageX * 2 - @offsetLeft
+        y = event.pageY * 2 - @offsetTop
+      else
+        x = event.pageX - @offsetLeft
+        y = event.pageY - @offsetTop
+      return {"x":x, "y":y};
+    console.log('Starting E.B.U.R.P...')
+    App.gurk = new Gurk()

@@ -36,10 +36,12 @@ module.exports = function(grunt) {
          game: {
             inputs: [
                "src/device.coffee",
-               "src/core.coffee",
-               "src/model.coffee",
-               "src/adventure.coffee",
-               "src/combat.coffee",
+               "src/core/util.coffee",
+               "src/core/view.coffee",
+               "src/core/*.coffee",
+               "src/model/*.coffee",
+               "src/adventure/*.coffee",
+               "src/combat/*.coffee",
                "src/gurk.coffee"
             ]
          },
