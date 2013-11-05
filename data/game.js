@@ -1,6 +1,5 @@
 window.Data = {
    //// Experience Levels, the amount of experience required to be at a certain level.
-
    levels : [
       0,      // 1
       60,     // 2

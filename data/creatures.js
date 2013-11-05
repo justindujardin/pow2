@@ -1,5 +1,4 @@
 //// Creatures
-
 eburp.registerData("creatures",[
    //// LEVEL 1
    {
