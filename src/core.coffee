@@ -136,6 +136,11 @@ class Util
           text += ", " + item
       text
 
+  @getPath: (file) ->
+    @_resolvedPathCache ?= {}
+    @_resolvedPathCache[file] = file.substr file.lastIndexOf('/') + 1 if not @_resolvedPathCache[file]
+    @_resolvedPathCache[file]
+
 # -----------------------------------------------------------------------------
 
 class Preloader
@@ -393,6 +398,8 @@ class Screen
     @ctx.drawImage(@screen, 0, 0)
 
   drawIcon: (icon, x, y) =>
+    icon = Util.getPath(icon)
+
     coords = Icons[icon];
     k = Screen.UNIT * Screen.SCALE
     @ctx.drawImage(@icons[coords.block], k * coords.x, k * coords.y, k, k, x * Screen.SCALE, y * Screen.SCALE, k, k)
@@ -967,12 +974,14 @@ class TileView extends View
     @getTerrain(x, y).icon
 
   animateBlock : (anim, x, y, radius, rate, callback) =>
+    anim = Util.getPath(anim)
     step = 0
     fn = () => @animateBlockFrame(anim, x, y, radius, rate, step++, callback)
     fn();
     @interval = setInterval(fn, rate)
 
   animateBlockFrame : (anim, x, y, radius, rate, frame, callback) =>
+    anim = Util.getPath(anim)
     frames = Icons[anim].frames
     if (!frames)
       frames = 1
@@ -988,12 +997,14 @@ class TileView extends View
               @screen.drawAnim(anim, xx * Screen.UNIT + @offsetX, yy * Screen.UNIT + @offsetY, frame)
 
   animate : (anim, x, y, rate, callback) =>
+    anim = Util.getPath(anim)
     step = 0
     fn = () => @animateFrame(anim, x * Screen.UNIT + @offsetX, y * Screen.UNIT + @offsetY, rate, step++, callback)
     fn();
     @interval = setInterval(fn, rate)
 
   animateFrame : (anim, x, y, rate, frame, callback) =>
+    anim = Util.getPath(anim)
     frames = Icons[anim].frames
     if (!frames)
       frames = 1
@@ -1005,6 +1016,7 @@ class TileView extends View
       @screen.drawAnim(anim, x, y, frame)
 
   fly : (anim, x1, x2, y1, y2, rate, callback, custom = null) =>
+    anim = Util.getPath(anim)
     n = Math.floor(Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)) * rate / 50) + 1
     step = 0
     fn = () => @flyFrame(anim, x1 * Screen.UNIT + @offsetX, x2 * Screen.UNIT + @offsetX, y1 * Screen.UNIT + @offsetY, y2 * Screen.UNIT + @offsetY, rate, step++, n, callback, custom)
@@ -1012,6 +1024,7 @@ class TileView extends View
     @interval = setInterval(fn, rate)
 
   flyFrame : (anim, x1, x2, y1, y2, rate, step, n, callback, custom) =>
+    anim = Util.getPath(anim)
     x = Math.floor(x1 + (x2 - x1) * step / n)
     y = Math.floor(y1 + (y2 - y1) * step / n)
     frames = Icons[anim].frames

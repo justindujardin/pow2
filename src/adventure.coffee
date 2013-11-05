@@ -497,7 +497,7 @@ class MapView extends TileView
     @posX = @game.x
     @posY = @game.y
     @mapMode = false
-    @shadowOverlay = Preloader.getImage("shadow" + Screen.SCALE + ".png")
+    @shadowOverlay = Preloader.getImage("images/shadow" + Screen.SCALE + ".png")
     @setButton(1, "HEROES")
     @setButton(9, "MAP")
     @setButton(3, "SAVE")
