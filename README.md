@@ -2,9 +2,8 @@ E.B.U.R.P Engine
 ================
 [![Build Status](https://secure.travis-ci.org/justindujardin/eburp.png)](http://travis-ci.org/justindujardin/eburp)
 
-
-`This is a fork of the "Eight-Bit Universal Role Playing" repository, to add a Node.JS and Grunt.JS based developer workflow
-and support for easy deployment to heroku.`
+This is a fork of the "Eight-Bit Universal Role Playing" repository, to add a Node.JS and Grunt.JS based developer workflow
+and support for easy deployment to heroku.
 
 ## Build Instructions
 
