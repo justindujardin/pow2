@@ -6,9 +6,6 @@
   "directories": {
     "example": "examples"
   },
-  "scripts": {
-    "test": "grunt test"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/pents90/eburp.git"
