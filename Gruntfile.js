@@ -128,7 +128,7 @@ module.exports = function(grunt) {
             tasks: ['sprites']
          },
          express: {
-            files:  [ 'tools/gameServer.js' ],
+            files:  [ 'index.html', 'tools/gameServer.js' ],
             tasks:  [ 'express' ],
             options: {
                nospawn: true //Without this option specified express won't be reloaded
@@ -168,7 +168,8 @@ module.exports = function(grunt) {
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-notify');
+      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'notify']);
    }
-   grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'notify']);
+   grunt.registerTask('default', ['sprites', 'concat', 'coffee']);
    grunt.registerTask('heroku:production', ['sprites','concat','coffee']);
 };
