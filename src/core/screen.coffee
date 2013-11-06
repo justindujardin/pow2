@@ -121,9 +121,15 @@ class Screen
   constructor: (@ctx) ->
     @ctx.webkitImageSmoothingEnabled = false
     Screen.FONT = new Font(Screen.MICRO_GLYPHS, "images/font_micro" + Screen.SCALE + ".png")
-    @icons = [
-        Preloader.getImage("images/icons.png")
-      ]
+    @icons = {
+        "animation"   : Preloader.getImage("images/animation.png")
+        "characters"  : Preloader.getImage("images/characters.png")
+        "creatures"   : Preloader.getImage("images/creatures.png")
+        "environment" : Preloader.getImage("images/environment.png")
+        "equipment"   : Preloader.getImage("images/equipment.png")
+        "items"       : Preloader.getImage("images/items.png")
+        "ui"          : Preloader.getImage("images/ui.png")
+    }
     @screen = Preloader.getImage("images/screen" + Screen.SCALE + ".png")
     Screen.CENTER_OFFSET = Math.floor(Screen.WIN_SIZE / 2);
 
@@ -142,7 +148,7 @@ class Screen
     if not coords
       throw new Error("Missing image from map " + icon)
     k = Screen.UNIT * Screen.SCALE
-    @ctx.drawImage(@icons[coords.block], Screen.UNIT * coords.x, Screen.UNIT * coords.y, Screen.UNIT, Screen.UNIT, x * Screen.SCALE, y * Screen.SCALE, k, k)
+    @ctx.drawImage(@icons[coords.source], Screen.UNIT * coords.x, Screen.UNIT * coords.y, Screen.UNIT, Screen.UNIT, x * Screen.SCALE, y * Screen.SCALE, k, k)
 
   drawImage: (image, x, y) =>
     @ctx.drawImage(image, x * Screen.SCALE, y * Screen.SCALE)
@@ -152,13 +158,13 @@ class Screen
     ix = coords.x
     iy = coords.y
     k = Screen.UNIT * Screen.SCALE
-    m = @icons[coords.block].width / k
+    m = @icons[coords.source].width / k
     for i in [0...frame]
       ix++
       if (ix == m)
         ix = 0
         iy++
-    @ctx.drawImage(@icons[coords.block], Screen.UNIT * ix, Screen.UNIT * iy, Screen.UNIT, Screen.UNIT, x * Screen.SCALE, y * Screen.SCALE, k, k)
+    @ctx.drawImage(@icons[coords.source], Screen.UNIT * ix, Screen.UNIT * iy, Screen.UNIT, Screen.UNIT, x * Screen.SCALE, y * Screen.SCALE, k, k)
 
   drawCustomAnim: (custom, x, y) =>
     k = Screen.UNIT * Screen.SCALE

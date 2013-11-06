@@ -59,7 +59,7 @@ function writePackedImage(name,cells,width,height,spriteSize){
       };
    });
 
-   var metaJS = "eburp.registerSprites(" + JSON.stringify(metaData,null,3)+");";
+   var metaJS = "eburp.registerSprites('" + path.basename(name) + "'," + JSON.stringify(metaData,null,3)+");";
    fs.writeFileSync(name + ".js",metaJS);
    return deferred.promise;
 }
