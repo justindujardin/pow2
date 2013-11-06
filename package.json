@@ -24,7 +24,7 @@
     "binpacking": "0.0.1"
   },
   "scripts": {
-    "test": "node ./node-modules/.bin/grunt"
+    "test": "npm install && ./node_modules/.bin/grunt"
   },
   "devDependencies": {
     "grunt-contrib-watch": "~0.5.3",
