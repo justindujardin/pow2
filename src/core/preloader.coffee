@@ -35,19 +35,17 @@ class Preloader
       console.log("Preloading calling back.")
       Preloader.callback()
 
-  @load: (src) =>
-    console.log("Loading '#{src}'")
-    if (!Preloader.images[src])
+  @load: (sources) =>
+    sources = [sources] if not Util.isArray(sources)
+    for src in sources
+      continue if Preloader.images[src]
       Preloader.addedCount++
-      console.log("Add count now #{Preloader.addedCount}")
+      console.log("Loading: (#{Preloader.addedCount}) : #{src}")
       item = new Image()
       Preloader.images[src] = item
       item.onload=Preloader.imageLoaded
       item.src = src
       item
-    else
-      console.log("Already loaded.")
-      Preloader.images[src]
 
   @setCallback: (callback) =>
     console.log("Preloader callback set.")
@@ -56,7 +54,5 @@ class Preloader
       callback()
 
   @getImage: (src) =>
-    item = Preloader.images[src]
-    if (!item)
-      item = Preloader.load(src)
-    item
+    Preloader.load(src) if not Preloader.images[src]
+    Preloader.images[src]

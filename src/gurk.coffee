@@ -224,6 +224,29 @@ class Gurk
   imageProcessor : null
   music : null
 
+  constructor: ->
+    # Get all the images in here
+    #Screen.SCALE = 4
+    console.log("Preloading Images at scale: #{Screen.SCALE}")
+    # Preloader.reset()
+    Preloader.load [
+      "images/animation.png"
+      "images/characters.png"
+      "images/creatures.png"
+      "images/environment.png"
+      "images/equipment.png"
+      "images/items.png"
+      "images/ui.png"
+      "images/font_micro.png"
+      "images/font_gurkoid.png"
+      "images/button" + Screen.SCALE + ".png"
+      "images/buttonoff" + Screen.SCALE + ".png"
+      "images/buttontop" + Screen.SCALE + ".png"
+      "images/screen" + Screen.SCALE + ".png"
+      "images/shadow.png"
+    ]
+    Preloader.setCallback(@start)
+
   startSavedGame: =>
     @game = new Game()
     @game.loadGame(Device.loadGame())
@@ -378,7 +401,9 @@ class Gurk
     # @playSound("summon")
     console.log("Get contexts")
     ctx = document.getElementById("screenID").getContext("2d")
+    ctx.webkitImageSmoothingEnabled = false
     ctxControl = document.getElementById("controlID").getContext("2d")
+    ctxControl.webkitImageSmoothingEnabled = false
     canvasWork = document.getElementById("workID")
     ctxWork = canvasWork.getContext("2d")
     @stack = new Array()
@@ -439,28 +464,6 @@ class Gurk
     point.x -= offsetX
     point.y -= offsetY
     @buttonGrid.clicked(point)
-
-  constructor: ->
-    # Get all the images in here
-    #Screen.SCALE = 4
-    console.log("Preloading..., scale is #{Screen.SCALE}")
-    # Preloader.reset()
-    Preloader.load("images/animation.png")
-    Preloader.load("images/characters.png")
-    Preloader.load("images/creatures.png")
-    Preloader.load("images/environment.png")
-    Preloader.load("images/equipment.png")
-    Preloader.load("images/items.png")
-    Preloader.load("images/ui.png")
-    Preloader.load("images/font_micro" + Screen.SCALE + ".png")
-    Preloader.load("images/font_gurkoid" + Screen.SCALE + ".png")
-    Preloader.load("images/button" + Screen.SCALE + ".png")
-    Preloader.load("images/buttonoff" + Screen.SCALE + ".png")
-    Preloader.load("images/buttontop" + Screen.SCALE + ".png")
-    Preloader.load("images/shadow" + Screen.SCALE + ".png")
-    console.log("Preloading started...")
-    # End images
-    Preloader.setCallback(@start)
 
   getScreen: () =>
     @screen

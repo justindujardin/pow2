@@ -131,7 +131,5 @@ class Util
           text += ", " + item
       text
 
-  @getPath: (file) ->
-    @_resolvedPathCache ?= {}
-    @_resolvedPathCache[file] = file.substr file.lastIndexOf('/') + 1 if not @_resolvedPathCache[file]
-    @_resolvedPathCache[file]
+  @isArray : (object) -> Object.prototype.toString.call(object) is '[object Array]'
+
