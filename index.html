@@ -17,6 +17,13 @@
     <script type="text/javascript" src="data/tiles.js"></script>
 
     <!-- TODO: Remove this sprite sheet dependency. -->
+    <script type="text/javascript" src="images/animation.js"></script>
+    <script type="text/javascript" src="images/characters.js"></script>
+    <script type="text/javascript" src="images/creatures.js"></script>
+    <script type="text/javascript" src="images/environment.js"></script>
+    <script type="text/javascript" src="images/equipment.js"></script>
+    <script type="text/javascript" src="images/items.js"></script>
+
     <script type="text/javascript" src="images/icons.js"></script>
 
     <!-- Compiled files -->
@@ -26,17 +33,9 @@
     <script type="text/javascript" src="index.js"></script>
 </head>
 <body onLoad="App.init();">
-<div>
-    <div>
-        <canvas id="screenID" width="256" height="256"></canvas>
-    </div>
-    <div>
-        <canvas id="controlID" width="320" height="200" onclick="phoneClick(event, 0, 0)"></canvas>
-    </div>
-</div>
-<div style="display: none;">
-    <canvas id="workID" width="60px" height="60px"></canvas>
-</div>
+<canvas id="screenID" width="256" height="256"></canvas>
+<canvas id="controlID" width="320" height="200" onclick="phoneClick(event, 0, 0)"></canvas>
+<canvas id="workID" width="60px" height="60px"></canvas>
 <!-- Yes indeed, some hard-coding is underway... -->
 <!-- TUNES -->
 <audio id="gurkdemo4" preload="auto" loop="true">

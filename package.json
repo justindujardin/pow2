@@ -22,6 +22,10 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-coffee": "~0.7.0",
-    "grunt-notify": "~0.2.15"
+    "grunt-notify": "~0.2.15",
+    "q": "~0.9.7",
+    "pngjs": "~0.4.0",
+    "underscore": "~1.5.2",
+    "binpacking": "0.0.1"
   }
 }

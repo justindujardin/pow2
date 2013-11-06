@@ -71,7 +71,8 @@ window.Data = {
    ],
 
    // Registered dynamically.
-   maps: {}
+   maps: {},
+   sprites: {}
 
 }; // Well, that's it. Easy right? No, no it isn't.
 
@@ -84,6 +85,13 @@ window.eburp = {
    // Register a map on the existing window.Data.maps object.
    registerMap: function(name,data){
       window.Data.maps[name] = data;
+   },
+   registerSpriteMap: function(name, data){
+      for (var property in data) {
+         if (data.hasOwnProperty(property)) {
+            window.Data.sprites[property] = data;
+         }
+      }
    }
 
 };

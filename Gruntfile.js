@@ -51,6 +51,36 @@ module.exports = function(grunt) {
             ext: '.js'
          }
       },
+
+      /**
+       * Build sprite sheets.
+       */
+      sprites: {
+         characters: {
+            src: ['data/textures/characters/*.png'],
+            dest: 'images/characters'
+         },
+         animation: {
+            src: ['data/textures/animation/*.png'],
+            dest: 'images/animation'
+         },
+         creatures: {
+            src: ['data/textures/creatures/*.png'],
+            dest: 'images/creatures'
+         },
+         environment: {
+            src: ['data/textures/environment/*.png'],
+            dest: 'images/environment'
+         },
+         equipment: {
+            src: ['data/textures/equipment/*.png'],
+            dest: 'images/equipment'
+         },
+         items: {
+            src: ['data/textures/items/*.png'],
+            dest: 'images/items'
+         }
+      },
       /**
        * Trigger a new build when files change
        */
@@ -72,6 +102,20 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-contrib-concat');
    grunt.loadNpmTasks('grunt-notify');
 
-   grunt.registerTask('default', ['concat', 'coffee','notify']);
+   grunt.registerTask('default', ['concat', 'coffee', 'sprites','notify']);
 
+
+
+   grunt.registerMultiTask('sprites', 'Pack sprites in to output sheets', function()
+   {
+      var done = this.async();
+      var spritePacker = require('./tools/spritePacker');
+      this.files.forEach(function(f) {
+         spritePacker(f.src, f.dest, 16,function(){
+            grunt.log.writeln('File "' + f.dest + '" created.');
+            done()
+         });
+      });
+
+   });
 };
