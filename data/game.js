@@ -89,7 +89,6 @@ window.eburp = {
    registerSprites: function(name,data){
       for (var property in data) {
          if (data.hasOwnProperty(property)) {
-            data[property].source = name;
             window.Data.sprites[property] = data[property];
          }
       }
