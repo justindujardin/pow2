@@ -23,9 +23,13 @@
     "underscore": "~1.5.2",
     "binpacking": "0.0.1"
   },
+  "scripts": {
+    "test": "node ./node-modules/.bin/grunt"
+  },
   "devDependencies": {
     "grunt-contrib-watch": "~0.5.3",
     "grunt-notify": "~0.2.15",
-    "grunt-express-server": "~0.4.5"
+    "grunt-express-server": "~0.4.5",
+    "grunt-cli": "~0.1.10"
   }
 }
