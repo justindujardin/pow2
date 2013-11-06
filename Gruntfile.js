@@ -79,6 +79,10 @@ module.exports = function(grunt) {
          items: {
             src: ['data/textures/items/*.png'],
             dest: 'images/items'
+         },
+         ui: {
+            src: ['data/textures/ui/*.png'],
+            dest: 'images/ui'
          }
       },
       /**
@@ -102,7 +106,7 @@ module.exports = function(grunt) {
          },
          sprites: {
             files: [
-               '<%= sprites.icons.src %>'
+               'data/textures/**/*.png'
             ],
             tasks: ['sprites']
          }

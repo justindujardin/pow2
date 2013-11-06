@@ -425,6 +425,10 @@ class Gurk
         when 105 then @buttonGrid.forceClick(3) # Num Pad 9
         when 71 then @view.processResult("debug1") # Debug hook 1
         when 72 then @view.processResult("debug2") # Debug hook 2
+        else
+          return true
+      e.stopImmediatePropagation()
+      return false
         # todo - maybe add ESC -> 9 and BACKSPACE -> 7
     window.addEventListener('keydown', clickHandler)
     @buttonGrid.draw()
@@ -441,8 +445,13 @@ class Gurk
     #Screen.SCALE = 4
     console.log("Preloading..., scale is #{Screen.SCALE}")
     # Preloader.reset()
-    Preloader.load("images/icons.png")
-    Preloader.load("images/screen" + Screen.SCALE + ".png")
+    Preloader.load("images/animation.png")
+    Preloader.load("images/characters.png")
+    Preloader.load("images/creatures.png")
+    Preloader.load("images/environment.png")
+    Preloader.load("images/equipment.png")
+    Preloader.load("images/items.png")
+    Preloader.load("images/ui.png")
     Preloader.load("images/font_micro" + Screen.SCALE + ".png")
     Preloader.load("images/font_gurkoid" + Screen.SCALE + ".png")
     Preloader.load("images/button" + Screen.SCALE + ".png")
