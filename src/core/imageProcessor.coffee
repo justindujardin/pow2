@@ -31,7 +31,7 @@ class ImageProcessor
     y = 2;
     coords = Data.sprites[icon];
     k = Screen.UNIT * Screen.SCALE
-    @ctx.drawImage(@icons[coords.source], k * coords.x, k * coords.y, k, k, x * Screen.SCALE, y * Screen.SCALE, k, k)
+    @ctx.drawImage(@icons[coords.source], coords.x, coords.y, k, k, x * Screen.SCALE, y * Screen.SCALE, k, k)
 
   drawRotated : (icon, degrees) =>
     @ctx.save();

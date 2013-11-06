@@ -29,7 +29,7 @@ class Font
     glyph = @glyphMap[c]
     xx = x * Screen.SCALE;
     yy = y * Screen.SCALE;
-    ctx.drawImage(@image, Screen.SCALE * glyph.x, Screen.SCALE * glyph.y, Screen.SCALE * glyph.width, Screen.SCALE * glyph.height, xx, yy, Screen.SCALE * glyph.width, Screen.SCALE * glyph.height)
+    ctx.drawImage(@image, glyph.x, glyph.y, glyph.width, glyph.height, xx, yy, Screen.SCALE * glyph.width, Screen.SCALE * glyph.height)
     glyph.width
 
   drawText: (ctx, text, color, x, y) =>
