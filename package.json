@@ -16,16 +16,19 @@
   "author": "",
   "license": "MIT",
   "readmeFilename": "README.md",
-  "gitHead": "0b129e7e8245aa8ed9a4fd5ff98dd187192474fe",
-  "devDependencies": {
+  "dependencies": {
+    "express": "3.1.x",
     "grunt": "~0.4.1",
-    "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-coffee": "~0.7.0",
-    "grunt-notify": "~0.2.15",
     "q": "~0.9.7",
     "pngjs": "~0.4.0",
     "underscore": "~1.5.2",
     "binpacking": "0.0.1"
+  },
+  "devDependencies": {
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-notify": "~0.2.15",
+    "grunt-express-server": "~0.4.5"
   }
 }

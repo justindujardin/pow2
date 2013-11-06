@@ -85,6 +85,23 @@ module.exports = function(grunt) {
             dest: 'images/ui'
          }
       },
+
+      /**
+       * Game server. Useful for deploys (e.g. to heroku), and for getting
+       * around security restrictions of running the game from index.html on your
+       * hard drive.
+       */
+      express: {
+         options: {
+            script: 'tools/gameServer.js',
+            port: 5215
+         },
+         production: {
+            options: {
+               node_env: 'production'
+            }
+         }
+      },
       /**
        * Trigger a new build when files change
        */
@@ -109,19 +126,16 @@ module.exports = function(grunt) {
                'data/textures/**/*.png'
             ],
             tasks: ['sprites']
+         },
+         express: {
+            files:  [ 'tools/gameServer.js' ],
+            tasks:  [ 'express' ],
+            options: {
+               nospawn: true //Without this option specified express won't be reloaded
+            }
          }
-
       }
    });
-
-   grunt.loadNpmTasks('grunt-contrib-watch');
-   grunt.loadNpmTasks('grunt-contrib-coffee');
-   grunt.loadNpmTasks('grunt-contrib-concat');
-   grunt.loadNpmTasks('grunt-notify');
-
-   grunt.registerTask('default', ['concat', 'coffee', 'sprites','notify']);
-
-
 
    grunt.registerMultiTask('sprites', 'Pack sprites into output sheets', function()
    {
@@ -144,6 +158,17 @@ module.exports = function(grunt) {
          grunt.log.error('Failed to create spritesheet: ' + error);
          done(error);
       });
-
    });
+
+   grunt.loadNpmTasks('grunt-contrib-coffee');
+   grunt.loadNpmTasks('grunt-contrib-concat');
+
+   // Support system notifications in non-production environments
+   if(process.env.NODE_ENV !== 'production'){
+      grunt.loadNpmTasks('grunt-express-server');
+      grunt.loadNpmTasks('grunt-contrib-watch');
+      grunt.loadNpmTasks('grunt-notify');
+      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'notify']);
+   }
+   grunt.registerTask('heroku:production', ['sprites','concat','coffee']);
 };
