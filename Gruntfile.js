@@ -123,15 +123,26 @@ module.exports = function(grunt) {
 
 
 
-   grunt.registerMultiTask('sprites', 'Pack sprites in to output sheets', function()
+   grunt.registerMultiTask('sprites', 'Pack sprites into output sheets', function()
    {
+      var Q = require('q');
       var done = this.async();
       var spritePacker = require('./tools/spritePacker');
+      var queue = [];
       this.files.forEach(function(f) {
-         spritePacker(f.src, f.dest, 2,function(){
-            grunt.log.writeln('File "' + f.dest + '" created.');
-            done()
+         queue.push(spritePacker(f.src, {
+            outName: f.dest,
+            scale: 1
+         }));
+      });
+      Q.all(queue).then(function(results){
+         results.forEach(function(r){
+            grunt.log.writeln('File "' + r + '" created.');
          });
+         done()
+      },function(error){
+         grunt.log.error('Failed to create spritesheet: ' + error);
+         done(error);
       });
 
    });

@@ -8,7 +8,14 @@ var _ = require('underscore');
 var PNG = require('pngjs').PNG;
 var boxPacker = require('binpacking').GrowingPacker;
 
+/**
+ * Scale an image up/down by an integer scaling factor.
+ * @param {PNG} png The pngjs PNG instance to scale.
+ * @param {Number} scale The scale factor to apply.  This is floored to an integer value.
+ * @returns {PNG} The scaled PNG instance.
+ */
 function scalePng(png,scale){
+   scale = Math.floor(scale);
    var scaledPng = new PNG({
       width:png.width * scale,
       height:png.height *scale,
@@ -16,11 +23,14 @@ function scalePng(png,scale){
    });
    for (var y = 0; y < scaledPng.height; y++) {
       for (var x = 0; x < scaledPng.width; x++) {
+
+         // Source texture data index
          var baseX = Math.floor(x / scale);
          var baseY = Math.floor(y / scale);
          var baseIdx = (png.width * baseY + baseX) << 2;
          var idx = (scaledPng.width * y + x) << 2;
-         // Store new color
+
+         // Apply source index to scaled image
          scaledPng.data[idx] = png.data[baseIdx];
          scaledPng.data[idx+1] = png.data[baseIdx+1];
          scaledPng.data[idx+2] = png.data[baseIdx+2];
@@ -61,12 +71,15 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
       width:width,
       height:height
    });
+   var baseName = path.basename(name);
+   var pngName = name + '.png';
+   var metaName = name + '.js';
    _.each(cells,function(cell){
       cell.png.bitblt(stream,0,0,cell.width,cell.height,cell.x,cell.y);
    });
-   stream.pack().pipe(fs.createWriteStream(name + '.png'));
+   stream.pack().pipe(fs.createWriteStream(pngName));
    stream.on('end', function() {
-      deferred.resolve();
+      deferred.resolve(pngName);
    });
 
    // Last transformation: produce expected gurk output format.
@@ -75,15 +88,15 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
    _.each(cells,function(cell){
       var fileName = cell.file.substr(cell.file.lastIndexOf("/") + 1);
       metaData[fileName] = {
-         block: 0,
          frames: cell.png.width / (spriteSize * scale),
+         src: baseName,
          x: cell.x,
          y: cell.y
       };
    });
 
-   var metaJS = "eburp.registerSprites('" + path.basename(name) + "'," + JSON.stringify(metaData,null,3)+");";
-   fs.writeFileSync(name + ".js",metaJS);
+   var metaJS = "eburp.registerSprites('" + baseName + "'," + JSON.stringify(metaData,null,3)+");";
+   fs.writeFileSync(metaName,metaJS);
    return deferred.promise;
 }
 
@@ -91,19 +104,22 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
  * Sprite packing function.  Takes an array of file names, an output name,
  * and an optional scale/callback.
  */
-module.exports = function(files,outName,scale,callback){
-   var ICON_SIZE = 16;
-   scale = typeof scale === 'undefined' ? 1 : scale;
-   if(path.extname(outName) !== ''){
-      outName = outName.substr(0,outName.lastIndexOf('.'));
+module.exports = function(files,options){
+   options = _.extend({},{
+      outName : 'spriteSheet',
+      scale : 1
+   },options || {});
+   var SOURCE_SPRITE_SIZE = 16;
+   if(path.extname(options.outName) !== ''){
+      options.outName = options.outName.substr(0,options.outName.lastIndexOf('.'));
    }
    files = _.filter(files,function(file){
       return path.extname(file) == '.png';
    });
    var readFiles = _.map(files,function(file){
-      return readPngData(file,scale);
+      return readPngData(file,options.scale);
    });
-   Q.all(readFiles).then(function(fileDatas){
+   return Q.all(readFiles).then(function(fileDatas){
       var blocks = _.map(fileDatas,function(d){
          return {
             w: d.png.width,
@@ -123,8 +139,6 @@ module.exports = function(files,outName,scale,callback){
             file: b.data.file
          };
       });
-      writePackedImage(outName,cells,packer.root.w,packer.root.h,ICON_SIZE,scale).then(function(){
-         callback();
-      });
+      return writePackedImage(options.outName,cells,packer.root.w,packer.root.h,SOURCE_SPRITE_SIZE,options.scale)
    });
 };
