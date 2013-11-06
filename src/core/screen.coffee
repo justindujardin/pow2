@@ -148,7 +148,7 @@ class Screen
     if not coords
       throw new Error("Missing image from map " + icon)
     k = Screen.UNIT * Screen.SCALE
-    @ctx.drawImage(@icons[coords.source], Screen.UNIT * coords.x, Screen.UNIT * coords.y, Screen.UNIT, Screen.UNIT, x * Screen.SCALE, y * Screen.SCALE, k, k)
+    @ctx.drawImage(@icons[coords.source],coords.x, coords.y, k, k, x * Screen.SCALE, y * Screen.SCALE, k, k)
 
   drawImage: (image, x, y) =>
     @ctx.drawImage(image, x * Screen.SCALE, y * Screen.SCALE)
@@ -158,13 +158,9 @@ class Screen
     ix = coords.x
     iy = coords.y
     k = Screen.UNIT * Screen.SCALE
-    m = @icons[coords.source].width / k
-    for i in [0...frame]
-      ix++
-      if (ix == m)
-        ix = 0
-        iy++
-    @ctx.drawImage(@icons[coords.source], Screen.UNIT * ix, Screen.UNIT * iy, Screen.UNIT, Screen.UNIT, x * Screen.SCALE, y * Screen.SCALE, k, k)
+    # No longer wrap anim frames.  Box fit forces them to be on the same line.
+    ix += k * frame
+    @ctx.drawImage(@icons[coords.source], ix, iy, k, k, x * Screen.SCALE, y * Screen.SCALE, k, k)
 
   drawCustomAnim: (custom, x, y) =>
     k = Screen.UNIT * Screen.SCALE

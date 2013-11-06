@@ -128,7 +128,7 @@ module.exports = function(grunt) {
       var done = this.async();
       var spritePacker = require('./tools/spritePacker');
       this.files.forEach(function(f) {
-         spritePacker(f.src, f.dest, 16,function(){
+         spritePacker(f.src, f.dest, 2,function(){
             grunt.log.writeln('File "' + f.dest + '" created.');
             done()
          });

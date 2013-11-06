@@ -8,18 +8,41 @@ var _ = require('underscore');
 var PNG = require('pngjs').PNG;
 var boxPacker = require('binpacking').GrowingPacker;
 
+function scalePng(png,scale){
+   var scaledPng = new PNG({
+      width:png.width * scale,
+      height:png.height *scale,
+      filterType:0
+   });
+   for (var y = 0; y < scaledPng.height; y++) {
+      for (var x = 0; x < scaledPng.width; x++) {
+         var baseX = Math.floor(x / scale);
+         var baseY = Math.floor(y / scale);
+         var baseIdx = (png.width * baseY + baseX) << 2;
+         var idx = (scaledPng.width * y + x) << 2;
+         // Store new color
+         scaledPng.data[idx] = png.data[baseIdx];
+         scaledPng.data[idx+1] = png.data[baseIdx+1];
+         scaledPng.data[idx+2] = png.data[baseIdx+2];
+         scaledPng.data[idx+3] = png.data[baseIdx+3];
+      }
+   }
+   return scaledPng;
+}
+
 /**
  * Read PNG data for a file, and resolve with an object containing the file name
  * and the PNG object instance representing its data.
  */
-function readPngData(file){
+function readPngData(file,scale){
    var deferred = Q.defer();
    var readFile = Q.denodeify(fs.readFile);
    return readFile(file).then(function(data){
       var stream = new PNG();
       stream.on('parsed', function() {
+         var png = scale > 1 ? scalePng(this,scale) : this;
          deferred.resolve({
-            png: this,
+            png: png,
             file: file
          });
       });
@@ -32,7 +55,7 @@ function readPngData(file){
  * Write out a composite PNG image that has been packed into a sheet,
  * and a JSON file that describes where the sprites are in the sheet.
  */
-function writePackedImage(name,cells,width,height,spriteSize){
+function writePackedImage(name,cells,width,height,spriteSize,scale){
    var deferred = Q.defer();
    var stream = new PNG({
       width:width,
@@ -53,9 +76,9 @@ function writePackedImage(name,cells,width,height,spriteSize){
       var fileName = cell.file.substr(cell.file.lastIndexOf("/") + 1);
       metaData[fileName] = {
          block: 0,
-         frames: cell.png.width / spriteSize,
-         x: cell.x / spriteSize,
-         y: cell.y / spriteSize
+         frames: cell.png.width / (spriteSize * scale),
+         x: cell.x,
+         y: cell.y
       };
    });
 
@@ -66,9 +89,11 @@ function writePackedImage(name,cells,width,height,spriteSize){
 
 /**
  * Sprite packing function.  Takes an array of file names, an output name,
- * and an optional spriteSize/callback.
+ * and an optional scale/callback.
  */
-module.exports = function(files,outName,spriteSize,callback){
+module.exports = function(files,outName,scale,callback){
+   var ICON_SIZE = 16;
+   scale = typeof scale === 'undefined' ? 1 : scale;
    if(path.extname(outName) !== ''){
       outName = outName.substr(0,outName.lastIndexOf('.'));
    }
@@ -76,7 +101,7 @@ module.exports = function(files,outName,spriteSize,callback){
       return path.extname(file) == '.png';
    });
    var readFiles = _.map(files,function(file){
-      return readPngData(file);
+      return readPngData(file,scale);
    });
    Q.all(readFiles).then(function(fileDatas){
       var blocks = _.map(fileDatas,function(d){
@@ -98,7 +123,7 @@ module.exports = function(files,outName,spriteSize,callback){
             file: b.data.file
          };
       });
-      writePackedImage(outName,cells,packer.root.w,packer.root.h,spriteSize).then(function(){
+      writePackedImage(outName,cells,packer.root.w,packer.root.h,ICON_SIZE,scale).then(function(){
          callback();
       });
    });
