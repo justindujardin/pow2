@@ -150,8 +150,8 @@ class Screen
     k = Screen.UNIT * Screen.SCALE
     @ctx.drawImage(@icons[coords.source],coords.x, coords.y, Screen.UNIT, Screen.UNIT, x * Screen.SCALE, y * Screen.SCALE, k, k)
 
-  drawImage: (image, x, y) =>
-    @ctx.drawImage(image, x * Screen.SCALE, y * Screen.SCALE)
+  drawImage: (image, x, y, width, height) =>
+    @ctx.drawImage(image, x * Screen.SCALE, y * Screen.SCALE, width, height)
 
   drawAnim: (anim, x, y, frame) =>
     coords = Data.sprites[anim];

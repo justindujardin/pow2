@@ -223,7 +223,8 @@ class MapView extends TileView
     partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
     @drawTile(partyIcon, Screen.CENTER_OFFSET, Screen.CENTER_OFFSET)
     if (@map.dark)
-      @screen.drawImage(@shadowOverlay, 0, 0)
+      winSize = Screen.WIN_SIZE * Screen.UNIT * Screen.SCALE
+      @screen.drawImage(@shadowOverlay, @offsetX, @offsetY,winSize,winSize)
     if (@mapMode)
       sx = 128 - @width - 5
       if (sx < 10)
