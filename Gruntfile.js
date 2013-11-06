@@ -77,26 +77,6 @@ module.exports = function(grunt) {
       },
 
       /**
-       * Uglify the output javascript files in production builds.  This task is only
-       * ever invoked with `heroku:production`, and simply obfuscates/minifies the existing
-       * files.
-       */
-      uglify: {
-         options: {
-            mangle: false,
-            banner: '\n/*!\n  <%= pkg.name %> - v<%= pkg.version %>\n  built: <%= grunt.template.today("yyyy-mm-dd") %>\n */\n'
-         },
-         game: {
-            files: {
-               'web/<%= pkg.name %>.data.js'    : ['web/<%= pkg.name %>.data.js'],
-               'web/<%= pkg.name %>.maps.js'    : ['web/<%= pkg.name %>.maps.js'],
-               'web/<%= pkg.name %>.sprites.js' : ['web/<%= pkg.name %>.sprites.js'],
-               'web/<%= pkg.name %>.js'         : ['web/<%= pkg.name %>.js']
-            }
-         }
-      },
-
-      /**
        * Game server. Useful for deploys (e.g. to heroku), and for getting
        * around security restrictions of running the game from index.html on your
        * hard drive.
@@ -182,13 +162,12 @@ module.exports = function(grunt) {
 
    grunt.loadNpmTasks('grunt-contrib-coffee');
    grunt.loadNpmTasks('grunt-contrib-concat');
-   grunt.loadNpmTasks('grunt-contrib-uglify');
    // Support system notifications in non-production environments
    if(process.env.NODE_ENV !== 'production'){
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-notify');
-      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'notify']);
+      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'notify:watch']);
    }
    grunt.registerTask('default', ['sprites', 'concat', 'coffee']);
    grunt.registerTask('heroku:production', ['sprites','concat','coffee']);

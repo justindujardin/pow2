@@ -55,6 +55,7 @@ function readPngData(file,scale){
             png: png,
             file: file
          });
+         stream.end();
       });
       stream.write(data);
       return deferred.promise;
