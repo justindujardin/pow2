@@ -18,11 +18,18 @@ module.exports = function(grunt) {
          options: {
             separator: '\n'
          },
+         game: {
+            src: [
+               "data/game.js",
+               "data/*.js"
+            ],
+            dest: 'web/<%= pkg.name %>.data.js'
+         },
          maps: {
             src: [
                "data/maps/*.js"
             ],
-            dest: '<%= pkg.name %>.maps.js'
+            dest: 'web/<%= pkg.name %>.maps.js'
          }
       },
 
@@ -47,7 +54,7 @@ module.exports = function(grunt) {
          },
          web: {
             src: ['<%= coffee.game.inputs %>'],
-            dest: '<%= pkg.name %>.js',
+            dest: 'web/<%= pkg.name %>.js',
             ext: '.js'
          }
       },
@@ -56,33 +63,19 @@ module.exports = function(grunt) {
        * Build sprite sheets.
        */
       sprites: {
-         characters: {
-            src: ['data/textures/characters/*.png'],
-            dest: 'images/characters'
-         },
-         animation: {
-            src: ['data/textures/animation/*.png'],
-            dest: 'images/animation'
-         },
-         creatures: {
-            src: ['data/textures/creatures/*.png'],
-            dest: 'images/creatures'
-         },
-         environment: {
-            src: ['data/textures/environment/*.png'],
-            dest: 'images/environment'
-         },
-         equipment: {
-            src: ['data/textures/equipment/*.png'],
-            dest: 'images/equipment'
-         },
-         items: {
-            src: ['data/textures/items/*.png'],
-            dest: 'images/items'
-         },
-         ui: {
-            src: ['data/textures/ui/*.png'],
-            dest: 'images/ui'
+         game: {
+            options: {
+               metaFile: 'web/<%= pkg.name %>.sprites.js'
+            },
+            files: [
+               {src: 'data/textures/characters/*.png', dest: 'web/images/characters'},
+               {src: 'data/textures/animation/*.png', dest: 'web/images/animation'},
+               {src: 'data/textures/creatures/*.png', dest: 'web/images/creatures'},
+               {src: 'data/textures/environment/*.png', dest: 'web/images/environment'},
+               {src: 'data/textures/equipment/*.png', dest: 'web/images/equipment'},
+               {src: 'data/textures/items/*.png', dest: 'web/images/items'},
+               {src: 'data/textures/ui/*.png', dest: 'web/images/ui'}
+            ]
          }
       },
 
@@ -143,17 +136,27 @@ module.exports = function(grunt) {
       var done = this.async();
       var spritePacker = require('./tools/spritePacker');
       var queue = [];
+      var options = this.options({
+         metaFile: null
+      });
       this.files.forEach(function(f) {
          queue.push(spritePacker(f.src, {
             outName: f.dest,
             scale: 1
          }));
       });
+      var jsChunks = [];
       Q.all(queue).then(function(results){
          results.forEach(function(r){
-            grunt.log.writeln('File "' + r + '" created.');
+            grunt.log.writeln('File "' + r.file + '" created.');
+            jsChunks.push("eburp.registerSprites('" + r.name + "'," + JSON.stringify(r.meta,null,3)+");");
          });
-         done()
+         // Write out metadata if specified.
+         if(options.metaFile){
+            grunt.file.write(options.metaFile,jsChunks.join('\n'));
+            grunt.log.writeln('File "' + options.metaFile + '" created.');
+         }
+         done();
       },function(error){
          grunt.log.error('Failed to create spritesheet: ' + error);
          done(error);

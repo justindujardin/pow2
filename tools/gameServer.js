@@ -18,7 +18,9 @@ server.staticPath = function(url,path) {
 };
 
 //server.staticPath(null,);
-server.use(express.static(path.resolve(__dirname + "/../")));
+server.use(express.static(path.resolve(__dirname + "/../web")));
+server.use('/data',express.static(path.resolve(__dirname + "/../data")));
+server.use('/images',express.static(path.resolve(__dirname + "/../images")));
 
 
 // log errors
@@ -49,7 +51,7 @@ server.configure("production", function(){
 });
 
 server.get('/', function(req, res) {
-    fs.readFile(path.join(__dirname,'../index.html'), 'utf8', function(err, text){
+    fs.readFile(path.join(__dirname,'../web/index.html'), 'utf8', function(err, text){
         res.send(text);
     });
 });

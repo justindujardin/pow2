@@ -73,30 +73,30 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
    });
    var baseName = path.basename(name);
    var pngName = name + '.png';
-   var metaName = name + '.js';
    _.each(cells,function(cell){
       cell.png.bitblt(stream,0,0,cell.width,cell.height,cell.x,cell.y);
    });
    stream.pack().pipe(fs.createWriteStream(pngName));
    stream.on('end', function() {
-      deferred.resolve(pngName);
-   });
+      // Last transformation: produce expected gurk output format.
+      // Don't mark block, just set to 0.
+      var metaData = {};
+      _.each(cells,function(cell){
+         var fileName = cell.file.substr(cell.file.lastIndexOf("/") + 1);
+         metaData[fileName] = {
+            frames: cell.png.width / (spriteSize * scale),
+            src: baseName,
+            x: cell.x,
+            y: cell.y
+         };
+      });
 
-   // Last transformation: produce expected gurk output format.
-   // Don't mark block, just set to 0.
-   var metaData = {};
-   _.each(cells,function(cell){
-      var fileName = cell.file.substr(cell.file.lastIndexOf("/") + 1);
-      metaData[fileName] = {
-         frames: cell.png.width / (spriteSize * scale),
-         src: baseName,
-         x: cell.x,
-         y: cell.y
-      };
+      deferred.resolve({
+         file: pngName,
+         name: baseName,
+         meta: metaData
+      });
    });
-
-   var metaJS = "eburp.registerSprites('" + baseName + "'," + JSON.stringify(metaData,null,3)+");";
-   fs.writeFileSync(metaName,metaJS);
    return deferred.promise;
 }
 

@@ -6,6 +6,12 @@ var GRID_HEIGHT = 113;
 var soundOn = false;
 var currentTrack;
 
+
+//$(function(){
+//   $('.sound-toggle').click(function(){
+//      toggleSound();
+//   });
+//});
 function toggleSound() {
    soundOn = !soundOn;
    return soundOn && currentTrack ? playTrack(currentTrack) : stopTrack();
