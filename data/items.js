@@ -5,7 +5,7 @@ eburp.registerData("items",[
    {
       "name" : "Short Sword",
       "type" : "weapon",
-      "icon" : "data/textures/items/shortSword.png",
+      "icon" : "shortSword.png",
       "rarity" : 900, // Chance of the item coming up as random treasure, 1000 is about average, lower is rarer.
       "groups" : ["default", "weapon"], // These groups indicate on which maps (and in which shops) the item should appear.
       "meleeMinDamage" : 1,
@@ -17,7 +17,7 @@ eburp.registerData("items",[
    {
       "name" : "Crude Club",
       "type" : "weapon",
-      "icon" : "data/textures/items/club.png",
+      "icon" : "club.png",
       "rarity" : 1500,
       "groups" : ["default", "weapon"],
       "meleeMinDamage" : 1,
@@ -29,7 +29,7 @@ eburp.registerData("items",[
    {
       "name" : "Goblin Scimitar",
       "type" : "weapon",
-      "icon" : "data/textures/items/scimitar.png",
+      "icon" : "scimitar.png",
       "rarity" : 1000,
       "groups" : ["goblin", "kobold"],
       "meleeMinDamage" : 2,
@@ -42,7 +42,7 @@ eburp.registerData("items",[
    {
       "name" : "Sling",
       "type" : "weapon",
-      "icon" : "data/textures/items/sling.png",
+      "icon" : "sling.png",
       "rarity" : 1500,
       "groups" : ["default", "weapon"],
       "rangeMinDamage" : 1,
@@ -55,7 +55,7 @@ eburp.registerData("items",[
    {
       "name" : "Short Bow",
       "type" : "weapon",
-      "icon" : "data/textures/items/shortBow2.png",
+      "icon" : "shortBow2.png",
       "rarity" : 900,
       "groups" : ["default", "weapon"],
       "rangeMinDamage" : 1,
@@ -68,7 +68,7 @@ eburp.registerData("items",[
    {
       "name" : "Goblin Crossbow",
       "type" : "weapon",
-      "icon" : "data/textures/items/crossbow3.png",
+      "icon" : "crossbow3.png",
       "rarity" : 1000,
       "groups" : ["goblin", "kobold"],
       "rangeMinDamage" : 2,
@@ -82,7 +82,7 @@ eburp.registerData("items",[
    {
       "name" : "Short Staff",
       "type" : "weapon",
-      "icon" : "data/textures/items/shortStaff.png",
+      "icon" : "shortStaff.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "meleeMinDamage" : 1,
@@ -94,7 +94,7 @@ eburp.registerData("items",[
    {
       "name" : "Leather Armor",
       "type" : "armor",
-      "icon" : "data/textures/items/leatherArmor.png",
+      "icon" : "leatherArmor.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 2,
@@ -105,7 +105,7 @@ eburp.registerData("items",[
    {
       "name" : "Cloak",
       "type" : "armor",
-      "icon" : "data/textures/items/cloak.png",
+      "icon" : "cloak.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 1,
@@ -116,7 +116,7 @@ eburp.registerData("items",[
    {
       "name" : "Leather Shield",
       "type" : "shield",
-      "icon" : "data/textures/items/leatherShield.png",
+      "icon" : "leatherShield.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 1,
@@ -127,7 +127,7 @@ eburp.registerData("items",[
    {
       "name" : "Leather Helm",
       "type" : "hat",
-      "icon" : "data/textures/items/leatherHelm.png",
+      "icon" : "leatherHelm.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 1,
@@ -138,7 +138,7 @@ eburp.registerData("items",[
    {
       "name" : "Leather Boots",
       "type" : "boots",
-      "icon" : "data/textures/items/leatherBoots2.png",
+      "icon" : "leatherBoots2.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 1,
@@ -149,7 +149,7 @@ eburp.registerData("items",[
    {
       "name" : "Healing Salve",
       "type" : "use",
-      "icon" : "data/textures/items/redSalve.png",
+      "icon" : "redSalve.png",
       "rarity" : 2500,
       "groups" : ["default", "potion", "elf"],
       "spell" : "Basic Heal",
@@ -162,7 +162,7 @@ eburp.registerData("items",[
    {
       "name" : "Imp Talisman",
       "type" : "use",
-      "icon" : "data/textures/items/impTalisman.png",
+      "icon" : "impTalisman.png",
       "rarity" : 200,
       "groups" : ["default", "misc"],
       "spell" : "Summon Imp2",
@@ -176,7 +176,7 @@ eburp.registerData("items",[
    {
       "name" : "Apprentice Hat",
       "type" : "hat",
-      "icon" : "data/textures/items/wizardHat1.png",
+      "icon" : "wizardHat1.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 1,
@@ -188,7 +188,7 @@ eburp.registerData("items",[
    {
       "name" : "Snake Flute",
       "type" : "use",
-      "icon" : "data/textures/items/flute.png",
+      "icon" : "flute.png",
       "rarity" : 200,
       "groups" : ["default", "misc"],
       "spell" : "Summon Snake",
@@ -201,7 +201,7 @@ eburp.registerData("items",[
    {
       "name" : "Coral Helm",
       "type" : "hat",
-      "icon" : "data/textures/items/coralHelm.png",
+      "icon" : "coralHelm.png",
       "rarity" : 1000,
       "groups" : ["water"],
       "armorClass" : 2,
@@ -212,7 +212,7 @@ eburp.registerData("items",[
    {
       "name" : "Fish-oil Salve",
       "type" : "use",
-      "icon" : "data/textures/items/yellowSalve.png",
+      "icon" : "yellowSalve.png",
       "rarity" : 1000,
       "groups" : ["water"],
       "spell" : "Better Heal",
@@ -225,7 +225,7 @@ eburp.registerData("items",[
    {
       "name" : "Wand of Striking",
       "type" : "use",
-      "icon" : "data/textures/items/blueWand2.png",
+      "icon" : "blueWand2.png",
       "rarity" : 300,
       "groups" : ["default", "misc"],
       "spell" : "Strike",
@@ -238,7 +238,7 @@ eburp.registerData("items",[
    {
       "name" : "Goblin Staff",
       "type" : "weapon",
-      "icon" : "data/textures/items/staff2.png",
+      "icon" : "staff2.png",
       "rarity" : 1000,
       "groups" : ["goblin", "kobold"],
       "meleeMinDamage" : 3,
@@ -251,7 +251,7 @@ eburp.registerData("items",[
    {
       "name" : "Long Sword",
       "type" : "weapon",
-      "icon" : "data/textures/items/equipWeapon.png",
+      "icon" : "equipWeapon.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "meleeMinDamage" : 2,
@@ -263,7 +263,7 @@ eburp.registerData("items",[
    {
       "name" : "Long Bow",
       "type" : "weapon",
-      "icon" : "data/textures/items/bow.png",
+      "icon" : "bow.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "rangeMinDamage" : 1,
@@ -276,7 +276,7 @@ eburp.registerData("items",[
    {
       "name" : "Long Staff",
       "type" : "weapon",
-      "icon" : "data/textures/items/staff.png",
+      "icon" : "staff.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "meleeMinDamage" : 1,
@@ -288,7 +288,7 @@ eburp.registerData("items",[
    {
       "name" : "Studded Armor",
       "type" : "armor",
-      "icon" : "data/textures/items/studdedArmor.png",
+      "icon" : "studdedArmor.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 3,
@@ -299,7 +299,7 @@ eburp.registerData("items",[
    {
       "name" : "Iron Shield",
       "type" : "shield",
-      "icon" : "data/textures/items/ironShield.png",
+      "icon" : "ironShield.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 2,
@@ -310,7 +310,7 @@ eburp.registerData("items",[
    {
       "name" : "Iron Helm",
       "type" : "hat",
-      "icon" : "data/textures/items/equipHat.png",
+      "icon" : "equipHat.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 2,
@@ -321,7 +321,7 @@ eburp.registerData("items",[
    {
       "name" : "Energy Salve",
       "type" : "use",
-      "icon" : "data/textures/items/blueSalve.png",
+      "icon" : "blueSalve.png",
       "rarity" : 2500,
       "groups" : ["default", "potion", "elf"],
       "spell" : "Basic Restore",
@@ -335,7 +335,7 @@ eburp.registerData("items",[
    {
       "name" : "Wand of Healing",
       "type" : "use",
-      "icon" : "data/textures/items/yellowWand.png",
+      "icon" : "yellowWand.png",
       "rarity" : 400,
       "groups" : ["default", "misc", "elf"],
       "spell" : "Good Heal",
@@ -348,7 +348,7 @@ eburp.registerData("items",[
    {
       "name" : "Seaweed Armor",
       "type" : "armor",
-      "icon" : "data/textures/items/seaweedArmor.png",
+      "icon" : "seaweedArmor.png",
       "rarity" : 1000,
       "groups" : ["water"],
       "armorClass" : 4,
@@ -359,7 +359,7 @@ eburp.registerData("items",[
    {
       "name" : "Merman Shield",
       "type" : "shield",
-      "icon" : "data/textures/items/mermanShield.png",
+      "icon" : "mermanShield.png",
       "rarity" : 1000,
       "groups" : ["water"],
       "armorClass" : 3,
@@ -370,7 +370,7 @@ eburp.registerData("items",[
    {
       "name" : "Enchanted Skull",
       "type" : "use",
-      "icon" : "data/textures/items/skull.png",
+      "icon" : "skull.png",
       "rarity" : 200,
       "groups" : ["undead", "misc"],
       "spell" : "Summon Skeleton",
@@ -383,7 +383,7 @@ eburp.registerData("items",[
    {
       "name" : "Healing Potion",
       "type" : "use",
-      "icon" : "data/textures/items/redPotion.png",
+      "icon" : "redPotion.png",
       "rarity" : 2500,
       "groups" : ["default", "potion", "elf"],
       "spell" : "Even Better Heal",
@@ -396,7 +396,7 @@ eburp.registerData("items",[
    {
       "name" : "Broadsword",
       "type" : "weapon",
-      "icon" : "data/textures/items/sword2.png",
+      "icon" : "sword2.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "meleeMinDamage" : 2,
@@ -409,7 +409,7 @@ eburp.registerData("items",[
    {
       "name" : "Heavy Axe",
       "type" : "weapon",
-      "icon" : "data/textures/items/axe2.png",
+      "icon" : "axe2.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "meleeMinDamage" : 3,
@@ -421,7 +421,7 @@ eburp.registerData("items",[
    {
       "name" : "Fine Bow",
       "type" : "weapon",
-      "icon" : "data/textures/items/shortBow.png",
+      "icon" : "shortBow.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon", "elf"],
       "rangeMinDamage" : 2,
@@ -435,7 +435,7 @@ eburp.registerData("items",[
    {
       "name" : "Heavy Crossbow",
       "type" : "weapon",
-      "icon" : "data/textures/items/crossbow2.png",
+      "icon" : "crossbow2.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "rangeMinDamage" : 3,
@@ -448,7 +448,7 @@ eburp.registerData("items",[
    {
       "name" : "Long Oak Staff",
       "type" : "weapon",
-      "icon" : "data/textures/items/hookedStaff.png",
+      "icon" : "hookedStaff.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon", "elf"],
       "meleeMinDamage" : 1,
@@ -462,7 +462,7 @@ eburp.registerData("items",[
    {
       "name" : "Coral Staff",
       "type" : "weapon",
-      "icon" : "data/textures/items/coralStaff.png",
+      "icon" : "coralStaff.png",
       "rarity" : 1000,
       "groups" : ["water"],
       "meleeMinDamage" : 2,
@@ -474,7 +474,7 @@ eburp.registerData("items",[
    {
       "name" : "Chain Mail Armor",
       "type" : "armor",
-      "icon" : "data/textures/items/equipArmor.png",
+      "icon" : "equipArmor.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 4,
@@ -485,7 +485,7 @@ eburp.registerData("items",[
    {
       "name" : "Elvish Cloak",
       "type" : "armor",
-      "icon" : "data/textures/items/elvishCloak.png",
+      "icon" : "elvishCloak.png",
       "rarity" : 1000,
       "groups" : ["default", "armor", "elf"],
       "armorClass" : 2,
@@ -496,7 +496,7 @@ eburp.registerData("items",[
    {
       "name" : "Amulet of Protection",
       "type" : "amulet",
-      "icon" : "data/textures/items/equipAmulet.png",
+      "icon" : "equipAmulet.png",
       "rarity" : 1000,
       "groups" : ["default", "misc", "elf"],
       "armorClass" : 1,
@@ -507,7 +507,7 @@ eburp.registerData("items",[
    {
       "name" : "Narwhal Sword",
       "type" : "weapon",
-      "icon" : "data/textures/items/coralSword.png",
+      "icon" : "coralSword.png",
       "rarity" : 400,
       "groups" : ["water"],
       "meleeMinDamage" : 5,
@@ -520,7 +520,7 @@ eburp.registerData("items",[
    {
       "name" : "Potion of Strength",
       "type" : "use",
-      "icon" : "data/textures/items/strengthPotion.png",
+      "icon" : "strengthPotion.png",
       "rarity" : 500,
       "groups" : ["default", "potion"],
       "spell" : "Self Strength",
@@ -534,7 +534,7 @@ eburp.registerData("items",[
    {
       "name" : "Energy Potion",
       "type" : "use",
-      "icon" : "data/textures/items/bluePotion2.png",
+      "icon" : "bluePotion2.png",
       "rarity" : 2500,
       "groups" : ["default", "potion", "elf"],
       "spell" : "Better Restore",
@@ -547,7 +547,7 @@ eburp.registerData("items",[
    {
       "name" : "Curing Potion",
       "type" : "use",
-      "icon" : "data/textures/items/yellowPotion.png",
+      "icon" : "yellowPotion.png",
       "rarity" : 500,
       "groups" : ["default", "potion", "elf"],
       "spell" : "Self Cure",
@@ -560,7 +560,7 @@ eburp.registerData("items",[
    {
       "name" : "Merman Talisman",
       "type" : "use",
-      "icon" : "data/textures/items/mermanTalisman.png",
+      "icon" : "mermanTalisman.png",
       "rarity" : 200,
       "groups" : ["water"],
       "spell" : "Summon Merman",
@@ -573,7 +573,7 @@ eburp.registerData("items",[
    {
       "name" : "Seaweed Cloak",
       "type" : "armor",
-      "icon" : "data/textures/items/seaweedCloak.png",
+      "icon" : "seaweedCloak.png",
       "rarity" : 1000,
       "groups" : ["water"],
       "armorClass" : 4,
@@ -584,7 +584,7 @@ eburp.registerData("items",[
    {
       "name" : "Wand of Blasting",
       "type" : "use",
-      "icon" : "data/textures/items/blueWand2.png",
+      "icon" : "blueWand2.png",
       "rarity" : 1000,
       "groups" : ["default"],
       "spell" : "Blast",
@@ -597,7 +597,7 @@ eburp.registerData("items",[
    {
       "name" : "Battle-axe",
       "type" : "weapon",
-      "icon" : "data/textures/items/battleAxe.png",
+      "icon" : "battleAxe.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "meleeMinDamage" : 5,
@@ -609,7 +609,7 @@ eburp.registerData("items",[
    {
       "name" : "Great Sword",
       "type" : "weapon",
-      "icon" : "data/textures/items/sword.png",
+      "icon" : "sword.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "meleeMinDamage" : 4,
@@ -622,7 +622,7 @@ eburp.registerData("items",[
    {
       "name" : "Elvish Staff",
       "type" : "weapon",
-      "icon" : "data/textures/items/elvishStaff.png",
+      "icon" : "elvishStaff.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon", "elf"],
       "meleeMinDamage" : 2,
@@ -637,7 +637,7 @@ eburp.registerData("items",[
       "name" : "Spark Staff",
       "type" : "weapon",
       "legendary" : "#ff7da8",
-      "icon" : "data/textures/items/sparkStaff.png",
+      "icon" : "sparkStaff.png",
       "rarity" : 35,
       "groups" : ["default", "weapon", "elf"],
       "meleeMinDamage" : 1,
@@ -652,7 +652,7 @@ eburp.registerData("items",[
    {
       "name" : "Elvish Bow",
       "type" : "weapon",
-      "icon" : "data/textures/items/greenBow.png",
+      "icon" : "greenBow.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon", "elf"],
       "rangeMinDamage" : 3,
@@ -666,7 +666,7 @@ eburp.registerData("items",[
    {
       "name" : "Elvish Armor",
       "type" : "armor",
-      "icon" : "data/textures/items/elvishArmor.png",
+      "icon" : "elvishArmor.png",
       "rarity" : 1000,
       "groups" : ["default", "armor", "elf"],
       "armorClass" : 4,
@@ -677,7 +677,7 @@ eburp.registerData("items",[
    {
       "name" : "Spiked Shield",
       "type" : "shield",
-      "icon" : "data/textures/items/equipShield.png",
+      "icon" : "equipShield.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 3,
@@ -688,7 +688,7 @@ eburp.registerData("items",[
    {
       "name" : "Great Helm",
       "type" : "hat",
-      "icon" : "data/textures/items/greatHelm.png",
+      "icon" : "greatHelm.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 3,
@@ -699,7 +699,7 @@ eburp.registerData("items",[
    {
       "name" : "Amulet of Thought",
       "type" : "amulet",
-      "icon" : "data/textures/items/amulet.png",
+      "icon" : "amulet.png",
       "rarity" : 1000,
       "groups" : ["default", "misc"],
       "awarenessBonus" : 2,
@@ -710,7 +710,7 @@ eburp.registerData("items",[
    {
       "name" : "Amulet of Precision",
       "type" : "amulet",
-      "icon" : "data/textures/items/amulet3.png",
+      "icon" : "amulet3.png",
       "rarity" : 1000,
       "groups" : ["default", "misc"],
       "accuracyBonus" : 2,
@@ -721,7 +721,7 @@ eburp.registerData("items",[
    {
       "name" : "Amulet of Might",
       "type" : "amulet",
-      "icon" : "data/textures/items/amulet2.png",
+      "icon" : "amulet2.png",
       "rarity" : 1000,
       "groups" : ["default", "misc"],
       "strengthBonus" : 2,
@@ -732,7 +732,7 @@ eburp.registerData("items",[
    {
       "name" : "Sharkbone Bow",
       "type" : "weapon",
-      "icon" : "data/textures/items/sharkbow.png",
+      "icon" : "sharkbow.png",
       "rarity" : 500,
       "groups" : ["water"],
       "rangeMinDamage" : 5,
@@ -746,7 +746,7 @@ eburp.registerData("items",[
    {
       "name" : "Elvish Hat",
       "type" : "hat",
-      "icon" : "data/textures/items/elvishHat.png",
+      "icon" : "elvishHat.png",
       "rarity" : 800,
       "groups" : ["default", "armor", "elf"],
       "armorClass" : 2,
@@ -759,7 +759,7 @@ eburp.registerData("items",[
    {
       "name" : "Elvish Boots",
       "type" : "boots",
-      "icon" : "data/textures/items/elvishBoots.png",
+      "icon" : "elvishBoots.png",
       "rarity" : 1000,
       "groups" : ["default", "armor", "elf"],
       "armorClass" : 2,
@@ -772,7 +772,7 @@ eburp.registerData("items",[
    {
       "name" : "Military Boots",
       "type" : "boots",
-      "icon" : "data/textures/items/militaryBoots.png",
+      "icon" : "militaryBoots.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 3,
@@ -783,7 +783,7 @@ eburp.registerData("items",[
    {
       "name" : "Explosive Vial",
       "type" : "use",
-      "icon" : "data/textures/items/explosiveVial.png",
+      "icon" : "explosiveVial.png",
       "rarity" : 800,
       "groups" : ["default", "potion", "water"],
       "spell" : "Vial Toss",
@@ -796,7 +796,7 @@ eburp.registerData("items",[
    {
       "name" : "Anti-Magic Amulet",
       "type" : "amulet",
-      "icon" : "data/textures/items/amulet12.png",
+      "icon" : "amulet12.png",
       "rarity" : 800,
       "groups" : ["default", "misc"],
       "resistance" : 2,
@@ -807,7 +807,7 @@ eburp.registerData("items",[
    {
       "name" : "Serpentine Robes",
       "type" : "armor",
-      "icon" : "data/textures/items/serpentRobes.png",
+      "icon" : "serpentRobes.png",
       "rarity" : 333,
       "groups" : ["default", "armor"],
       "armorClass" : 4,
@@ -819,7 +819,7 @@ eburp.registerData("items",[
    {
       "name" : "Magic Sword",
       "type" : "weapon",
-      "icon" : "data/textures/items/magicSword.png",
+      "icon" : "magicSword.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "meleeMinDamage" : 3,
@@ -832,7 +832,7 @@ eburp.registerData("items",[
    {
       "name" : "Dark Sword",
       "type" : "weapon",
-      "icon" : "data/textures/items/blackSword.png",
+      "icon" : "blackSword.png",
       "rarity" : 300,
       "groups" : ["undead"],
       "meleeMinDamage" : 5,
@@ -846,7 +846,7 @@ eburp.registerData("items",[
    {
       "name" : "Magic Bow",
       "type" : "weapon",
-      "icon" : "data/textures/items/magicBow.png",
+      "icon" : "magicBow.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "rangeMinDamage" : 4,
@@ -860,7 +860,7 @@ eburp.registerData("items",[
    {
       "name" : "Dark Bow",
       "type" : "weapon",
-      "icon" : "data/textures/items/blackBow.png",
+      "icon" : "blackBow.png",
       "rarity" : 300,
       "groups" : ["undead"],
       "rangeMinDamage" : 6,
@@ -875,7 +875,7 @@ eburp.registerData("items",[
    {
       "name" : "Magic Staff",
       "type" : "weapon",
-      "icon" : "data/textures/items/blueStaff.png",
+      "icon" : "blueStaff.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "meleeMinDamage" : 3,
@@ -892,7 +892,7 @@ eburp.registerData("items",[
    {
       "name" : "Dark Staff",
       "type" : "weapon",
-      "icon" : "data/textures/items/blackStaff.png",
+      "icon" : "blackStaff.png",
       "rarity" : 300,
       "groups" : ["undead"],
       "meleeMinDamage" : 4,
@@ -910,7 +910,7 @@ eburp.registerData("items",[
    {
       "name" : "Jewel of Health",
       "type" : "use",
-      "icon" : "data/textures/items/redGem.png",
+      "icon" : "redGem.png",
       "rarity" : 2500,
       "groups" : ["default", "potion", "water"],
       "spell" : "Best Heal",
@@ -923,7 +923,7 @@ eburp.registerData("items",[
    {
       "name" : "Scale Mail Armor",
       "type" : "armor",
-      "icon" : "data/textures/items/scaleArmor.png",
+      "icon" : "scaleArmor.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 5,
@@ -934,7 +934,7 @@ eburp.registerData("items",[
    {
       "name" : "Elvish Helm",
       "type" : "hat",
-      "icon" : "data/textures/items/elvishHelm.png",
+      "icon" : "elvishHelm.png",
       "rarity" : 1000,
       "groups" : ["default", "armor", "elf"],
       "armorClass" : 3,
@@ -946,7 +946,7 @@ eburp.registerData("items",[
    {
       "name" : "Amulet of Sight",
       "type" : "amulet",
-      "icon" : "data/textures/items/amulet7.png",
+      "icon" : "amulet7.png",
       "rarity" : 1000,
       "groups" : ["default", "misc", "water"],
       "accuracyBonus" : 4,
@@ -957,7 +957,7 @@ eburp.registerData("items",[
    {
       "name" : "Amulet of Life",
       "type" : "amulet",
-      "icon" : "data/textures/items/amulet4.png",
+      "icon" : "amulet4.png",
       "rarity" : 1000,
       "groups" : ["default", "misc", "water"],
       "constitutionBonus" : 5,
@@ -968,7 +968,7 @@ eburp.registerData("items",[
    {
       "name" : "Oliphant Talisman",
       "type" : "use",
-      "icon" : "data/textures/items/oliphantTalisman.png",
+      "icon" : "oliphantTalisman.png",
       "rarity" : 500,
       "groups" : ["default", "misc"],
       "spell" : "Summon Oliphant 2",
@@ -983,7 +983,7 @@ eburp.registerData("items",[
    {
       "name" : "Flamberge",
       "type" : "weapon",
-      "icon" : "data/textures/items/flamberge2.png",
+      "icon" : "flamberge2.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "meleeMinDamage" : 8,
@@ -997,7 +997,7 @@ eburp.registerData("items",[
    {
       "name" : "Potion of Rage",
       "type" : "use",
-      "icon" : "data/textures/items/ragePotion.png",
+      "icon" : "ragePotion.png",
       "rarity" : 500,
       "groups" : ["default", "potion", "water"],
       "spell" : "Self Rage",
@@ -1010,7 +1010,7 @@ eburp.registerData("items",[
    {
       "name" : "Blink Gem",
       "type" : "use",
-      "icon" : "data/textures/items/turqoiseGem.png",
+      "icon" : "turqoiseGem.png",
       "rarity" : 750,
       "groups" : ["default", "potion", "water"],
       "spell" : "Wink",
@@ -1023,7 +1023,7 @@ eburp.registerData("items",[
    {
       "name" : "Wand of Fire",
       "type" : "use",
-      "icon" : "data/textures/items/redWand2.png",
+      "icon" : "redWand2.png",
       "rarity" : 400,
       "groups" : ["default", "misc"],
       "spell" : "Fire",
@@ -1036,7 +1036,7 @@ eburp.registerData("items",[
    {
       "name" : "Wand of Blessing",
       "type" : "use",
-      "icon" : "data/textures/items/whiteWand.png",
+      "icon" : "whiteWand.png",
       "rarity" : 500,
       "groups" : ["default", "misc", "water"],
       "spell" : "Aura of Blessing",
@@ -1049,7 +1049,7 @@ eburp.registerData("items",[
    {
       "name" : "Wand of Paralysis",
       "type" : "use",
-      "icon" : "data/textures/items/redWand.png",
+      "icon" : "redWand.png",
       "rarity" : 500,
       "groups" : ["default", "misc", "water"],
       "spell" : "Beam of Paralysis",
@@ -1062,7 +1062,7 @@ eburp.registerData("items",[
    {
       "name" : "Speed Boots",
       "type" : "boots",
-      "icon" : "data/textures/items/speedBoots.png",
+      "icon" : "speedBoots.png",
       "rarity" : 800,
       "groups" : ["default", "armor"],
       "armorClass" : 3,
@@ -1074,7 +1074,7 @@ eburp.registerData("items",[
    {
       "name" : "Sheepskin Boots",
       "type" : "boots",
-      "icon" : "data/textures/items/winterBoots.png",
+      "icon" : "winterBoots.png",
       "rarity" : 1000,
       "groups" : ["tundra", "armor"],
       "armorClass" : 3,
@@ -1086,7 +1086,7 @@ eburp.registerData("items",[
    {
       "name" : "Archer's Helm",
       "type" : "hat",
-      "icon" : "data/textures/items/enchantedHelm.png",
+      "icon" : "enchantedHelm.png",
       "rarity" : 750,
       "groups" : ["default", "armor"],
       "armorClass" : 4,
@@ -1098,7 +1098,7 @@ eburp.registerData("items",[
    {
       "name" : "Wizard Hat",
       "type" : "hat",
-      "icon" : "data/textures/items/wizardHat2.png",
+      "icon" : "wizardHat2.png",
       "rarity" : 500,
       "groups" : ["default", "armor", "elf"],
       "armorClass" : 3,
@@ -1111,7 +1111,7 @@ eburp.registerData("items",[
    {
       "name" : "Ogre Talisman",
       "type" : "use",
-      "icon" : "data/textures/items/ogreTalisman.png",
+      "icon" : "ogreTalisman.png",
       "rarity" : 200,
       "groups" : ["default", "misc"],
       "spell" : "Summon Ogre",
@@ -1124,7 +1124,7 @@ eburp.registerData("items",[
    {
       "name" : "Jewel of Energy",
       "type" : "use",
-      "icon" : "data/textures/items/blueGem.png",
+      "icon" : "blueGem.png",
       "rarity" : 2500,
       "groups" : ["default", "potion", "water"],
       "spell" : "Best Restore",
@@ -1137,7 +1137,7 @@ eburp.registerData("items",[
    {
       "name" : "Embroidered Cloak",
       "type" : "armor",
-      "icon" : "data/textures/items/embroideredCloak.png",
+      "icon" : "embroideredCloak.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 5,
@@ -1149,7 +1149,7 @@ eburp.registerData("items",[
    {
       "name" : "Tempered Shield",
       "type" : "shield",
-      "icon" : "data/textures/items/forceShield.png",
+      "icon" : "forceShield.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 4,
@@ -1161,7 +1161,7 @@ eburp.registerData("items",[
    {
       "name" : "Helm of Valor",
       "type" : "hat",
-      "icon" : "data/textures/items/fancyHelm.png",
+      "icon" : "fancyHelm.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 4,
@@ -1174,7 +1174,7 @@ eburp.registerData("items",[
    {
       "name" : "Cycloptic Statue",
       "type" : "use",
-      "icon" : "data/textures/items/cyclopsTalisman.png",
+      "icon" : "cyclopsTalisman.png",
       "rarity" : 500,
       "groups" : ["default", "misc"],
       "spell" : "Summon Cyclops",
@@ -1187,7 +1187,7 @@ eburp.registerData("items",[
    {
       "name" : "Healing Vial",
       "type" : "use",
-      "icon" : "data/textures/items/vialOfHealth.png",
+      "icon" : "vialOfHealth.png",
       "rarity" : 1750,
       "groups" : ["default", "potion", "water"],
       "spell" : "Fast Heal",
@@ -1200,7 +1200,7 @@ eburp.registerData("items",[
    {
       "name" : "Wand of Curing",
       "type" : "use",
-      "icon" : "data/textures/items/yellowWand2.png",
+      "icon" : "yellowWand2.png",
       "rarity" : 1000,
       "groups" : ["default", "misc", "water"],
       "spell" : "Range Cure",
@@ -1213,7 +1213,7 @@ eburp.registerData("items",[
    {
       "name" : "Wand of Disruption",
       "type" : "use",
-      "icon" : "data/textures/items/greenWand.png",
+      "icon" : "greenWand.png",
       "rarity" : 1000,
       "groups" : ["default", "misc", "water"],
       "spell" : "Disrupt",
@@ -1226,7 +1226,7 @@ eburp.registerData("items",[
    {
       "name" : "War Amulet",
       "type" : "amulet",
-      "icon" : "data/textures/items/amulet9.png",
+      "icon" : "amulet9.png",
       "rarity" : 750,
       "groups" : ["default", "misc", "water"],
       "armorClass" : 1,
@@ -1240,7 +1240,7 @@ eburp.registerData("items",[
    {
       "name" : "Amulet of Shadow",
       "type" : "amulet",
-      "icon" : "data/textures/items/amulet5.png",
+      "icon" : "amulet5.png",
       "rarity" : 750,
       "groups" : ["default", "misc", "water"],
       "armorClass" : 2,
@@ -1253,7 +1253,7 @@ eburp.registerData("items",[
    {
       "name" : "Amulet of Light",
       "type" : "amulet",
-      "icon" : "data/textures/items/amulet10.png",
+      "icon" : "amulet10.png",
       "rarity" : 750,
       "groups" : ["default", "misc", "water"],
       "armorClass" : 3,
@@ -1266,7 +1266,7 @@ eburp.registerData("items",[
    {
       "name" : "Strengthsword",
       "type" : "weapon",
-      "icon" : "data/textures/items/magicSword2.png",
+      "icon" : "magicSword2.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "meleeMinDamage" : 10,
@@ -1280,7 +1280,7 @@ eburp.registerData("items",[
    {
       "name" : "Bow of Seeking",
       "type" : "weapon",
-      "icon" : "data/textures/items/magicBow2.png",
+      "icon" : "magicBow2.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "rangeMinDamage" : 5,
@@ -1295,7 +1295,7 @@ eburp.registerData("items",[
    {
       "name" : "Staff of Wisdom",
       "type" : "weapon",
-      "icon" : "data/textures/items/yellowStaff.png",
+      "icon" : "yellowStaff.png",
       "rarity" : 1000,
       "groups" : ["default", "weapon"],
       "meleeMinDamage" : 5,
@@ -1313,7 +1313,7 @@ eburp.registerData("items",[
    {
       "name" : "Platemail Armor",
       "type" : "armor",
-      "icon" : "data/textures/items/plateMail.png",
+      "icon" : "plateMail.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 6,
@@ -1326,7 +1326,7 @@ eburp.registerData("items",[
    {
       "name" : "Armored Boots",
       "type" : "boots",
-      "icon" : "data/textures/items/armoredBoots.png",
+      "icon" : "armoredBoots.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 4,
@@ -1338,7 +1338,7 @@ eburp.registerData("items",[
    {
       "name" : "Cloak of Displacement",
       "type" : "armor",
-      "icon" : "data/textures/items/purpleCloak.png",
+      "icon" : "purpleCloak.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 6,
@@ -1350,7 +1350,7 @@ eburp.registerData("items",[
    {
       "name" : "Energy Vial",
       "type" : "use",
-      "icon" : "data/textures/items/vialOfEnergy.png",
+      "icon" : "vialOfEnergy.png",
       "rarity" : 1750,
       "groups" : ["default", "potion", "elf", "water"],
       "spell" : "Fast Restore",
@@ -1363,7 +1363,7 @@ eburp.registerData("items",[
    {
       "name" : "Mithril Armor",
       "type" : "armor",
-      "icon" : "data/textures/items/mithrilArmor.png",
+      "icon" : "mithrilArmor.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 7,
@@ -1375,7 +1375,7 @@ eburp.registerData("items",[
    {
       "name" : "Force Shield",
       "type" : "shield",
-      "icon" : "data/textures/items/bigShield.png",
+      "icon" : "bigShield.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 5,
@@ -1387,7 +1387,7 @@ eburp.registerData("items",[
    {
       "name" : "Amulet of Awe",
       "type" : "amulet",
-      "icon" : "data/textures/items/amulet11.png",
+      "icon" : "amulet11.png",
       "rarity" : 1000,
       "groups" : ["default", "misc", "water"],
       "armorClass" : 3,
@@ -1402,7 +1402,7 @@ eburp.registerData("items",[
    {
       "name" : "Enchanted Boots",
       "type" : "boots",
-      "icon" : "data/textures/items/enchantedBoots.png",
+      "icon" : "enchantedBoots.png",
       "rarity" : 1000,
       "groups" : ["default", "armor"],
       "armorClass" : 3,
@@ -1415,7 +1415,7 @@ eburp.registerData("items",[
    {
       "name" : "Enchanted Helm",
       "type" : "hat",
-      "icon" : "data/textures/items/enchantedHelm2.png",
+      "icon" : "enchantedHelm2.png",
       "rarity" : 750,
       "groups" : ["default", "armor"],
       "armorClass" : 5,
@@ -1428,7 +1428,7 @@ eburp.registerData("items",[
    {
       "name" : "Flayer Talisman",
       "type" : "use",
-      "icon" : "data/textures/items/flayerTalisman.png",
+      "icon" : "flayerTalisman.png",
       "rarity" : 500,
       "groups" : ["default", "misc"],
       "spell" : "Summon Flayer",

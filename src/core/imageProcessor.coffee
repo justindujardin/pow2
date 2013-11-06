@@ -29,7 +29,7 @@ class ImageProcessor
   drawIcon : (icon) =>
     x = 2;
     y = 2;
-    coords = Icons[icon];
+    coords = Data.sprites[icon];
     k = Screen.UNIT * Screen.SCALE
     @ctx.drawImage(@icons[coords.block], k * coords.x, k * coords.y, k, k, x * Screen.SCALE, y * Screen.SCALE, k, k)
 

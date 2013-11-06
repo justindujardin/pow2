@@ -50,15 +50,16 @@ function writePackedImage(name,cells,width,height,spriteSize){
    // Don't mark block, just set to 0.
    var metaData = {};
    _.each(cells,function(cell){
-      metaData[cell.file] = {
+      var fileName = cell.file.substr(cell.file.lastIndexOf("/") + 1);
+      metaData[fileName] = {
          block: 0,
          frames: cell.png.width / spriteSize,
-         x: cell.x,
-         y: cell.y
+         x: cell.x / spriteSize,
+         y: cell.y / spriteSize
       };
    });
 
-   var metaJS = "eburp.registerSpriteMap('" + path.basename(name) + "'," + JSON.stringify(metaData,null,3)+");";
+   var metaJS = "eburp.registerSprites(" + JSON.stringify(metaData,null,3)+");";
    fs.writeFileSync(name + ".js",metaJS);
    return deferred.promise;
 }

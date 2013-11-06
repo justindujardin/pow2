@@ -15,22 +15,22 @@
     <script type="text/javascript" src="data/quests.js"></script>
     <script type="text/javascript" src="data/spells.js"></script>
     <script type="text/javascript" src="data/tiles.js"></script>
-
-    <!-- TODO: Remove this sprite sheet dependency. -->
-    <script type="text/javascript" src="images/animation.js"></script>
-    <script type="text/javascript" src="images/characters.js"></script>
-    <script type="text/javascript" src="images/creatures.js"></script>
-    <script type="text/javascript" src="images/environment.js"></script>
-    <script type="text/javascript" src="images/equipment.js"></script>
-    <script type="text/javascript" src="images/items.js"></script>
-
     <script type="text/javascript" src="images/icons.js"></script>
 
     <!-- Compiled files -->
     <script type="text/javascript" src="eburp.js"></script>
     <script type="text/javascript" src="eburp.maps.js"></script>
-
     <script type="text/javascript" src="index.js"></script>
+    <style type="text/css">
+        canvas {
+            image-rendering: optimizeSpeed;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: -o-crisp-edges;
+            image-rendering: optimize-contrast;
+            -ms-interpolation-mode: nearest-neighbor;
+        }
+    </style>
 </head>
 <body onLoad="App.init();">
 <canvas id="screenID" width="256" height="256"></canvas>

@@ -3,7 +3,7 @@ eburp.registerData("creatures",[
    //// LEVEL 1
    {
       "name" : "Goblin Scout",
-      "icon" : "data/textures/creatures/goblinScout.png",
+      "icon" : "goblinScout.png",
       "groups" : ["goblin", "dungeon"], // These groups are used to specify in which maps they should appear
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 3,
@@ -18,7 +18,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Goblin",
-      "icon" : "data/textures/creatures/goblin.png",
+      "icon" : "goblin.png",
       "groups" : ["goblin", "dungeon"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 3,
@@ -33,7 +33,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Goblin Swashbuckler",
-      "icon" : "data/textures/creatures/goblin6.png",
+      "icon" : "goblin6.png",
       "groups" : ["goblin", "dungeon"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 3,
@@ -48,7 +48,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Imp",
-      "icon" : "data/textures/creatures/imp.png",
+      "icon" : "imp.png",
       "groups" : ["dungeon", "outdoor", "kobold"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 2,
@@ -63,7 +63,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Giant Spider",
-      "icon" : "data/textures/creatures/greenSpider.png",
+      "icon" : "greenSpider.png",
       "groups" : ["outdoor", "dungeon", "kobold", "swamp"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 3,
@@ -78,7 +78,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Giant Snake",
-      "icon" : "data/textures/creatures/snake.png",
+      "icon" : "snake.png",
       "groups" : ["outdoor", "desert", "kobold", "swamp"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 4,
@@ -93,7 +93,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Kobold",
-      "icon" : "data/textures/creatures/kobold.png",
+      "icon" : "kobold.png",
       "groups" : ["outdoor", "dungeon", "desert", "kobold"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 3,
@@ -108,7 +108,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Wererat",
-      "icon" : "data/textures/creatures/wererat.png",
+      "icon" : "wererat.png",
       "groups" : ["dungeon", "kobold"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 2,
@@ -124,7 +124,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Swordfish",
-      "icon" : "data/textures/creatures/swordFish.png",
+      "icon" : "swordFish.png",
       "groups" : ["water"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 4,
@@ -141,7 +141,7 @@ eburp.registerData("creatures",[
    //// LEVEL 2
    {
       "name" : "Skeleton",
-      "icon" : "data/textures/creatures/skeleton.png",
+      "icon" : "skeleton.png",
       "groups" : ["undead", "skeleton"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 3,
@@ -159,7 +159,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Goblin Warrior",
-      "icon" : "data/textures/creatures/goblin7.png",
+      "icon" : "goblin7.png",
       "groups" : ["goblin"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 6,
@@ -175,7 +175,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Orc",
-      "icon" : "data/textures/creatures/goblin4.png",
+      "icon" : "goblin4.png",
       "groups" : ["dungeon", "desert"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 7,
@@ -191,7 +191,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Giant Bear",
-      "icon" : "data/textures/creatures/bear.png",
+      "icon" : "bear.png",
       "groups" : ["outdoor"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 5,
@@ -207,7 +207,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Zombie",
-      "icon" : "data/textures/creatures/zombie3.png",
+      "icon" : "zombie3.png",
       "groups" : ["undead"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 5,
@@ -224,7 +224,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Black Spider",
-      "icon" : "data/textures/creatures/blackSpider.png",
+      "icon" : "blackSpider.png",
       "groups" : ["outdoor", "dungeon", "desert", "swamp"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 8,
@@ -240,7 +240,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Kobold Fighter",
-      "icon" : "data/textures/creatures/koboldSwordsman.png",
+      "icon" : "koboldSwordsman.png",
       "groups" : ["outdoor", "dungeon", "desert"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 4,
@@ -256,7 +256,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Kobold Mystic",
-      "icon" : "data/textures/creatures/koboldShaman.png",
+      "icon" : "koboldShaman.png",
       "groups" : ["outdoor", "dungeon", "desert"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 2,
@@ -281,7 +281,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Sea Snake",
-      "icon" : "data/textures/creatures/blueSnake.png",
+      "icon" : "blueSnake.png",
       "groups" : ["water"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 6,
@@ -298,7 +298,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Craw Fighter",
-      "icon" : "data/textures/creatures/crawFighter.png",
+      "icon" : "crawFighter.png",
       "groups" : ["water"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 5,
@@ -315,7 +315,7 @@ eburp.registerData("creatures",[
    //// LEVEL 3
    {
       "name" : "Goblin Shaman",
-      "icon" : "data/textures/creatures/goblinWizard.png",
+      "icon" : "goblinWizard.png",
       "groups" : ["goblin"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 2,
@@ -341,7 +341,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Goblin Archer",
-      "icon" : "data/textures/creatures/goblinArcher.png",
+      "icon" : "goblinArcher.png",
       "groups" : ["goblin"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 2,
@@ -360,7 +360,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Hobgoblin",
-      "icon" : "data/textures/creatures/dude.png",
+      "icon" : "dude.png",
       "groups" : ["dungeon", "desert", "tundra"],
       "meleeMinDamage" : 4,
       "meleeMaxDamage" : 8,
@@ -376,7 +376,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Blue Goblin",
-      "icon" : "data/textures/creatures/blueGoblin.png",
+      "icon" : "blueGoblin.png",
       "groups" : ["tundra"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 7,
@@ -393,7 +393,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Treant",
-      "icon" : "data/textures/creatures/treant.png",
+      "icon" : "treant.png",
       "groups" : ["outdoor"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 6,
@@ -410,7 +410,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Skeleton Guard",
-      "icon" : "data/textures/creatures/skeletonGuard.png",
+      "icon" : "skeletonGuard.png",
       "groups" : ["undead", "skeleton"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 5,
@@ -430,7 +430,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Merman",
-      "icon" : "data/textures/creatures/mermanFighter.png",
+      "icon" : "mermanFighter.png",
       "groups" : ["water"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 6,
@@ -447,7 +447,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Giant Crab",
-      "icon" : "data/textures/creatures/crab.png",
+      "icon" : "crab.png",
       "groups" : ["water"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 10,
@@ -464,7 +464,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Spitting Spider",
-      "icon" : "data/textures/creatures/redSpider.png",
+      "icon" : "redSpider.png",
       "groups" : ["outdoor", "desert"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 3,
@@ -483,7 +483,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Orc Champion",
-      "icon" : "data/textures/creatures/bugbear.png",
+      "icon" : "bugbear.png",
       "groups" : ["dungeon", "desert", "tundra"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 7,
@@ -507,7 +507,7 @@ eburp.registerData("creatures",[
    //// LEVEL 4
    {
       "name" : "Oliphant",
-      "icon" : "data/textures/creatures/oliphant2.png",
+      "icon" : "oliphant2.png",
       "groups" : ["desert"],
       "meleeMinDamage" : 4,
       "meleeMaxDamage" : 9,
@@ -524,7 +524,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Troll",
-      "icon" : "data/textures/creatures/troll.png",
+      "icon" : "troll.png",
       "groups" : ["outdoor", "dungeon", "tundra"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 8,
@@ -544,7 +544,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Frost Snake",
-      "icon" : "data/textures/creatures/whiteSnake.png",
+      "icon" : "whiteSnake.png",
       "groups" : ["tundra"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 5,
@@ -564,7 +564,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Bugbear",
-      "icon" : "data/textures/creatures/bugbear2.png",
+      "icon" : "bugbear2.png",
       "groups" : ["outdoor", "dungeon", "desert", "tundra"],
       "meleeMinDamage" : 5,
       "meleeMaxDamage" : 12,
@@ -587,7 +587,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Ghoul",
-      "icon" : "data/textures/creatures/ghoul.png",
+      "icon" : "ghoul.png",
       "groups" : ["undead"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 6,
@@ -611,7 +611,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Spider Queen",
-      "icon" : "data/textures/creatures/hugeSpider.png",
+      "icon" : "hugeSpider.png",
       "groups" : ["outdoor", "dungeon", "desert", "swamp"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 6,
@@ -639,7 +639,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Merman Swordsman",
-      "icon" : "data/textures/creatures/merman.png",
+      "icon" : "merman.png",
       "groups" : ["water"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 8,
@@ -656,7 +656,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Merman Sorcerer",
-      "icon" : "data/textures/creatures/mermanWizard.png",
+      "icon" : "mermanWizard.png",
       "groups" : ["water"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 4,
@@ -687,7 +687,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Goblin King",
-      "icon" : "data/textures/creatures/goblinKing.png",
+      "icon" : "goblinKing.png",
       "groups" : ["goblin"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 2,
@@ -719,7 +719,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Treant Elder",
-      "icon" : "data/textures/creatures/treantElder.png",
+      "icon" : "treantElder.png",
       "groups" : ["outdoor"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 15,
@@ -743,7 +743,7 @@ eburp.registerData("creatures",[
    //// LEVEL 5
    {
       "name" : "Skeleton Wizard",
-      "icon" : "data/textures/creatures/skeletonWizard.png",
+      "icon" : "skeletonWizard.png",
       "groups" : ["undead", "skeleton"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 8,
@@ -775,7 +775,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Giant Jellyfish",
-      "icon" : "data/textures/creatures/jellyfish.png",
+      "icon" : "jellyfish.png",
       "groups" : ["water"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 8,
@@ -793,7 +793,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Oliphant Sentry",
-      "icon" : "data/textures/creatures/oliphant4.png",
+      "icon" : "oliphant4.png",
       "groups" : ["desert"],
       "meleeMinDamage" : 5,
       "meleeMaxDamage" : 9,
@@ -816,7 +816,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Ogre",
-      "icon" : "data/textures/creatures/ogre.png",
+      "icon" : "ogre.png",
       "groups" : ["outdoor", "dungeon", "desert", "tundra"],
       "meleeMinDamage" : 4,
       "meleeMaxDamage" : 12,
@@ -833,7 +833,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Mummy",
-      "icon" : "data/textures/creatures/mummy.png",
+      "icon" : "mummy.png",
       "groups" : ["undead"],
       "meleeMinDamage" : 4,
       "meleeMaxDamage" : 10,
@@ -851,7 +851,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Phantom",
-      "icon" : "data/textures/creatures/phantom2.png",
+      "icon" : "phantom2.png",
       "groups" : ["undead"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 6,
@@ -874,7 +874,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Fire Snake",
-      "icon" : "data/textures/creatures/redSnake.png",
+      "icon" : "redSnake.png",
       "groups" : ["outdoor", "dungeon", "desert"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 6,
@@ -895,7 +895,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Ice Troll",
-      "icon" : "data/textures/creatures/iceTroll.png",
+      "icon" : "iceTroll.png",
       "groups" : ["tundra"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 10,
@@ -921,7 +921,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Drow Elf",
-      "icon" : "data/textures/creatures/drowElf.png",
+      "icon" : "drowElf.png",
       "groups" : ["tundra"],
       "meleeMinDamage" : 1,
       "meleeMaxDamage" : 5,
@@ -941,7 +941,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Snow Ogre",
-      "icon" : "data/textures/creatures/snowman.png",
+      "icon" : "snowman.png",
       "groups" : ["tundra"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 10,
@@ -967,7 +967,7 @@ eburp.registerData("creatures",[
    //// LEVEL 6
    {
       "name" : "Spectre",
-      "icon" : "data/textures/creatures/spectre.png",
+      "icon" : "spectre.png",
       "groups" : ["undead"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 15,
@@ -987,7 +987,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Two-headed Troll",
-      "icon" : "data/textures/creatures/twoHeadedTroll.png",
+      "icon" : "twoHeadedTroll.png",
       "groups" : ["outdoor", "dungeon", "tundra"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 6,
@@ -1007,7 +1007,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Cave Peeper",
-      "icon" : "data/textures/creatures/cavePeeper.png",
+      "icon" : "cavePeeper.png",
       "groups" : ["outdoor", "dungeon"],
       "meleeMinDamage" : 6,
       "meleeMaxDamage" : 12,
@@ -1030,7 +1030,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Oliphant Charger",
-      "icon" : "data/textures/creatures/oliphant3.png",
+      "icon" : "oliphant3.png",
       "groups" : ["desert"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 10,
@@ -1047,7 +1047,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Clay Golem",
-      "icon" : "data/textures/creatures/clayGolem.png",
+      "icon" : "clayGolem.png",
       "groups" : ["outdoor", "dungeon", "swamp"],
       "meleeMinDamage" : 6,
       "meleeMaxDamage" : 18,
@@ -1064,7 +1064,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Ice Golem",
-      "icon" : "data/textures/creatures/iceGolem.png",
+      "icon" : "iceGolem.png",
       "groups" : ["tundra"],
       "meleeMinDamage" : 5,
       "meleeMaxDamage" : 12,
@@ -1081,7 +1081,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Ogre Assassin",
-      "icon" : "data/textures/creatures/ogre2.png",
+      "icon" : "ogre2.png",
       "groups" : ["outdoor", "dungeon", "desert", "tundra"],
       "meleeMinDamage" : 9,
       "meleeMaxDamage" : 20,
@@ -1098,7 +1098,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Cyclops",
-      "icon" : "data/textures/creatures/cyclops.png",
+      "icon" : "cyclops.png",
       "groups" : ["outdoor", "dungeon", "desert"],
       "meleeMinDamage" : 9,
       "meleeMaxDamage" : 16,
@@ -1116,7 +1116,7 @@ eburp.registerData("creatures",[
    //// Level 7
    {
       "name" : "Oliphant Priestess",
-      "icon" : "data/textures/creatures/oliphant.png",
+      "icon" : "oliphant.png",
       "groups" : ["desert"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 9,
@@ -1148,7 +1148,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Mind Flayer",
-      "icon" : "data/textures/creatures/mindFlayer.png",
+      "icon" : "mindFlayer.png",
       "groups" : ["outdoor", "dungeon"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 10,
@@ -1171,7 +1171,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Ice Magus",
-      "icon" : "data/textures/creatures/iceMage.png",
+      "icon" : "iceMage.png",
       "groups" : ["tundra"],
       "meleeMinDamage" : 3,
       "meleeMaxDamage" : 6,
@@ -1209,7 +1209,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Rock Golem",
-      "icon" : "data/textures/creatures/rockGolem.png",
+      "icon" : "rockGolem.png",
       "groups" : ["outdoor", "dungeon", "desert"],
       "meleeMinDamage" : 2,
       "meleeMaxDamage" : 10,
@@ -1229,7 +1229,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Minotaur",
-      "icon" : "data/textures/creatures/minotaur.png",
+      "icon" : "minotaur.png",
       "groups" : ["dungeon", "outdoor"],
       "meleeMinDamage" : 12,
       "meleeMaxDamage" : 20,
@@ -1246,7 +1246,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Wraith",
-      "icon" : "data/textures/creatures/wraith2.png",
+      "icon" : "wraith2.png",
       "groups" : ["undead", "dungeon"],
       "meleeMinDamage" : 4,
       "meleeMaxDamage" : 8,
@@ -1266,7 +1266,7 @@ eburp.registerData("creatures",[
    },
    {
       "name" : "Vezu",
-      "icon" : "data/textures/creatures/vezu.png",
+      "icon" : "vezu.png",
       "groups" : ["default"],
       "meleeMinDamage" : 12,
       "meleeMaxDamage" : 20,

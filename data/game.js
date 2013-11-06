@@ -86,12 +86,8 @@ window.eburp = {
    registerMap: function(name,data){
       window.Data.maps[name] = data;
    },
-   registerSpriteMap: function(name, data){
-      for (var property in data) {
-         if (data.hasOwnProperty(property)) {
-            window.Data.sprites[property] = data;
-         }
-      }
+   registerSprites: function(data){
+      window.Data.sprites = data;
    }
 
 };

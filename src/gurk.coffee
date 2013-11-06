@@ -441,8 +441,7 @@ class Gurk
     #Screen.SCALE = 4
     console.log("Preloading..., scale is #{Screen.SCALE}")
     # Preloader.reset()
-    Preloader.load("images/icons0-" + Screen.SCALE + ".png")
-    Preloader.load("images/icons1-" + Screen.SCALE + ".png")
+    Preloader.load("images/icons.png")
     Preloader.load("images/screen" + Screen.SCALE + ".png")
     Preloader.load("images/font_micro" + Screen.SCALE + ".png")
     Preloader.load("images/font_gurkoid" + Screen.SCALE + ".png")

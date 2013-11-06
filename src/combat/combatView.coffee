@@ -192,7 +192,7 @@ class CombatView extends TileView
     setTimeout(@nextAction, @pauseTime)
 
   getCustomAnimation : (sx, sy, tx, ty, animation) =>
-    if (Icons[animation].frames)
+    if (Data.sprites[animation].frames)
       null
     else
       dx = tx - sx;

@@ -18,7 +18,7 @@ module.exports = function(grunt) {
          options: {
             separator: '\n'
          },
-         game: {
+         maps: {
             src: [
                "data/maps/*.js"
             ],
@@ -93,7 +93,20 @@ module.exports = function(grunt) {
                '<%= coffee.game.inputs %>'
             ],
             tasks: ['default']
+         },
+         maps: {
+            files: [
+               '<%= concat.maps.src %>'
+            ],
+            tasks: ['concat']
+         },
+         sprites: {
+            files: [
+               '<%= sprites.icons.src %>'
+            ],
+            tasks: ['sprites']
          }
+
       }
    });
 

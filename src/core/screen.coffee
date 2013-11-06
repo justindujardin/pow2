@@ -119,10 +119,10 @@ class Screen
   @FONT : null
 
   constructor: (@ctx) ->
+    @ctx.webkitImageSmoothingEnabled = false
     Screen.FONT = new Font(Screen.MICRO_GLYPHS, "images/font_micro" + Screen.SCALE + ".png")
     @icons = [
-        Preloader.getImage("images/icons0-" + Screen.SCALE + ".png"),
-        Preloader.getImage("images/icons1-" + Screen.SCALE + ".png")
+        Preloader.getImage("images/icons.png")
       ]
     @screen = Preloader.getImage("images/screen" + Screen.SCALE + ".png")
     Screen.CENTER_OFFSET = Math.floor(Screen.WIN_SIZE / 2);
@@ -138,17 +138,17 @@ class Screen
     @ctx.drawImage(@screen, 0, 0)
 
   drawIcon: (icon, x, y) =>
-    icon = Util.getPath(icon)
-
-    coords = Icons[icon];
+    coords = Data.sprites[icon];
+    if not coords
+      throw new Error("Missing image from map " + icon)
     k = Screen.UNIT * Screen.SCALE
-    @ctx.drawImage(@icons[coords.block], k * coords.x, k * coords.y, k, k, x * Screen.SCALE, y * Screen.SCALE, k, k)
+    @ctx.drawImage(@icons[coords.block], Screen.UNIT * coords.x, Screen.UNIT * coords.y, Screen.UNIT, Screen.UNIT, x * Screen.SCALE, y * Screen.SCALE, k, k)
 
   drawImage: (image, x, y) =>
     @ctx.drawImage(image, x * Screen.SCALE, y * Screen.SCALE)
 
   drawAnim: (anim, x, y, frame) =>
-    coords = Icons[anim];
+    coords = Data.sprites[anim];
     ix = coords.x
     iy = coords.y
     k = Screen.UNIT * Screen.SCALE
@@ -158,7 +158,7 @@ class Screen
       if (ix == m)
         ix = 0
         iy++
-    @ctx.drawImage(@icons[coords.block], k * ix, k * iy, k, k, x * Screen.SCALE, y * Screen.SCALE, k, k)
+    @ctx.drawImage(@icons[coords.block], Screen.UNIT * ix, Screen.UNIT * iy, Screen.UNIT, Screen.UNIT, x * Screen.SCALE, y * Screen.SCALE, k, k)
 
   drawCustomAnim: (custom, x, y) =>
     k = Screen.UNIT * Screen.SCALE
