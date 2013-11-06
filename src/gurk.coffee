@@ -246,6 +246,7 @@ class Gurk
       "images/shadow.png"
     ]
     Preloader.setCallback(@start)
+    toggleSound() if @getSoundSetting()
 
   startSavedGame: =>
     @game = new Game()

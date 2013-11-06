@@ -8,15 +8,7 @@ var currentTrack;
 
 function toggleSound() {
    soundOn = !soundOn;
-   if (soundOn) {
-      document.getElementById("soundToggle").innerHTML = "off";
-      if (currentTrack) {
-         playTrack(currentTrack);
-      }
-   } else {
-      document.getElementById("soundToggle").innerHTML = "on";
-      stopTrack();
-   }
+   return soundOn && currentTrack ? playTrack(currentTrack) : stopTrack();
 }
 
 function phoneClick(event, x, y) {

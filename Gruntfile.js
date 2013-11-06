@@ -168,7 +168,7 @@ module.exports = function(grunt) {
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-notify');
-      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'notify']);
    }
+   grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'notify']);
    grunt.registerTask('heroku:production', ['sprites','concat','coffee']);
 };
