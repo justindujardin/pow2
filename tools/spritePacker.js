@@ -86,7 +86,7 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
          var fileName = cell.file.substr(cell.file.lastIndexOf("/") + 1);
          metaData[fileName] = {
             frames: cell.png.width / (spriteSize * scale),
-            src: baseName,
+            source: baseName,
             x: cell.x,
             y: cell.y
          };
