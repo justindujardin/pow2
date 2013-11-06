@@ -31,7 +31,7 @@ class Preloader
   @imageLoaded: () =>
     Preloader.loadedCount++;
     console.log("Preloading loading finished: #{Preloader.loadedCount}/#{Preloader.addedCount} done.")
-    if (Preloader.loadedCount + 1 == Preloader.addedCount and Preloader.callback)
+    if (Preloader.loadedCount == Preloader.addedCount and Preloader.callback)
       console.log("Preloading calling back.")
       Preloader.callback()
 
