@@ -21,7 +21,8 @@
     "q": "~0.9.7",
     "pngjs": "~0.4.0",
     "underscore": "~1.5.2",
-    "binpacking": "0.0.1"
+    "binpacking": "0.0.1",
+    "grunt-contrib-uglify": "~0.2.5"
   },
   "scripts": {
     "test": "npm install && ./node_modules/.bin/grunt"

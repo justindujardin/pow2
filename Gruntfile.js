@@ -41,7 +41,7 @@ module.exports = function(grunt) {
             join:true
          },
          game: {
-            inputs: [
+            src: [
                "src/device.coffee",
                "src/core/util.coffee",
                "src/core/view.coffee",
@@ -50,10 +50,7 @@ module.exports = function(grunt) {
                "src/adventure/*.coffee",
                "src/combat/*.coffee",
                "src/gurk.coffee"
-            ]
-         },
-         web: {
-            src: ['<%= coffee.game.inputs %>'],
+            ],
             dest: 'web/<%= pkg.name %>.js',
             ext: '.js'
          }
@@ -76,6 +73,25 @@ module.exports = function(grunt) {
                {src: 'data/textures/items/*.png', dest: 'web/images/items'},
                {src: 'data/textures/ui/*.png', dest: 'web/images/ui'}
             ]
+         }
+      },
+
+      /**
+       * Uglify the output javascript files in production builds.  This task is only
+       * ever invoked with `heroku:production`, and simply obfuscates/minifies the existing
+       * files.
+       */
+      uglify: {
+         options: {
+            banner: '\n/*!\n  <%= pkg.name %> - v<%= pkg.version %>\n  built: <%= grunt.template.today("yyyy-mm-dd") %>\n */\n'
+         },
+         game: {
+            files: {
+               'web/<%= pkg.name %>.data.js'    : ['web/<%= pkg.name %>.data.js'],
+               'web/<%= pkg.name %>.maps.js'    : ['web/<%= pkg.name %>.maps.js'],
+               'web/<%= pkg.name %>.sprites.js' : ['web/<%= pkg.name %>.sprites.js'],
+               'web/<%= pkg.name %>.js'         : ['web/<%= pkg.name %>.js']
+            }
          }
       },
 
@@ -104,7 +120,7 @@ module.exports = function(grunt) {
          },
          code: {
             files: [
-               '<%= coffee.game.inputs %>'
+               '<%= coffee.game.src %>'
             ],
             tasks: ['default']
          },
@@ -165,7 +181,7 @@ module.exports = function(grunt) {
 
    grunt.loadNpmTasks('grunt-contrib-coffee');
    grunt.loadNpmTasks('grunt-contrib-concat');
-
+   grunt.loadNpmTasks('grunt-contrib-uglify');
    // Support system notifications in non-production environments
    if(process.env.NODE_ENV !== 'production'){
       grunt.loadNpmTasks('grunt-express-server');
@@ -174,5 +190,5 @@ module.exports = function(grunt) {
       grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'notify']);
    }
    grunt.registerTask('default', ['sprites', 'concat', 'coffee']);
-   grunt.registerTask('heroku:production', ['sprites','concat','coffee']);
+   grunt.registerTask('heroku:production', ['sprites','concat','coffee','uglify']);
 };
