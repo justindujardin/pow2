@@ -225,6 +225,7 @@ class Gurk
   music : null
 
   constructor: ->
+    @setSize("small")
     # Get all the images in here
     #Screen.SCALE = 4
     console.log("Preloading Images at scale: #{Screen.SCALE}")
@@ -460,6 +461,27 @@ class Gurk
     @buttonGrid.draw()
     # Test.run()
 
+  setSize:(size) ->
+    console.log("Get contexts")
+    switch size
+      when "large"
+        @screenWidth = @screenHeight = 768
+        @controlHeight = 400
+        #Screen.SCALE = 6
+      when "normal"
+        @screenWidth = @screenHeight = 512
+        @controlHeight = 400
+        #Screen.SCALE = 4
+      when "small"
+        @screenWidth = @screenHeight = 256
+        @controlHeight = 200
+        #Screen.SCALE = 2
+      else return
+    @controlWidth = Math.floor(@controlHeight * 1.2)
+    $("#screenID").width(@screenWidth).height(@screenHeight);
+    $("#controlID").width(@controlWidth).height(@controlHeight);
+    @view?.draw()
+
   phoneClick: (e, offsetX = 0, offsetY = 0) =>
     point = document.getElementById("controlID").relMouseCoords(e)
     point.x -= offsetX
@@ -479,7 +501,7 @@ class Gurk
     @pushView(new SettingsView(this))
 
   showView: () =>
-    console.log("View: #{@view.name}")
+    #console.log("View: #{@view.name}")
     @view.doLayout()
     @view.setButtons(@buttonGrid)
     @view.draw()
@@ -532,13 +554,9 @@ window.App = App =
   init : (platform) ->
     console.log('App init...')
     HTMLCanvasElement.prototype.relMouseCoords = (event) ->
-      #console.log("event.pageY: " + event.pageY + ", this.offsetTop: " + this.offsetTop);
-      if platform == "ios"
-        x = event.pageX * 2 - @offsetLeft
-        y = event.pageY * 2 - @offsetTop
-      else
-        x = event.pageX - @offsetLeft
-        y = event.pageY - @offsetTop
+      canoffset = $(this).offset();
+      x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
+      y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top) + 1;
       return {"x":x, "y":y};
     console.log('Starting E.B.U.R.P...')
     App.gurk = new Gurk()

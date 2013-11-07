@@ -54,8 +54,8 @@ class ButtonGrid
       ' ' : {x : 173, y : 1, width: 4, height: 9}
     }
 
-  #@GRID_WIDTH : 160
-  #@GRID_HEIGHT : 85
+  @GRID_WIDTH : 160
+  @GRID_HEIGHT : 85
   @BUTTON_WIDTH : 45
   @BUTTON_HEIGHT : 23
 
@@ -71,8 +71,12 @@ class ButtonGrid
     ButtonGrid.onImage = Preloader.getImage("images/button" + Screen.SCALE + ".png")
     ButtonGrid.offImage = Preloader.getImage("images/buttonoff" + Screen.SCALE + ".png")
     ButtonGrid.topImage = Preloader.getImage("images/buttontop" + Screen.SCALE + ".png")
+
     #gapWidth = (ButtonGrid.GRID_WIDTH - 3 * ButtonGrid.BUTTON_WIDTH) / 4
     #gapHeight = (ButtonGrid.GRID_HEIGHT - 3 * ButtonGrid.BUTTON_HEIGHT) / 2
+
+    GAP_X = 6
+    GAP_Y = 6
     index = 1
     yy = GAP_Y
     @buttons = new Array(3)
@@ -90,7 +94,7 @@ class ButtonGrid
 
   draw: =>
     f = =>
-      @ctx.clearRect(0, 0, Screen.SCALE * GRID_WIDTH, Screen.SCALE * GRID_HEIGHT)
+      @ctx.clearRect(0, 0, Screen.SCALE * @GRID_WIDTH, Screen.SCALE * @GRID_HEIGHT)
       for y in [0..2]
         for x in [0..2]
           @buttons[y][x].draw(@ctx)
@@ -100,11 +104,11 @@ class ButtonGrid
     false
 
   clicked: (e) =>
-    #console.log("e.x: " + e.x + ", e.y: " + e.y)
+    console.log("e.x: " + e.x + ", e.y: " + e.y)
     # todo - dead zones between buttons?
-    x = Math.floor(e.x * 3 / Screen.SCALE / GRID_WIDTH)
-    y = Math.floor(e.y * 3 / Screen.SCALE / GRID_HEIGHT)
-    #console.log("X: " + x + ", Y: " + y)
+    x = Math.floor(e.x / @gurk.controlWidth * 3)
+    y = Math.floor(e.y / @gurk.controlHeight * 3)
+    console.log("X: " + x + ", Y: " + y)
     # if @buttons[y][x].isEnabled() then @buttons[y][x].disable() else @buttons[y][x].enable()
     # @draw()
     button = @buttons[y][x]

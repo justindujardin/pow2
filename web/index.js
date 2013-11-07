@@ -1,8 +1,4 @@
 var drawHack = false;
-var GAP_X = 6;
-var GAP_Y = 11;
-var GRID_WIDTH = 159;
-var GRID_HEIGHT = 113;
 var soundOn = false;
 var currentTrack;
 
