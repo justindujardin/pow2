@@ -62,6 +62,16 @@ function readPngData(file,scale){
    });
 }
 
+function clearFillPng(png) {
+   for (var y = 0; y < png.height; y++) {
+      for (var x = 0; x < png.width; x++) {
+         var idx = (png.width * y + x) << 2;
+         png.data[idx] = png.data[idx+1] = png.data[idx+2] = png.data[idx+3] = 0;
+      }
+   }
+   return png;
+}
+
 /**
  * Write out a composite PNG image that has been packed into a sheet,
  * and a JSON file that describes where the sprites are in the sheet.
@@ -72,6 +82,7 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
       width:width,
       height:height
    });
+   clearFillPng(stream);
    var baseName = path.basename(name);
    var pngName = name + '.png';
    _.each(cells,function(cell){
