@@ -430,7 +430,7 @@ eburp.registerData("spells",[
       "minAmount" : 3,
       "maxAmount" : 6,
       "modifyAmount" : 1,
-      "animation" : "animSpell4.png"
+      "animation" : "animSpellCast.png"
    },
    {
       "name" : "Righteous Missile",
@@ -466,7 +466,7 @@ eburp.registerData("spells",[
       "minAmount" : 1,
       "maxAmount" : 1,
       "modifyAmount" : 1,
-      "animation" : "animSpell4.png"
+      "animation" : "animSpellCast.png"
    },
    {
       "name" : "Basic Restore",

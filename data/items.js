@@ -882,7 +882,7 @@ eburp.registerData("items",[
       "meleeMaxDamage" : 10,
       "rangeMinDamage" : 1,
       "rangeMaxDamage" : 5,
-      "rangeAnimation" : "animSpell4.png",
+      "rangeAnimation" : "animSpellCast.png",
       "toHitBonus" : 3,
       "awarenessBonus" : 2,
       "baseValue" : 195,
