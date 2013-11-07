@@ -47,3 +47,7 @@ Resources/Configuration/Private.xcconfig
 .DS_Store
 .pid_file
 .sass-cache
+
+
+# Generated game files
+web/eburp*.*
