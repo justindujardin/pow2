@@ -1,12 +1,30 @@
 module.exports = function(grunt) {
 
+   grunt.option('force', true);
    grunt.initConfig({
       pkg: grunt.file.readJSON('package.json'),
       notify: {
-         watch: {
+         options: {
+            title: 'E.B.U.R.P.'
+         },
+         sprites:{
             options: {
-               title: 'E.B.U.R.P.',
-               message: 'Game build complete.'
+               message: 'Sprite Sheets built.'
+            }
+         },
+         maps:{
+            options: {
+               message: 'Maps compiled.'
+            }
+         },
+         server:{
+            options: {
+               message: 'Server restarted.'
+            }
+         },
+         code:{
+            options: {
+               message: 'Code build complete.'
             }
          }
       },
@@ -42,6 +60,8 @@ module.exports = function(grunt) {
          },
          game: {
             src: [
+               "src/math/*.coffee",
+               "src/scene/*.coffee",
                "src/device.coffee",
                "src/core/util.coffee",
                "src/core/view.coffee",
@@ -97,29 +117,30 @@ module.exports = function(grunt) {
        */
       watch: {
          options:{
-            atBegin:true
+            atBegin:true,
+            spawn: false
          },
          code: {
             files: [
                '<%= coffee.game.src %>'
             ],
-            tasks: ['default']
+            tasks: ['default', 'notify:code']
          },
          maps: {
             files: [
                '<%= concat.maps.src %>'
             ],
-            tasks: ['concat']
+            tasks: ['concat', 'notify:maps']
          },
          sprites: {
             files: [
                'data/textures/**/*.png'
             ],
-            tasks: ['sprites']
+            tasks: ['sprites', 'notify:sprites']
          },
          express: {
             files:  [ 'index.html', 'tools/gameServer.js' ],
-            tasks:  [ 'express' ],
+            tasks:  [ 'express', 'notify:server' ],
             options: {
                nospawn: true //Without this option specified express won't be reloaded
             }
@@ -167,7 +188,7 @@ module.exports = function(grunt) {
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-notify');
-      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'notify']);
+      grunt.registerTask('default', ['sprites', 'concat', 'coffee']);
    }
    else {
       grunt.registerTask('default', ['sprites', 'concat', 'coffee']);
