@@ -402,14 +402,15 @@ class Gurk
   start: =>
     # @playSound("summon")
     console.log("Get contexts")
-    ctx = document.getElementById("screenID").getContext("2d")
+    @screenCanvas = document.getElementById("screenID");
+    ctx = @screenCanvas.getContext("2d")
     ctx.webkitImageSmoothingEnabled = false
     ctxControl = document.getElementById("controlID").getContext("2d")
     ctxControl.webkitImageSmoothingEnabled = false
     canvasWork = document.getElementById("workID")
     ctxWork = canvasWork.getContext("2d")
     @stack = new Array()
-    @screen = new Screen(ctx)
+    @screen = new Screen(@screenCanvas,ctx)
     @buttonGrid = new ButtonGrid(ctxControl, this)
     @imageProcessor = new ImageProcessor(canvasWork, ctxWork, @screen.icons)
     # @imageProcessor.shade(Data.icons.ship)

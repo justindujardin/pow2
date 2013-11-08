@@ -118,10 +118,10 @@ class Screen
 
   @FONT : null
 
-  constructor: (@ctx) ->
+  constructor: (@canvas,@ctx) ->
 
     Screen.FONT = new Font(Screen.MICRO_GLYPHS, "images/font_micro.png")
-    @icons = {
+    @icons = Screen.TEXTURES = {
         animation  : Preloader.getImage("images/animation.png")
         characters : Preloader.getImage("images/characters.png")
         creatures  : Preloader.getImage("images/creatures.png")

@@ -62,6 +62,8 @@ module.exports = function(grunt) {
             src: [
                "src/math/*.coffee",
                "src/scene/*.coffee",
+               "src/scene/objects/*.coffee",
+               "src/scene/views/*.coffee",
                "src/device.coffee",
                "src/core/util.coffee",
                "src/core/view.coffee",
