@@ -39,6 +39,7 @@ class SceneView
   render: (scene) ->
 
   debugRender: (scene) ->
+    return false if not @context
     # MSPF Counter debug
     @context.save()
     @context.fillStyle = "rgba(255,255,255,0.7)";
