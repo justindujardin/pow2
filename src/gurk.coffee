@@ -414,19 +414,28 @@ class Gurk
     @buttonGrid = new ButtonGrid(ctxControl, this)
     @imageProcessor = new ImageProcessor(canvasWork, ctxWork, @screen.icons)
     # @imageProcessor.shade(Data.icons.ship)
-    splashView = new SplashView(this)
-    @setView(splashView)
-    console.log("Set splash view")
     @playMusic(Data.splashMusic)
 
+    splashView = new SplashView(this)
+    @setView(splashView)
 
-    # Scene/Camera
-#    @scene = new Scene @game
-#    @tileMap = new TileMap("town")
+    #
+    # ----------------------------- Rendering Rewrite START
+
+#    @scene = new Scene {
+#      game: @game
+#      debugRender: true
+#    }
+#    @tileMap = new TileMap("keep")
 #    @scene.addObject(@tileMap)
 #    @tileMapView = new TileMapView @screen.canvas, @tileMap
 #    @scene.addView @tileMapView
 #    @scene.start()
+
+    # ----------------------------- Rendering Rewrite END
+    #
+
+
 #    touchstart = (e) =>
 #      @buttonGrid.clicked(document.getElementById("controlID").relMouseCoords(e))
 #    document.getElementById("controlID").addEventListener("touchstart", touchstart, false);

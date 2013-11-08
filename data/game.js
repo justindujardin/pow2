@@ -75,23 +75,3 @@ window.Data = {
    sprites: {}
 
 }; // Well, that's it. Easy right? No, no it isn't.
-
-window.eburp = {
-   // Register data on existing window.Data object.
-   registerData: function(key,value){
-      window.Data[key] = value;
-   },
-
-   // Register a map on the existing window.Data.maps object.
-   registerMap: function(name,data){
-      window.Data.maps[name] = data;
-   },
-   registerSprites: function(name,data){
-      for (var property in data) {
-         if (data.hasOwnProperty(property)) {
-            window.Data.sprites[property] = data[property];
-         }
-      }
-   }
-
-};

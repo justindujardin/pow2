@@ -18,16 +18,17 @@
 
 class GearView extends SelectView
 
-  @slotIcons : [
-    Data.icons.noWeapon,
-    Data.icons.noShield,
-    Data.icons.noHat,
-    Data.icons.noArmor,
-    Data.icons.noBoots,
-    Data.icons.noAmulet
-  ]
+  @slotIcons : []
 
   constructor : (gurk, @player) ->
+    GearView.slotIcons = [
+      Data.icons.noWeapon,
+      Data.icons.noShield,
+      Data.icons.noHat,
+      Data.icons.noArmor,
+      Data.icons.noBoots,
+      Data.icons.noAmulet
+    ]
     super(gurk, "EQUIP", "X")
     @setButton(7, "BACK")
     @setButton(9, "EXIT")
