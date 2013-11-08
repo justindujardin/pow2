@@ -19,34 +19,57 @@
 class TileMapView extends SceneView
   constructor : (@canvas, @tileMap) ->
     super(@canvas)
-    @game = new Game()
+    @$el = $ @canvas
+    @$el.on 'mousewheel', (e) =>
+      return
+      if e.originalEvent.wheelDeltaY > 0
+        @cameraZoom -= 1
+        @cameraZoom = Math.max(1,@cameraZoom)
+      else
+        @cameraZoom += 1
+        @cameraZoom = Math.min(10,@cameraZoom)
+
+    # DEBUG CODE REMOVE TODO
+    $(window).on 'keydown', (e) =>
+      return @camera.point.x -= 1 if e.keyCode is 37 # Left
+      return @camera.point.y -= 1 if e.keyCode is 38 # Up
+      return @camera.point.x += 1 if e.keyCode is 39 # Right
+      return @camera.point.y += 1 if e.keyCode is 40 # Down
+
+    #@camera.point.set 0, 0
+    #@camera.extent.set @tileMap.bounds.extent.x, @tileMap.bounds.extent.y
+
+
 
   drawTile : (icon, x, y) =>
     coords = Data.sprites[icon];
-    if not coords
-      throw new Error("Missing image from map " + icon)
-    k = Screen.UNIT * Screen.SCALE
-    x *= Screen.SCALE
-    y *= Screen.SCALE
-
+    throw new Error "Missing sprite data for: #{icon}" if not coords
+    image = Screen.TEXTURES[coords.source]
+    throw new Error "Missing image: #{icon}" if not coords
     srcX = coords.x
     srcY = coords.y
     srcW = srcH = Screen.UNIT
-
-    dstX = x * Screen.UNIT
-    dstY = y * Screen.UNIT
-    dstW = dstH = k
-
-    image = Screen.TEXTURES[coords.source]
+    dstX = x * Screen.UNIT * @cameraZoom
+    dstY = y * Screen.UNIT * @cameraZoom
+    dstW = dstH = Screen.UNIT  * @cameraZoom
     @context.drawImage(image,srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH)
 
   render: () ->
+    @context.save();
     @context.fillStyle = "rgb(0,0,0)"
     @context.fillRect(0, 0, @canvas.width, @canvas.height)
-    for y in [0 ... @tileMap.height]
-      for x in [0 ... @tileMap.width]
-        tile = @tileMap.getTerrainIcon(x, y)
-        @drawTile(tile, x, y)
+
+    clipRect = new Rect(@camera).clip @tileMap.bounds
+    xStride = clipRect.point.x + clipRect.extent.x
+    yStride = clipRect.point.y + clipRect.extent.y
+
+    for y in [clipRect.point.y ... yStride]
+      for x in [@camera.point.x ... xStride]
+        tile = @tileMap.getTerrainIcon x, y
+        @drawTile(tile, x, y) if tile
     for feature in @tileMap.map.features
+      continue if not clipRect.pointInRect feature.x, feature.y
       @drawTile(feature.icon, feature.x, feature.y) if feature.icon
 
+    @context.restore()
+    super()

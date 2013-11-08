@@ -25,18 +25,17 @@ class TileMap extends SceneObject
   setMap : (mapName, x, y) =>
     @mapName = mapName
     @map = Data.maps[@mapName]
-    @height = @map.height
-    @width = @map.width
-    @posX = x
-    @posY = y
+    @bounds = new Rect(x,y,@map.width,@map.height)
 
-  getTerrain : (x, y) =>
+  getTerrain : (x, y) ->
+    return null if not @bounds.pointInRect(x,y)
     index = y * @map.width + x
     c = @map.map.charAt(index)
     Data.tiles[c]
 
-  getTerrainIcon : (x, y) =>
-    @getTerrain(x, y).icon
+  getTerrainIcon : (x, y) ->
+    terrain = @getTerrain(x, y)
+    if terrain then terrain.icon else null
 
   tick: (elapsed) ->
 
