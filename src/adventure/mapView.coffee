@@ -107,6 +107,27 @@ class MapView extends TileView
         @shadows[y + Screen.CENTER_OFFSET][x + Screen.CENTER_OFFSET] = false
     @centerBanner = true
     @move(0, 0)
+    @tileMap = new TileMap(gurk.game.map)
+    @tileMapView = new TileMapView gurk.screen.canvas, @tileMap
+    @tileMapView.featureVisible = @featureVisible
+
+  featureVisible: (feature) =>
+    if @game.getFeatures(feature.x, feature.y)
+      return @getTopFeature(feature.x, feature.y)
+
+  render: () ->
+    @tileMapView.camera.setCenter @posX, @posY
+    @tileMapView.render()
+    return
+    partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
+    @drawTile(partyIcon, Screen.CENTER_OFFSET, Screen.CENTER_OFFSET)
+    if (@map.dark)
+      winSize = Screen.WIN_SIZE * Screen.UNIT * Screen.SCALE
+      @screen.drawImage(@shadowOverlay, @offsetX, @offsetY,winSize,winSize)
+    @drawBanner()
+    @drawTopBanner()
+
+    @tileMapView.render()
 
   toggleMap : =>
     @mapMode = !@mapMode
@@ -207,6 +228,7 @@ class MapView extends TileView
     Data.tiles[@game.getTile(x, y)]
 
   doDraw: =>
+    return
     for y in [0...Screen.WIN_SIZE]
       yy = y + @posY - Screen.CENTER_OFFSET
       if (yy >= 0 and yy < @height)
@@ -264,9 +286,7 @@ class MapView extends TileView
       @screen.drawPixel("#F00", @posX + sx + 1, @posY + sy)
       @screen.drawPixel("#F00", @posX + sx, @posY + sy + 1)
       @screen.drawPixel("#F00", @posX + sx, @posY + sy - 1)
-    else
-      @drawBanner()
-      @drawTopBanner()
+
 
   getTopFeature : (x, y) =>
     for type in MapView.FEATURE_TYPES
