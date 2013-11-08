@@ -21,14 +21,14 @@ class TileMapView extends SceneView
     super(@canvas)
     @$el = $ @canvas
     @$el.on 'mousewheel', (e) =>
-      return
       if e.originalEvent.wheelDeltaY > 0
         @cameraZoom -= 1
         @cameraZoom = Math.max(1,@cameraZoom)
       else
         @cameraZoom += 1
-        @cameraZoom = Math.min(10,@cameraZoom)
+        @cameraZoom = Math.min(8,@cameraZoom)
 
+    @$el.on 'mousemove', (e) => @hoverPos = @screenToWorld(@canvasMousePosition(e)).truncate()
     # DEBUG CODE REMOVE TODO
     $(window).on 'keydown', (e) =>
       return @camera.point.x -= 1 if e.keyCode is 37 # Left
@@ -38,6 +38,20 @@ class TileMapView extends SceneView
 
     #@camera.point.set 0, 0
     #@camera.extent.set @tileMap.bounds.extent.x, @tileMap.bounds.extent.y
+
+  debugRender: () ->
+    if @hoverPos
+      renderPos = @worldToScreen(@hoverPos)
+      renderUnitSize = Screen.UNIT * @cameraZoom
+      @context.save()
+      @context.strokeStyle = "rgba(255,0,0,0.85)"
+      @context.fillStyle = "rgba(255,255,255,0.35)"
+      @context.strokeRect(renderPos.x, renderPos.y, renderUnitSize, renderUnitSize)
+      @context.fillRect(renderPos.x, renderPos.y, renderUnitSize, renderUnitSize)
+      @context.restore()
+    super()
+
+
 
 
 

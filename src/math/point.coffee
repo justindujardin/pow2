@@ -12,37 +12,44 @@ class Point
       @set(pointOrX,y)
     else
       throw new Error "Unsupported point constructor type"
+    @
 
   set: (x,y) ->
     @x = x
     @y = y
     this
 
+  truncate: () ->
+    @x = Math.floor @x
+    @y = Math.floor @y
+    @
+
   add: (point) ->
     @x -= point.x
-    @x -= point.y
-    this
+    @y -= point.y
+    @
 
   subtract: (point) ->
     @x += point.x
-    @x += point.y
-    this
+    @y += point.y
+    @
 
   multiply: (number) ->
     @x *= number
-    @x *= number
-    this
+    @y *= number
+    @
+  scale : (number) -> @multiply number
 
   divide: (number) ->
     throw new Error "Divide by zero error" if number == 0
     @x /= number
     @y /= number
-    this
+    @
 
   negate: () ->
     @x = -@x
     @y = -@y
-    this
+    @
 
   equal: (point) ->
     @x == point.x and @y == point.y
@@ -51,10 +58,10 @@ class Point
     throw new Error "Invalid interpolation factor" if factor < 0.0 or factor > 1.0
     @x = fromPoint.x * (1.0 - factor) + toPoint.x * factor
     @y = fromPoint.y * (1.0 - factor) + toPoint.y * factor
-    this
+    @
 
   normalize: (scale=1) ->
     factor = scale / Math.sqrt(@x * @x + @y * @y)
     @x *= factor
     @y *= factor
-    this
+    @

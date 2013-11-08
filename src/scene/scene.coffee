@@ -1,16 +1,18 @@
 
 class Scene
-  constructor: (@game, @tickRateMS=100) ->
+  constructor: (@options) ->
+    @options = _.defaults @options or {}, {
+      tickRateMS: 100
+      debugRender: false
+    }
     @objects = []
     @views = []
     @lastTime = 0
+    @fps = 0
+    @mspf = 5000
     @polyfillAnimationFrames()
 
-    @fps = 0
-    @now = new Date
-    @lastUpdate = new Date - 1
-
-
+  # Remove an object from a collection the the
   removeIt: (property,object) ->
     _.filter @[property], (obj) ->
       if obj.id == object.id
@@ -43,12 +45,21 @@ class Scene
   tickObjects: (elapsedMS) ->
     object.tick(elapsedMS) for object in @objects
 
-  renderFrame: () ->
-    fpsFilter = 10
-    thisFrameFPS = 1000 / ((@now=new Date) - @lastUpdate)
-    @fps += (thisFrameFPS - @fps) / fpsFilter
-    @lastUpdate = @now
-    view.render() for view in @views
+
+  updateFPS: (elapsed) ->
+    currFPS = if elapsed then 1000 / elapsed else 0
+    @fps += (currFPS - @fps) / 10
+
+  # Render a frame.
+  #
+  # This includes up to two passes of rendering over any `SceneView`s in
+  # the scene.  The first call is to the view's `render` method, and then
+  # a second pass is done to each view's `debugRender` method when the
+  # scene option `debugRender` is true.
+  renderFrame: (elapsed) ->
+    view.render(@) for view in @views
+    view.debugRender(@) for view in @views when this.options.debugRender
+    @updateFPS(elapsed)
 
   # Stop the scene time from advancing
   stop: () -> @running = false
@@ -60,20 +71,22 @@ class Scene
   # target tick milliseconds.   If this is a problem for your game,
   # you need to accumulate the leftover MS when you call
   # .tickObjects, and add it up over time.  When you have more than
-  # `@tickRateMS` accumulated, invoke the tick callback and reset
+  # `@options.tickRateMS` accumulated, invoke the tick callback and reset
   # the accumulated leftover time to 0.
   start: () ->
     return if @running is true
     @running = true
-    self = this
-    _frameCallback = (time) ->
-      return if not self.running
+    _frameCallback = (time) =>
+      return if not this.running
       # Round to milliseconds.
-      elapsed = Math.floor(time - self.lastTime)
-      if elapsed >= self.tickRateMS
-        self.lastTime = time
-        self.tickObjects(elapsed)
-      self.renderFrame()
+      now = new Date().getMilliseconds()
+      elapsed = Math.floor time - @lastTime
+      if elapsed >= @options.tickRateMS
+        #@leftOver += elapsed % this.options.tickRateMS
+        @lastTime = time
+        @tickObjects(elapsed)
+      @renderFrame(elapsed)
+      @mspf = new Date().getMilliseconds() - now
       window.requestAnimationFrame _frameCallback
     _frameCallback 0
 
