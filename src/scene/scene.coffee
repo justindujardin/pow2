@@ -1,10 +1,15 @@
 
 class Scene
-  constructor: (@game, @tickRateMS=500) ->
+  constructor: (@game, @tickRateMS=100) ->
     @objects = []
     @views = []
     @lastTime = 0
     @polyfillAnimationFrames()
+
+    @fps = 0
+    @now = new Date
+    @lastUpdate = new Date - 1
+
 
   removeIt: (property,object) ->
     _.filter @[property], (obj) ->
@@ -37,6 +42,12 @@ class Scene
   # Update each object in the list because a tick of time has gone by.
   tickObjects: (elapsedMS) ->
     object.tick(elapsedMS) for object in @objects
+
+  renderFrame: () ->
+    fpsFilter = 10
+    thisFrameFPS = 1000 / ((@now=new Date) - @lastUpdate)
+    @fps += (thisFrameFPS - @fps) / fpsFilter
+    @lastUpdate = @now
     view.render() for view in @views
 
   # Stop the scene time from advancing
@@ -62,6 +73,7 @@ class Scene
       if elapsed >= self.tickRateMS
         self.lastTime = time
         self.tickObjects(elapsed)
+      self.renderFrame()
       window.requestAnimationFrame _frameCallback
     _frameCallback 0
 
