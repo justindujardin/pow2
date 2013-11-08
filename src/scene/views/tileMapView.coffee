@@ -42,6 +42,11 @@ class TileMapView extends SceneView
     dstW = dstH = Screen.UNIT  * @cameraScale
     @context.drawImage(image,srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH)
 
+  featureVisible: (feature) -> true
+
+  # Get the visible tile rectangle
+  getVisibleRect:() -> new Rect(@camera).clip @tileMap.bounds
+
   render: () ->
     # Pin camera zoom to match canvas size
     @cameraScale = @screenToWorld(@$el.width()) / @camera.extent.x
@@ -49,20 +54,19 @@ class TileMapView extends SceneView
     @context.fillStyle = "rgb(0,0,0)"
     @context.fillRect(0, 0, @canvas.width, @canvas.height)
 
-    clipRect = new Rect(@camera).clip @tileMap.bounds
+    clipRect = @getVisibleRect()
     # Adjust render position for camera.
     worldTilePos = @worldToScreen(@tileMap.bounds.point,@cameraScale)
     worldCameraPos = @worldToScreen(@camera.point,@cameraScale)
     @context.translate(worldTilePos.x - worldCameraPos.x,worldTilePos.y - worldCameraPos.y)
-
-    xStride = clipRect.point.x + clipRect.extent.x
-    yStride = clipRect.point.y + clipRect.extent.y
-    for y in [clipRect.point.y ... yStride]
-      for x in [clipRect.point.x ... xStride]
+    for y in [clipRect.point.y ... clipRect.getBottom()]
+      for x in [clipRect.point.x ... clipRect.getRight()]
         tile = @tileMap.getTerrainIcon x, y
         @drawTile(tile, x, y) if tile
+
     for feature in @tileMap.map.features
       continue if not clipRect.pointInRect feature.x, feature.y
+      continue if not @featureVisible(feature)
       @drawTile(feature.icon, feature.x, feature.y) if feature.icon
 
     @context.restore()

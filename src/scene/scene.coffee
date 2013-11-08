@@ -19,7 +19,6 @@ class Scene
         obj.scene = null
         return false
       true
-    this
 
   addView: (view) ->
     throw new Error "Object must implement be a SceneView" if view not instanceof SceneView
