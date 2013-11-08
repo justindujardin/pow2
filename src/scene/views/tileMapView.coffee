@@ -20,6 +20,7 @@ class TileMapView extends SceneView
   constructor : (@canvas, @tileMap) ->
     super(@canvas)
     @$el = $ @canvas
+
     @$el.on 'mousewheel', (e) =>
       if e.originalEvent.wheelDeltaY > 0
         @cameraZoom -= 1
@@ -40,7 +41,8 @@ class TileMapView extends SceneView
     #@camera.extent.set @tileMap.bounds.extent.x, @tileMap.bounds.extent.y
 
   debugRender: () ->
-    if @hoverPos
+    # No interactivity yet, please.
+    if @hoverPos and false
       renderPos = @worldToScreen(@hoverPos)
       renderUnitSize = Screen.UNIT * @cameraZoom
       @context.save()
@@ -50,10 +52,6 @@ class TileMapView extends SceneView
       @context.fillRect(renderPos.x, renderPos.y, renderUnitSize, renderUnitSize)
       @context.restore()
     super()
-
-
-
-
 
   drawTile : (icon, x, y) =>
     coords = Data.sprites[icon];
