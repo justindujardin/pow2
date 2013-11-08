@@ -29,6 +29,10 @@ class SplashView extends TileView
     @offsetX = -Screen.HALF_UNIT
     @offsetY = -Screen.HALF_UNIT
     @index = 0
+    @tileMap = new TileMap("splashScreen")
+    @tileMapView = new TileMapView gurk.screen.canvas, @tileMap
+
+  render: () -> @tileMapView.render()
 
   doLayout : =>
     @setButton(1, "NEW")
@@ -39,15 +43,6 @@ class SplashView extends TileView
     @setButton(7, "OPTIONS")
     # Uncomment to have a hook to validate game data
     @setButton(9, "CHECK")
-
-  doDraw : =>
-    console.log("Splash View drawing.")
-    for y in [0 ... @height]
-      for x in [0 ... @width]
-        tile = @getTerrainIcon(x, y)
-        @drawTile(tile, x, y)
-    for feature in @map.features
-      @drawTile(feature.icon, feature.x, feature.y)
 
   showIntro : =>
     @gurk.pushView(new AlertView(@gurk, Data.icons.party, "Welcome", "Welcome to realm of Gurk!\n\nRoll the stats for your Warrior, Archer and Mage, then lead them on to thrilling adventure!", "CREATE"))
