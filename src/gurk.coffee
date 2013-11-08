@@ -225,7 +225,7 @@ class Gurk
   music : null
 
   constructor: ->
-    @setSize("small")
+    @setSize("normal")
     # Get all the images in here
     #Screen.SCALE = 4
     console.log("Preloading Images at scale: #{Screen.SCALE}")
@@ -418,6 +418,15 @@ class Gurk
     @setView(splashView)
     console.log("Set splash view")
     @playMusic(Data.splashMusic)
+
+
+    # Scene/Camera
+#    @scene = new Scene @game
+#    @tileMap = new TileMap("town")
+#    @scene.addObject(@tileMap)
+#    @tileMapView = new TileMapView @screen.canvas, @tileMap
+#    @scene.addView @tileMapView
+#    @scene.start()
 #    touchstart = (e) =>
 #      @buttonGrid.clicked(document.getElementById("controlID").relMouseCoords(e))
 #    document.getElementById("controlID").addEventListener("touchstart", touchstart, false);
@@ -536,7 +545,7 @@ class Gurk
       @showView()
 
   buttonPressed: (text) =>
-    @view.command(text)
+    @view?.command(text)
 
   showAlert: (icon, title, text, result) =>
     alert = new AlertView(this, icon, title, text, result)
