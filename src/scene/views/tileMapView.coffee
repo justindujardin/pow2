@@ -20,38 +20,14 @@ class TileMapView extends SceneView
   constructor : (@canvas, @tileMap) ->
     super(@canvas)
     @$el = $ @canvas
-
-    @$el.on 'mousewheel', (e) =>
-      if e.originalEvent.wheelDeltaY > 0
-        @cameraZoom -= 1
-        @cameraZoom = Math.max(1,@cameraZoom)
-      else
-        @cameraZoom += 1
-        @cameraZoom = Math.min(8,@cameraZoom)
-
-    @$el.on 'mousemove', (e) => @hoverPos = @screenToWorld(@canvasMousePosition(e)).truncate()
+    @camera = new Rect(0,0,9,9)
+    @cameraScale = 1.0
     # DEBUG CODE REMOVE TODO
     $(window).on 'keydown', (e) =>
       return @camera.point.x -= 1 if e.keyCode is 37 # Left
       return @camera.point.y -= 1 if e.keyCode is 38 # Up
       return @camera.point.x += 1 if e.keyCode is 39 # Right
       return @camera.point.y += 1 if e.keyCode is 40 # Down
-
-    #@camera.point.set 0, 0
-    #@camera.extent.set @tileMap.bounds.extent.x, @tileMap.bounds.extent.y
-
-  debugRender: () ->
-    # No interactivity yet, please.
-    if @hoverPos and false
-      renderPos = @worldToScreen(@hoverPos)
-      renderUnitSize = Screen.UNIT * @cameraZoom
-      @context.save()
-      @context.strokeStyle = "rgba(255,0,0,0.85)"
-      @context.fillStyle = "rgba(255,255,255,0.35)"
-      @context.strokeRect(renderPos.x, renderPos.y, renderUnitSize, renderUnitSize)
-      @context.fillRect(renderPos.x, renderPos.y, renderUnitSize, renderUnitSize)
-      @context.restore()
-    super()
 
   drawTile : (icon, x, y) =>
     coords = Data.sprites[icon];
@@ -61,22 +37,28 @@ class TileMapView extends SceneView
     srcX = coords.x
     srcY = coords.y
     srcW = srcH = Screen.UNIT
-    dstX = x * Screen.UNIT * @cameraZoom
-    dstY = y * Screen.UNIT * @cameraZoom
-    dstW = dstH = Screen.UNIT  * @cameraZoom
+    dstX = x * Screen.UNIT * @cameraScale
+    dstY = y * Screen.UNIT * @cameraScale
+    dstW = dstH = Screen.UNIT  * @cameraScale
     @context.drawImage(image,srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH)
 
   render: () ->
+    # Pin camera zoom to match canvas size
+    @cameraScale = @screenToWorld(@$el.width()) / @camera.extent.x
     @context.save();
     @context.fillStyle = "rgb(0,0,0)"
     @context.fillRect(0, 0, @canvas.width, @canvas.height)
 
     clipRect = new Rect(@camera).clip @tileMap.bounds
+    # Adjust render position for camera.
+    worldTilePos = @worldToScreen(@tileMap.bounds.point,@cameraScale)
+    worldCameraPos = @worldToScreen(@camera.point,@cameraScale)
+    @context.translate(worldTilePos.x - worldCameraPos.x,worldTilePos.y - worldCameraPos.y)
+
     xStride = clipRect.point.x + clipRect.extent.x
     yStride = clipRect.point.y + clipRect.extent.y
-
     for y in [clipRect.point.y ... yStride]
-      for x in [@camera.point.x ... xStride]
+      for x in [clipRect.point.x ... xStride]
         tile = @tileMap.getTerrainIcon x, y
         @drawTile(tile, x, y) if tile
     for feature in @tileMap.map.features
@@ -84,4 +66,3 @@ class TileMapView extends SceneView
       @drawTile(feature.icon, feature.x, feature.y) if feature.icon
 
     @context.restore()
-    super()
