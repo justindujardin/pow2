@@ -18,8 +18,6 @@ class Rect
       @extent = new Point 1, 1
 
   clip: (clipRect) ->
-    top = @point.y
-    left = @point.x
     right = @point.x + @extent.x
     bottom = @point.y + @extent.y
 
@@ -54,9 +52,23 @@ class Rect
   center: () ->
     new Point(@point.x + (@extent.x * 0.5),@point.y + (@extent.y * 0.5))
 
+  setCenter: (pointOrX,y) ->
+    if pointOrX instanceof Point
+      x = pointOrX.x
+      y = pointOrX.y
+    else
+      x = pointOrX
+    @point.x = Math.ceil(x - @extent.x / 2)
+    @point.y = Math.ceil(y - @extent.y / 2)
+
   scale: (scale) ->
     @point.x *= scale
     @point.y *= scale
     @extent.x *= scale
     @extent.y *= scale
     @
+
+  getLeft:()  -> @point.x
+  getRight:() -> @point.x + @extent.x
+  getTop:()   -> @point.y
+  getBottom:()-> @point.y + @extent.y

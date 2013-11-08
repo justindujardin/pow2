@@ -16,7 +16,7 @@
 #
 # -----------------------------------------------------------------------------
 
-class View
+class View extends SceneView
 
   @LEFT : "1"
   @UP : "2"
@@ -38,15 +38,14 @@ class View
     # no-op, override to do something
 
   draw: =>
-    f = =>
-      @screen.clear()
-      @doDraw()
-      @screen.drawScreen()
-    f();
-    if (drawHack)
-      setTimeout(f, 50);
+    @screen.clear()
+    @doDraw()
+    @screen.drawScreen()
 
   doDraw: =>
+
+  render:() ->
+    @doDraw()
 
   doLayout: =>
 

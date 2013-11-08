@@ -90,28 +90,28 @@ class eburp.Gurk
     @imageProcessor = new ImageProcessor(canvasWork, ctxWork, @screen.icons)
 
     #
+    # ----------------------------- Rendering Rewrite START
+    @scene = new Scene {
+      game: @game
+      debugRender: true
+    }
+#    @tileMap = new TileMap("keep")
+#    @scene.addObject(@tileMap)
+#    @tileMapView = new TileMapView @screen.canvas, @tileMap
+#    @scene.addView @tileMapView
+    @scene.start()
+
+    # ----------------------------- Rendering Rewrite END
+    #
+
+    #
     # ----------------------------- Existing Game Lifecycle START
     @stack = new Array()
     @buttonGrid = new ButtonGrid(ctxControl, this)
     @playMusic(Data.splashMusic)
     splashView = new SplashView(this)
     @setView(splashView)
-    # ----------------------------- Existing Game Lifecycle END
-    #
 
-    #
-    # ----------------------------- Rendering Rewrite START
-#    @scene = new Scene {
-#      game: @game
-#    }
-#    @tileMap = new TileMap("keep")
-#    @scene.addObject(@tileMap)
-#    @tileMapView = new TileMapView @screen.canvas, @tileMap
-#    @scene.addView @tileMapView
-#    @scene.start()
-
-    # ----------------------------- Rendering Rewrite END
-    #
 
     clickHandler = (e) =>
       switch e.keyCode
@@ -148,7 +148,8 @@ class eburp.Gurk
         # todo - maybe add ESC -> 9 and BACKSPACE -> 7
     window.addEventListener('keydown', clickHandler)
     @buttonGrid.draw()
-    # Test.run()
+    # ----------------------------- Existing Game Lifecycle END
+    #
 
   getSoundSetting : =>
     Device.getSetting("sound", true)
@@ -237,9 +238,11 @@ class eburp.Gurk
     @screen
 
   setView: (view) =>
+    @scene.removeView(@view) if @view
     console.log("Set View: " + view)
     @stack = new Array()
     @view = view
+    @scene.addView view
     @showView()
 
   showSettings : () =>
@@ -254,12 +257,15 @@ class eburp.Gurk
   pushView: (view) =>
     @stack.unshift(@view)
     @view = view
+    @scene.addView view
     @showView()
 
   popView: (result) =>
+    @scene.removeView @view
     parent = @stack.shift()
     if (parent != null)
       @view = parent
+      @scene.addView @view
       if (result != null)
         @view.processResult(result)
       @showView()
