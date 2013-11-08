@@ -60,15 +60,14 @@ module.exports = function(grunt) {
          },
          game: {
             src: [
-               "src/math/*.coffee",
+               "src/core/util.coffee",
+               "src/core/*.coffee",
                "src/scene/*.coffee",
                "src/scene/objects/*.coffee",
                "src/scene/views/*.coffee",
                "src/device.coffee",
-               "src/core/util.coffee",
                "src/ui/view.coffee",
                "src/ui/*.coffee",
-               "src/core/*.coffee",
                "src/model/*.coffee",
                "src/adventure/*.coffee",
                "src/combat/*.coffee",
