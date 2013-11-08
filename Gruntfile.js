@@ -71,6 +71,7 @@ module.exports = function(grunt) {
                "src/model/*.coffee",
                "src/adventure/*.coffee",
                "src/combat/*.coffee",
+               "src/game/*.coffee",
                "src/gurk.coffee"
             ],
             dest: 'web/<%= pkg.name %>.js',

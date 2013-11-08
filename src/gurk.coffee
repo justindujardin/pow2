@@ -20,201 +20,7 @@
 #
 # -----------------------------------------------------------------------------
 
-class Test
-
-  @assert: (condition, failDescription) =>
-    if (!condition)
-      console.log("ASSERTION FAILED: " + failDescription)
-
-  @run: =>
-    console.log("--- TESTING START ---")
-
-    shortSwordTemplate = Library.getItemTemplateByName("Short Sword")
-    Test.assert(shortSwordTemplate, "Short sword template not found by name")
-    shortSword = new Item(shortSwordTemplate, 100, 2)
-    Test.assert(shortSword.name == "Short Sword +2", "Short Sword name is wrong.")
-    Test.assert(shortSword.getMeleeMinDamage() == 3, "Short Sword melee min damage is wrong.")
-    Test.assert(shortSword.getMeleeMaxDamage() == 7, "Short Sword melee max damage is wrong.")
-    Test.assert(shortSword.getToHitBonus() == 2, "Short Sword to hit bonus is wrong.")
-    Test.assert(shortSword.getArmorClass() == 0, "Short Sword should have 0 AC.")
-    leatherArmor = new Item(Library.getItemTemplateByName("Leather Armor"), 101, -1)
-    Test.assert(leatherArmor.getArmorClass() == 1, "Leather Armor -1 should have 1 AC")
-    rugnar = new Player(Data.characters[0])
-    Test.assert(rugnar.strength >= rugnar.accuracy, "Strength is not greatest attribute.")
-    Test.assert(rugnar.strength >= rugnar.awareness, "Strength is not greatest attribute.")
-    Test.assert(rugnar.strength >= rugnar.constitution, "Strength is not greatest attribute.")
-    Test.assert(rugnar.maxHitPoints > 0, "Max hit points not positive.")
-    Test.assert(rugnar.hitPoints == rugnar.maxHitPoints, "Hit points not equal to max hit points.")
-    rugnar.strength = 18
-    Test.assert(rugnar.getAttributeBonus(rugnar.strength) == 3, "Strength bonus incorrect.")
-    damage = rugnar.getMeleeDamageBounds()
-    Test.assert(damage.min == 1 + 3, "Min damage is wrong")
-    Test.assert(damage.max == 1 + 3, "Max damage is wrong")
-    rugnar.addItem(shortSword)
-    rugnar.equipItem(shortSword)
-    damage = rugnar.getMeleeDamageBounds()
-    Test.assert(damage.min == 1 + 2 + 3, "Min damage is wrong")
-    Test.assert(damage.max == 5 + 2 + 3, "Max damage is wrong")
-    rugnar.addItem(leatherArmor)
-    rugnar.equipItem(leatherArmor)
-    rugnar.awareness = 14
-    Test.assert(rugnar.getArmorClass() == 1 + 1, "Rugnar armor class is wrong.")
-    rugnar.unequipItem(leatherArmor)
-    Test.assert(rugnar.getArmorClass() == 0 + 1, "Rugnar armor class is wrong after unequip.")
-    rugnar.dropItem(leatherArmor)
-    Test.assert(rugnar.items.length == 1, "Rugnar should have 1 item.")
-
-    console.log("--- TESTING COMPLETED ---")
-
-# -----------------------------------------------------------------------------
-
-class Validate
-
-  @require : (object, item, name) ->
-    if (!object.hasOwnProperty(item))
-      console.log("#{name} is missing '#{item}'.")
-
-  @run : ->
-    console.log("--- VALIDATING ...")
-    console.log("-- SPELLS")
-    for spell in Data.spells
-      if (spell.type == "summon")
-        if (!spell.creature)
-          console.log(" No creature for summon spell #{spell.name}.")
-        else if (!Library.getCreatureByName(spell.creature))
-          console.log(" Creature for summon spell #{spell.name} not found: '#{spell.creature}'.")
-      if ((spell.target == "range" or spell.target == "area") and !spell.animation)
-        console.log(" Animation missing for spell #{spell.name}")
-    console.log("-- CREATURES")
-    spellSet = {}
-    for creature in Data.creatures
-      Validate.require(creature, "icon", creature.name)
-      Validate.require(creature, "groups", creature.name)
-      Validate.require(creature, "meleeMinDamage", creature.name)
-      Validate.require(creature, "meleeMaxDamage", creature.name)
-      Validate.require(creature, "level", creature.name)
-      Validate.require(creature, "minHitPoints", creature.name)
-      Validate.require(creature, "maxHitPoints", creature.name)
-      Validate.require(creature, "experienceValue", creature.name)
-      Validate.require(creature, "numAttacks", creature.name)
-      Validate.require(creature, "numMoves", creature.name)
-      Validate.require(creature, "armorClass", creature.name)
-      Validate.require(creature, "description", creature.name)
-      if (creature.rangeMinDamage and !creature.rangeAnimation)
-        console.log(" No range animation for #{creature.name}.")
-      if (creature.hitSpell and !Library.getSpellByName(creature.hitSpell))
-        console.log(" Missing hit spell #{creature.hitSpell} for #{creature.name}.")
-      if (creature.hitSpell)
-        spellSet[creature.hitSpell] = true
-      if (creature.spells)
-        for spell in creature.spells
-          if (!Library.getSpellByName(spell.name))
-            console.log(" Missing spell #{spell.name} for #{creature.name}.")
-          else
-            spellSet[spell.name] = true
-    console.log("-- ITEMS")
-    for item in Data.items
-      Validate.require(item, "icon", item.name)
-      Validate.require(item, "type", item.name)
-      Validate.require(item, "groups", item.name)
-      Validate.require(item, "rarity", item.name)
-      Validate.require(item, "baseValue", item.name)
-      Validate.require(item, "level", item.name)
-      Validate.require(item, "usedBy", item.name)
-      if (item.rangeMinDamage and !item.rangeAnimation)
-        console.log(" No range animation for #{item.name}.")
-      if (item.spell and !Library.getSpellByName(item.spell))
-        console.log(" Missing spell #{item.spell} for #{item.name}.")
-      if (item.hitSpell and !Library.getSpellByName(item.hitSpell))
-        console.log(" Missing hit spell #{item.hitSpell} for #{item.name}.")
-      if (item.combatSpell and !Library.getSpellByName(item.combatSpell))
-        console.log(" Missing combat spell #{item.combatSpell} for #{item.name}.")
-      if (item.spell)
-        spellSet[item.spell] = true
-      if (item.hitSpell)
-        spellSet[item.hitSpell] = true
-      if (item.combatSpell)
-        spellSet[item.combatSpell] = true
-    console.log("-- MAPS")
-    idSet = {}
-    locationSet = {}
-    for name,map of Data.maps
-      if (map.encounterChance and map.encounterChance > 0 and !map.combatMap)
-        console.log(" Missing combat map for #{name}.")
-      if (map.features)
-        for feature in map.features
-          if (feature.type == "transition")
-            if (!feature.target)
-              console.log(" Missing transition target in #{name}.")
-            else if (!Data.maps[feature.target])
-              console.log(" Transition target #{feature.target} not found in #{name}.")
-            else
-              target = Data.maps[feature.target]
-              if (feature.targetX >= target.width or feature.targetY >= target.height)
-                console.log(" Transition target location is not valid in #{feature.target} for #{name}.")
-          else if (feature.type == "encounter")
-            location = name + "-" + feature.x + "-" + feature.y
-            if (locationSet[location])
-              console.log(" More than one encounter at '#{name} : #{feature.x}, #{feature.y}'.")
-            else
-              locationSet[location] = true
-            if (idSet[feature.id])
-              console.log(" More than one encounter with id '#{feature.id}'.")
-            else
-              idSet[feature.id] = true
-            if (feature.creatures)
-              for creature in feature.creatures
-                if (!Library.getCreatureByName(creature.name))
-                  console.log(" Creature #{creature.name} not found in #{name}.")
-            if (feature.items)
-              for item in feature.items
-                if (!Library.getItemTemplateByName(item.name))
-                  console.log(" Item #{item.name} not found in #{name}.")
-    for spell in Data.spells
-      if (!spellSet[spell.name] && !spell.who)
-        console.log(" Unused spell: #{spell.name}")
-    console.log("--- VALIDATION COMPLETE.")
-
-# -----------------------------------------------------------------------------
-
-class SettingsView extends SelectView
-
-  constructor : (gurk) ->
-    super(gurk, "TOGGLE", "DONE")
-
-  doLayout : =>
-    @clear()
-    y = 3
-    @addLabelCentered("Settings", "#FFF", 0, y, 128, Screen.FONT.fontHeight)
-    y += 12
-    music = if @gurk.getMusicSetting() then "ON" else "OFF"
-    combatMusic = if @gurk.getCombatMusicSetting() then "ON" else "OFF"
-    sound = if @gurk.getSoundSetting() then "ON" else "OFF"
-    fast = if @gurk.getFastSetting() then "ON" else "OFF"
-    @addOption("Music is #{music}", "#FFF", 8, y)
-    y += 8
-    @addOption("Combat music is #{combatMusic}", "#FFF", 8, y)
-    y += 8
-    @addOption("Sound FX are #{sound}", "#FFF", 8, y)
-    y += 8
-    @addOption("Fast combat is #{fast}", "#FFF", 8, y)
-    @start()
-
-  itemSelected: (index, item) =>
-    if (index == 0)
-      @gurk.setMusicSetting(!@gurk.getMusicSetting())
-    else if (index == 1)
-      @gurk.setCombatMusicSetting(!@gurk.getCombatMusicSetting())
-    else if (index == 2)
-      @gurk.setSoundSetting(!@gurk.getSoundSetting())
-    else if (index == 3)
-      @gurk.setFastSetting(!@gurk.getFastSetting())
-    @doLayout()
-    @draw()
-
-# -----------------------------------------------------------------------------
-
-class Gurk
+class eburp.Gurk
 
   stack: null
   view : null
@@ -296,86 +102,9 @@ class Gurk
     @game.players[2].addItem(shortStaff)
     @game.players[2].equipItem(shortStaff)
 
-    # TESTING
-    ###
-    bloodSword = @game.createItem(Library.getItemTemplateByName("Bloodsword"))
-    @game.players[0].addItem(bloodSword)
-    @game.players[0].equipItem(bloodSword)
-    @game.gold = 20000
-    @game.players[2].maxSpellPoints = 50;
-    wandOfFire = @game.createItem(Library.getItemTemplateByName("Hydrosword"))
-    @game.players[0].addItem(wandOfFire)
-
-    for i in [0 ... 3]
-      @game.players[i].maxHitPoints = 100;
-      @game.players[i].maxSpellPoints = 100;
-      @game.players[i].level = 10;
-      @game.players[i].strength += 10;
-      @game.players[i].accuracy += 10;
-      @game.players[i].awareness += 10;
-      @game.players[i].constitution += 10;
-      @game.players[i].experience = 30000;
-
-    @game.transitionTo("shuunia", 13, 7)
-    ###
-    # END TESTING
-
     mapView = new MapView(this)
     @setView(mapView)
 
-  startTestGame: =>
-    @game = new Game()
-    warrior = new Player(Data.characters[0])
-    shortSword = @game.createItem(Library.getItemTemplateByName("Short Sword"), 1)
-    serpentSword = @game.createItem(Library.getItemTemplateByName("Serpentongue"))
-    shortSword2 = @game.createItem(Library.getItemTemplateByName("Short Sword"), 2)
-    shortSword3 = @game.createItem(Library.getItemTemplateByName("Short Sword"), -1)
-    heavyAxe = @game.createItem(Library.getItemTemplateByName("Heavy Axe"))
-    leatherArmor = @game.createItem(Library.getItemTemplateByName("Leather Armor"), 1)
-    leatherBoots = @game.createItem(Library.getItemTemplateByName("Leather Boots"), 0)
-    healingSalve = @game.createItem(Library.getItemTemplateByName("Healing Salve"), 1, 3)
-    wandOfBlessing = @game.createItem(Library.getItemTemplateByName("Wand of Blessing"), 0, 2)
-    wandOfBlessing2 = @game.createItem(Library.getItemTemplateByName("Wand of Blessing"), 0, 2)
-    wandOfStriking = @game.createItem(Library.getItemTemplateByName("Wand of Striking"), 1, 2)
-    warrior.addItem(serpentSword)
-    warrior.addItem(shortSword)
-    warrior.addItem(shortSword2)
-    warrior.addItem(shortSword3)
-    warrior.addItem(leatherArmor)
-    warrior.addItem(heavyAxe)
-    warrior.addItem(leatherBoots)
-    warrior.addItem(wandOfBlessing)
-    warrior.addItem(healingSalve)
-    warrior.addItem(wandOfStriking)
-    warrior.equipItem(serpentSword)
-    warrior.equipItem(leatherArmor)
-    warrior.equipItem(leatherBoots)
-    warrior.hitPoints = 1
-    warrior.experience = 49
-    ranger = new Player(Data.characters[1])
-    shortBow = @game.createItem(Library.getItemTemplateByName("Short Bow"), 1)
-    bowOfFortune = @game.createItem(Library.getItemTemplateByName("Bow of Fortune"))
-    speedBoots = @game.createItem(Library.getItemTemplateByName("Speed Boots"), 0)
-    leatherBoots2 = @game.createItem(Library.getItemTemplateByName("Leather Boots"), 0)
-    ranger.addItem(shortBow)
-    ranger.addItem(bowOfFortune)
-    ranger.equipItem(bowOfFortune)
-    ranger.addItem(leatherBoots2)
-    ranger.addItem(speedBoots)
-    ranger.equipItem(speedBoots)
-    wizard = new Player(Data.characters[2])
-    wizard.level = 2
-    wizard.maxSpellPoints = 20
-    wizard.spellPoints = 20
-    wizard.experience = 119
-    wizard.addItem(wandOfBlessing2)
-    @game.addPlayer(warrior)
-    @game.addPlayer(ranger)
-    @game.addPlayer(wizard)
-    # Build features again to prevent legendary items for showing twice (wouldn't happen in a real game)
-    @game.buildFeatures()
-    mapView = new MapView(this)
-    @setView(mapView)
 
   playSound : (sound) =>
     if (@getSoundSetting())
@@ -400,6 +129,10 @@ class Gurk
       @playMusic(@music)
 
   start: =>
+
+    #
+    # ----------------------------- Existing Game Lifecycle START
+
     # @playSound("summon")
     console.log("Get contexts")
     @screenCanvas = document.getElementById("screenID");
@@ -418,6 +151,8 @@ class Gurk
 
     splashView = new SplashView(this)
     @setView(splashView)
+    # ----------------------------- Existing Game Lifecycle END
+    #
 
     #
     # ----------------------------- Rendering Rewrite START
@@ -435,14 +170,6 @@ class Gurk
     # ----------------------------- Rendering Rewrite END
     #
 
-
-#    touchstart = (e) =>
-#      @buttonGrid.clicked(document.getElementById("controlID").relMouseCoords(e))
-#    document.getElementById("controlID").addEventListener("touchstart", touchstart, false);
-
-    # ENABLE THE TWO LINES BELOW FOR WEB CLICKS
-#    document.getElementById("controlID").onclick = (e) =>
-#      @buttonGrid.clicked(document.getElementById("controlID").relMouseCoords(e))
     clickHandler = (e) =>
       switch e.keyCode
         when 37 then @buttonGrid.forceClick(4)
@@ -501,8 +228,14 @@ class Gurk
     $("#controlID").width(@controlWidth).height(@controlHeight);
     @view?.draw()
 
+
   phoneClick: (e, offsetX = 0, offsetY = 0) =>
-    point = document.getElementById("controlID").relMouseCoords(e)
+    relMouse = (event) ->
+      canoffset = $(event.currentTarget).offset();
+      x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
+      y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top) + 1;
+      return {"x":x, "y":y};
+    point = relMouse(e)
     point.x -= offsetX
     point.y -= offsetY
     @buttonGrid.clicked(point)
@@ -568,14 +301,3 @@ class Gurk
     return @view == view
 
 # -----------------------------------------------------------------------------
-
-window.App = App =
-  init : (platform) ->
-    console.log('App init...')
-    HTMLCanvasElement.prototype.relMouseCoords = (event) ->
-      canoffset = $(this).offset();
-      x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
-      y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top) + 1;
-      return {"x":x, "y":y};
-    console.log('Starting E.B.U.R.P...')
-    App.gurk = new Gurk()
