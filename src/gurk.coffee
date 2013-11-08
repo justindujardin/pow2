@@ -61,34 +61,6 @@ class eburp.Gurk
     mapView = new MapView(this)
     @setView(mapView)
 
-  getSoundSetting : =>
-    Device.getSetting("sound", true)
-
-  setSoundSetting : (value) =>
-    Device.setSetting("sound", value)
-
-  getMusicSetting : =>
-    Device.getSetting("music", true)
-
-  setMusicSetting : (value) =>
-    Device.setSetting("music", value)
-    if (value)
-      @resumeMusic()
-    else
-      @stopMusic()
-
-  getCombatMusicSetting : =>
-    Device.getSetting("combatMusic", true)
-
-  setCombatMusicSetting : (value) =>
-    Device.setSetting("combatMusic", value)
-
-  getFastSetting : =>
-    Device.getSetting("fast", false)
-
-  setFastSetting : (value) =>
-    Device.setSetting("fast", value)
-
   startNewGame : (game) =>
     @game = game
     club = @game.createItem(Library.getItemTemplateByName("Crude Club"))
@@ -106,35 +78,7 @@ class eburp.Gurk
     @setView(mapView)
 
 
-  playSound : (sound) =>
-    if (@getSoundSetting())
-      playAudio(sound)
-
-  playMusic : (track) =>
-    @music = track
-    console.log("Music setting: '" + @getMusicSetting() + "'.")
-    if (@getMusicSetting())
-      console.log("Play track '" + track + "'.")
-      playTrack(track)
-
-  playCombatMusic : =>
-    if (@getCombatMusicSetting())
-      playTrack(Data.combatMusic)
-
-  stopMusic : =>
-    stopTrack()
-
-  resumeMusic : =>
-    if (@music)
-      @playMusic(@music)
-
   start: =>
-
-    #
-    # ----------------------------- Existing Game Lifecycle START
-
-    # @playSound("summon")
-    console.log("Get contexts")
     @screenCanvas = document.getElementById("screenID");
     ctx = @screenCanvas.getContext("2d")
     ctx.webkitImageSmoothingEnabled = false
@@ -142,13 +86,14 @@ class eburp.Gurk
     ctxControl.webkitImageSmoothingEnabled = false
     canvasWork = document.getElementById("workID")
     ctxWork = canvasWork.getContext("2d")
-    @stack = new Array()
     @screen = new Screen(@screenCanvas,ctx)
-    @buttonGrid = new ButtonGrid(ctxControl, this)
     @imageProcessor = new ImageProcessor(canvasWork, ctxWork, @screen.icons)
-    # @imageProcessor.shade(Data.icons.ship)
-    @playMusic(Data.splashMusic)
 
+    #
+    # ----------------------------- Existing Game Lifecycle START
+    @stack = new Array()
+    @buttonGrid = new ButtonGrid(ctxControl, this)
+    @playMusic(Data.splashMusic)
     splashView = new SplashView(this)
     @setView(splashView)
     # ----------------------------- Existing Game Lifecycle END
@@ -156,10 +101,8 @@ class eburp.Gurk
 
     #
     # ----------------------------- Rendering Rewrite START
-
 #    @scene = new Scene {
 #      game: @game
-#      debugRender: true
 #    }
 #    @tileMap = new TileMap("keep")
 #    @scene.addObject(@tileMap)
@@ -206,6 +149,56 @@ class eburp.Gurk
     window.addEventListener('keydown', clickHandler)
     @buttonGrid.draw()
     # Test.run()
+
+  getSoundSetting : =>
+    Device.getSetting("sound", true)
+
+  setSoundSetting : (value) =>
+    Device.setSetting("sound", value)
+
+  getMusicSetting : =>
+    Device.getSetting("music", true)
+
+  setMusicSetting : (value) =>
+    Device.setSetting("music", value)
+    if (value)
+      @resumeMusic()
+    else
+      @stopMusic()
+
+  getCombatMusicSetting : =>
+    Device.getSetting("combatMusic", true)
+
+  setCombatMusicSetting : (value) =>
+    Device.setSetting("combatMusic", value)
+
+  getFastSetting : =>
+    Device.getSetting("fast", false)
+
+  setFastSetting : (value) =>
+    Device.setSetting("fast", value)
+
+  playSound : (sound) =>
+    if (@getSoundSetting())
+      playAudio(sound)
+
+  playMusic : (track) =>
+    @music = track
+    console.log("Music setting: '" + @getMusicSetting() + "'.")
+    if (@getMusicSetting())
+      console.log("Play track '" + track + "'.")
+      playTrack(track)
+
+  playCombatMusic : =>
+    if (@getCombatMusicSetting())
+      playTrack(Data.combatMusic)
+
+  stopMusic : =>
+    stopTrack()
+
+  resumeMusic : =>
+    if (@music)
+      @playMusic(@music)
 
   setSize:(size) ->
     console.log("Get contexts")
