@@ -8,26 +8,23 @@ class SceneView
     @context.webkitImageSmoothingEnabled = false
     @context.mozImageSmoothingEnabled = false
 
-    @camera = new Rect 10, 10, 10, 10
-    @cameraZoom = 1.0
-
   # Convert a Rect/Point/Number from world coordinates (game units) to
   # screen coordinates (pixels)
-  worldToScreen: (value) ->
+  worldToScreen: (value,scale=1) ->
     if value instanceof Rect
-      return new Rect(value).scale Screen.UNIT
+      return new Rect(value).scale (Screen.UNIT * scale)
     else if value instanceof Point
-      return new Point(value).multiply Screen.UNIT
-    value * Screen.UNIT
+      return new Point(value).multiply (Screen.UNIT * scale)
+    value * (Screen.UNIT * scale)
 
   # Convert a Rect/Point/Number from screen coordinates (pixels) to
   # game world coordinates (game unit sizes)
-  screenToWorld: (value) ->
+  screenToWorld: (value,scale=1) ->
     if value instanceof Rect
-      return new Rect(value).scale 1 / Screen.UNIT
+      return new Rect(value).scale 1 / (Screen.UNIT * scale)
     else if value instanceof Point
-      return new Point(value).multiply 1 / Screen.UNIT
-    value * (1 / Screen.UNIT)
+      return new Point(value).multiply 1 / (Screen.UNIT * scale)
+    value * (1 / (Screen.UNIT * scale))
 
 
   # Convert a mouse event on the canvas into coordinates that are relative
@@ -40,7 +37,6 @@ class SceneView
 
   # Render the scene
   render: (scene) ->
-
 
   debugRender: (scene) ->
     # MSPF Counter debug
