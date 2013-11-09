@@ -1,9 +1,28 @@
+# -----------------------------------------------------------------------------
+#
+# Copyright (C) 2013 by Justin DuJardin
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# -----------------------------------------------------------------------------
+
 
 class Scene
   constructor: (@options) ->
     @options = _.defaults @options or {}, {
       tickRateMS: 100
-      debugRender: false
+      debugRender: false,
+      autoStart: false
     }
     @objects = []
     @views = []
@@ -11,6 +30,7 @@ class Scene
     @fps = 0
     @mspf = 5000
     @polyfillAnimationFrames()
+    @start() if @options.autoStart
 
   # Remove an object from a collection the the
   removeIt: (property,object) ->
@@ -20,10 +40,14 @@ class Scene
         return false
       true
 
+  addIt: (property,object) ->
+    throw new Error "Object added twice" if _.find @[property], (i) -> i.id == object.id
+    @[property].push object
+    object.scene = @
+
   addView: (view) ->
-    throw new Error "Object must implement be a SceneView" if view not instanceof SceneView
-    @views.push(view)
-    view.scene = @
+    throw new Error "Scene.addView: must be a SceneView" if view not instanceof SceneView
+    @addIt 'views',view
 
   removeView: (object) ->
     @views = @removeIt 'views', object
@@ -31,9 +55,8 @@ class Scene
 
   # Add a `SceneObject` to the scene
   addObject: (object) ->
-    throw new Error "Object must implement .tick()" if object not instanceof SceneObject
-    @objects.push(object);
-    object.scene = @
+    throw new Error "Scene.addObject: must be a SceneObject" if object not instanceof SceneObject
+    @addIt 'objects', object
 
   # Remove an object from the scene
   removeObject: (object) ->
@@ -56,8 +79,7 @@ class Scene
   # a second pass is done to each view's `debugRender` method when the
   # scene option `debugRender` is true.
   renderFrame: (elapsed) ->
-    view.render(@) for view in @views
-    view.debugRender(@) for view in @views when this.options.debugRender
+    view._render() for view in @views
     @updateFPS(elapsed)
 
   # Stop the scene time from advancing

@@ -6,7 +6,7 @@ var currentTrack;
 $(function(){
    // Arg, why!?
    window.App = {
-      gurk: new eburp.Gurk()
+      gurk: new eburp.Gurk($("#screenID")[0])
    };
    $('.sound-toggle').click(function(){
       toggleSound();

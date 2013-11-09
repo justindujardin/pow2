@@ -20,7 +20,7 @@
 #
 # -----------------------------------------------------------------------------
 
-class eburp.Gurk
+class eburp.Gurk extends SceneView
 
   stack: null
   view : null
@@ -30,7 +30,8 @@ class eburp.Gurk
   imageProcessor : null
   music : null
 
-  constructor: ->
+  constructor: (canvas) ->
+    super(canvas)
     @setSize("normal")
     # Get all the images in here
     #Screen.SCALE = 4
@@ -55,6 +56,8 @@ class eburp.Gurk
     Preloader.setCallback(@start)
     toggleSound() if @getSoundSetting()
 
+  # Game initialization/loading
+  # -----------------------------------------------------------------------------
   startSavedGame: =>
     @game = new Game()
     @game.loadGame(Device.loadGame())
@@ -93,13 +96,11 @@ class eburp.Gurk
     # ----------------------------- Rendering Rewrite START
     @scene = new Scene {
       game: @game
-      debugRender: true
+      debugRender: false
+      autoStart:true
     }
-#    @tileMap = new TileMap("keep")
-#    @scene.addObject(@tileMap)
-#    @tileMapView = new TileMapView @screen.canvas, @tileMap
-#    @scene.addView @tileMapView
-    @scene.start()
+    @scene.addView @
+
 
     # ----------------------------- Rendering Rewrite END
     #
@@ -111,45 +112,97 @@ class eburp.Gurk
     @playMusic(Data.splashMusic)
     splashView = new SplashView(this)
     @setView(splashView)
-
-
-    clickHandler = (e) =>
-      switch e.keyCode
-        when 37 then @buttonGrid.forceClick(4)
-        when 38 then @buttonGrid.forceClick(2)
-        when 39 then @buttonGrid.forceClick(6)
-        when 40 then @buttonGrid.forceClick(8)
-        when 13 then @buttonGrid.forceClick(5) # Enter
-        when 81 then @buttonGrid.forceClick(1) # Q
-        when 87 then @buttonGrid.forceClick(2) # W
-        when 69 then @buttonGrid.forceClick(3) # E
-        when 65 then @buttonGrid.forceClick(4) # A
-        when 83 then @buttonGrid.forceClick(5) # S
-        when 68 then @buttonGrid.forceClick(6) # D
-        when 90 then @buttonGrid.forceClick(7) # Z
-        when 88 then @buttonGrid.forceClick(8) # X
-        when 67 then @buttonGrid.forceClick(9) # C
-        when 96 then @buttonGrid.forceClick(5) # Num Pad 0
-        when 97 then @buttonGrid.forceClick(7) # Num Pad 1
-        when 98 then @buttonGrid.forceClick(8) # Num Pad 2
-        when 99 then @buttonGrid.forceClick(9) # Num Pad 3
-        when 100 then @buttonGrid.forceClick(4) # Num Pad 4
-        when 101 then @buttonGrid.forceClick(5) # Num Pad 5
-        when 102 then @buttonGrid.forceClick(6) # Num Pad 6
-        when 103 then @buttonGrid.forceClick(1) # Num Pad 7
-        when 104 then @buttonGrid.forceClick(2) # Num Pad 8
-        when 105 then @buttonGrid.forceClick(3) # Num Pad 9
-        when 71 then @view.processResult("debug1") # Debug hook 1
-        when 72 then @view.processResult("debug2") # Debug hook 2
-        else
-          return true
-      e.stopImmediatePropagation()
-      return false
-        # todo - maybe add ESC -> 9 and BACKSPACE -> 7
-    window.addEventListener('keydown', clickHandler)
+    $(window).keydown(@windowKeyPress)
     @buttonGrid.draw()
     # ----------------------------- Existing Game Lifecycle END
     #
+
+  # SceneView implementation
+  # -----------------------------------------------------------------------------
+  renderFrame: () ->
+    @clear()
+    @view.render() if @view
+
+  # View utilities
+  # -----------------------------------------------------------------------------
+  setView: (view) =>
+    @scene.removeView(@view) if @view
+    console.log("Set View: " + view)
+    @stack = new Array()
+    @view = view
+    @showView()
+
+
+  showView: () =>
+    #console.log("View: #{@view.name}")
+    @view.doLayout()
+    @view.setButtons(@buttonGrid)
+    @view.draw()
+
+  pushView: (view) =>
+    @stack.unshift(@view)
+    @view = view
+    @showView()
+
+  popView: (result) =>
+    @scene.removeView @view
+    parent = @stack.shift()
+    if (parent != null)
+      @view = parent
+      if (result != null)
+        @view.processResult(result)
+      @showView()
+
+  swapView: (result) =>
+    @view = view
+    if (result != null)
+      @view.processResult(result)
+    @showView()
+
+  popToTopView: (result) =>
+    if (@stack.length > 0)
+      @view = @stack.shift()
+      while (@stack.length > 0)
+        @view = @stack.shift()
+      if (result != null)
+        @view.processResult(result)
+      @showView()
+
+  getScreen: () =>
+    @screen
+
+  windowKeyPress: (event) =>
+    switch event.keyCode
+      when 37 then @buttonGrid.forceClick(4)
+      when 38 then @buttonGrid.forceClick(2)
+      when 39 then @buttonGrid.forceClick(6)
+      when 40 then @buttonGrid.forceClick(8)
+      when 13 then @buttonGrid.forceClick(5) # Enter
+      when 81 then @buttonGrid.forceClick(1) # Q
+      when 87 then @buttonGrid.forceClick(2) # W
+      when 69 then @buttonGrid.forceClick(3) # E
+      when 65 then @buttonGrid.forceClick(4) # A
+      when 83 then @buttonGrid.forceClick(5) # S
+      when 68 then @buttonGrid.forceClick(6) # D
+      when 90 then @buttonGrid.forceClick(7) # Z
+      when 88 then @buttonGrid.forceClick(8) # X
+      when 67 then @buttonGrid.forceClick(9) # C
+      when 96 then @buttonGrid.forceClick(5) # Num Pad 0
+      when 97 then @buttonGrid.forceClick(7) # Num Pad 1
+      when 98 then @buttonGrid.forceClick(8) # Num Pad 2
+      when 99 then @buttonGrid.forceClick(9) # Num Pad 3
+      when 100 then @buttonGrid.forceClick(4) # Num Pad 4
+      when 101 then @buttonGrid.forceClick(5) # Num Pad 5
+      when 102 then @buttonGrid.forceClick(6) # Num Pad 6
+      when 103 then @buttonGrid.forceClick(1) # Num Pad 7
+      when 104 then @buttonGrid.forceClick(2) # Num Pad 8
+      when 105 then @buttonGrid.forceClick(3) # Num Pad 9
+      when 71 then @view.processResult("debug1") # Debug hook 1
+      when 72 then @view.processResult("debug2") # Debug hook 2
+      else
+        return true
+    event.stopImmediatePropagation()
+    return false
 
   getSoundSetting : =>
     Device.getSetting("sound", true)
@@ -234,56 +287,8 @@ class eburp.Gurk
     point.y -= offsetY
     @buttonGrid.clicked(point)
 
-  getScreen: () =>
-    @screen
-
-  setView: (view) =>
-    @scene.removeView(@view) if @view
-    console.log("Set View: " + view)
-    @stack = new Array()
-    @view = view
-    @scene.addView view
-    @showView()
-
   showSettings : () =>
     @pushView(new SettingsView(this))
-
-  showView: () =>
-    #console.log("View: #{@view.name}")
-    @view.doLayout()
-    @view.setButtons(@buttonGrid)
-    @view.draw()
-
-  pushView: (view) =>
-    @stack.unshift(@view)
-    @view = view
-    @scene.addView view
-    @showView()
-
-  popView: (result) =>
-    @scene.removeView @view
-    parent = @stack.shift()
-    if (parent != null)
-      @view = parent
-      @scene.addView @view
-      if (result != null)
-        @view.processResult(result)
-      @showView()
-
-  swapView: (result) =>
-    @view = view
-    if (result != null)
-      @view.processResult(result)
-    @showView()
-
-  popToTopView: (result) =>
-    if (@stack.length > 0)
-      @view = @stack.shift()
-      while (@stack.length > 0)
-        @view = @stack.shift()
-      if (result != null)
-        @view.processResult(result)
-      @showView()
 
   buttonPressed: (text) =>
     @view?.command(text)

@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 #
-# Copyright (C) 2013 by John Watkinson
+# Copyright (C) 2013 by Justin DuJardin
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,7 +29,12 @@ class TileMapView extends SceneView
       return @camera.point.x += 1 if e.keyCode is 39 # Right
       return @camera.point.y += 1 if e.keyCode is 40 # Down
 
-  drawTile : (icon, x, y) =>
+  drawTile : (icon, pointOrX, y) =>
+    if pointOrX instanceof Point
+      x = pointOrX.x
+      y = pointOrX.y
+    else
+      x = pointOrX
     coords = Data.sprites[icon];
     throw new Error "Missing sprite data for: #{icon}" if not coords
     image = Screen.TEXTURES[coords.source]
@@ -44,21 +49,21 @@ class TileMapView extends SceneView
 
   featureVisible: (feature) -> true
 
-  # Get the visible tile rectangle
-  getVisibleRect:() -> new Rect(@camera).clip @tileMap.bounds
-
-  render: () ->
+  setRenderState: () ->
+    super()
+    return if not @camera or not @context or not @tileMap
     # Pin camera zoom to match canvas size
     @cameraScale = @screenToWorld(@$el.width()) / @camera.extent.x
-    @context.save();
-    @context.fillStyle = "rgb(0,0,0)"
-    @context.fillRect(0, 0, @canvas.width, @canvas.height)
-
-    clipRect = @getVisibleRect()
     # Adjust render position for camera.
     worldTilePos = @worldToScreen(@tileMap.bounds.point,@cameraScale)
     worldCameraPos = @worldToScreen(@camera.point,@cameraScale)
     @context.translate(worldTilePos.x - worldCameraPos.x,worldTilePos.y - worldCameraPos.y)
+
+  # Get the visible tile rectangle
+  getVisibleRect:() -> new Rect(@camera).clip @tileMap.bounds
+
+  renderFrame: (scene) ->
+    clipRect = @getVisibleRect()
     for y in [clipRect.point.y ... clipRect.getBottom()]
       for x in [clipRect.point.x ... clipRect.getRight()]
         tile = @tileMap.getTerrainIcon x, y
@@ -68,5 +73,3 @@ class TileMapView extends SceneView
       continue if not clipRect.pointInRect feature.x, feature.y
       continue if not @featureVisible(feature)
       @drawTile(feature.icon, feature.x, feature.y) if feature.icon
-
-    @context.restore()

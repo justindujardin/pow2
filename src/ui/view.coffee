@@ -44,7 +44,7 @@ class View extends SceneView
 
   doDraw: =>
 
-  render:() ->
+  renderFrame:() ->
     @doDraw()
 
   doLayout: =>

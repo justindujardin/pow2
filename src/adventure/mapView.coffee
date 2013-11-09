@@ -115,9 +115,15 @@ class MapView extends TileView
     if @game.getFeatures(feature.x, feature.y)
       return @getTopFeature(feature.x, feature.y)
 
-  render: () ->
+  renderFrame: () ->
+    @tileMapView.clear()
     @tileMapView.camera.setCenter @posX, @posY
-    @tileMapView.render()
+    @tileMapView.setRenderState()
+    @tileMapView.renderFrame()
+    partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
+    @tileMapView.drawTile(partyIcon, @tileMapView.camera.getCenter())
+    @tileMapView.restoreRenderState()
+
     return
     partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
     @drawTile(partyIcon, Screen.CENTER_OFFSET, Screen.CENTER_OFFSET)

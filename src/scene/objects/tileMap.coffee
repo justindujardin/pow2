@@ -1,6 +1,6 @@
 # -----------------------------------------------------------------------------
 #
-# Copyright (C) 2013 by John Watkinson
+# Copyright (C) 2013 by Justin DuJardin
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@
 # -----------------------------------------------------------------------------
 
 class TileMap extends SceneObject
-  viewType: TileMapView
   map : null
   constructor : (mapName) ->
     @setMap(mapName, 0, 0)
