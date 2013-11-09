@@ -122,18 +122,13 @@ class MapView extends TileView
     @tileMapView.renderFrame()
     partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
     @tileMapView.drawTile(partyIcon, @tileMapView.camera.getCenter())
+    @tileMapView.fillImage(@shadowOverlay) if @tileMap.map.dark
     @tileMapView.restoreRenderState()
 
     return
     partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
-    @drawTile(partyIcon, Screen.CENTER_OFFSET, Screen.CENTER_OFFSET)
-    if (@map.dark)
-      winSize = Screen.WIN_SIZE * Screen.UNIT * Screen.SCALE
-      @screen.drawImage(@shadowOverlay, @offsetX, @offsetY,winSize,winSize)
     @drawBanner()
     @drawTopBanner()
-
-    @tileMapView.render()
 
   toggleMap : =>
     @mapMode = !@mapMode
@@ -248,11 +243,11 @@ class MapView extends TileView
                 feature = @getTopFeature(xx, yy)
                 if (feature and feature.icon)
                   @drawTile(feature.icon, x, y)
-    partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
-    @drawTile(partyIcon, Screen.CENTER_OFFSET, Screen.CENTER_OFFSET)
-    if (@map.dark)
-      winSize = Screen.WIN_SIZE * Screen.UNIT * Screen.SCALE
-      @screen.drawImage(@shadowOverlay, @offsetX, @offsetY,winSize,winSize)
+#    partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
+#    @drawTile(partyIcon, Screen.CENTER_OFFSET, Screen.CENTER_OFFSET)
+#    if (@map.dark)
+#      winSize = Screen.WIN_SIZE * Screen.UNIT * Screen.SCALE
+#      @screen.drawImage(@shadowOverlay, @offsetX, @offsetY,winSize,winSize)
     if (@mapMode)
       sx = 128 - @width - 5
       if (sx < 10)

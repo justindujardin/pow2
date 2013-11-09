@@ -47,6 +47,12 @@ class TileMapView extends SceneView
     dstW = dstH = Screen.UNIT  * @cameraScale
     @context.drawImage(image,srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH)
 
+
+  fillImage: (image) ->
+    renderPos = @worldToScreen(@camera.point, @cameraScale)
+    @context.drawImage(image, renderPos.x, renderPos.y, @$el.width(), @$el.height())
+
+
   featureVisible: (feature) -> true
 
   setRenderState: () ->
