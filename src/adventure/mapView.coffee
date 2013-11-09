@@ -88,6 +88,9 @@ class MapView extends TileView
   shadowOverlay : null
 
   constructor: (gurk) ->
+    @tileMap = new TileMap(gurk.game.map)
+    @tileMapView = new TileMapView gurk.screen.canvas, @tileMap
+    @tileMapView.featureVisible = @featureVisible
     super(gurk, gurk.game.map)
     @name = "MapView"
     @offsetX = -Screen.HALF_UNIT
@@ -107,9 +110,6 @@ class MapView extends TileView
         @shadows[y + Screen.CENTER_OFFSET][x + Screen.CENTER_OFFSET] = false
     @centerBanner = true
     @move(0, 0)
-    @tileMap = new TileMap(gurk.game.map)
-    @tileMapView = new TileMapView gurk.screen.canvas, @tileMap
-    @tileMapView.featureVisible = @featureVisible
 
   featureVisible: (feature) =>
     if @game.getFeatures(feature.x, feature.y)
@@ -407,6 +407,7 @@ class MapView extends TileView
 
   setMap : (mapName, x, y) =>
     super(mapName, x, y)
+    @tileMap.setMap(mapName)
     if (@map.music)
       @gurk.playMusic(@map.music)
 
