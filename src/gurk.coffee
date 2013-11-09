@@ -93,7 +93,7 @@ class eburp.Gurk extends SceneView
     @imageProcessor = new ImageProcessor(canvasWork, ctxWork, @screen.icons)
 
     #
-    # ----------------------------- Rendering Rewrite START
+    # Create a scene, and add this view to it.
     @scene = new Scene {
       game: @game
       debugRender: false
@@ -101,21 +101,17 @@ class eburp.Gurk extends SceneView
     }
     @scene.addView @
 
-
-    # ----------------------------- Rendering Rewrite END
-    #
-
-    #
-    # ----------------------------- Existing Game Lifecycle START
-    @stack = new Array()
-    @buttonGrid = new ButtonGrid(ctxControl, this)
-    @playMusic(Data.splashMusic)
-    splashView = new SplashView(this)
-    @setView(splashView)
+    # Construct the Gurk UI and view stack.
     $(window).keydown(@windowKeyPress)
+    @stack = new Array()
+
+    @buttonGrid = new ButtonGrid(ctxControl, this)
     @buttonGrid.draw()
-    # ----------------------------- Existing Game Lifecycle END
-    #
+
+
+    # Play music and show splash view
+    @playMusic Data.splashMusic
+    @setView new SplashView @
 
   # SceneView implementation
   # -----------------------------------------------------------------------------
@@ -167,6 +163,32 @@ class eburp.Gurk extends SceneView
       if (result != null)
         @view.processResult(result)
       @showView()
+
+  isCurrentView: (view) =>
+    return @view == view
+
+  setSize:(size) ->
+    console.log("Get contexts")
+    switch size
+      when "large"
+        @screenWidth = @screenHeight = 768
+        @controlHeight = 400
+        #Screen.SCALE = 6
+      when "normal"
+        @screenWidth = @screenHeight = 512
+        @controlHeight = 400
+        #Screen.SCALE = 4
+      when "small"
+        @screenWidth = @screenHeight = 256
+        @controlHeight = 200
+        #Screen.SCALE = 2
+      else return
+    @controlWidth = Math.floor(@controlHeight * 1.2)
+    $("#screenID").width(@screenWidth).height(@screenHeight);
+    $("#controlID").width(@controlWidth).height(@controlHeight);
+    @view?.draw()
+
+
 
   getScreen: () =>
     @screen
@@ -254,28 +276,6 @@ class eburp.Gurk extends SceneView
     if (@music)
       @playMusic(@music)
 
-  setSize:(size) ->
-    console.log("Get contexts")
-    switch size
-      when "large"
-        @screenWidth = @screenHeight = 768
-        @controlHeight = 400
-        #Screen.SCALE = 6
-      when "normal"
-        @screenWidth = @screenHeight = 512
-        @controlHeight = 400
-        #Screen.SCALE = 4
-      when "small"
-        @screenWidth = @screenHeight = 256
-        @controlHeight = 200
-        #Screen.SCALE = 2
-      else return
-    @controlWidth = Math.floor(@controlHeight * 1.2)
-    $("#screenID").width(@screenWidth).height(@screenHeight);
-    $("#controlID").width(@controlWidth).height(@controlHeight);
-    @view?.draw()
-
-
   phoneClick: (e, offsetX = 0, offsetY = 0) =>
     relMouse = (event) ->
       canoffset = $(event.currentTarget).offset();
@@ -300,8 +300,5 @@ class eburp.Gurk extends SceneView
   showConfirm: (icon, title, text, yesResult, noResult) =>
     confirm = new ConfirmView(this, icon, title, text, yesResult, noResult)
     @pushView(confirm)
-
-  isCurrentView: (view) =>
-    return @view == view
 
 # -----------------------------------------------------------------------------
