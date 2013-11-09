@@ -29,10 +29,6 @@ class SplashView extends TileView
     @offsetX = -Screen.HALF_UNIT
     @offsetY = -Screen.HALF_UNIT
     @index = 0
-    @tileMap = new TileMap("splashScreen")
-    @tileMapView = new TileMapView gurk.screen.canvas, @tileMap
-
-  renderFrame: () -> @tileMapView.render()
 
   doLayout : =>
     @setButton(1, "NEW")

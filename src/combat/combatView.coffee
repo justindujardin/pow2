@@ -231,12 +231,8 @@ class CombatView extends TileView
     else
       @drawTile(combatant.getIcon(), combatant.x + 1, combatant.y)
 
-  doDraw : =>
-    # Draw map
-    for y in [0 ... @height]
-      for x in [0 ... @width]
-        tile = @getTerrainIcon(x, y)
-        @drawTile(tile, x, y)
+  renderFrame : () ->
+    super()
     # Draw selection
     @drawSelection()
     # Draw combatants
@@ -1330,7 +1326,8 @@ class CombatView extends TileView
       # Automatically win combat
       @gurk.popView("victory")
     else if (result == "debug2")
-      @queueBlockAnimation(4, 4, 1, Data.icons.animHit, "Test Block Animation")
+      @queueAnimation(1, 1, Data.icons.animHitSpell, "Test Animation")
+      @queueBlockAnimation(4, 4, 2, Data.icons.animHit, "Test Block Animation")
       @nextAction()
     else if (result.spellPoints)
       # It's a spell

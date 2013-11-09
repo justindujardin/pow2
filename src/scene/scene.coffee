@@ -29,6 +29,7 @@ class Scene
     @lastTime = 0
     @fps = 0
     @mspf = 5000
+    @time = 0
     @polyfillAnimationFrames()
     @start() if @options.autoStart
 
@@ -45,6 +46,9 @@ class Scene
     @[property].push object
     object.scene = @
 
+  findIt: (property, object) ->
+    _.find @[property], (i) -> i.id == object.id
+
   addView: (view) ->
     throw new Error "Scene.addView: must be a SceneView" if view not instanceof SceneView
     @addIt 'views',view
@@ -52,6 +56,8 @@ class Scene
   removeView: (object) ->
     @views = @removeIt 'views', object
     this
+
+  findView: (object) -> @findIt 'views', object
 
   # Add a `SceneObject` to the scene
   addObject: (object) ->
@@ -63,10 +69,11 @@ class Scene
     @objects = @removeIt 'objects', object
     this
 
+  findObject: (object) -> @findIt 'objects', object
+
   # Update each object in the list because a tick of time has gone by.
   tickObjects: (elapsedMS) ->
     object.tick(elapsedMS) for object in @objects
-
 
   updateFPS: (elapsed) ->
     currFPS = if elapsed then 1000 / elapsed else 0
@@ -98,6 +105,7 @@ class Scene
     return if @running is true
     @running = true
     _frameCallback = (time) =>
+      @time = Math.floor(time)
       return if not this.running
       # Round to milliseconds.
       now = new Date().getMilliseconds()

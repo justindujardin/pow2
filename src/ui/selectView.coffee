@@ -104,13 +104,13 @@ class SelectView extends InfoView
       when @selectVerb then @makeSelection()
       when @cancelVerb then @cancelled()
 
-  doDraw: =>
+  renderFrame: =>
     super()
-    @screen.clearColor(Screen.GURK_BLUE)
+    @fillColor(Screen.GURK_BLUE)
     for icon in @icons
-      @screen.drawIcon(icon.icon, icon.x, icon.y);
+      @gurk.screen.drawIcon(icon.icon, icon.x, icon.y)
     for label in @labels
-      @screen.drawText(label.text, label.color, label.x, label.y)
+      @gurk.screen.drawText(label.text, label.color, label.x, label.y)
     for option, i in @options
       color = if (i == @selected) then option.highlightColor else option.color
-      @screen.drawText(option.text, color, option.x, option.y)
+      @gurk.screen.drawText(option.text, color, option.x, option.y)

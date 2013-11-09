@@ -89,8 +89,6 @@ class MapView extends TileView
 
   constructor: (gurk) ->
     @tileMap = new TileMap(gurk.game.map)
-    @tileMapView = new TileMapView gurk.screen.canvas, @tileMap
-    @tileMapView.featureVisible = @featureVisible
     super(gurk, gurk.game.map)
     @name = "MapView"
     @offsetX = -Screen.HALF_UNIT
@@ -115,15 +113,15 @@ class MapView extends TileView
     if @game.getFeatures(feature.x, feature.y)
       return @getTopFeature(feature.x, feature.y)
 
+  setRenderState: () ->
+    @camera.setCenter @posX, @posY
+    super()
+
   renderFrame: () ->
-    @tileMapView.clear()
-    @tileMapView.camera.setCenter @posX, @posY
-    @tileMapView.setRenderState()
-    @tileMapView.renderFrame()
+    super()
     partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
-    @tileMapView.drawTile(partyIcon, @tileMapView.camera.getCenter())
-    @tileMapView.fillImage(@shadowOverlay) if @tileMap.map.dark
-    @tileMapView.restoreRenderState()
+    @drawTile(partyIcon, @camera.getCenter())
+    @fillImage(@shadowOverlay) if @tileMap.map.dark
 
     return
     partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party

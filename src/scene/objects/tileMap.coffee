@@ -19,6 +19,7 @@
 class TileMap extends SceneObject
   map : null
   constructor : (mapName) ->
+    super()
     @setMap(mapName, 0, 0)
 
   setMap : (mapName, x, y) =>
@@ -35,6 +36,3 @@ class TileMap extends SceneObject
   getTerrainIcon : (x, y) ->
     terrain = @getTerrain(x, y)
     if terrain then terrain.icon else null
-
-  tick: (elapsed) ->
-

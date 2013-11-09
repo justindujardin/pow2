@@ -42,7 +42,7 @@ class ImageProcessor
     @drawIcon(icon)
     @ctx.restore();
 
-  clear : =>
+  clearRect : =>
     @ctx.clearRect(0, 0, (Screen.UNIT + 4) * Screen.SCALE, (Screen.UNIT + 4) * Screen.SCALE)
 
   paint : (colors) =>
@@ -178,17 +178,17 @@ class ImageProcessor
     result
 
   shade : (icon, colors) =>
-    @clear()
+    @clearRect()
     @drawIcon(icon)
     @paint(colors)
 
   halo : (icon, colors, intensity) =>
-    @clear()
+    @clearRect()
     @drawIcon(icon)
     @glow(colors, intensity)
 
   process : (icon, shadeColors, haloColors) =>
-    @clear()
+    @clearRect()
     @drawIcon(icon)
     result = null
     if (shadeColors and shadeColors.length > 0)
@@ -198,7 +198,7 @@ class ImageProcessor
     result
 
   rotate : (icon, direction) =>
-    @clear()
+    @clearRect()
     @drawRotated(icon, direction)
     src = @canvas.toDataURL()
     result = new Image()

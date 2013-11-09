@@ -116,7 +116,8 @@ class eburp.Gurk extends SceneView
   # SceneView implementation
   # -----------------------------------------------------------------------------
   renderFrame: () ->
-    @clear()
+    @fillColor()
+    @view.scene = @scene if @view and not @view.scene
     @view.render() if @view
 
   # View utilities

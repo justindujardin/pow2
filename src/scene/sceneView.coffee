@@ -21,6 +21,7 @@
 # You should probably only have one of these per Canvas that you render to.
 class SceneView
   constructor: (@canvas) ->
+    @animations = []
     @id = _.uniqueId 'view'
     throw new Error "A Canvas is required" if not @canvas
     @context = @canvas.getContext("2d")
@@ -52,6 +53,7 @@ class SceneView
   _render: () ->
     @setRenderState()
     @renderFrame(@scene)
+    @renderAnimations()
     @debugRender(@scene) if @scene and @scene.options.debugRender
 
     @restoreRenderState()
@@ -71,7 +73,7 @@ class SceneView
   # -----------------------------------------------------------------------------
 
   # Clear the canvas context with a color
-  clear: (color="rgb(0,0,0)") ->
+  fillColor: (color="rgb(0,0,0)") ->
     return false if not @context
     # Pin camera zoom to match canvas size
     @context.fillStyle = color
@@ -107,3 +109,23 @@ class SceneView
     x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
     y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
     new Point x, y
+
+  # Animations
+  # -----------------------------------------------------------------------------
+  renderAnimations: () ->
+    for animation in @animations
+      animation.done = animation.fn(animation.frame)
+      if @scene.time >= animation.time
+        animation.frame += 1
+        animation.time = @scene.time + animation.rate
+    @animations = _.filter @animations, (a) -> a.done != true
+
+  playAnimation: (tickRate, animFn) ->
+    throw new Error "Cannot queue an animation for a view that has no scene" if not @scene
+    @animations.push {
+      frame: 0
+      time: @scene.time + tickRate
+      rate: tickRate
+      fn: animFn
+    }
+

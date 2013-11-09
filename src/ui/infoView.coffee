@@ -23,7 +23,7 @@ class InfoView extends View
   doneVerb : null
 
   constructor: (gurk, doneVerb = "DONE") ->
-    super(gurk.getScreen(), gurk)
+    super(gurk.canvas, gurk)
     @icons = new Array()
     @labels = new Array()
     @doneVerb = doneVerb
@@ -51,12 +51,14 @@ class InfoView extends View
     yy = y + Math.floor((height - h) / 2)
     @addLabel(text, color, xx, yy)
 
-  doDraw: =>
-    @screen.clearColor(Screen.GURK_BLUE)
+  renderFrame: =>
+    super()
+    @fillColor(Screen.GURK_BLUE)
     for icon in @icons
-      @screen.drawIcon(icon.icon, icon.x, icon.y);
+      @gurk.screen.drawIcon(icon.icon, icon.x, icon.y);
     for label in @labels
-      @screen.drawText(label.text, label.color, label.x, label.y)
+      @gurk.screen.drawText(label.text, label.color, label.x, label.y)
+    @
 
   command: (text) =>
     switch text
