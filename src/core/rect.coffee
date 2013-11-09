@@ -1,21 +1,46 @@
+# -----------------------------------------------------------------------------
+#
+# Copyright (C) 2013 by Justin DuJardin
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# -----------------------------------------------------------------------------
 
 class Rect
   constructor: (rectOrPointOrX,extentOrY,width,height) ->
-    @set(rectOrPointOrX,extentOrY,width,height)
-
-  set: (rectOrPointOrX,extentOrY,width,height) ->
     if rectOrPointOrX instanceof Rect
-      @point = new Point(rectOrPointOrX.point)
-      @extent = new Point(rectOrPointOrX.extent)
+      @point = new Point rectOrPointOrX.point
+      @extent = new Point rectOrPointOrX.extent
     else if width and height
-      @point = new Point(rectOrPointOrX,extentOrY)
-      @extent = new Point(width,height)
+      @point = new Point rectOrPointOrX,extentOrY
+      @extent = new Point width,height
     else if rectOrPointOrX instanceof Point and extentOrY instanceof Point
-      @point = rectOrPointOrX
-      @extent = extentOrY
+      @point = new Point rectOrPointOrX
+      @extent = new Point extentOrY
     else
       @point = new Point
       @extent = new Point 1, 1
+
+  set: (rectOrPointOrX,extentOrY,width,height) ->
+    if rectOrPointOrX instanceof Rect
+      @point.set(rectOrPointOrX.point)
+      @extent.set(rectOrPointOrX.extent)
+    else if width and height
+      @point.set(rectOrPointOrX,extentOrY)
+      @extent.set(width,height)
+    else if rectOrPointOrX instanceof Point and extentOrY instanceof Point
+      @point.set(rectOrPointOrX)
+      @extent.set(extentOrY)
 
   clip: (clipRect) ->
     right = @point.x + @extent.x
@@ -49,8 +74,8 @@ class Rect
     return false if x >= @point.x + @extent.x or y >= @point.y + @extent.y
     true
 
-  center: () ->
-    new Point(@point.x + (@extent.x * 0.5),@point.y + (@extent.y * 0.5))
+  getCenter: () ->
+    new Point(@point.x + Math.floor(@extent.x * 0.5),@point.y + Math.floor(@extent.y * 0.5))
 
   setCenter: (pointOrX,y) ->
     if pointOrX instanceof Point
@@ -62,10 +87,8 @@ class Rect
     @point.y = Math.ceil(y - @extent.y / 2)
 
   scale: (scale) ->
-    @point.x *= scale
-    @point.y *= scale
-    @extent.x *= scale
-    @extent.y *= scale
+    @point.multiply(scale)
+    @extent.multiply(scale)
     @
 
   getLeft:()  -> @point.x
