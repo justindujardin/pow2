@@ -22,12 +22,6 @@ class TileMapView extends SceneView
     @$el = $ @canvas
     @camera = new Rect(0,0,9,9)
     @cameraScale = 1.0
-    # DEBUG CODE REMOVE TODO
-    $(window).on 'keydown', (e) =>
-      return @camera.point.x -= 1 if e.keyCode is 37 # Left
-      return @camera.point.y -= 1 if e.keyCode is 38 # Up
-      return @camera.point.x += 1 if e.keyCode is 39 # Right
-      return @camera.point.y += 1 if e.keyCode is 40 # Down
 
   drawTile : (icon, pointOrX, y) =>
     if pointOrX instanceof Point
@@ -72,6 +66,8 @@ class TileMapView extends SceneView
 
   featureVisible: (feature) -> true
 
+  tileVisible: (x,y) -> true
+
   setRenderState: () ->
     super()
     return if not @camera or not @context or not @tileMap
@@ -93,7 +89,7 @@ class TileMapView extends SceneView
       for y in [clipRect.point.y ... clipRect.getBottom()]
         for x in [clipRect.point.x ... clipRect.getRight()]
           tile = @tileMap.getTerrainIcon x, y
-          @drawTile(tile, x, y) if tile
+          @drawTile(tile, x, y) if tile and @tileVisible(x,y)
       if @tileMap.map.features
         for feature in @tileMap.map.features
           continue if not clipRect.pointInRect feature.x, feature.y

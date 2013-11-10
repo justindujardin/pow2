@@ -113,6 +113,11 @@ class MapView extends TileView
     if @game.getFeatures(feature.x, feature.y)
       return @getTopFeature(feature.x, feature.y)
 
+  tileVisible: (x,y) ->
+    return true if not @map.dark
+    #return false if not @shadows[x] or @shadows[x][y] == true
+    true
+
   setRenderState: () ->
     @camera.setCenter @posX, @posY
     super()
@@ -177,6 +182,7 @@ class MapView extends TileView
         @shadows[y][x] = t1 and t2 and t3
     else
       @shadows[y][x] = true
+    @
 
   computeShadows: () =>
     # Immediate surroundings are always visible
