@@ -32,8 +32,8 @@ class Point
     @
 
   set: (x,y) ->
-    @x = x
-    @y = y
+    @x = Math.floor x
+    @y = Math.floor y
     this
 
   truncate: () ->
