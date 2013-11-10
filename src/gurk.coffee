@@ -50,7 +50,6 @@ class eburp.Gurk extends SceneView
       "images/button" + Screen.SCALE + ".png"
       "images/buttonoff" + Screen.SCALE + ".png"
       "images/buttontop" + Screen.SCALE + ".png"
-      "images/screen" + Screen.SCALE + ".png"
       "images/shadow.png"
     ]
     Preloader.setCallback(@start)

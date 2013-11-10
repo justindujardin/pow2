@@ -18,6 +18,49 @@
 
 class TileMapView extends SceneView
 
+  constructor: (canvas) ->
+    super(canvas)
+    @screen = @gurk.imageProcessor.isolateSprite("screen4.png")
+
+  featureVisible: (feature) -> true
+  tileVisible: (x,y) -> true
+
+  # Clamp camera scale to integer values
+  # -----------------------------------------------------------------------------
+  processCamera: () ->
+    super()
+    @cameraScale = Math.round(@cameraScale)
+
+  # Render Methods
+  # -----------------------------------------------------------------------------
+
+  setRenderState: () ->
+    super()
+    return if not @camera or not @context or not @tileMap
+    # Adjust render position for camera.
+    worldTilePos = @worldToScreen(@tileMap.bounds.point,@cameraScale)
+    worldCameraPos = @worldToScreen(@camera.point,@cameraScale)
+    @context.translate(worldTilePos.x - worldCameraPos.x,worldTilePos.y - worldCameraPos.y)
+
+  renderFrame: (scene) ->
+    return if not @tileMap
+    clipRect = new Rect(@camera).clip @tileMap.bounds
+    for y in [clipRect.point.y ... clipRect.getBottom()]
+      for x in [clipRect.point.x ... clipRect.getRight()]
+        tile = @tileMap.getTerrainIcon x, y
+        @drawTile(tile, x, y) if tile and @tileVisible(x,y)
+    if @tileMap.map.features
+      for feature in @tileMap.map.features
+        continue if not clipRect.pointInRect feature.x, feature.y
+        continue if not @featureVisible(feature)
+        @drawTile(feature.icon, feature.x, feature.y) if feature.icon
+    @
+
+  renderPost: (scene) -> @fillTiles(@screen)
+
+  # Tile Rendering Utilities
+  # -----------------------------------------------------------------------------
+
   drawTile : (icon, pointOrX, yOrScale,scale=1.0) =>
     if pointOrX instanceof Point
       x = pointOrX.x
@@ -29,7 +72,7 @@ class TileMapView extends SceneView
     coords = Data.sprites[icon];
     throw new Error "Missing sprite data for: #{icon}" if not coords
     image = Screen.TEXTURES[coords.source]
-    throw new Error "Missing image: #{icon}" if not coords
+    throw new Error "Missing image: #{icon}" if not image
     srcX = coords.x
     srcY = coords.y
     srcW = srcH = SceneView.UNIT
@@ -69,45 +112,12 @@ class TileMapView extends SceneView
     renderPos = @worldToScreen(@camera.point, @cameraScale)
     @context.drawImage(image, renderPos.x, renderPos.y, @$el.width(), @$el.height())
 
-  repeatImage: (image) ->
-    renderPos = @worldToScreen(@camera.point, @cameraScale)
-
-
-  featureVisible: (feature) -> true
-
-  tileVisible: (x,y) -> true
-
-  setRenderState: () ->
-    super()
-    return if not @camera or not @context or not @tileMap
-    # Pin camera zoom to match canvas size
-    @cameraScale = @screenToWorld(@$el.width()) / @camera.extent.x
-    # Adjust render position for camera.
-    worldTilePos = @worldToScreen(@tileMap.bounds.point,@cameraScale)
-    worldCameraPos = @worldToScreen(@camera.point,@cameraScale)
-    @context.translate(worldTilePos.x - worldCameraPos.x,worldTilePos.y - worldCameraPos.y)
-
-  # Get the visible tile rectangle
-  getVisibleRect:() ->
-    if @tileMap then new Rect(@camera).clip @tileMap.bounds else null
-
-  renderFrame: (scene) ->
-    if @tileMap
-      clipRect = @getVisibleRect()
-      for y in [clipRect.point.y ... clipRect.getBottom()]
-        for x in [clipRect.point.x ... clipRect.getRight()]
-          tile = @tileMap.getTerrainIcon x, y
-          @drawTile(tile, x, y) if tile and @tileVisible(x,y)
-      if @tileMap.map.features
-        for feature in @tileMap.map.features
-          continue if not clipRect.pointInRect feature.x, feature.y
-          continue if not @featureVisible(feature)
-          @drawTile(feature.icon, feature.x, feature.y) if feature.icon
-
-  renderPost: (scene) ->
-    @screen = Preloader.getImage("images/screen" + Screen.SCALE + ".png")
-    @fillImage(@screen)
-
+  fillTiles: (image) ->
+    renderPos = @worldToScreen(@camera, @cameraScale)
+    @context.save();
+    @context.fillStyle = @context.createPattern image, 'repeat'
+    @context.fillRect(renderPos.point.x,renderPos.point.y, renderPos.extent.x,renderPos.extent.y)
+    @context.restore()
 
   drawAnim: (anim, x, y, frame) =>
     coords = Data.sprites[anim];
