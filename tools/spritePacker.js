@@ -100,6 +100,8 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
             x: cell.x,
             y: cell.y
          };
+         // Clean up the png stream.
+         cell.png.end();
       });
 
       deferred.resolve({
