@@ -124,9 +124,9 @@ class TileView extends View
   drawBanner : =>
     if (@banner)
       x = -Screen.HALF_UNIT
-      y = 7 * SceneView.UNIT
+      y = 8 * SceneView.UNIT
       @gurk.screen.drawIcon(Data.icons.bannerLeft, x, y)
-      for i in [0...7]
+      for i in [0...8]
         x += SceneView.UNIT
         @gurk.screen.drawIcon(Data.icons.banner, x, y)
       x += SceneView.UNIT
