@@ -130,7 +130,6 @@ class Screen
         items      : Preloader.getImage("images/items.png")
         ui         : Preloader.getImage("images/ui.png")
     }
-    @screen = Preloader.getImage("images/screen" + Screen.SCALE + ".png")
     Screen.CENTER_OFFSET = Math.floor(Screen.WIN_SIZE / 2);
 
   clear: =>
