@@ -30,12 +30,11 @@ class ImageProcessor
     x = 2;
     y = 2;
     coords = Data.sprites[icon];
-    k = Screen.UNIT * Screen.SCALE
-    @ctx.drawImage(@icons[coords.source], coords.x, coords.y, k, k, x * Screen.SCALE, y * Screen.SCALE, k, k)
+    @ctx.drawImage(@icons[coords.source], coords.x, coords.y, Screen.UNIT, Screen.UNIT, x, y, Screen.UNIT, Screen.UNIT)
 
   drawRotated : (icon, degrees) =>
     @ctx.save();
-    t = (Screen.HALF_UNIT + 2) * Screen.SCALE
+    t = (Screen.HALF_UNIT + 2)
     @ctx.translate(t, t)
     @ctx.rotate(degrees * Math.PI / 180)
     @ctx.translate(-t, -t)
@@ -43,37 +42,28 @@ class ImageProcessor
     @ctx.restore();
 
   clearRect : =>
-    @ctx.clearRect(0, 0, (Screen.UNIT + 4) * Screen.SCALE, (Screen.UNIT + 4) * Screen.SCALE)
+    @ctx.clearRect(0, 0, (Screen.UNIT + 4), (Screen.UNIT + 4))
 
   paint : (colors) =>
     arcs = ImageProcessor.computeArcs(colors, 12)
-    size = (Screen.UNIT + 4) * Screen.SCALE
+    size = (Screen.UNIT + 4)
     img = @ctx.getImageData(0, 0, size, size).data
     for y in [0 ... Screen.UNIT]
-      yy = (y + 2) * Screen.SCALE
+      yy = (y + 2)
       for x in [0 ... Screen.UNIT]
-        xx = (x + 2) * Screen.SCALE
+        xx = (x + 2)
         i = (yy * size + xx) * 4
         r = img[i]
         g = img[i + 1]
         b = img[i + 2]
         a = img[i + 3]
-        if (a > 0 and (r > 0 or g > 0 or b > 0))
+        if a > 0 and (r > 0 or g > 0 or b > 0)
           c = ImageProcessor.blend(colors, arcs, Screen.HALF_UNIT - y, Screen.HALF_UNIT - x)
-          if (c.red > 0)
-            r = Math.min(255, r + c.red)
-          else
-            r = Math.max(0, r + c.red)
-          if (c.green > 0)
-            g = Math.min(255, g + c.green)
-          else
-            g = Math.max(0, g + c.green)
-          if (c.blue > 0)
-            b = Math.min(255, b + c.blue)
-          else
-            b = Math.max(0, b + c.blue)
+          r = if c.red > 0 then Math.min(255, r + c.red) else Math.max(0, r + c.red)
+          g = if c.green > 0 then Math.min(255, g + c.green) else Math.max(0, g + c.green)
+          b = if c.blue > 0 then Math.min(255, b + c.blue) else Math.max(0, b + c.blue)
           @ctx.fillStyle = "rgba(#{r},#{g},#{b},#{a})"
-          @ctx.fillRect(xx, yy, Screen.SCALE, Screen.SCALE)
+          @ctx.fillRect(xx, yy, 1, 1)
     src = @canvas.toDataURL()
     result = new Image()
     result.src = src
@@ -116,12 +106,12 @@ class ImageProcessor
     arcs = ImageProcessor.computeArcs(colors, 30)
     length = Screen.UNIT + 4
     cells = Util.create2DArray(length, length)
-    size = length * Screen.SCALE
+    size = length
     img = @ctx.getImageData(0, 0, size, size).data
     for y in [0 ... length - 2]
-      yy = y * Screen.SCALE
+      yy = y
       for x in [0 ... length]
-        xx = x * Screen.SCALE
+        xx = x
         i = (yy * size + xx) * 4
         a = img[i + 3]
         if (a > 0)
@@ -159,10 +149,10 @@ class ImageProcessor
             if (cells[y+1][x] == 2)
               cells[y][x] = 1
     for y in [0 ... length - 2]
-      yy = y * Screen.SCALE
+      yy = y
       for x in [0 ... length]
         if (cells[y][x] > 0 and cells[y][x] < 3)
-          xx = x * Screen.SCALE
+          xx = x
           i = (yy * size + xx) * 4
           if (cells[y][x] == 1)
             @ctx.globalAlpha = intensity / 100 / 3
@@ -170,7 +160,7 @@ class ImageProcessor
             @ctx.globalAlpha = intensity / 100
           c = ImageProcessor.blend(colors, arcs, length / 2 - y, length / 2 - x)
           @ctx.fillStyle = "rgba(#{c.red},#{c.green},#{c.blue},255)"
-          @ctx.fillRect(xx, yy, Screen.SCALE, Screen.SCALE)
+          @ctx.fillRect(xx, yy, 1, 1)
     @ctx.globalAlpha = 1
     src = @canvas.toDataURL()
     result = new Image()

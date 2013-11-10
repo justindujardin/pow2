@@ -54,9 +54,6 @@ class TileView extends View
     @posX = x
     @posY = y
 
-  drawCustom : (image, x, y) =>
-    @gurk.screen.drawImage(image, x * Screen.UNIT + @offsetX - 2, y * Screen.UNIT + @offsetY - 2)
-
   animateBlock : (anim, x, y, radius, rate, callback) =>
     frame = 0
     @playAnimation rate, (frame) =>

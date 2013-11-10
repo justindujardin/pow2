@@ -100,16 +100,16 @@ class CombatView extends TileView
       @addCreatures(creatures)
     @setButton(5, "OK")
     @current = 0
-    #@combatants[0].addEffect("Paralyzed", 1, 2)
-    #@combatants[0].addEffect("Berserk", 1, 4)
-    #@processIcon(@combatants[0])
-    #@combatants[1].addEffect("Poisoned", 1, 3)
-    #@processIcon(@combatants[1])
+#    @combatants[0].addEffect("Paralyzed", 1, 2)
+#    @combatants[0].addEffect("Berserk", 1, 4)
+#    @processIcon(@combatants[0])
+#    @combatants[1].addEffect("Poisoned", 1, 3)
+#    @processIcon(@combatants[1])
     @startTurn()
     @nextAction()
 
   processIcon : (combatant) =>
-    combatant.drawIcon(@imageProcessor, @draw)
+    combatant.drawIcon @imageProcessor
 
   command : (text) =>
     switch text
@@ -192,22 +192,20 @@ class CombatView extends TileView
     setTimeout(@nextAction, @pauseTime)
 
   getCustomAnimation : (sx, sy, tx, ty, animation) =>
-    if (Data.sprites[animation].frames)
-      null
-    else
-      dx = tx - sx;
-      dy = ty - sy;
-      if (Math.abs(dx) > Math.abs(dy))
-        if (dx > 0)
-          angle = ImageProcessor.RIGHT
-        else
-          angle = ImageProcessor.LEFT
+    return null if Data.sprites[animation].frames
+    dx = tx - sx;
+    dy = ty - sy;
+    if (Math.abs(dx) > Math.abs(dy))
+      if (dx > 0)
+        angle = ImageProcessor.RIGHT
       else
-        if (dy > 0)
-          angle = ImageProcessor.DOWN
-        else
-          angle = ImageProcessor.UP
-      @gurk.imageProcessor.rotate(animation, angle)
+        angle = ImageProcessor.LEFT
+    else
+      if (dy > 0)
+        angle = ImageProcessor.DOWN
+      else
+        angle = ImageProcessor.UP
+    @gurk.imageProcessor.rotate(animation, angle)
 
   queueFly : (sx, sy, tx, ty, animation, info) =>
     custom = if doCustomDraws() then @getCustomAnimation(sx, sy, tx, ty, animation) else null
@@ -227,18 +225,14 @@ class CombatView extends TileView
 
   drawCombatant : (combatant) =>
     if (combatant.customImage)
-      @drawCustom(combatant.customImage, combatant.x + 1, combatant.y)
+      @drawCustom(combatant.customImage, combatant.x + 1, combatant.y, Screen.UNIT,Screen.UNIT)
     else
       @drawTile(combatant.getIcon(), combatant.x + 1, combatant.y)
 
   renderFrame : () ->
     super()
-    # Draw selection
     @drawSelection()
-    # Draw combatants
-    for combatant in @combatants
-      if (!combatant.invisible)
-        @drawCombatant(combatant)
+    @drawCombatant(combatant) for combatant in @combatants when not combatant.invisible
     @drawBanner()
     @drawTopBanner()
 
@@ -375,7 +369,6 @@ class CombatView extends TileView
       @setButton(9, "CAST")
     else if (canUse)
       @setButton(9, "USE")
-    @draw()
 
   move : (dx, dy) =>
     if (@selectMode == CombatView.SELECT_TARGET)
@@ -454,7 +447,6 @@ class CombatView extends TileView
             combatant.movesLeft--
             if (combatant.movesLeft == 0)
               combatant.attacksLeft = 0
-            @draw()
             @endTurn()
       false
 
@@ -489,7 +481,7 @@ class CombatView extends TileView
     else
       @clearBanner()
       @clearTopBanner()
-    @draw()
+    @
 
   passTurn : =>
     combatant = @combatants[@current]
@@ -519,7 +511,7 @@ class CombatView extends TileView
           @addAction(f, "Do Poison Damage")
           @addPause("Pause After Poison Damage")
       fx = =>
-        combatant.incrementEffects(@imageProcessor, @draw)
+        combatant.incrementEffects(@imageProcessor)
       @addAction(fx, "Increment FX")
       action = =>
         @current++
@@ -545,7 +537,7 @@ class CombatView extends TileView
       @setButton(1, "INFO")
       @setButton(5, "TARGET")
       @setButton(7, "CANCEL")
-    @draw()
+    @
 
   getSuggestedEnemyTarget : (player, forceRange = false) =>
     target = null
@@ -693,7 +685,7 @@ class CombatView extends TileView
           @addSound("heal", "Heal Sound")
           @queueAnimation(@targetX, @targetY, Data.icons.animHeal, "Heal Animation")
           amount = Util.random(bounds.min, bounds.max)
-          target.doHeal(amount, spell.healType, @imageProcessor, @draw)
+          target.doHeal(amount, spell.healType, @imageProcessor)
           @updateBanner()
       when "drain"
         if (fromItem)
@@ -718,7 +710,7 @@ class CombatView extends TileView
           f = =>
             @addSound("heal", "Drain Sound")
             @queueAnimation(caster.x, caster.y, Data.icons.animHeal, "Drain Animation")
-            caster.doHeal(amount, "heal", @imageProcessor, @draw)
+            caster.doHeal(amount, "heal", @imageProcessor)
             @setTarget(caster)
             @updateBanner()
           @addAction(f, "Drain Heal")
@@ -882,7 +874,6 @@ class CombatView extends TileView
                       showTarget.addEffect(spell.effect, value, Util.random(spell.minAmount, spell.maxAmount), caster)
                       h = =>
                         @processIcon(showTarget)
-                        @draw()
                       @addAction(h, "Do Area Effect Processing")
                     @addAction(g, "Show Area Target Effect")
                   else
@@ -949,7 +940,7 @@ class CombatView extends TileView
               g();
 
   showAreaHealing : (target, heal, healType) =>
-    target.doHeal(heal, healType, @imageProcessor, @draw)
+    target.doHeal(heal, healType, @imageProcessor)
     @targetX = target.x
     @targetY = target.y
     @updateBanner()
@@ -1035,7 +1026,6 @@ class CombatView extends TileView
   clearSelection : =>
     @selectMode = CombatView.SELECT_OFF
     @updateBanner()
-    @draw()
 
   select : (x, y, mode) =>
     if (mode == CombatView.SELECT_TARGET)

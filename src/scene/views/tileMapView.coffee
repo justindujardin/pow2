@@ -47,6 +47,23 @@ class TileMapView extends SceneView
     dstW = dstH = Screen.UNIT  * @cameraScale
     @context.drawImage(image,srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH)
 
+  drawImage: (image, x, y, width, height) =>
+    dstX = x * Screen.UNIT * @cameraScale
+    dstY = y * Screen.UNIT * @cameraScale
+    dstW = dstH = Screen.UNIT  * @cameraScale
+    @context.drawImage(image, x,y,width,height,dstX, dstY, dstW, dstH)
+
+  # Draw an image that has been altered by the `ImageProcessor` class.
+  #
+  # The ImageProcessor pads out images by 2 pixels on all sides, for a
+  # total of 4 along x and y axes.  Because of this we render the image
+  # 2 pixels to the up and left and an extra 4 on the extents.
+  drawCustom: (image, x, y) ->
+    dstX = x * Screen.UNIT * @cameraScale
+    dstY = y * Screen.UNIT * @cameraScale
+    dstW = dstH = (Screen.UNIT + 4) * @cameraScale
+    shift = 2 * @cameraScale
+    @context.drawImage(image, 0,0,Screen.UNIT + 4,Screen.UNIT + 4,dstX - shift,dstY - shift, dstW,dstH)
 
   fillImage: (image) ->
     renderPos = @worldToScreen(@camera.point, @cameraScale)
@@ -71,19 +88,21 @@ class TileMapView extends SceneView
 
 
   renderFrame: (scene) ->
-    return false if not @tileMap
-    clipRect = @getVisibleRect()
-    for y in [clipRect.point.y ... clipRect.getBottom()]
-      for x in [clipRect.point.x ... clipRect.getRight()]
-        tile = @tileMap.getTerrainIcon x, y
-        @drawTile(tile, x, y) if tile
+    if @tileMap
+      clipRect = @getVisibleRect()
+      for y in [clipRect.point.y ... clipRect.getBottom()]
+        for x in [clipRect.point.x ... clipRect.getRight()]
+          tile = @tileMap.getTerrainIcon x, y
+          @drawTile(tile, x, y) if tile
+      if @tileMap.map.features
+        for feature in @tileMap.map.features
+          continue if not clipRect.pointInRect feature.x, feature.y
+          continue if not @featureVisible(feature)
+          @drawTile(feature.icon, feature.x, feature.y) if feature.icon
 
-    return if not @tileMap.map.features
-
-    for feature in @tileMap.map.features
-      continue if not clipRect.pointInRect feature.x, feature.y
-      continue if not @featureVisible(feature)
-      @drawTile(feature.icon, feature.x, feature.y) if feature.icon
+  renderPost: (scene) ->
+    @screen = Preloader.getImage("images/screen" + Screen.SCALE + ".png")
+    @fillImage(@screen)
 
 
   drawAnim: (anim, x, y, frame) =>

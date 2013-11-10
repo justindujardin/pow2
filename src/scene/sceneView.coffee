@@ -35,6 +35,9 @@ class SceneView
   # Render a frame. Subclass this to do your specific rendering.
   renderFrame: () ->
 
+  # Render post effects
+  renderPost: () ->
+
   # Set the render state for this scene view.
   setRenderState: () ->
     return false if not @context
@@ -54,6 +57,7 @@ class SceneView
     @setRenderState()
     @renderFrame(@scene)
     @renderAnimations()
+    @renderPost(@scene)
     @debugRender(@scene) if @scene and @scene.options.debugRender
 
     @restoreRenderState()

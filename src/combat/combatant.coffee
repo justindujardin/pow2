@@ -247,7 +247,7 @@ class Combatant
   drawIcon : (imageProcessor, callback) =>
     if (!doCustomDraws())
       @customImage = null
-      callback()
+      callback() if callback
       return
     shadeColors = []
     haloColors = []
@@ -260,7 +260,7 @@ class Combatant
           haloColors.push(info.color)
     if (shadeColors.length == 0 and haloColors.length == 0)
       @customImage = null
-      callback()
+      callback() if callback
     else
       @customImage = imageProcessor.process(@getIcon(), shadeColors, haloColors)
-      @customImage.onload = callback
+
