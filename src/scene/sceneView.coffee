@@ -102,7 +102,7 @@ class SceneView
   # screen coordinates (pixels)
   worldToScreen: (value,scale=1) ->
     if value instanceof Rect
-      return new Rect(value).multiply (SceneView.UNIT * scale)
+      return new Rect(value).scale (SceneView.UNIT * scale)
     else if value instanceof Point
       return new Point(value).multiply (SceneView.UNIT * scale)
     value * (SceneView.UNIT * scale)
@@ -111,7 +111,7 @@ class SceneView
   # game world coordinates (game unit sizes)
   screenToWorld: (value,scale=1) ->
     if value instanceof Rect
-      return new Rect(value).multiply 1 / (SceneView.UNIT * scale)
+      return new Rect(value).scale 1 / (SceneView.UNIT * scale)
     else if value instanceof Point
       return new Point(value).multiply 1 / (SceneView.UNIT * scale)
     value * (1 / (SceneView.UNIT * scale))
