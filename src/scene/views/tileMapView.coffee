@@ -59,6 +59,11 @@ class TileMapView extends SceneView
     shift = 2 * @cameraScale
     @context.drawImage(image, 0,0,Screen.UNIT + 4,Screen.UNIT + 4,dstX - shift,dstY - shift, dstW,dstH)
 
+  drawPixel: (color, x, y) =>
+    return false if not @context
+    @context.fillStyle = color
+    @context.fillRect(x * @cameraScale, y * @cameraScale, @cameraScale, @cameraScale)
+
   fillImage: (image) ->
     renderPos = @worldToScreen(@camera.point, @cameraScale)
     @context.drawImage(image, renderPos.x, renderPos.y, @$el.width(), @$el.height())
