@@ -44,6 +44,10 @@ class Preloader
       item = new Image()
       Preloader.images[src] = item
       item.onload=Preloader.imageLoaded
+      item.onerror = (err) ->
+        console.log("Error loading image #{src}")
+        Preloader.imageLoaded()
+
       item.src = src
       item
 
