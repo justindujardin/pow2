@@ -26,12 +26,26 @@ class ImageProcessor
   constructor : (@canvas, @ctx, @icons) ->
     # No-op
 
-  drawIcon : (icon) =>
-    x = 2;
-    y = 2;
+  drawIcon : (icon, x=2,y=2) =>
     coords = Data.sprites[icon];
+    throw new Error "Cannot find sprite sheet for : #{icon}" if not coords
     @ctx.drawImage(@icons[coords.source], coords.x, coords.y, SceneView.UNIT, SceneView.UNIT, x, y, SceneView.UNIT, SceneView.UNIT)
 
+  # Pick a single sprite out of a sheet, and return an image that contains only that sprite.
+  isolateSprite: (icon) ->
+    saveW = @canvas.width
+    saveH = @canvas.height
+    @canvas.width = SceneView.UNIT
+    @canvas.height = SceneView.UNIT
+    @ctx.clearRect(0, 0, SceneView.UNIT, SceneView.UNIT)
+    @drawIcon(icon,0,0)
+    src = @canvas.toDataURL()
+    result = new Image()
+    result.src = src
+    @canvas.width = saveW
+    @canvas.height = saveH
+
+    result
   drawRotated : (icon, degrees) =>
     @ctx.save();
     t = (Screen.HALF_UNIT + 2)
