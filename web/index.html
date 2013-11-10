@@ -11,13 +11,14 @@
     <script type="text/javascript">
         var pixelWidth = 4;
     </script>
+    <script type="text/javascript" src="js/underscore-min.js"></script>
     <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
 
     <!-- Compiled Game Files -->
+    <script type="text/javascript" src="eburp.js"></script>
     <script type="text/javascript" src="eburp.data.js"></script>
     <script type="text/javascript" src="eburp.sprites.js"></script>
     <script type="text/javascript" src="eburp.maps.js"></script>
-    <script type="text/javascript" src="eburp.js"></script>
     <script type="text/javascript" src="index.js"></script>
     <style type="text/css">
         body {
@@ -34,16 +35,18 @@
             -ms-interpolation-mode: nearest-neighbor;
         }
         #workID{
-            display: none;
+            position:absolute;
+            left:-9000px;
+            top:-9000px;
         }
     </style>
 </head>
-<body onLoad="App.init();">
+<body>
 <!--<div class="">-->
     <!--<a href="javascript:void(0)" class="sound-toggle">Toggle Music</a>-->
 <!--</div>-->
 <div>
-    <canvas id="screenID" width="512" height="512"></canvas>
+    <canvas id="screenID" width="576" height="576"></canvas>
 </div>
 <div>
 <canvas id="controlID" width="640" height="400" onclick="phoneClick(event, 0, 0)"></canvas>

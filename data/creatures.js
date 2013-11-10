@@ -881,7 +881,7 @@ eburp.registerData("creatures",[
       "rangeMinDamage" : 1,
       "rangeMaxDamage" : 6,
       "target" : "area",
-      "rangeAnimation" : "animFireball.png",
+      "rangeAnimation" : "animFireBall.png",
       "level" : 5,
       "minHitPoints" : 15,
       "maxHitPoints" : 25,

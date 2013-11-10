@@ -16,8 +16,7 @@
 #
 # -----------------------------------------------------------------------------
 
-class View
-
+class View extends TileMapView
   @LEFT : "1"
   @UP : "2"
   @RIGHT : "3"
@@ -26,7 +25,8 @@ class View
   buttons : null
   name : "No Name"
 
-  constructor: (@screen, @gurk) ->
+  constructor: (@canvas, @gurk) ->
+    super(@canvas,@gurk)
     @buttons = new Array(3)
     for y in [0..2]
       @buttons[y] = new Array(3)
@@ -38,15 +38,12 @@ class View
     # no-op, override to do something
 
   draw: =>
-    f = =>
-      @screen.clear()
-      @doDraw()
-      @screen.drawScreen()
-    f();
-    if (drawHack)
-      setTimeout(f, 50);
+    @doDraw()
 
   doDraw: =>
+
+#  renderFrame:() ->
+#    @doDraw()
 
   doLayout: =>
 

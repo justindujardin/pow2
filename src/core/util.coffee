@@ -83,13 +83,21 @@ class Util
   @trunc: (x) ->
     x | 0
 
-  @create2DArray: (width, height) ->
+
+  @create2DXYArray: (width, height,value) ->
+    a = []
+    for x in [0 ... width]
+      b = []
+      a.push(b)
+      b.push(value) for x in [0 ... height]
+    a
+
+  @create2DArray: (width, height,value) ->
     a = []
     for y in [0 ... height]
       b = []
       a.push(b)
-      for x in [0 ... width]
-        b.push([])
+      b.push(value) for x in [0 ... width]
     a
 
   @removeElement: (array, element) ->

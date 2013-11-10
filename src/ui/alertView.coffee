@@ -25,20 +25,20 @@ class AlertView extends View
   subtitle : null
 
   constructor: (gurk, @icon, @title, @text, @result, @altIcon = null) ->
-    super(gurk.getScreen(), gurk)
+    super(gurk.canvas, gurk)
     @setButton(5, "OK")
 
-  doDraw: =>
-    @screen.clearColor(Screen.GURK_BLUE)
-    @screen.drawIcon(@icon, AlertView.ICON_X, AlertView.ICON_Y)
+  renderFrame: =>
+    @fillColor(Screen.GURK_BLUE)
+    @gurk.screen.drawIcon(@icon, AlertView.ICON_X, AlertView.ICON_Y)
     if (@altIcon)
-      @screen.drawIcon(@altIcon, Screen.SIZE - Screen.UNIT - AlertView.ICON_X, AlertView.ICON_Y)
+      @gurk.screen.drawIcon(@altIcon, Screen.SIZE - SceneView.UNIT - AlertView.ICON_X, AlertView.ICON_Y)
     if (@subtitle)
-      @screen.drawTextCentered(@title, "#FFF", 0, 1, Screen.SIZE, Screen.UNIT)
-      @screen.drawTextCentered(@subtitle, "#A0A0A0", 0, 9, Screen.SIZE, Screen.UNIT)
+      @gurk.screen.drawTextCentered(@title, "#FFF", 0, 1, Screen.SIZE, SceneView.UNIT)
+      @gurk.screen.drawTextCentered(@subtitle, "#A0A0A0", 0, 9, Screen.SIZE, SceneView.UNIT)
     else
-      @screen.drawTextCentered(@title, "#FFF", 0, AlertView.ICON_Y + 1, Screen.SIZE, Screen.UNIT)
-    @screen.wrapText(@text, "#FFF", AlertView.ICON_X, AlertView.ICON_Y * 2 + Screen.UNIT, Screen.SIZE - 2 * AlertView.ICON_X)
+      @gurk.screen.drawTextCentered(@title, "#FFF", 0, AlertView.ICON_Y + 1, Screen.SIZE, SceneView.UNIT)
+    @gurk.screen.wrapText(@text, "#FFF", AlertView.ICON_X, AlertView.ICON_Y * 2 + SceneView.UNIT, Screen.SIZE - 2 * AlertView.ICON_X)
 
   command: (text) =>
     switch text

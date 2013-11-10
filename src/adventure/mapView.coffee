@@ -88,6 +88,7 @@ class MapView extends TileView
   shadowOverlay : null
 
   constructor: (gurk) ->
+    @tileMap = new TileMap(gurk.game.map)
     super(gurk, gurk.game.map)
     @name = "MapView"
     @offsetX = -Screen.HALF_UNIT
@@ -101,12 +102,89 @@ class MapView extends TileView
     @setButton(9, "MAP")
     @setButton(3, "SAVE")
     @setButton(7, "QUESTS")
+    Screen.WIN_SIZE = @camera.extent.x
+    Screen.CENTER_OFFSET = Math.floor(@camera.extent.x / 2)
     @shadows = Util.create2DArray(Screen.WIN_SIZE, Screen.WIN_SIZE)
     for y in [-1 .. 1]
       for x in [-1 .. 1]
         @shadows[y + Screen.CENTER_OFFSET][x + Screen.CENTER_OFFSET] = false
     @centerBanner = true
     @move(0, 0)
+
+  featureVisible: (feature) =>
+    if @tileMap.map.dark
+      x = feature.x - @camera.point.x
+      y = feature.y - @camera.point.y
+      return false if x < 0 or y < 0 or x > @camera.extent.x or y > @camera.extent.y
+      return false if @shadows[y][x] == true
+    if @game.getFeatures(feature.x, feature.y)
+      return @getTopFeature(feature.x, feature.y)
+    false
+
+  tileVisible: (x,y) ->
+    return true if not @map.dark
+    x -= @camera.point.x
+    y -= @camera.point.y
+    return false if y >= @shadows.length or @shadows[y][x] == true
+    true
+
+  setRenderState: () ->
+    @camera.setCenter @posX, @posY
+    super()
+
+  renderFrame: () ->
+    super()
+    partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
+    @drawTile(partyIcon, @camera.getCenter())
+    @fillImage(@shadowOverlay) if @tileMap.map.dark
+    @renderMiniMap()
+    return
+    partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
+    @drawBanner()
+    @drawTopBanner()
+
+
+  # TODO: Fix this up.
+  renderMiniMap: =>
+    return if not @mapMode
+    bounds = new Rect(@camera.point.x * SceneView.UNIT * @cameraScale - 128,5,128,128)
+    sx = bounds.point.x
+    sy = bounds.point.y
+    @context.globalAlpha = 0.5
+    @context.fillRect("#000", sx - 3, sy - 3, @width + 6, @height + 6)
+    @context.globalAlpha = 1
+    @context.fillRect("#aaa", sx - 1, sy - 1, @width + 2, @height + 2)
+    for y in [0 ... @height]
+      for x in [0 ... @width]
+        if (@game.wasVisited(x, y))
+          color = @getTerrain(x, y).color
+        else
+          color = "#000"
+        @drawPixel(color, x + sx, y + sy)
+    # Next: features
+    for y in [0 ... @height]
+      for x in [0 ... @width]
+        if (@game.wasVisited(x, y))
+          feature = @getTopFeature(x, y)
+          continue if not feature
+          icon = null
+          switch (feature.type)
+            when "shop", "ship", "temple"
+              icon = MapView.MAP_ICONS[feature.type]
+            when "transition"
+              icon = MapView.TRANSITION_ICONS[feature.transitionType]
+          continue if not icon
+          for yy in [0 ... 3]
+            for xx in [0 ... 3]
+              color = icon[yy][xx]
+              if (color)
+                @drawPixel(color, sx + x + xx - 1, sy + y + yy - 1)
+    # Finally, the adventurers
+    @drawPixel("#F00", @posX + sx - 1, @posY + sy)
+    @drawPixel("#F00", @posX + sx + 1, @posY + sy)
+    @drawPixel("#F00", @posX + sx, @posY + sy + 1)
+    @drawPixel("#F00", @posX + sx, @posY + sy - 1)
+
 
   toggleMap : =>
     @mapMode = !@mapMode
@@ -139,58 +217,59 @@ class MapView extends TileView
   checkVisibility: (x, y) =>
     dx = x - Screen.CENTER_OFFSET
     dy = y - Screen.CENTER_OFFSET
-    yy = dy + @posY
-    xx = dx + @posX
-    if (yy >= 0 and yy < @height and xx >= 0 and xx < @width)
-      nx = if dx > 0 then -1 else 1
-      ny = if dy > 0 then -1 else 1
+    mapY = dy + @posY
+    mapX = dx + @posX
+    if (mapY >= 0 and mapY < @height and mapX >= 0 and mapX < @width)
+      nextX = if dx > 0 then -1 else 1
+      nextY = if dy > 0 then -1 else 1
       if (dx == 0)
-        @shadows[y][x] = @shadows[ny+y][x] or @getTerrain(xx, ny+yy).opaque
+        @shadows[y][x] = @shadows[nextY+y][x] or @getTerrain(mapX, nextY+mapY).opaque
       else if (dy == 0)
-        @shadows[y][x] = @shadows[y][nx+x] or @getTerrain(nx+xx, yy).opaque
+        @shadows[y][x] = @shadows[y][nextX+x] or @getTerrain(nextX+mapX, mapY).opaque
       else if (dx == dy or dx == -dy)
-        @shadows[y][x] = @shadows[ny+y][nx+x] or @getTerrain(nx+xx, ny+yy).opaque
+        @shadows[y][x] = @shadows[nextY+y][nextX+x] or @getTerrain(nextX+mapX, nextY+mapY).opaque
       else
-        t1 = @shadows[ny+y][x] or @getTerrain(xx, ny+yy).opaque
-        t2 = @shadows[y][nx+x] or @getTerrain(nx+xx, yy).opaque
-        t3 = @shadows[ny+y][nx+x] or @getTerrain(nx+xx, ny+yy).opaque
+        t1 = @shadows[nextY+y][x] or @getTerrain(mapX, nextY+mapY).opaque
+        t2 = @shadows[y][nextX+x] or @getTerrain(nextX+mapX, mapY).opaque
+        t3 = @shadows[nextY+y][nextX+x] or @getTerrain(nextX+mapX, nextY+mapY).opaque
         @shadows[y][x] = t1 and t2 and t3
     else
       @shadows[y][x] = true
+    @
 
   computeShadows: () =>
     # Immediate surroundings are always visible
     C = Screen.CENTER_OFFSET
     # Move in a spiral pattern, inductively computing visibility
-    for k in [2 .. 4]
-      for i in [0 .. k]
-        x = i + C
-        y = k + C
-        @checkVisibility(x, y)
-        x = i + C
-        y = -k + C
-        @checkVisibility(x, y)
-        if (i < k)
-          y = i + C
-          x = k + C
-          @checkVisibility(x, y)
-          y = i + C
-          x = -k + C
-          @checkVisibility(x, y)
-        if (i > 0)
-          x = -i + C
-          y = k + C
-          @checkVisibility(x, y)
-          x = -i + C
-          y = -k + C
-          @checkVisibility(x, y)
-          if (i < k)
-            y = -i + C
-            x = k + C
-            @checkVisibility(x, y)
-            y = -i + C
-            x = -k + C
-            @checkVisibility(x, y)
+    for y in [2 .. 4]
+      for x in [0 .. y]
+        checkX = x + C
+        checkY = y + C
+        @checkVisibility(checkX, checkY)
+        checkX = x + C
+        checkY = -y + C
+        @checkVisibility(checkX, checkY)
+        if (x < y)
+          checkY = x + C
+          checkX = y + C
+          @checkVisibility(checkX, checkY)
+          checkY = x + C
+          checkX = -y + C
+          @checkVisibility(checkX, checkY)
+        if (x > 0)
+          checkX = -x + C
+          checkY = y + C
+          @checkVisibility(checkX, checkY)
+          checkX = -x + C
+          checkY = -y + C
+          @checkVisibility(checkX, checkY)
+          if (x < y)
+            checkY = -x + C
+            checkX = y + C
+            @checkVisibility(checkX, checkY)
+            checkY = -x + C
+            checkX = -y + C
+            @checkVisibility(checkX, checkY)
     false
 
   trackVisited : =>
@@ -204,69 +283,8 @@ class MapView extends TileView
               @game.markVisited(xx, yy)
 
   getTerrain : (x, y) =>
-    Data.tiles[@game.getTile(x, y)]
-
-  doDraw: =>
-    for y in [0...Screen.WIN_SIZE]
-      yy = y + @posY - Screen.CENTER_OFFSET
-      if (yy >= 0 and yy < @height)
-        for x in [0...Screen.WIN_SIZE]
-          xx = x + @posX - Screen.CENTER_OFFSET
-          if (xx >= 0 and xx < @width)
-            if (!@map.dark or !@shadows[y][x])
-              tile = @getTerrainIcon(xx, yy)
-              @drawTile(tile, x, y)
-              if (@game.getFeatures(xx, yy))
-                feature = @getTopFeature(xx, yy)
-                if (feature and feature.icon)
-                  @drawTile(feature.icon, x, y)
-    partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
-    @drawTile(partyIcon, Screen.CENTER_OFFSET, Screen.CENTER_OFFSET)
-    if (@map.dark)
-      winSize = Screen.WIN_SIZE * Screen.UNIT * Screen.SCALE
-      @screen.drawImage(@shadowOverlay, @offsetX, @offsetY,winSize,winSize)
-    if (@mapMode)
-      sx = 128 - @width - 5
-      if (sx < 10)
-        sx = (128 - @width) / 2
-      sy = 5
-      @screen.setAlpha(0.5)
-      @screen.fillRect("#000", sx - 3, sy - 3, @width + 6, @height + 6)
-      @screen.setAlpha(1)
-      @screen.fillRect("#aaa", sx - 1, sy - 1, @width + 2, @height + 2)
-      for y in [0 ... @height]
-        for x in [0 ... @width]
-          if (@game.wasVisited(x, y))
-            color = @getTerrain(x, y).color
-          else
-            color = "#000"
-          @screen.drawPixel(color, x + sx, y + sy)
-      # Next: features
-      for y in [0 ... @height]
-        for x in [0 ... @width]
-          if (@game.wasVisited(x, y))
-            feature = @getTopFeature(x, y)
-            if (feature)
-              icon = null
-              switch (feature.type)
-                when "shop", "ship", "temple"
-                  icon = MapView.MAP_ICONS[feature.type]
-                when "transition"
-                  icon = MapView.TRANSITION_ICONS[feature.transitionType]
-              if (icon)
-                for yy in [0 ... 3]
-                  for xx in [0 ... 3]
-                    color = icon[yy][xx]
-                    if (color)
-                      @screen.drawPixel(color, sx + x + xx - 1, sy + y + yy - 1)
-      # Finally, the adventurers
-      @screen.drawPixel("#F00", @posX + sx - 1, @posY + sy)
-      @screen.drawPixel("#F00", @posX + sx + 1, @posY + sy)
-      @screen.drawPixel("#F00", @posX + sx, @posY + sy + 1)
-      @screen.drawPixel("#F00", @posX + sx, @posY + sy - 1)
-    else
-      @drawBanner()
-      @drawTopBanner()
+    tileCharacter = @game.getTile(x, y)
+    Data.tiles[tileCharacter]
 
   getTopFeature : (x, y) =>
     for type in MapView.FEATURE_TYPES
@@ -278,109 +296,107 @@ class MapView extends TileView
     realMove = !(x == 0 and y == 0)
     tx = @posX + x
     ty = @posY + y
-    if (tx < 0 or tx >= @width or ty < 0 or ty >= @height)
-      false
-    else
-      block = @game.getFeature(tx, ty, "block")
-      if (block)
-        return false
-      barrier = @game.getFeature(tx, ty, "barrier")
-      if (barrier)
-        if (!!barrier.title)
-          title = barrier.title
-        else
-          title = "Cannot Pass"
-        @gurk.pushView(new AlertView(@gurk, barrier.icon, title, barrier.text, null))
-        return false
-      if (@getTerrain(tx, ty).passable or @getTerrain(tx, ty).shipPassable and (@game.aboard or @game.getFeature(tx, ty, "ship")))
-        @clearBanner()
-        if (realMove and @game.aboard and @game.getFeature(tx, ty, "ship"))
-          # Move onto the next ship
-          @game.disembark()
-          if (@map.music)
-            @gurk.playMusic(@map.music)
-        @posX = tx
-        @posY = ty
-        if (@game.aboard and !@getTerrain(tx, ty).shipPassable)
-          @game.disembark()
-          if (@map.music)
-            @gurk.playMusic(@map.music)
-        if (realMove)
-          @gurk.game.moveTo(@posX, @posY)
-          @game.moveNum++
-          if (@game.moveNum % 20 == 0)
-            @game.regenerateParty()
-        if (@map.dark)
-          @computeShadows()
-        @trackVisited()
-        haveFeature = false
-        if (!@game.aboard and @game.getFeature(tx, ty, "ship"))
-          ship = @game.getFeature(tx, ty, "ship")
-          if (@game.isChartered(ship.id) or !ship.charter or ship.charter == 0)
-            @clearButton(5)
-            @game.boardShip(@game.getFeature(tx, ty, "ship").id)
-            if (@map.boatMusic)
-              @gurk.playMusic(@map.boatMusic)
-            else
-              @gurk.playMusic(Data.boatMusic)
-          else
-            @setButton(5, "CHARTER")
-            haveFeature = true
-        if (@game.getFeatures(@posX, @posY))
-          feature = @getTopFeature(@posX, @posY)
-          if (feature)
-            if (feature.type != "ship") # already handled
-              haveFeature = true
-              switch feature.type
-                when "encounter"
-                  @encounter = @gurk.game.getEncounter(feature)
-                  if (@encounter.creatures.length == 0)
-                    @game.setMarkers(feature.id)
-                    @game.setMarkers(feature.sets)
-                    gold = @encounter.gold ? 0
-                    text = feature.text
-                    if (gold > 0)
-                      @game.gold += gold
-                      text = text + "\n\nYou find #{gold} gold pieces!"
-                    if (@encounter.items.length == 0)
-                      @gurk.pushView(new AlertView(@gurk, feature.icon, "Treasure", text, null, feature.altIcon))
-                    else
-                      @gurk.pushView(new AlertView(@gurk, feature.icon, "Treasure", text, "treasure", feature.altIcon))
-                  else
-                    @gurk.playCombatMusic()
-                    @gurk.pushView(new AlertView(@gurk, feature.icon, "Encounter", feature.text, "combat"))
-                  return null
-                when "alert"
-                  if (realMove)
-                    @gurk.game.setMarkers(feature.sets)
-                    @gurk.pushView(new AlertView(@gurk, feature.icon, feature.title, feature.text, "alert", feature.altIcon))
-                    return null
-                when "goal"
-                  @gurk.game.setMarkers(feature.sets)
-                  @gurk.pushView(new AlertView(@gurk, feature.icon, feature.title, feature.text, "goal", feature.altIcon))
-                  return null
-                when "ship"
-                  # Already handled, no-op
-                else
-                  @addButtonForFeature(feature, realMove)
-        if (!haveFeature)
+    return false if tx < 0 or tx >= @width or ty < 0 or ty >= @height
+    block = @game.getFeature(tx, ty, "block")
+    if (block)
+      return false
+    barrier = @game.getFeature(tx, ty, "barrier")
+    if (barrier)
+      if (!!barrier.title)
+        title = barrier.title
+      else
+        title = "Cannot Pass"
+      @gurk.pushView(new AlertView(@gurk, barrier.icon, title, barrier.text, null))
+      return false
+    if (@getTerrain(tx, ty).passable or @getTerrain(tx, ty).shipPassable and (@game.aboard or @game.getFeature(tx, ty, "ship")))
+      @clearBanner()
+      if (realMove and @game.aboard and @game.getFeature(tx, ty, "ship"))
+        # Move onto the next ship
+        @game.disembark()
+        if (@map.music)
+          @gurk.playMusic(@map.music)
+      @posX = tx
+      @posY = ty
+      if (@game.aboard and !@getTerrain(tx, ty).shipPassable)
+        @game.disembark()
+        if (@map.music)
+          @gurk.playMusic(@map.music)
+      if (realMove)
+        @gurk.game.moveTo(@posX, @posY)
+        @game.moveNum++
+        if (@game.moveNum % 20 == 0)
+          @game.regenerateParty()
+      if (@map.dark)
+        @computeShadows()
+      @trackVisited()
+      haveFeature = false
+      if (!@game.aboard and @game.getFeature(tx, ty, "ship"))
+        ship = @game.getFeature(tx, ty, "ship")
+        if (@game.isChartered(ship.id) or !ship.charter or ship.charter == 0)
           @clearButton(5)
-          # Make sure it's a "real" move
-          if (realMove)
-            if (@game.checkForRandomEncounter())
-              @encounter = @game.createEncounter()
-              if (@encounter.creatures.length > 0)
-                if (@encounter.ambushed)
-                  text = "Your adventurers have been ambushed!"
+          @game.boardShip(@game.getFeature(tx, ty, "ship").id)
+          if (@map.boatMusic)
+            @gurk.playMusic(@map.boatMusic)
+          else
+            @gurk.playMusic(Data.boatMusic)
+        else
+          @setButton(5, "CHARTER")
+          haveFeature = true
+      if (@game.getFeatures(@posX, @posY))
+        feature = @getTopFeature(@posX, @posY)
+        if (feature)
+          if (feature.type != "ship") # already handled
+            haveFeature = true
+            switch feature.type
+              when "encounter"
+                @encounter = @gurk.game.getEncounter(feature)
+                if (@encounter.creatures.length == 0)
+                  @game.setMarkers(feature.id)
+                  @game.setMarkers(feature.sets)
+                  gold = @encounter.gold ? 0
+                  text = feature.text
+                  if (gold > 0)
+                    @game.gold += gold
+                    text = text + "\n\nYou find #{gold} gold pieces!"
+                  if (@encounter.items.length == 0)
+                    @gurk.pushView(new AlertView(@gurk, feature.icon, "Treasure", text, null, feature.altIcon))
+                  else
+                    @gurk.pushView(new AlertView(@gurk, feature.icon, "Treasure", text, "treasure", feature.altIcon))
                 else
-                  text = "Your adventurers have been attacked!"
-                @gurk.playCombatMusic()
-                @gurk.pushView(new AlertView(@gurk, Data.icons.combat, "Encounter", text, "combat"))
+                  @gurk.playCombatMusic()
+                  @gurk.pushView(new AlertView(@gurk, feature.icon, "Encounter", feature.text, "combat"))
                 return null
-        @draw()
+              when "alert"
+                if (realMove)
+                  @gurk.game.setMarkers(feature.sets)
+                  @gurk.pushView(new AlertView(@gurk, feature.icon, feature.title, feature.text, "alert", feature.altIcon))
+                  return null
+              when "goal"
+                @gurk.game.setMarkers(feature.sets)
+                @gurk.pushView(new AlertView(@gurk, feature.icon, feature.title, feature.text, "goal", feature.altIcon))
+                return null
+              when "ship"
+                # Already handled, no-op
+              else
+                @addButtonForFeature(feature, realMove)
+      if (!haveFeature)
+        @clearButton(5)
+        # Make sure it's a "real" move
+        if (realMove)
+          if (@game.checkForRandomEncounter())
+            @encounter = @game.createEncounter()
+            if (@encounter.creatures.length > 0)
+              if (@encounter.ambushed)
+                text = "Your adventurers have been ambushed!"
+              else
+                text = "Your adventurers have been attacked!"
+              @gurk.playCombatMusic()
+              @gurk.pushView(new AlertView(@gurk, Data.icons.combat, "Encounter", text, "combat"))
+              return null
 
   setMap : (mapName, x, y) =>
     super(mapName, x, y)
+    @tileMap.setMap(mapName)
     if (@map.music)
       @gurk.playMusic(@map.music)
 

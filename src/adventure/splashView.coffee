@@ -40,15 +40,6 @@ class SplashView extends TileView
     # Uncomment to have a hook to validate game data
     @setButton(9, "CHECK")
 
-  doDraw : =>
-    console.log("Splash View drawing.")
-    for y in [0 ... @height]
-      for x in [0 ... @width]
-        tile = @getTerrainIcon(x, y)
-        @drawTile(tile, x, y)
-    for feature in @map.features
-      @drawTile(feature.icon, feature.x, feature.y)
-
   showIntro : =>
     @gurk.pushView(new AlertView(@gurk, Data.icons.party, "Welcome", "Welcome to realm of Gurk!\n\nRoll the stats for your Warrior, Archer and Mage, then lead them on to thrilling adventure!", "CREATE"))
 

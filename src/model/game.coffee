@@ -249,10 +249,7 @@ class Game
   getVisitedArray : =>
     array = @visited[@map]
     if (!array)
-      array = Util.create2DArray(Data.maps[@map].width, Data.maps[@map].height)
-      for y in [0 ... Data.maps[@map].height]
-        for x in [0 ... Data.maps[@map].width]
-          array[y][x] = 0
+      array = Util.create2DArray(Data.maps[@map].width, Data.maps[@map].height,0)
       @visited[@map] = array
     array
 

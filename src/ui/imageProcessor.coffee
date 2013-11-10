@@ -26,54 +26,58 @@ class ImageProcessor
   constructor : (@canvas, @ctx, @icons) ->
     # No-op
 
-  drawIcon : (icon) =>
-    x = 2;
-    y = 2;
+  drawIcon : (icon, x=2,y=2) =>
     coords = Data.sprites[icon];
-    k = Screen.UNIT * Screen.SCALE
-    @ctx.drawImage(@icons[coords.source], coords.x, coords.y, k, k, x * Screen.SCALE, y * Screen.SCALE, k, k)
+    throw new Error "Cannot find sprite sheet for : #{icon}" if not coords
+    @ctx.drawImage(@icons[coords.source], coords.x, coords.y, SceneView.UNIT, SceneView.UNIT, x, y, SceneView.UNIT, SceneView.UNIT)
 
+  # Pick a single sprite out of a sheet, and return an image that contains only that sprite.
+  isolateSprite: (icon) ->
+    saveW = @canvas.width
+    saveH = @canvas.height
+    @canvas.width = SceneView.UNIT
+    @canvas.height = SceneView.UNIT
+    @ctx.clearRect(0, 0, SceneView.UNIT, SceneView.UNIT)
+    @drawIcon(icon,0,0)
+    src = @canvas.toDataURL()
+    result = new Image()
+    result.src = src
+    @canvas.width = saveW
+    @canvas.height = saveH
+
+    result
   drawRotated : (icon, degrees) =>
     @ctx.save();
-    t = (Screen.HALF_UNIT + 2) * Screen.SCALE
+    t = (Screen.HALF_UNIT + 2)
     @ctx.translate(t, t)
     @ctx.rotate(degrees * Math.PI / 180)
     @ctx.translate(-t, -t)
     @drawIcon(icon)
     @ctx.restore();
 
-  clear : =>
-    @ctx.clearRect(0, 0, (Screen.UNIT + 4) * Screen.SCALE, (Screen.UNIT + 4) * Screen.SCALE)
+  clearRect : =>
+    @ctx.clearRect(0, 0, (SceneView.UNIT + 4), (SceneView.UNIT + 4))
 
   paint : (colors) =>
     arcs = ImageProcessor.computeArcs(colors, 12)
-    size = (Screen.UNIT + 4) * Screen.SCALE
+    size = (SceneView.UNIT + 4)
     img = @ctx.getImageData(0, 0, size, size).data
-    for y in [0 ... Screen.UNIT]
-      yy = (y + 2) * Screen.SCALE
-      for x in [0 ... Screen.UNIT]
-        xx = (x + 2) * Screen.SCALE
+    for y in [0 ... SceneView.UNIT]
+      yy = (y + 2)
+      for x in [0 ... SceneView.UNIT]
+        xx = (x + 2)
         i = (yy * size + xx) * 4
         r = img[i]
         g = img[i + 1]
         b = img[i + 2]
         a = img[i + 3]
-        if (a > 0 and (r > 0 or g > 0 or b > 0))
+        if a > 0 and (r > 0 or g > 0 or b > 0)
           c = ImageProcessor.blend(colors, arcs, Screen.HALF_UNIT - y, Screen.HALF_UNIT - x)
-          if (c.red > 0)
-            r = Math.min(255, r + c.red)
-          else
-            r = Math.max(0, r + c.red)
-          if (c.green > 0)
-            g = Math.min(255, g + c.green)
-          else
-            g = Math.max(0, g + c.green)
-          if (c.blue > 0)
-            b = Math.min(255, b + c.blue)
-          else
-            b = Math.max(0, b + c.blue)
+          r = if c.red > 0 then Math.min(255, r + c.red) else Math.max(0, r + c.red)
+          g = if c.green > 0 then Math.min(255, g + c.green) else Math.max(0, g + c.green)
+          b = if c.blue > 0 then Math.min(255, b + c.blue) else Math.max(0, b + c.blue)
           @ctx.fillStyle = "rgba(#{r},#{g},#{b},#{a})"
-          @ctx.fillRect(xx, yy, Screen.SCALE, Screen.SCALE)
+          @ctx.fillRect(xx, yy, 1, 1)
     src = @canvas.toDataURL()
     result = new Image()
     result.src = src
@@ -114,14 +118,14 @@ class ImageProcessor
 
   glow : (colors, intensity) =>
     arcs = ImageProcessor.computeArcs(colors, 30)
-    length = Screen.UNIT + 4
+    length = SceneView.UNIT + 4
     cells = Util.create2DArray(length, length)
-    size = length * Screen.SCALE
+    size = length
     img = @ctx.getImageData(0, 0, size, size).data
     for y in [0 ... length - 2]
-      yy = y * Screen.SCALE
+      yy = y
       for x in [0 ... length]
-        xx = x * Screen.SCALE
+        xx = x
         i = (yy * size + xx) * 4
         a = img[i + 3]
         if (a > 0)
@@ -159,10 +163,10 @@ class ImageProcessor
             if (cells[y+1][x] == 2)
               cells[y][x] = 1
     for y in [0 ... length - 2]
-      yy = y * Screen.SCALE
+      yy = y
       for x in [0 ... length]
         if (cells[y][x] > 0 and cells[y][x] < 3)
-          xx = x * Screen.SCALE
+          xx = x
           i = (yy * size + xx) * 4
           if (cells[y][x] == 1)
             @ctx.globalAlpha = intensity / 100 / 3
@@ -170,7 +174,7 @@ class ImageProcessor
             @ctx.globalAlpha = intensity / 100
           c = ImageProcessor.blend(colors, arcs, length / 2 - y, length / 2 - x)
           @ctx.fillStyle = "rgba(#{c.red},#{c.green},#{c.blue},255)"
-          @ctx.fillRect(xx, yy, Screen.SCALE, Screen.SCALE)
+          @ctx.fillRect(xx, yy, 1, 1)
     @ctx.globalAlpha = 1
     src = @canvas.toDataURL()
     result = new Image()
@@ -178,17 +182,17 @@ class ImageProcessor
     result
 
   shade : (icon, colors) =>
-    @clear()
+    @clearRect()
     @drawIcon(icon)
     @paint(colors)
 
   halo : (icon, colors, intensity) =>
-    @clear()
+    @clearRect()
     @drawIcon(icon)
     @glow(colors, intensity)
 
   process : (icon, shadeColors, haloColors) =>
-    @clear()
+    @clearRect()
     @drawIcon(icon)
     result = null
     if (shadeColors and shadeColors.length > 0)
@@ -198,7 +202,7 @@ class ImageProcessor
     result
 
   rotate : (icon, direction) =>
-    @clear()
+    @clearRect()
     @drawRotated(icon, direction)
     src = @canvas.toDataURL()
     result = new Image()

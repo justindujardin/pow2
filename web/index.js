@@ -3,11 +3,15 @@ var soundOn = false;
 var currentTrack;
 
 
-//$(function(){
-//   $('.sound-toggle').click(function(){
-//      toggleSound();
-//   });
-//});
+$(function(){
+   // Arg, why!?
+   window.App = {
+      gurk: new eburp.Gurk($("#screenID")[0])
+   };
+   $('.sound-toggle').click(function(){
+      toggleSound();
+   });
+});
 function toggleSound() {
    soundOn = !soundOn;
    return soundOn && currentTrack ? playTrack(currentTrack) : stopTrack();

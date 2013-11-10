@@ -118,10 +118,10 @@ class Screen
 
   @FONT : null
 
-  constructor: (@ctx) ->
+  constructor: (@canvas,@ctx) ->
 
     Screen.FONT = new Font(Screen.MICRO_GLYPHS, "images/font_micro.png")
-    @icons = {
+    @icons = Screen.TEXTURES = {
         animation  : Preloader.getImage("images/animation.png")
         characters : Preloader.getImage("images/characters.png")
         creatures  : Preloader.getImage("images/creatures.png")
@@ -152,19 +152,6 @@ class Screen
 
   drawImage: (image, x, y, width, height) =>
     @ctx.drawImage(image, x * Screen.SCALE, y * Screen.SCALE, width, height)
-
-  drawAnim: (anim, x, y, frame) =>
-    coords = Data.sprites[anim];
-    ix = coords.x
-    iy = coords.y
-    k = Screen.UNIT * Screen.SCALE
-    # No longer wrap anim frames.  Box fit forces them to be on the same line.
-    ix += k * frame
-    @ctx.drawImage(@icons[coords.source], ix, iy, Screen.UNIT, Screen.UNIT, x * Screen.SCALE, y * Screen.SCALE, k, k)
-
-  drawCustomAnim: (custom, x, y) =>
-    k = Screen.UNIT * Screen.SCALE
-    @ctx.drawImage(custom, (x - 2) * Screen.SCALE, (y - 2) * Screen.SCALE)
 
   drawText: (text, color, x, y) =>
     Screen.FONT.drawText(@ctx, text, color, x, y)

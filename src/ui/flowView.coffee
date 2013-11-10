@@ -36,10 +36,10 @@ class FlowView extends AlertView
 
   doDraw : =>
     super()
-    y = AlertView.ICON_Y * 2 + Screen.UNIT
+    y = AlertView.ICON_Y * 2 + SceneView.UNIT
     x = AlertView.ICON_X
     for paragraph in @paragraphs
       if (!paragraph.text)
         y += 4
       else
-        y += @screen.wrapText(paragraph.text, paragraph.color, x, y, Screen.SIZE - 2 * x)
+        y += @gurk.screen.wrapText(paragraph.text, paragraph.color, x, y, Screen.SIZE - 2 * x)
