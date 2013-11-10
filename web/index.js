@@ -1,13 +1,15 @@
-var drawHack = false;
 var soundOn = false;
 var currentTrack;
+var drawHack = false;
 
 
-$(function(){
-   // Arg, why!?
-   window.App = {
-      gurk: new eburp.Gurk($("#screenID")[0])
-   };
+$(document).ready(function(){
+   _.delay(function(){
+      // Arg, why!?
+      window.App = {
+         gurk: new eburp.Gurk($("#screenID")[0])
+      };
+   },500);
    $('.sound-toggle').click(function(){
       toggleSound();
    });
@@ -31,25 +33,27 @@ function playAudio(sound) {
    return false;
 }
 function playTrack(track) {
+   var trackElem = $("#" + track)[0];
    if (currentTrack == track) {
       if (soundOn) {
-         document.getElementById(currentTrack).play();
+         trackElem.play();
       }
       return false;
    }
    if (currentTrack) {
-      document.getElementById(currentTrack).pause();
+      trackElem.pause();
    }
    currentTrack = track;
    if (soundOn) {
-      document.getElementById(currentTrack).currentTime = 0;
-      document.getElementById(currentTrack).play();
+      trackElem.currentTime = 0;
+      trackElem.play();
    }
    return false;
 }
 function stopTrack() {
    if (currentTrack) {
-      document.getElementById(currentTrack).pause();
+      var trackElem = $("#" + currentTrack)[0];
+      trackElem.pause();
    }
    return false;
 }
