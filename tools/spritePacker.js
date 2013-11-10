@@ -51,11 +51,11 @@ function readPngData(file,scale){
       var stream = new PNG();
       stream.on('parsed', function() {
          var png = scale > 1 ? scalePng(this,scale) : this;
+         stream.end();
          deferred.resolve({
             png: png,
             file: file
          });
-         stream.end();
       });
       stream.write(data);
       return deferred.promise;
@@ -88,7 +88,6 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
    _.each(cells,function(cell){
       cell.png.bitblt(stream,0,0,cell.width,cell.height,cell.x,cell.y);
    });
-   stream.pack().pipe(fs.createWriteStream(pngName));
    stream.on('end', function() {
       // Last transformation: produce expected gurk output format.
       // Don't mark block, just set to 0.
@@ -109,6 +108,7 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
          meta: metaData
       });
    });
+   stream.pack().pipe(fs.createWriteStream(pngName));
    return deferred.promise;
 }
 

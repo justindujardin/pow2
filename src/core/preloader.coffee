@@ -47,7 +47,6 @@ class Preloader
       item.onerror = (err) ->
         console.log("Error loading image #{src}")
         Preloader.imageLoaded()
-
       item.src = src
       item
 

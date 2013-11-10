@@ -109,8 +109,8 @@ class eburp.Gurk extends SceneView
 
 
     # Play music and show splash view
-    @playMusic Data.splashMusic
     @setView new SplashView @
+    @playMusic Data.splashMusic
 
   # SceneView implementation
   # -----------------------------------------------------------------------------
