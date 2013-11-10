@@ -30,7 +30,7 @@ class ImageProcessor
     x = 2;
     y = 2;
     coords = Data.sprites[icon];
-    @ctx.drawImage(@icons[coords.source], coords.x, coords.y, Screen.UNIT, Screen.UNIT, x, y, Screen.UNIT, Screen.UNIT)
+    @ctx.drawImage(@icons[coords.source], coords.x, coords.y, SceneView.UNIT, SceneView.UNIT, x, y, SceneView.UNIT, SceneView.UNIT)
 
   drawRotated : (icon, degrees) =>
     @ctx.save();
@@ -42,15 +42,15 @@ class ImageProcessor
     @ctx.restore();
 
   clearRect : =>
-    @ctx.clearRect(0, 0, (Screen.UNIT + 4), (Screen.UNIT + 4))
+    @ctx.clearRect(0, 0, (SceneView.UNIT + 4), (SceneView.UNIT + 4))
 
   paint : (colors) =>
     arcs = ImageProcessor.computeArcs(colors, 12)
-    size = (Screen.UNIT + 4)
+    size = (SceneView.UNIT + 4)
     img = @ctx.getImageData(0, 0, size, size).data
-    for y in [0 ... Screen.UNIT]
+    for y in [0 ... SceneView.UNIT]
       yy = (y + 2)
-      for x in [0 ... Screen.UNIT]
+      for x in [0 ... SceneView.UNIT]
         xx = (x + 2)
         i = (yy * size + xx) * 4
         r = img[i]
@@ -104,7 +104,7 @@ class ImageProcessor
 
   glow : (colors, intensity) =>
     arcs = ImageProcessor.computeArcs(colors, 30)
-    length = Screen.UNIT + 4
+    length = SceneView.UNIT + 4
     cells = Util.create2DArray(length, length)
     size = length
     img = @ctx.getImageData(0, 0, size, size).data

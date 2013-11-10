@@ -147,7 +147,7 @@ class MapView extends TileView
   # TODO: Fix this up.
   renderMiniMap: =>
     return if not @mapMode
-    bounds = new Rect(@camera.point.x * Screen.UNIT * @cameraScale - 128,5,128,128)
+    bounds = new Rect(@camera.point.x * SceneView.UNIT * @cameraScale - 128,5,128,128)
     sx = bounds.point.x
     sy = bounds.point.y
     @context.globalAlpha = 0.5

@@ -21,7 +21,7 @@ class LevelUpView extends InfoView
   constructor : (gurk, upgrades, @nextAction) ->
     super(gurk, "OK")
     y = AlertView.ICON_Y
-    textX = AlertView.ICON_X * 2 + Screen.UNIT
+    textX = AlertView.ICON_X * 2 + SceneView.UNIT
     @addLabelCentered("Levelling Up", "#FFF", 0, y, 128, y + 8)
     y += 12
     for upgrade in upgrades

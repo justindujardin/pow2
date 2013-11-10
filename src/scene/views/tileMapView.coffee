@@ -17,34 +17,35 @@
 # -----------------------------------------------------------------------------
 
 class TileMapView extends SceneView
-  constructor : (@canvas) ->
-    super(@canvas)
-    @$el = $ @canvas
-    @camera = new Rect(0,0,9,9)
-    @cameraScale = 1.0
 
-  drawTile : (icon, pointOrX, y) =>
+  drawTile : (icon, pointOrX, yOrScale,scale=1.0) =>
     if pointOrX instanceof Point
       x = pointOrX.x
       y = pointOrX.y
+      scale = yOrScale or 1.0
     else
       x = pointOrX
+      y = yOrScale
     coords = Data.sprites[icon];
     throw new Error "Missing sprite data for: #{icon}" if not coords
     image = Screen.TEXTURES[coords.source]
     throw new Error "Missing image: #{icon}" if not coords
     srcX = coords.x
     srcY = coords.y
-    srcW = srcH = Screen.UNIT
-    dstX = x * Screen.UNIT * @cameraScale
-    dstY = y * Screen.UNIT * @cameraScale
-    dstW = dstH = Screen.UNIT  * @cameraScale
+    srcW = srcH = SceneView.UNIT
+    dstX = x * SceneView.UNIT * @cameraScale * scale
+    dstY = y * SceneView.UNIT * @cameraScale * scale
+    dstW = dstH = SceneView.UNIT  * @cameraScale * scale
+    if scale isnt 1.0
+      dstX += (dstW * scale) / 4
+      dstY += (dstH * scale) / 4
+
     @context.drawImage(image,srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH)
 
   drawImage: (image, x, y, width, height) =>
-    dstX = x * Screen.UNIT * @cameraScale
-    dstY = y * Screen.UNIT * @cameraScale
-    dstW = dstH = Screen.UNIT  * @cameraScale
+    dstX = x * SceneView.UNIT * @cameraScale
+    dstY = y * SceneView.UNIT * @cameraScale
+    dstW = dstH = SceneView.UNIT  * @cameraScale
     @context.drawImage(image, x,y,width,height,dstX, dstY, dstW, dstH)
 
   # Draw an image that has been altered by the `ImageProcessor` class.
@@ -53,11 +54,11 @@ class TileMapView extends SceneView
   # total of 4 along x and y axes.  Because of this we render the image
   # 2 pixels to the up and left and an extra 4 on the extents.
   drawCustom: (image, x, y) ->
-    dstX = x * Screen.UNIT * @cameraScale
-    dstY = y * Screen.UNIT * @cameraScale
-    dstW = dstH = (Screen.UNIT + 4) * @cameraScale
+    dstX = x * SceneView.UNIT * @cameraScale
+    dstY = y * SceneView.UNIT * @cameraScale
+    dstW = dstH = (SceneView.UNIT + 4) * @cameraScale
     shift = 2 * @cameraScale
-    @context.drawImage(image, 0,0,Screen.UNIT + 4,Screen.UNIT + 4,dstX - shift,dstY - shift, dstW,dstH)
+    @context.drawImage(image, 0,0,SceneView.UNIT + 4,SceneView.UNIT + 4,dstX - shift,dstY - shift, dstW,dstH)
 
   drawPixel: (color, x, y) =>
     return false if not @context
@@ -67,6 +68,9 @@ class TileMapView extends SceneView
   fillImage: (image) ->
     renderPos = @worldToScreen(@camera.point, @cameraScale)
     @context.drawImage(image, renderPos.x, renderPos.y, @$el.width(), @$el.height())
+
+  repeatImage: (image) ->
+    renderPos = @worldToScreen(@camera.point, @cameraScale)
 
 
   featureVisible: (feature) -> true
@@ -86,7 +90,6 @@ class TileMapView extends SceneView
   # Get the visible tile rectangle
   getVisibleRect:() ->
     if @tileMap then new Rect(@camera).clip @tileMap.bounds else null
-
 
   renderFrame: (scene) ->
     if @tileMap
@@ -108,12 +111,12 @@ class TileMapView extends SceneView
 
   drawAnim: (anim, x, y, frame) =>
     coords = Data.sprites[anim];
-    srcX = coords.x + (frame * Screen.UNIT)
+    srcX = coords.x + (frame * SceneView.UNIT)
     srcY = coords.y
-    dstX = x * Screen.UNIT * @cameraScale
-    dstY = y * Screen.UNIT * @cameraScale
-    dstW = dstH = Screen.UNIT * @cameraScale
-    @context.drawImage(Screen.TEXTURES[coords.source], srcX, srcY, Screen.UNIT, Screen.UNIT, dstX,dstY,dstW,dstH)
+    dstX = x * SceneView.UNIT * @cameraScale
+    dstY = y * SceneView.UNIT * @cameraScale
+    dstW = dstH = SceneView.UNIT * @cameraScale
+    @context.drawImage(Screen.TEXTURES[coords.source], srcX, srcY, SceneView.UNIT, SceneView.UNIT, dstX,dstY,dstW,dstH)
 
   drawCustomAnim: (custom, x, y) =>
     @context.drawImage(custom, (x - 2) * @cameraScale, (y - 2) * @cameraScale)

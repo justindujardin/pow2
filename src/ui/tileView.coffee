@@ -105,7 +105,7 @@ class TileView extends View
     frames = Data.sprites[anim].frames or 1
     frame = step % frames
     if (custom)
-      @gurk.screen.drawCustomAnim(custom, x, y)
+      @drawCustomAnim(custom, x, y)
     else
       @drawAnim(anim, x, y, frame)
     if step > n
@@ -124,12 +124,12 @@ class TileView extends View
   drawBanner : =>
     if (@banner)
       x = -Screen.HALF_UNIT
-      y = 7 * Screen.UNIT
+      y = 7 * SceneView.UNIT
       @gurk.screen.drawIcon(Data.icons.bannerLeft, x, y)
       for i in [0...7]
-        x += Screen.UNIT
+        x += SceneView.UNIT
         @gurk.screen.drawIcon(Data.icons.banner, x, y)
-      x += Screen.UNIT
+      x += SceneView.UNIT
       @gurk.screen.drawIcon(Data.icons.bannerRight, x, y)
       if (@centerBanner)
         @gurk.screen.drawTextCentered(@banner, "#FFF", 0, y + 5, 128, 8)
@@ -147,14 +147,14 @@ class TileView extends View
       if (@topBannerLeft)
         leftX = -Screen.HALF_UNIT
       else
-        leftX = 5 * Screen.UNIT - Screen.HALF_UNIT
+        leftX = 5 * SceneView.UNIT - Screen.HALF_UNIT
       y = 0
       x = leftX
       @gurk.screen.drawIcon(Data.icons.bannerLeft, x, y)
       for i in [0...2]
-        x += Screen.UNIT
+        x += SceneView.UNIT
         @gurk.screen.drawIcon(Data.icons.banner, x, y)
-      x += Screen.UNIT
+      x += SceneView.UNIT
       @gurk.screen.drawIcon(Data.icons.bannerRight, x, y)
       x = leftX + Screen.HALF_UNIT + 5
       y = 5

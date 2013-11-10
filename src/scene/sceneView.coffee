@@ -20,14 +20,18 @@
 #
 # You should probably only have one of these per Canvas that you render to.
 class SceneView
+  @UNIT: 16
   constructor: (@canvas) ->
     @animations = []
     @id = _.uniqueId 'view'
     throw new Error "A Canvas is required" if not @canvas
+    @$el = $ @canvas
     @context = @canvas.getContext("2d")
     throw new Error "Could not retrieve Canvas context" if not @context
     @context.webkitImageSmoothingEnabled = false
     @context.mozImageSmoothingEnabled = false
+    @camera = new Rect(0,0,9,9)
+    @cameraScale = 1.0
 
   # Scene rendering interfaces
   # -----------------------------------------------------------------------------
@@ -54,6 +58,7 @@ class SceneView
   # Render the scene
   # @private
   _render: () ->
+    @processCamera()
     @setRenderState()
     @renderFrame(@scene)
     @renderAnimations()
@@ -73,6 +78,12 @@ class SceneView
     @context.fillText("FPS: #{@scene.fps.toFixed(0)}",12,40);
     @context.restore()
 
+
+
+  # Scene Camera updates
+  # -----------------------------------------------------------------------------
+  processCamera: () -> @cameraScale = @screenToWorld(@$el.width()) / @camera.extent.x
+
   # Scene rendering utilities
   # -----------------------------------------------------------------------------
 
@@ -91,19 +102,19 @@ class SceneView
   # screen coordinates (pixels)
   worldToScreen: (value,scale=1) ->
     if value instanceof Rect
-      return new Rect(value).multiply (Screen.UNIT * scale)
+      return new Rect(value).multiply (SceneView.UNIT * scale)
     else if value instanceof Point
-      return new Point(value).multiply (Screen.UNIT * scale)
-    value * (Screen.UNIT * scale)
+      return new Point(value).multiply (SceneView.UNIT * scale)
+    value * (SceneView.UNIT * scale)
 
   # Convert a Rect/Point/Number from screen coordinates (pixels) to
   # game world coordinates (game unit sizes)
   screenToWorld: (value,scale=1) ->
     if value instanceof Rect
-      return new Rect(value).multiply 1 / (Screen.UNIT * scale)
+      return new Rect(value).multiply 1 / (SceneView.UNIT * scale)
     else if value instanceof Point
-      return new Point(value).multiply 1 / (Screen.UNIT * scale)
-    value * (1 / (Screen.UNIT * scale))
+      return new Point(value).multiply 1 / (SceneView.UNIT * scale)
+    value * (1 / (SceneView.UNIT * scale))
 
 
   # Convert a mouse event on the canvas into coordinates that are relative

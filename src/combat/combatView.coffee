@@ -42,7 +42,7 @@ class CombatView extends TileView
   @LEFT_EDGE : 0
   @RIGHT_EDGE : 6
   @TOP_EDGE : 0
-  @BOTTOM_EDGE : 6
+  @BOTTOM_EDGE : 7
 
   @BASE_SPEED = 175
   @BASE_PAUSE = 625
@@ -225,7 +225,7 @@ class CombatView extends TileView
 
   drawCombatant : (combatant) =>
     if (combatant.customImage)
-      @drawCustom(combatant.customImage, combatant.x + 1, combatant.y, Screen.UNIT,Screen.UNIT)
+      @drawCustom(combatant.customImage, combatant.x + 1, combatant.y, SceneView.UNIT,SceneView.UNIT)
     else
       @drawTile(combatant.getIcon(), combatant.x + 1, combatant.y)
 

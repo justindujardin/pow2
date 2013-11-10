@@ -39,7 +39,6 @@ class View extends TileMapView
 
   draw: =>
     @doDraw()
-    #@screen.drawScreen()
 
   doDraw: =>
 
