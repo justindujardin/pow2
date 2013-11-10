@@ -42,4 +42,4 @@ class FlowView extends AlertView
       if (!paragraph.text)
         y += 4
       else
-        y += @screen.wrapText(paragraph.text, paragraph.color, x, y, Screen.SIZE - 2 * x)
+        y += @gurk.screen.wrapText(paragraph.text, paragraph.color, x, y, Screen.SIZE - 2 * x)
