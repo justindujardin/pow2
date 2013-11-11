@@ -82,7 +82,7 @@ class SceneView
 
   # Scene Camera updates
   # -----------------------------------------------------------------------------
-  processCamera: () -> @cameraScale = @screenToWorld(@$el.width()) / @camera.extent.x
+  processCamera: () -> @cameraScale = @screenToWorld(@context.canvas.width) / @camera.extent.x
 
   # Scene rendering utilities
   # -----------------------------------------------------------------------------

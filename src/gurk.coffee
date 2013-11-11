@@ -30,9 +30,16 @@ class eburp.Gurk extends SceneView
   imageProcessor : null
   music : null
 
+  @MEDIA:
+    SMALL  : "(max-width:480px)" # 288
+    MEDIUM : "(min-width:481px) and (max-width:600px)" # 432
+    LARGE  : "(min-width:601px) and (max-width:900px)" # 576
+    HUGE   : "(min-width:981px)" # 864
+
+
   constructor: (canvas) ->
     super(canvas)
-    @setSize("normal")
+    #@setSize("normal")
     # Get all the images in here
     #Screen.SCALE = 4
     console.log("Preloading Images at scale: #{Screen.SCALE}")
@@ -53,7 +60,29 @@ class eburp.Gurk extends SceneView
       "images/shadow.png"
     ]
     Preloader.setCallback(@start)
-    toggleSound() if @getSoundSetting()
+
+
+  makeResponsive: ()->
+    disableSmoothing = () =>
+      @context.webkitImageSmoothingEnabled = @context.mozImageSmoothingEnabled = false
+      @controlContext.webkitImageSmoothingEnabled = @controlContext.mozImageSmoothingEnabled = false
+
+    enquire.register Gurk.MEDIA.SMALL, () =>
+      @controlContext.canvas.width = @context.canvas.width = @context.canvas.height = 288
+      @controlContext.canvas.height = 144
+      disableSmoothing()
+    enquire.register Gurk.MEDIA.MEDIUM, () =>
+      @controlContext.canvas.width = @context.canvas.width = @context.canvas.height = 432
+      @controlContext.canvas.height = 216
+      disableSmoothing()
+    enquire.register Gurk.MEDIA.LARGE, () =>
+      @controlContext.canvas.width = @context.canvas.width = @context.canvas.height = 576
+      @controlContext.canvas.height = 288
+      disableSmoothing()
+    enquire.register Gurk.MEDIA.HUGE, () =>
+      @controlContext.canvas.width = @context.canvas.width = @context.canvas.height = 864
+      @controlContext.canvas.height = 432
+      disableSmoothing()
 
   # Game initialization/loading
   # -----------------------------------------------------------------------------
@@ -84,8 +113,7 @@ class eburp.Gurk extends SceneView
     @screenCanvas = document.getElementById("screenID");
     ctx = @screenCanvas.getContext("2d")
     ctx.webkitImageSmoothingEnabled = false
-    ctxControl = document.getElementById("controlID").getContext("2d")
-    ctxControl.webkitImageSmoothingEnabled = false
+    ctx.mozImageSmoothingEnabled = false;
     canvasWork = document.getElementById("workID")
     ctxWork = canvasWork.getContext("2d")
     @screen = new Screen(@screenCanvas,ctx)
@@ -104,9 +132,15 @@ class eburp.Gurk extends SceneView
     $(window).keydown(@windowKeyPress)
     @stack = new Array()
 
-    @buttonGrid = new ButtonGrid(ctxControl, this)
-    @buttonGrid.draw()
+    @controlCanvas = document.getElementById("controlID")
+    @controlContext = @controlCanvas.getContext("2d")
+    @controlContext.webkitImageSmoothingEnabled = false
+    @controlContext.mozImageSmoothingEnabled = false;
+    @buttonGrid = new ButtonGrid(@controlCanvas, this)
+    @scene.addView @buttonGrid
 
+
+    @makeResponsive()
 
     # Play music and show splash view
     @setView new SplashView @
@@ -166,29 +200,6 @@ class eburp.Gurk extends SceneView
 
   isCurrentView: (view) =>
     return @view == view
-
-  setSize:(size) ->
-    console.log("Get contexts")
-    switch size
-      when "large"
-        @screenWidth = @screenHeight = 768
-        @controlHeight = 400
-        #Screen.SCALE = 6
-      when "normal"
-        @screenWidth = @screenHeight = 512
-        @controlHeight = 400
-        #Screen.SCALE = 4
-      when "small"
-        @screenWidth = @screenHeight = 256
-        @controlHeight = 200
-        #Screen.SCALE = 2
-      else return
-    @controlWidth = Math.floor(@controlHeight * 1.2)
-    $("#screenID").width(@screenWidth).height(@screenHeight);
-    $("#controlID").width(@controlWidth).height(@controlHeight);
-    @view?.draw()
-
-
 
   getScreen: () =>
     @screen
