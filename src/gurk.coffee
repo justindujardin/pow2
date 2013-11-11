@@ -136,8 +136,8 @@ class eburp.Gurk extends SceneView
     @controlContext = @controlCanvas.getContext("2d")
     @controlContext.webkitImageSmoothingEnabled = false
     @controlContext.mozImageSmoothingEnabled = false;
-    @buttonGrid = new ButtonGrid(@controlCanvas, this)
-    @scene.addView @buttonGrid
+    @buttonGrid = new ButtonGrid(@controlContext, this)
+    #@scene.addView @buttonGrid
 
 
     @makeResponsive()
