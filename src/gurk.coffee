@@ -39,6 +39,7 @@ class eburp.Gurk extends SceneView
 
   constructor: (canvas) ->
     super(canvas)
+    @media = eburp.Gurk.MEDIA.SMALL
     #@setSize("normal")
     # Get all the images in here
     #Screen.SCALE = 4
@@ -68,18 +69,22 @@ class eburp.Gurk extends SceneView
       @controlContext.webkitImageSmoothingEnabled = @controlContext.mozImageSmoothingEnabled = false
 
     enquire.register Gurk.MEDIA.SMALL, () =>
+      @media = Gurk.MEDIA.SMALL
       @controlContext.canvas.width = @context.canvas.width = @context.canvas.height = 288
       @controlContext.canvas.height = 144
       disableSmoothing()
     enquire.register Gurk.MEDIA.MEDIUM, () =>
+      @media = Gurk.MEDIA.MEDIUM
       @controlContext.canvas.width = @context.canvas.width = @context.canvas.height = 432
       @controlContext.canvas.height = 216
       disableSmoothing()
     enquire.register Gurk.MEDIA.LARGE, () =>
+      @media = Gurk.MEDIA.LARGE
       @controlContext.canvas.width = @context.canvas.width = @context.canvas.height = 576
       @controlContext.canvas.height = 288
       disableSmoothing()
     enquire.register Gurk.MEDIA.HUGE, () =>
+      @media = Gurk.MEDIA.HUGE
       @controlContext.canvas.width = @context.canvas.width = @context.canvas.height = 864
       @controlContext.canvas.height = 432
       disableSmoothing()
@@ -136,8 +141,8 @@ class eburp.Gurk extends SceneView
     @controlContext = @controlCanvas.getContext("2d")
     @controlContext.webkitImageSmoothingEnabled = false
     @controlContext.mozImageSmoothingEnabled = false;
-    @buttonGrid = new ButtonGrid(@controlContext, this)
-    #@scene.addView @buttonGrid
+    @buttonGrid = new ButtonGrid(@controlCanvas, this)
+    @scene.addView @buttonGrid
 
 
     @makeResponsive()

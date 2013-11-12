@@ -25,38 +25,36 @@ class Font
     @image = Preloader.getImage(imageSrc)
     @fontHeight = @glyphMap['A'].height
 
-  drawChar: (ctx, c, x, y) =>
+  drawChar: (ctx, c, x, y,scale=Screen.SCALE) ->
     glyph = @glyphMap[c]
-    xx = x * Screen.SCALE;
-    yy = y * Screen.SCALE;
-    ctx.drawImage(@image, glyph.x, glyph.y, glyph.width, glyph.height, xx, yy, Screen.SCALE * glyph.width, Screen.SCALE * glyph.height)
-    glyph.width
+    xx = x * if scale isnt Screen.SCALE then 1 else scale
+    yy = y * if scale isnt Screen.SCALE then 1 else scale
+    ctx.drawImage(@image, glyph.x, glyph.y, glyph.width, glyph.height, xx, yy, scale * glyph.width, scale * glyph.height)
+    glyph.width * if scale is Screen.SCALE then 1 else scale
 
-  drawText: (ctx, text, color, x, y) =>
+  drawText: (ctx, text, color, x, y,scale=Screen.SCALE) ->
     n = text.length
-    width = 0;
-    for i in [0 ... n]
-      width += @glyphMap[text.charAt(i)].width
+    width = @getWidth text
     ctx.fillStyle = color
-    ctx.fillRect(x * Screen.SCALE, y * Screen.SCALE, width * Screen.SCALE, @fontHeight * Screen.SCALE)
-    for i in [0 ... n]
-      x += @drawChar(ctx, text.charAt(i), x, y)
+    ctx.fillRect(x * scale, y * scale, width * scale, @fontHeight * scale)
+    x += @drawChar(ctx, text.charAt(i), x, y,scale) for i in [0 ... n]
+
     text
 
-  getWidth: (text) =>
+  getWidth: (text,scale=1) ->
     n = text.length
     width = 0;
     for i in [0 ... n]
       width += @glyphMap[text.charAt(i)].width
-    width
+    width * scale
 
-  centerText: (ctx, text, color, x, y, w, h) =>
+  centerText: (ctx, text, color, x, y, w, h) ->
     width = @getWidth(text)
     offsetX = Math.floor((w - width) / 2)
     offsetY = Math.floor((h - @fontHeight) / 2)
     @drawText(ctx, text, color, x + offsetX, y + offsetY)
 
-  wrapText: (ctx, text, color, x, y, width) =>
+  wrapText: (ctx, text, color, x, y, width) ->
     n = text.length
     start = 0
     last = 0

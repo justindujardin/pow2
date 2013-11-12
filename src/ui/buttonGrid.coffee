@@ -16,7 +16,7 @@
 #
 # -----------------------------------------------------------------------------
 
-class ButtonGrid
+class ButtonGrid extends SceneView
 
   @GURKOID_GLYPHS : {
       'A' : {x : 1, y : 1, width: 5, height: 9},
@@ -54,11 +54,6 @@ class ButtonGrid
       ' ' : {x : 173, y : 1, width: 4, height: 9}
     }
 
-  @GRID_WIDTH : 160
-  @GRID_HEIGHT : 85
-  @BUTTON_WIDTH : 45
-  @BUTTON_HEIGHT : 23
-
   @FONT : null
   @onImage: null
   @offImage: null
@@ -66,54 +61,48 @@ class ButtonGrid
 
   buttons : null
 
-  constructor: (@ctx, @gurk) ->
+  constructor: (@canvas, @gurk) ->
+    super(@canvas)
     ButtonGrid.FONT = new Font(ButtonGrid.GURKOID_GLYPHS, "images/font_gurkoid.png")
     ButtonGrid.onImage = Preloader.getImage("images/button" + Screen.SCALE + ".png")
     ButtonGrid.offImage = Preloader.getImage("images/buttonoff" + Screen.SCALE + ".png")
     ButtonGrid.topImage = Preloader.getImage("images/buttontop" + Screen.SCALE + ".png")
-
-    #gapWidth = (ButtonGrid.GRID_WIDTH - 3 * ButtonGrid.BUTTON_WIDTH) / 4
-    #gapHeight = (ButtonGrid.GRID_HEIGHT - 3 * ButtonGrid.BUTTON_HEIGHT) / 2
-
-    GAP_X = 6
-    GAP_Y = 6
-    index = 1
-    yy = GAP_Y
     @buttons = new Array(3)
     for y in [0..2]
       @buttons[y] = new Array(3)
-      xx = GAP_X
       for x in [0..2]
-        @buttons[y][x] = new Button(index, xx, yy)
-        index++
-        xx += ButtonGrid.BUTTON_WIDTH + GAP_X
-      yy += GAP_Y + ButtonGrid.BUTTON_HEIGHT
+        @buttons[y][x] = new Button new Rect
     # Set up and enable the directional arrows
     @enableMovement()
     false
 
-  draw: =>
-    f = =>
-      @ctx.clearRect(0, 0, Screen.SCALE * @GRID_WIDTH, Screen.SCALE * @GRID_HEIGHT)
-      for y in [0..2]
-        for x in [0..2]
-          @buttons[y][x].draw(@ctx)
-    f();
-    if (drawHack)
-      setTimeout(f, 50);
+  processCamera: () ->
+    super()
+    @camera.extent.x = @context.canvas.width
+    @camera.extent.y = @context.canvas.height
+    oneThird = new Point(@camera.extent).divide(3)
+    for y in [0..2]
+      for x in [0..2]
+        button = @buttons[y][x]
+        button.point.set oneThird.x * x, oneThird.y * y
+        button.extent.set oneThird.x, oneThird.y
+
+  renderFrame: ->
+    for y in [0..2]
+      for x in [0..2]
+        button = @buttons[y][x]
+        @buttons[y][x].draw(@context,@)
     false
 
   clicked: (e) =>
-    console.log("e.x: " + e.x + ", e.y: " + e.y)
-    # todo - dead zones between buttons?
-    x = Math.floor(e.x / @gurk.controlWidth * 3)
-    y = Math.floor(e.y / @gurk.controlHeight * 3)
-    console.log("X: " + x + ", Y: " + y)
-    # if @buttons[y][x].isEnabled() then @buttons[y][x].disable() else @buttons[y][x].enable()
-    # @draw()
-    button = @buttons[y][x]
-    if (button.buttonOn)
-      @gurk.buttonPressed(@buttons[y][x].text)
+    clickPoint = new Point e.x, e.y
+    for y in [0..2]
+      for x in [0..2]
+        if @buttons[y][x].pointInRect(clickPoint)
+          if (@buttons[y][x].buttonOn)
+            @gurk.buttonPressed(@buttons[y][x].text)
+          return
+    @
 
   getButtonByKeyNum: (keyNum) =>
     keyNum--
@@ -131,7 +120,6 @@ class ButtonGrid
     for y in [0..2]
       for x in [0..2]
         @buttons[y][x].disable()
-    @draw()
 
   enableMovement: =>
     @buttons[1][0].enable()
@@ -142,7 +130,6 @@ class ButtonGrid
     @buttons[1][2].setText("3")
     @buttons[2][1].enable()
     @buttons[2][1].setText("4")
-    @draw()
 
   # 1 2 3
   # 4 5 6
@@ -151,15 +138,12 @@ class ButtonGrid
     button = @getButtonByKeyNum(keyNum)
     button.setText(text)
     button.enable()
-    @draw()
 
   setButtonByPosition: (x, y, text) =>
     button = @buttons[y][x]
     button.setText(text)
     button.enable()
-    @draw()
 
   disableButtonByPosition: (x, y) =>
     button = @buttons[y][x]
     button.disable()
-    @draw()
