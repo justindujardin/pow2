@@ -1,4 +1,4 @@
-var soundOn = false;
+var soundOn = true;
 var currentTrack;
 var drawHack = false;
 
@@ -33,31 +33,28 @@ function playAudio(sound) {
    return false;
 }
 function playTrack(track) {
-   var trackElem = $("#" + track)[0];
    if (currentTrack == track) {
       if (soundOn) {
-         trackElem.play();
+         document.getElementById(currentTrack).play();
       }
       return false;
    }
    if (currentTrack) {
-      trackElem.pause();
+      document.getElementById(currentTrack).pause();
    }
    currentTrack = track;
    if (soundOn) {
-      trackElem.currentTime = 0;
-      trackElem.play();
+      document.getElementById(currentTrack).currentTime = 0;
+      document.getElementById(currentTrack).play();
    }
    return false;
 }
 function stopTrack() {
    if (currentTrack) {
-      var trackElem = $("#" + currentTrack)[0];
-      trackElem.pause();
+      document.getElementById(currentTrack).pause();
    }
    return false;
 }
-
 function putData(key, value) {
    localStorage[key] = value;
 }
