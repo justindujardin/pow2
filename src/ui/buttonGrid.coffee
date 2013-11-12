@@ -68,6 +68,7 @@ class ButtonGrid extends SceneView
     ButtonGrid.offImage = Preloader.getImage("images/buttonoff" + Screen.SCALE + ".png")
     ButtonGrid.topImage = Preloader.getImage("images/buttontop" + Screen.SCALE + ".png")
     @buttons = new Array(3)
+    @camera = new Rect(0,0,9,4)
     for y in [0..2]
       @buttons[y] = new Array(3)
       for x in [0..2]
@@ -78,24 +79,32 @@ class ButtonGrid extends SceneView
 
   processCamera: () ->
     super()
-    @camera.extent.x = @context.canvas.width
-    @camera.extent.y = @context.canvas.height
     oneThird = new Point(@camera.extent).divide(3)
     for y in [0..2]
       for x in [0..2]
         button = @buttons[y][x]
         button.point.set oneThird.x * x, oneThird.y * y
         button.extent.set oneThird.x, oneThird.y
+    @
 
   renderFrame: ->
+    @clearRect()
     for y in [0..2]
       for x in [0..2]
         button = @buttons[y][x]
-        @buttons[y][x].draw(@context,@)
+        image = if button.buttonOn then ButtonGrid.onImage else ButtonGrid.offImage
+        renderPos = @worldToScreen button, @cameraScale
+        image = if button.buttonOn then ButtonGrid.onImage else ButtonGrid.offImage
+        @context.clearRect(renderPos.point.x,renderPos.point.y,renderPos.extent.x,renderPos.extent.y)
+        @context.drawImage(image, renderPos.point.x, renderPos.point.y, renderPos.extent.x, renderPos.extent.y);
+
+        if button.buttonOn and button.text
+          renderRect = new Rect(button).scale(Screen.UNIT)
+          ButtonGrid.FONT.centerText(@context, button.text, "transparent", renderRect.point.x, renderRect.point.y, renderRect.extent.x, renderRect.extent.y, @cameraScale)
     false
 
   clicked: (e) =>
-    clickPoint = new Point e.x, e.y
+    clickPoint = @screenToWorld new Point(e.x, e.y), @cameraScale
     for y in [0..2]
       for x in [0..2]
         if @buttons[y][x].pointInRect(clickPoint)

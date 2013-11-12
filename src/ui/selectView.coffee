@@ -108,9 +108,9 @@ class SelectView extends InfoView
     super()
     @fillColor(Screen.GURK_BLUE)
     for icon in @icons
-      @gurk.screen.drawIcon(icon.icon, icon.x, icon.y)
+      @gurk.screen.drawIcon(icon.icon, icon.x, icon.y,@cameraScale)
     for label in @labels
-      @gurk.screen.drawText(label.text, label.color, label.x, label.y)
+      @gurk.screen.drawText(label.text, label.color, label.x, label.y,@cameraScale)
     for option, i in @options
       color = if (i == @selected) then option.highlightColor else option.color
-      @gurk.screen.drawText(option.text, color, option.x, option.y)
+      @gurk.screen.drawText(option.text, color, option.x, option.y,@cameraScale)

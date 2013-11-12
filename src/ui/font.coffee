@@ -27,10 +27,10 @@ class Font
 
   drawChar: (ctx, c, x, y,scale=Screen.SCALE) ->
     glyph = @glyphMap[c]
-    xx = x * if scale isnt Screen.SCALE then 1 else scale
-    yy = y * if scale isnt Screen.SCALE then 1 else scale
+    xx = x * scale
+    yy = y * scale
     ctx.drawImage(@image, glyph.x, glyph.y, glyph.width, glyph.height, xx, yy, scale * glyph.width, scale * glyph.height)
-    glyph.width * if scale is Screen.SCALE then 1 else scale
+    glyph.width
 
   drawText: (ctx, text, color, x, y,scale=Screen.SCALE) ->
     n = text.length
@@ -41,18 +41,18 @@ class Font
 
     text
 
-  getWidth: (text,scale=1) ->
+  getWidth: (text) ->
     n = text.length
     width = 0;
     for i in [0 ... n]
       width += @glyphMap[text.charAt(i)].width
-    width * scale
+    width
 
-  centerText: (ctx, text, color, x, y, w, h) ->
+  centerText: (ctx, text, color, x, y, w, h,scale=Screen.SCALE) ->
     width = @getWidth(text)
     offsetX = Math.floor((w - width) / 2)
     offsetY = Math.floor((h - @fontHeight) / 2)
-    @drawText(ctx, text, color, x + offsetX, y + offsetY)
+    @drawText(ctx, text, color, x + offsetX, y + offsetY,scale)
 
   wrapText: (ctx, text, color, x, y, width) ->
     n = text.length

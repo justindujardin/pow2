@@ -38,15 +38,15 @@ class TileMapView extends SceneView
     super()
     return if not @camera or not @context or not @tileMap
     # Adjust render position for camera.
-    worldTilePos = @worldToScreen(@tileMap.bounds.point,@cameraScale)
-    worldCameraPos = @worldToScreen(@camera.point,@cameraScale)
-    @context.translate(worldTilePos.x - worldCameraPos.x,worldTilePos.y - worldCameraPos.y)
+    worldTilePos = @worldToScreen @tileMap.bounds.point
+    worldCameraPos = @worldToScreen @camera.point
+    @context.translate worldTilePos.x - worldCameraPos.x,worldTilePos.y - worldCameraPos.y
 
   renderFrame: (scene) ->
     return if not @tileMap
     clipRect = new Rect(@camera).clip @tileMap.bounds
-    for y in [clipRect.point.y ... clipRect.getBottom()]
-      for x in [clipRect.point.x ... clipRect.getRight()]
+    for x in [clipRect.point.x ... clipRect.getRight()]
+      for y in [clipRect.point.y ... clipRect.getBottom()]
         tile = @tileMap.getTerrainIcon x, y
         @drawTile(tile, x, y) if tile and @tileVisible(x,y)
     if @tileMap.map.features

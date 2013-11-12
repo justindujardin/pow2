@@ -90,17 +90,18 @@ class SceneView
   # Clear the canvas context with a color
   fillColor: (color="rgb(0,0,0)") ->
     return false if not @context
-    # Pin camera zoom to match canvas size
     @context.fillStyle = color
     @context.fillRect(0, 0, @canvas.width, @canvas.height)
 
+  clearRect: () ->
+    @context.clearRect(0, 0, @canvas.width, @canvas.height)
 
   # Coordinate Conversions (World/Screen)
   # -----------------------------------------------------------------------------
 
   # Convert a Rect/Point/Number from world coordinates (game units) to
   # screen coordinates (pixels)
-  worldToScreen: (value,scale=1) ->
+  worldToScreen: (value,scale=@cameraScale) ->
     if value instanceof Rect
       return new Rect(value).scale (SceneView.UNIT * scale)
     else if value instanceof Point

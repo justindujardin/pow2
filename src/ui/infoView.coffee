@@ -55,9 +55,9 @@ class InfoView extends View
     super()
     @fillColor(Screen.GURK_BLUE)
     for icon in @icons
-      @gurk.screen.drawIcon(icon.icon, icon.x, icon.y);
+      @gurk.screen.drawIcon(icon.icon, icon.x, icon.y,@cameraScale);
     for label in @labels
-      @gurk.screen.drawText(label.text, label.color, label.x, label.y)
+      @gurk.screen.drawText(label.text, label.color, label.x, label.y,@cameraScale)
     @
 
   command: (text) =>

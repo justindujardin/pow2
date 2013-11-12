@@ -18,11 +18,12 @@
 
 class Screen
 
-  @SCALE : pixelWidth
-  @SIZE : 128
-  @GURK_BLUE : "#004c62"
   @UNIT : 16
   @HALF_UNIT : Screen.UNIT / 2
+  @SCALE : pixelWidth
+  # Screen.SIZE is the size of the screen = 9 world units = 144px of source textures.
+  @SIZE : @UNIT * 9
+  @GURK_BLUE : "#004c62"
   @WIN_SIZE : 9
   @CENTER_OFFSET : 0
   @ICONS_PER_ROW : 7
@@ -142,21 +143,21 @@ class Screen
   drawScreen: =>
     @ctx.drawImage(@screen, 0, 0)
 
-  drawIcon: (icon, x, y) =>
+  drawIcon: (icon, x, y,scale=Screen.SCALE) =>
     coords = Data.sprites[icon];
     if not coords
       throw new Error("Missing image from map " + icon)
-    k = Screen.UNIT * Screen.SCALE
-    @ctx.drawImage(@icons[coords.source],coords.x, coords.y, Screen.UNIT, Screen.UNIT, x * Screen.SCALE, y * Screen.SCALE, k, k)
+    k = Screen.UNIT * scale
+    @ctx.drawImage(@icons[coords.source],coords.x, coords.y, Screen.UNIT, Screen.UNIT, x * scale, y * scale, k, k)
 
-  drawImage: (image, x, y, width, height) =>
-    @ctx.drawImage(image, x * Screen.SCALE, y * Screen.SCALE, width, height)
+  drawImage: (image, x, y, width, height,scale=Screen.SCALE) =>
+    @ctx.drawImage(image, x * scale, y * scale, width, height)
 
-  drawText: (text, color, x, y) =>
-    Screen.FONT.drawText(@ctx, text, color, x, y)
+  drawText: (text, color, x, y,scale=Screen.SCALE) =>
+    Screen.FONT.drawText(@ctx, text, color, x, y, scale)
 
-  drawTextCentered: (text, color, x, y, width, height) =>
-    Screen.FONT.centerText(@ctx, text, color, x, y, width, height)
+  drawTextCentered: (text, color, x, y, width, height,scale=Screen.SCALE) =>
+    Screen.FONT.centerText(@ctx, text, color, x, y, width, height,scale)
 
   wrapText: (text, color, x, y, width) =>
     Screen.FONT.wrapText(@ctx, text, color, x, y, width)
