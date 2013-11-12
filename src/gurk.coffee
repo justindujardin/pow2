@@ -34,7 +34,7 @@ class eburp.Gurk extends SceneView
     SMALL  : "(max-width:480px)" # 288
     MEDIUM : "(min-width:481px) and (max-width:600px)" # 432
     LARGE  : "(min-width:601px) and (max-width:900px)" # 576
-    HUGE   : "(min-width:981px)" # 864
+    HUGE   : "(min-width:760px)" # 720
 
 
   constructor: (canvas) ->
@@ -85,8 +85,8 @@ class eburp.Gurk extends SceneView
       disableSmoothing()
     enquire.register Gurk.MEDIA.HUGE, () =>
       @media = Gurk.MEDIA.HUGE
-      @controlContext.canvas.width = @context.canvas.width = @context.canvas.height = 864
-      @controlContext.canvas.height = 432
+      @controlContext.canvas.width = @context.canvas.width = @context.canvas.height = 720
+      @controlContext.canvas.height = 360
       disableSmoothing()
 
   # Game initialization/loading
