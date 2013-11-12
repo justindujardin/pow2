@@ -54,7 +54,7 @@ class Font
     offsetY = Math.floor((h - @fontHeight) / 2)
     @drawText(ctx, text, color, x + offsetX, y + offsetY,scale)
 
-  wrapText: (ctx, text, color, x, y, width) ->
+  wrapText: (ctx, text, color, x, y, width, scale=Screen.SCALE) ->
     n = text.length
     start = 0
     last = 0
@@ -81,7 +81,7 @@ class Font
           last = i
           force = true
         line = text.substring(start, last)
-        @drawText(ctx, line, color, x, y)
+        @drawText(ctx, line, color, x, y,scale)
         y += @fontHeight
         totalLines++
         if (force)
@@ -95,5 +95,5 @@ class Font
         i++
     if (start < n - 1)
       line = text.substring(start)
-      @drawText(ctx, line, color, x, y)
+      @drawText(ctx, line, color, x, y,scale)
     totalLines * @fontHeight

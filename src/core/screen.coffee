@@ -159,16 +159,16 @@ class Screen
   drawTextCentered: (text, color, x, y, width, height,scale=Screen.SCALE) =>
     Screen.FONT.centerText(@ctx, text, color, x, y, width, height,scale)
 
-  wrapText: (text, color, x, y, width) =>
-    Screen.FONT.wrapText(@ctx, text, color, x, y, width)
+  wrapText: (text, color, x, y, width, scale=Screen.SCALE) =>
+    Screen.FONT.wrapText(@ctx, text, color, x, y, width, scale)
 
   setAlpha: (alpha) =>
     @ctx.globalAlpha = alpha
 
-  drawPixel: (color, x, y) =>
+  drawPixel: (color, x, y, scale=Screen.SCALE) =>
     @ctx.fillStyle = color
-    @ctx.fillRect(x * Screen.SCALE, y * Screen.SCALE, Screen.SCALE, Screen.SCALE)
+    @ctx.fillRect(x * scale, y * scale, scale, scale)
 
-  fillRect: (color, x, y, width, height) =>
+  fillRect: (color, x, y, width, height, scale=Screen.SCALE) =>
     @ctx.fillStyle = color
-    @ctx.fillRect(x * Screen.SCALE, y * Screen.SCALE, width * Screen.SCALE, height * Screen.SCALE)
+    @ctx.fillRect(x * scale, y * scale, width * scale, height * scale)
