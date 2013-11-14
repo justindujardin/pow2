@@ -44,7 +44,6 @@ class TileView extends View
       @gurk.scene.addObject @tileMap if not @gurk.scene.findObject @tileMap
     @setMap(@mapName, 0, 0)
     @enableMovement()
-    @centerBanner = false
 
   setMap : (mapName, x, y) =>
     @mapName = mapName
@@ -123,18 +122,18 @@ class TileView extends View
 
   drawBanner : =>
     if (@banner)
-      x = -Screen.HALF_UNIT
-      y = 8 * SceneView.UNIT
-      @gurk.screen.drawIcon(Data.icons.bannerLeft, x, y)
-      for i in [0...8]
-        x += SceneView.UNIT
-        @gurk.screen.drawIcon(Data.icons.banner, x, y)
-      x += SceneView.UNIT
-      @gurk.screen.drawIcon(Data.icons.bannerRight, x, y)
-      if (@centerBanner)
-        @gurk.screen.drawTextCentered(@banner, "#FFF", 0, y + 5, 128, 8)
-      else
-        @gurk.screen.drawText(@banner, "#FFF", 4, y + 5)
+      rect = @worldToScreen @camera.point
+      x = @camera.point.x - 0.5
+      y = @camera.point.y + @camera.extent.y - 1
+      left = x
+      middle = x+1
+      middleWidth = @camera.extent.x - 1
+      right = x + @camera.extent.x
+      @drawTile(Data.icons.bannerLeft, left, y)
+      @drawTileStretch(Data.icons.banner,middle,y,middleWidth,1)
+      @drawTile(Data.icons.bannerRight, right, y)
+      rect = new Rect(@camera.point.x, y, @camera.extent.x,1).scale(SceneView.UNIT)
+      @gurk.screen.drawTextCentered(@banner, "#FFF", rect.point.x, rect.point.y, rect.extent.x, rect.extent.y,@cameraScale)
 
   setTopBanner : (numMoves, numAttacks, half = false) =>
     @topBanner = {"numMoves" : numMoves, "numAttacks" : numAttacks, "half" : half}
@@ -147,29 +146,29 @@ class TileView extends View
       if (@topBannerLeft)
         leftX = -Screen.HALF_UNIT
       else
-        leftX = 5 * SceneView.UNIT - Screen.HALF_UNIT
+        leftX = (@camera.extent.x / 2) * SceneView.UNIT - Screen.HALF_UNIT
       y = 0
       x = leftX
-      @gurk.screen.drawIcon(Data.icons.bannerLeft, x, y)
+      @gurk.screen.drawIcon(Data.icons.bannerLeft, x, y,@cameraScale)
       for i in [0...2]
         x += SceneView.UNIT
-        @gurk.screen.drawIcon(Data.icons.banner, x, y)
+        @gurk.screen.drawIcon(Data.icons.banner, x, y,@cameraScale)
       x += SceneView.UNIT
-      @gurk.screen.drawIcon(Data.icons.bannerRight, x, y)
+      @gurk.screen.drawIcon(Data.icons.bannerRight, x, y,@cameraScale)
       x = leftX + Screen.HALF_UNIT + 5
       y = 5
       @gurk.screen.drawText("~", "#A0A0A0", x, y)
       x += 10
       @gurk.screen.drawText(":", "#A0A0A0", x, y)
       x += 3
-      @gurk.screen.drawText("#{@topBanner.numMoves}", "#FFF", x, y)
+      @gurk.screen.drawText("#{@topBanner.numMoves}", "#FFF", x, y,@cameraScale)
       x = leftX + Screen.HALF_UNIT + 25
-      @gurk.screen.drawText("`", "#A0A0A0", x, y)
+      @gurk.screen.drawText("`", "#A0A0A0", x, y,@cameraScale)
       x += 6
-      @gurk.screen.drawText(":", "#A0A0A0", x, y)
+      @gurk.screen.drawText(":", "#A0A0A0", x, y,@cameraScale)
       x += 3
       if (@topBanner.half)
         attacks = "#{@topBanner.numAttacks-1}|"
       else
         attacks = "#{@topBanner.numAttacks}"
-      @gurk.screen.drawText("#{attacks}", "#FFF", x, y)
+      @gurk.screen.drawText("#{attacks}", "#FFF", x, y + Screen.HALF_UNIT,@cameraScale)

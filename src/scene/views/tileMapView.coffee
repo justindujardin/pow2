@@ -66,6 +66,19 @@ class TileMapView extends SceneView
   # Tile Rendering Utilities
   # -----------------------------------------------------------------------------
 
+  # Get a sprite image map description from a filename
+  getSpriteDescription: (icon) ->
+    desc = Data.sprites[icon];
+    throw new Error "Missing sprite data for: #{icon}" if not desc
+    desc
+
+  # Get the text associated with a sprite description.
+  getSpriteImage: (description) ->
+    image = Screen.TEXTURES[description.source]
+    throw new Error "Missing image from source: #{description.source}" if not image
+    image
+
+  # Draw a `SceneView.UNIT` sized sprite at a given position.
   drawTile : (icon, pointOrX, yOrScale,scale=1.0) =>
     if pointOrX instanceof Point
       x = pointOrX.x
@@ -89,6 +102,17 @@ class TileMapView extends SceneView
       dstY += (dstH * scale) / 4
 
     @context.drawImage(image,srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH)
+
+  # Draw a `SceneView.UNIT` sized sprite, but stretched to fill a custom
+  # destination width and height.
+  drawTileStretch: (icon, x, y, width, height) ->
+    desc = @getSpriteDescription icon
+    image = @getSpriteImage desc
+    dstX = x * SceneView.UNIT * @cameraScale
+    dstY = y * SceneView.UNIT * @cameraScale
+    dstW = width * SceneView.UNIT * @cameraScale
+    dstH = height * SceneView.UNIT * @cameraScale
+    @context.drawImage(image, desc.x,desc.y,SceneView.UNIT,SceneView.UNIT,dstX, dstY, dstW, dstH)
 
   drawImage: (image, x, y, width, height) =>
     dstX = x * SceneView.UNIT * @cameraScale

@@ -108,7 +108,6 @@ class MapView extends TileView
     for y in [-1 .. 1]
       for x in [-1 .. 1]
         @shadows[y + Screen.CENTER_OFFSET][x + Screen.CENTER_OFFSET] = false
-    @centerBanner = true
     @move(0, 0)
 
   featureVisible: (feature) =>
@@ -137,11 +136,9 @@ class MapView extends TileView
     partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
     @drawTile(partyIcon, @camera.getCenter())
     @fillImage(@shadowOverlay) if @tileMap.map.dark
-    @renderMiniMap()
-    return
-    partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
     @drawBanner()
     @drawTopBanner()
+    @renderMiniMap()
 
 
   # TODO: Fix this up.
