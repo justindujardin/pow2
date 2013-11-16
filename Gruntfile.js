@@ -215,6 +215,6 @@ module.exports = function(grunt) {
    }
    else {
       grunt.registerTask('default', ['sprites', 'concat', 'coffee']);
-      grunt.registerTask('heroku:production', ['concat','coffee', 'uglify']);
+      grunt.registerTask('heroku:production', ['sprites','concat','coffee', 'uglify']);
    }
 };
