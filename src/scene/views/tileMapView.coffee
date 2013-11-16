@@ -51,6 +51,15 @@ class TileMapView extends SceneView
       for y in [clipRect.point.y ... clipRect.getBottom()]
         tile = @tileMap.getTerrainIcon x, y
         @drawTile(tile, x, y) if tile and @tileVisible(x,y)
+    @renderFeatures(clipRect)
+    @
+
+  renderPost: (scene) ->
+    overlay = @screenOverlays[@cameraScale-1]
+    return if not overlay
+    @fillTiles(overlay)
+
+  renderFeatures:(clipRect) ->
     if @tileMap.map.features
       for feature in @tileMap.map.features
         continue if not clipRect.pointInRect feature.x, feature.y
@@ -58,10 +67,6 @@ class TileMapView extends SceneView
         @drawTile(feature.icon, feature.x, feature.y) if feature.icon
     @
 
-  renderPost: (scene) ->
-    overlay = @screenOverlays[@cameraScale-1]
-    return if not overlay
-    @fillTiles(overlay)
 
   # Tile Rendering Utilities
   # -----------------------------------------------------------------------------

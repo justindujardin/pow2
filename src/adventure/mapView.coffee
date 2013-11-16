@@ -140,6 +140,13 @@ class MapView extends TileView
     @drawTopBanner()
     @renderMiniMap()
 
+  renderFeatures:(clipRect) ->
+    for x in [clipRect.point.x ... clipRect.getRight()]
+      for y in [clipRect.point.y ... clipRect.getBottom()]
+        continue if not @game.getFeatures(x,y)
+        feature = @getTopFeature(x, y)
+        @drawTile(feature.icon, x, y) if feature and feature.icon
+    @
 
   # TODO: Fix this up.
   renderMiniMap: =>
