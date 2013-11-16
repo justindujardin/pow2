@@ -143,13 +143,14 @@ class MapView extends TileView
   renderFeatures:(clipRect) ->
     for x in [clipRect.point.x ... clipRect.getRight()]
       for y in [clipRect.point.y ... clipRect.getBottom()]
+        continue if @map.dark and @shadows[y - clipRect.point.y][x - clipRect.point.x]
         continue if not @game.getFeatures(x,y)
         feature = @getTopFeature(x, y)
         @drawTile(feature.icon, x, y) if feature and feature.icon
     @
 
   # TODO: Fix this up.
-  renderMiniMap: =>
+  renderMiniMap: ->
     return if not @mapMode
     bounds = new Rect(@camera.point.x * SceneView.UNIT * @cameraScale - 128,5,128,128)
     sx = bounds.point.x
@@ -190,7 +191,7 @@ class MapView extends TileView
     @drawPixel("#F00", @posX + sx, @posY + sy - 1)
 
 
-  toggleMap : =>
+  toggleMap : ->
     @mapMode = !@mapMode
     if (@mapMode)
       @setButton(9, "NO MAP")
@@ -198,7 +199,7 @@ class MapView extends TileView
       @setButton(9, "MAP")
     @draw()
 
-  command: (text) =>
+  command: (text) ->
     switch text
       when View.LEFT then @move(-1, 0)
       when View.UP then @move(0, -1)
@@ -218,7 +219,7 @@ class MapView extends TileView
       else
         @processFeature(text)
 
-  checkVisibility: (x, y) =>
+  checkVisibility: (x, y) ->
     dx = x - Screen.CENTER_OFFSET
     dy = y - Screen.CENTER_OFFSET
     mapY = dy + @posY
@@ -241,7 +242,7 @@ class MapView extends TileView
       @shadows[y][x] = true
     @
 
-  computeShadows: () =>
+  computeShadows: () ->
     # Immediate surroundings are always visible
     C = Screen.CENTER_OFFSET
     # Move in a spiral pattern, inductively computing visibility
@@ -276,7 +277,7 @@ class MapView extends TileView
             @checkVisibility(checkX, checkY)
     false
 
-  trackVisited : =>
+  trackVisited : ->
     for y in [0...Screen.WIN_SIZE]
       yy = y + @posY - Screen.CENTER_OFFSET
       if (yy >= 0 and yy < @height)
@@ -286,17 +287,17 @@ class MapView extends TileView
             if (!@map.dark or !@shadows[y][x])
               @game.markVisited(xx, yy)
 
-  getTerrain : (x, y) =>
+  getTerrain : (x, y) ->
     tileCharacter = @game.getTile(x, y)
     Data.tiles[tileCharacter]
 
-  getTopFeature : (x, y) =>
+  getTopFeature : (x, y) ->
     for type in MapView.FEATURE_TYPES
       feature = @game.getFeature(x, y, type)
       if (feature)
         return feature
 
-  move : (x, y) =>
+  move : (x, y) ->
     realMove = !(x == 0 and y == 0)
     tx = @posX + x
     ty = @posY + y
@@ -398,13 +399,13 @@ class MapView extends TileView
               @gurk.pushView(new AlertView(@gurk, Data.icons.combat, "Encounter", text, "combat"))
               return null
 
-  setMap : (mapName, x, y) =>
+  setMap : (mapName, x, y) ->
     super(mapName, x, y)
     @tileMap.setMap(mapName)
     if (@map.music)
       @gurk.playMusic(@map.music)
 
-  addButtonForFeature: (feature, realMove) =>
+  addButtonForFeature: (feature, realMove) ->
     @clearButton(5)
     switch feature.type
       when "sign"
@@ -424,7 +425,7 @@ class MapView extends TileView
       when "dispatch"
         @setButton(5, feature.action)
 
-  processFeature: (command) =>
+  processFeature: (command) ->
     feature = @getTopFeature(@posX, @posY)
     switch feature.type
       when "sign"
@@ -447,7 +448,7 @@ class MapView extends TileView
       when "dispatch"
         @gurk.pushView(new ConfirmView(@gurk, feature.icon, feature.title, feature.text, "dispatch", null, feature.altIcon))
 
-  processResult: (result) =>
+  processResult: (result) ->
     switch result
       when "goal"
         @move(0, 0)
