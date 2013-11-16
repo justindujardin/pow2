@@ -37,7 +37,7 @@ class Font
     width = @getWidth text
     ctx.fillStyle = color
     ctx.fillRect(x * scale, y * scale, width * scale, @fontHeight * scale)
-    x += @drawChar(ctx, text.charAt(i), x, y,scale) for i in [0 ... n]
+    x += @drawChar(ctx, text.charAt(i), x, y ,scale) for i in [0 ... n]
 
     text
 
