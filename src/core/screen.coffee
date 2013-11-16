@@ -123,13 +123,13 @@ class Screen
 
     Screen.FONT = new Font(Screen.MICRO_GLYPHS, "images/font_micro.png")
     @icons = Screen.TEXTURES = {
-        animation  : Preloader.getImage("images/animation.png")
-        characters : Preloader.getImage("images/characters.png")
-        creatures  : Preloader.getImage("images/creatures.png")
-        environment: Preloader.getImage("images/environment.png")
-        equipment  : Preloader.getImage("images/equipment.png")
-        items      : Preloader.getImage("images/items.png")
-        ui         : Preloader.getImage("images/ui.png")
+        animation  : eburp.resources.get("images/animation.png")
+        characters : eburp.resources.get("images/characters.png")
+        creatures  : eburp.resources.get("images/creatures.png")
+        environment: eburp.resources.get("images/environment.png")
+        equipment  : eburp.resources.get("images/equipment.png")
+        items      : eburp.resources.get("images/items.png")
+        ui         : eburp.resources.get("images/ui.png")
     }
     Screen.CENTER_OFFSET = Math.floor(Screen.WIN_SIZE / 2);
 
@@ -148,7 +148,7 @@ class Screen
     if not coords
       throw new Error("Missing image from map " + icon)
     k = Screen.UNIT * scale
-    @ctx.drawImage(@icons[coords.source],coords.x, coords.y, Screen.UNIT, Screen.UNIT, x * scale, y * scale, k, k)
+    @ctx.drawImage(@icons[coords.source].data,coords.x, coords.y, Screen.UNIT, Screen.UNIT, x * scale, y * scale, k, k)
 
   drawImage: (image, x, y, width, height,scale=Screen.SCALE) =>
     @ctx.drawImage(image, x * scale, y * scale, width, height)

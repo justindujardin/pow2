@@ -29,7 +29,7 @@ class ImageProcessor
   drawIcon : (icon, x=2,y=2) ->
     coords = Data.sprites[icon];
     throw new Error "Cannot find sprite sheet for : #{icon}" if not coords
-    @ctx.drawImage(@icons[coords.source], coords.x, coords.y, SceneView.UNIT, SceneView.UNIT, x, y, SceneView.UNIT, SceneView.UNIT)
+    @ctx.drawImage(@icons[coords.source].data, coords.x, coords.y, SceneView.UNIT, SceneView.UNIT, x, y, SceneView.UNIT, SceneView.UNIT)
 
   # Pick a single sprite out of a sheet, and return an image that contains only that sprite.
   isolateSprite: (icon) ->

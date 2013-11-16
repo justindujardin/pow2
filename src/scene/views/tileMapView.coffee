@@ -71,20 +71,9 @@ class TileMapView extends SceneView
   # Tile Rendering Utilities
   # -----------------------------------------------------------------------------
 
-  # Get a sprite image map description from a filename
-  getSpriteDescription: (icon) ->
-    desc = Data.sprites[icon];
-    throw new Error "Missing sprite data for: #{icon}" if not desc
-    desc
-
-  # Get the text associated with a sprite description.
-  getSpriteImage: (description) ->
-    image = Screen.TEXTURES[description.source]
-    throw new Error "Missing image from source: #{description.source}" if not image
-    image
-
   # Draw a `SceneView.UNIT` sized sprite at a given position.
   drawTile : (icon, pointOrX, yOrScale,scale=1.0) ->
+    return if not @_validateImage icon
     if pointOrX instanceof Point
       x = pointOrX.x
       y = pointOrX.y
@@ -93,9 +82,7 @@ class TileMapView extends SceneView
       x = pointOrX
       y = yOrScale
     coords = Data.sprites[icon];
-    throw new Error "Missing sprite data for: #{icon}" if not coords
-    image = Screen.TEXTURES[coords.source]
-    throw new Error "Missing image: #{icon}" if not image
+    image = Screen.TEXTURES[coords.source].data
     srcX = coords.x
     srcY = coords.y
     srcW = srcH = SceneView.UNIT
@@ -111,8 +98,9 @@ class TileMapView extends SceneView
   # Draw a `SceneView.UNIT` sized sprite, but stretched to fill a custom
   # destination width and height.
   drawTileStretch: (icon, x, y, width, height) ->
-    desc = @getSpriteDescription icon
-    image = @getSpriteImage desc
+    return if not @_validateImage icon
+    desc = Data.sprites[icon]
+    image = Screen.TEXTURES[desc.source].data
     dstX = x * SceneView.UNIT * @cameraScale
     dstY = y * SceneView.UNIT * @cameraScale
     dstW = width * SceneView.UNIT * @cameraScale
@@ -154,13 +142,23 @@ class TileMapView extends SceneView
     @context.restore()
 
   drawAnim: (anim, x, y, frame) ->
-    coords = Data.sprites[anim];
+    return if not @_validateImage(anim)
+    coords = Data.sprites[anim]
     srcX = coords.x + (frame * SceneView.UNIT)
     srcY = coords.y
     dstX = x * SceneView.UNIT * @cameraScale
     dstY = y * SceneView.UNIT * @cameraScale
     dstW = dstH = SceneView.UNIT * @cameraScale
-    @context.drawImage(Screen.TEXTURES[coords.source], srcX, srcY, SceneView.UNIT, SceneView.UNIT, dstX,dstY,dstW,dstH)
+    @context.drawImage(Screen.TEXTURES[coords.source].data, srcX, srcY, SceneView.UNIT, SceneView.UNIT, dstX,dstY,dstW,dstH)
 
   drawCustomAnim: (custom, x, y) ->
     @context.drawImage(custom, (x - 2) * @cameraScale, (y - 2) * @cameraScale)
+
+
+  _validateImage: (name) ->
+    desc = Data.sprites[name]
+    throw new Error "Missing sprite data for: #{name}" if not desc
+    desc
+    image = Screen.TEXTURES[desc.source]
+    throw new Error "Missing image from source: #{desc.source}" if not image
+    image.isReady()

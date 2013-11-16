@@ -97,7 +97,7 @@ class MapView extends TileView
     @posX = @game.x
     @posY = @game.y
     @mapMode = false
-    @shadowOverlay = Preloader.getImage("images/shadow.png")
+    @shadowOverlay = eburp.resources.get("images/shadow.png").data
     @setButton(1, "HEROES")
     @setButton(9, "MAP")
     @setButton(3, "SAVE")
@@ -135,10 +135,13 @@ class MapView extends TileView
     super()
     partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
     @drawTile(partyIcon, @camera.getCenter())
-    @fillImage(@shadowOverlay) if @tileMap.map.dark
     @drawBanner()
     @drawTopBanner()
     @renderMiniMap()
+
+  renderPost: () ->
+    super()
+    @fillImage(@shadowOverlay) if @tileMap.map.dark
 
   renderFeatures:(clipRect) ->
     for x in [clipRect.point.x ... clipRect.getRight()]

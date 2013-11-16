@@ -36,6 +36,22 @@ class eburp.Gurk extends SceneView
     LARGE  : "(min-width:601px) and (max-width:900px)" # 576
     HUGE   : "(min-width:760px)" # 720
 
+  @requires = [
+    "images/animation.png"
+    "images/characters.png"
+    "images/creatures.png"
+    "images/environment.png"
+    "images/equipment.png"
+    "images/items.png"
+    "images/ui.png"
+    "images/font_micro.png"
+    "images/font_gurkoid.png"
+    "images/button" + Screen.SCALE + ".png"
+    "images/buttonoff" + Screen.SCALE + ".png"
+    "images/buttontop" + Screen.SCALE + ".png"
+    "images/shadow.png"
+  ]
+
 
   constructor: (canvas) ->
     super(canvas)
@@ -43,24 +59,9 @@ class eburp.Gurk extends SceneView
     #@setSize("normal")
     # Get all the images in here
     #Screen.SCALE = 4
-    console.log("Preloading Images at scale: #{Screen.SCALE}")
-    # Preloader.reset()
-    Preloader.load [
-      "images/animation.png"
-      "images/characters.png"
-      "images/creatures.png"
-      "images/environment.png"
-      "images/equipment.png"
-      "images/items.png"
-      "images/ui.png"
-      "images/font_micro.png"
-      "images/font_gurkoid.png"
-      "images/button" + Screen.SCALE + ".png"
-      "images/buttonoff" + Screen.SCALE + ".png"
-      "images/buttontop" + Screen.SCALE + ".png"
-      "images/shadow.png"
-    ]
-    Preloader.setCallback(@start)
+    console.log "Preloading Images at scale: #{Screen.SCALE}"
+    eburp.resources = new ResourceLoader()
+    eburp.resources.load eburp.Gurk.requires, => @start()
 
 
   makeResponsive: ()->
