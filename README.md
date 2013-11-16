@@ -46,8 +46,8 @@ out the game.  Type the following command in to your terminal:
 
 > grunt watch
 
-This command should print information about executing some tasks, and eventually settle down and say that it's waiting.  Once
-this happens without error, just open up the index.html file in the root directory to play your game.
+This command should print information about executing some tasks, and eventually settle down and say that it's run a server at http://localhost:5215/.
+Once this happens, just open your browser to that page and you're ready to go.
 
 While the grunt watch task is running the game assets will be rebuilt if a file (Sprites, Maps, Code) changes.  This means you
 can edit your files and refresh your webpage a few moments later when the new build is done.  No muss, no fuss, just game stuff.
