@@ -123,13 +123,13 @@ class Screen
 
     Screen.FONT = new Font(Screen.MICRO_GLYPHS, "images/font_micro.png")
     @icons = Screen.TEXTURES = {
-        animation  : Preloader.getImage("images/animation.png")
-        characters : Preloader.getImage("images/characters.png")
-        creatures  : Preloader.getImage("images/creatures.png")
-        environment: Preloader.getImage("images/environment.png")
-        equipment  : Preloader.getImage("images/equipment.png")
-        items      : Preloader.getImage("images/items.png")
-        ui         : Preloader.getImage("images/ui.png")
+        animation  : eburp.resources.get("images/animation.png").data
+        characters : eburp.resources.get("images/characters.png").data
+        creatures  : eburp.resources.get("images/creatures.png").data
+        environment: eburp.resources.get("images/environment.png").data
+        equipment  : eburp.resources.get("images/equipment.png").data
+        items      : eburp.resources.get("images/items.png").data
+        ui         : eburp.resources.get("images/ui.png").data
     }
     Screen.CENTER_OFFSET = Math.floor(Screen.WIN_SIZE / 2);
 

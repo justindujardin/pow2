@@ -64,8 +64,10 @@ module.exports = function(grunt) {
          },
          game: {
             src: [
+               "src/core/api.coffee",
                "src/core/util.coffee",
                "src/core/*.coffee",
+               "src/resources/*.coffee",
                "src/scene/*.coffee",
                "src/scene/objects/*.coffee",
                "src/scene/views/*.coffee",
