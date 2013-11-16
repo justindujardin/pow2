@@ -26,7 +26,7 @@ class ImageProcessor
   constructor : (@canvas, @ctx, @icons) ->
     # No-op
 
-  drawIcon : (icon, x=2,y=2) =>
+  drawIcon : (icon, x=2,y=2) ->
     coords = Data.sprites[icon];
     throw new Error "Cannot find sprite sheet for : #{icon}" if not coords
     @ctx.drawImage(@icons[coords.source], coords.x, coords.y, SceneView.UNIT, SceneView.UNIT, x, y, SceneView.UNIT, SceneView.UNIT)
@@ -46,7 +46,7 @@ class ImageProcessor
     @canvas.height = saveH
 
     result
-  drawRotated : (icon, degrees) =>
+  drawRotated : (icon, degrees) ->
     @ctx.save();
     t = (Screen.HALF_UNIT + 2)
     @ctx.translate(t, t)
@@ -55,10 +55,10 @@ class ImageProcessor
     @drawIcon(icon)
     @ctx.restore();
 
-  clearRect : =>
+  clearRect : ->
     @ctx.clearRect(0, 0, (SceneView.UNIT + 4), (SceneView.UNIT + 4))
 
-  paint : (colors) =>
+  paint : (colors) ->
     arcs = ImageProcessor.computeArcs(colors, 12)
     size = (SceneView.UNIT + 4)
     img = @ctx.getImageData(0, 0, size, size).data
@@ -116,7 +116,7 @@ class ImageProcessor
       k = Math.round(target / n)
       return k * n
 
-  glow : (colors, intensity) =>
+  glow : (colors, intensity) ->
     arcs = ImageProcessor.computeArcs(colors, 30)
     length = SceneView.UNIT + 4
     cells = Util.create2DArray(length, length)
@@ -181,17 +181,17 @@ class ImageProcessor
     result.src = src
     result
 
-  shade : (icon, colors) =>
+  shade : (icon, colors) ->
     @clearRect()
     @drawIcon(icon)
     @paint(colors)
 
-  halo : (icon, colors, intensity) =>
+  halo : (icon, colors, intensity) ->
     @clearRect()
     @drawIcon(icon)
     @glow(colors, intensity)
 
-  process : (icon, shadeColors, haloColors) =>
+  process : (icon, shadeColors, haloColors) ->
     @clearRect()
     @drawIcon(icon)
     result = null
@@ -201,7 +201,7 @@ class ImageProcessor
       result = @glow(haloColors, 80)
     result
 
-  rotate : (icon, direction) =>
+  rotate : (icon, direction) ->
     @clearRect()
     @drawRotated(icon, direction)
     src = @canvas.toDataURL()

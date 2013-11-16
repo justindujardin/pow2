@@ -28,7 +28,7 @@ class AlertView extends View
     super(gurk.canvas, gurk)
     @setButton(5, "OK")
 
-  renderFrame: =>
+  renderFrame: ->
     @fillColor(Screen.GURK_BLUE)
     @gurk.screen.drawIcon(@icon, AlertView.ICON_X, AlertView.ICON_Y,@cameraScale)
     if (@altIcon)
@@ -40,6 +40,6 @@ class AlertView extends View
       @gurk.screen.drawTextCentered(@title, "#FFF", 0, AlertView.ICON_Y + 1, Screen.SIZE, SceneView.UNIT,@cameraScale)
     @gurk.screen.wrapText(@text, "#FFF", AlertView.ICON_X, AlertView.ICON_Y * 2 + SceneView.UNIT, Screen.SIZE - 2 * AlertView.ICON_X,@cameraScale)
 
-  command: (text) =>
+  command: (text) ->
     switch text
       when "OK" then @gurk.popView(@result)

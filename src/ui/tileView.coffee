@@ -45,7 +45,7 @@ class TileView extends View
     @setMap(@mapName, 0, 0)
     @enableMovement()
 
-  setMap : (mapName, x, y) =>
+  setMap : (mapName, x, y) ->
     @mapName = mapName
     @map = Data.maps[@mapName]
     @height = @map.height
@@ -53,12 +53,12 @@ class TileView extends View
     @posX = x
     @posY = y
 
-  animateBlock : (anim, x, y, radius, rate, callback) =>
+  animateBlock : (anim, x, y, radius, rate, callback) ->
     frame = 0
     @playAnimation rate, (frame) =>
       @animateBlockFrame(anim,x,y,radius,frame, callback)
 
-  animateBlockFrame : (anim, x, y, radius, frame, callback) =>
+  animateBlockFrame : (anim, x, y, radius, frame, callback) ->
     frames = Data.sprites[anim].frames or 1
     if frame >= frames
       callback() if callback
@@ -70,12 +70,12 @@ class TileView extends View
             @drawAnim(anim, xx, yy, frame)
     false
 
-  animate : (anim, x, y, rate, callback) =>
+  animate : (anim, x, y, rate, callback) ->
     frame = 0
     @playAnimation rate, (frame) =>
       @animateFrame(anim,x,y,frame, callback)
 
-  animateFrame : (anim, x, y, frame, callback) =>
+  animateFrame : (anim, x, y, frame, callback) ->
     spriteMeta = Data.sprites[anim]
     throw new Error "Unable to find animation sprite: #{anim}" if not spriteMeta
     frames = spriteMeta.frames or 1
@@ -85,19 +85,14 @@ class TileView extends View
     @drawAnim(anim, x, y, frame)
     false
 
-  fly : (anim, x1, x2, y1, y2, rate, callback, custom = null) =>
+  fly : (anim, x1, x2, y1, y2, rate, callback, custom = null) ->
 
     n = Math.floor(Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)) * rate / 50) + 1
     frame = 0
     @playAnimation rate, (frame) =>
       @flyFrame(anim, x1, x2, y1, y2, rate, frame, n, callback, custom)
 
-#    step = 0
-#    fn = () => @flyFrame(anim, x1, x2, y1, y2, rate, step++, n, callback, custom)
-#    fn();
-#    @interval = setInterval(fn, rate)
-
-  flyFrame : (anim, x1, x2, y1, y2, rate, step, n, callback, custom) =>
+  flyFrame : (anim, x1, x2, y1, y2, rate, step, n, callback, custom) ->
 
     x = x1 + (x2 - x1) * step / n
     y = y1 + (y2 - y1) * step / n
@@ -112,15 +107,15 @@ class TileView extends View
       return true
     false
 
-  setBanner : (text) =>
+  setBanner : (text) ->
     @banner = text
     @draw()
 
-  clearBanner : =>
+  clearBanner : ->
     @banner = null
     @draw()
 
-  drawBanner : =>
+  drawBanner : ->
     if (@banner)
       rect = @worldToScreen @camera.point
       x = @camera.point.x - 0.5
@@ -135,13 +130,13 @@ class TileView extends View
       rect = new Rect(@camera.point.x, y, @camera.extent.x,1).scale(SceneView.UNIT)
       @gurk.screen.drawTextCentered(@banner, "#FFF", rect.point.x, rect.point.y, rect.extent.x, rect.extent.y,@cameraScale)
 
-  setTopBanner : (numMoves, numAttacks, half = false) =>
+  setTopBanner : (numMoves, numAttacks, half = false) ->
     @topBanner = {"numMoves" : numMoves, "numAttacks" : numAttacks, "half" : half}
 
-  clearTopBanner : =>
+  clearTopBanner : ->
     @topBanner = null
 
-  drawTopBanner : =>
+  drawTopBanner : ->
     if (@topBanner)
       if (@topBannerLeft)
         leftX = -Screen.HALF_UNIT

@@ -40,44 +40,44 @@ class SelectView extends InfoView
     else
       @clearButton(9)
 
-  clear: =>
+  clear: ->
     super();
     @options = new Array()
 
-  start: =>
+  start: ->
     if (@selected >= @options.length)
       @selected = 0
     if (@options.length > 0)
       @itemHighlighted(@selected, @options[@selected])
 
-  setSelectVerb : (verb) =>
+  setSelectVerb : (verb) ->
     @selectVerb = verb
     @setButton(5, @selectVerb)
 
-  turnOffSelection : =>
+  turnOffSelection : ->
     @clearButton(5)
 
-  cancelled: =>
+  cancelled: ->
     # Override to respond to cancellation differently
     @gurk.popView(null)
 
-  itemSelected: (index, item) =>
+  itemSelected: (index, item) ->
     # Override to respond to selection differently
     @gurk.popView(item)
 
-  itemHighlighted: (index, item) =>
+  itemHighlighted: (index, item) ->
     # no-op, override to respond to highlight
 
-  addOption: (text, color, x, y, highlightColor = SelectView.SELECT_COLOR) =>
+  addOption: (text, color, x, y, highlightColor = SelectView.SELECT_COLOR) ->
     @options.push({"text" : text, "color": color, "highlightColor" : highlightColor, "x" : x, "y" : y})
     @options.length - 1
 
-  changeOption: (index, text, color) =>
+  changeOption: (index, text, color) ->
     option = @options[index]
     option.text = text
     option.color = color
 
-  moveUp: =>
+  moveUp: ->
     if (@options.length > 0)
       @selected--
       if (@selected < 0)
@@ -85,7 +85,7 @@ class SelectView extends InfoView
       @itemHighlighted(@selected, @options[@selected])
       @draw()
 
-  moveDown: =>
+  moveDown: ->
     if (@options.length > 0)
       @selected++
       if (@selected >= @options.length)
@@ -93,18 +93,18 @@ class SelectView extends InfoView
       @itemHighlighted(@selected, @options[@selected])
       @draw()
 
-  makeSelection: =>
+  makeSelection: ->
     if (@options.length > 0)
       @itemSelected(@selected, @options[@selected])
 
-  command: (text) =>
+  command: (text) ->
     switch text
       when View.UP then @moveUp()
       when View.DOWN then @moveDown()
       when @selectVerb then @makeSelection()
       when @cancelVerb then @cancelled()
 
-  renderFrame: =>
+  renderFrame: ->
     super()
     @fillColor(Screen.GURK_BLUE)
     for icon in @icons

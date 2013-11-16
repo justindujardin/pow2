@@ -3,6 +3,10 @@ module.exports = function(grunt) {
    grunt.option('force', true);
    grunt.initConfig({
       pkg: grunt.file.readJSON('package.json'),
+
+      /**
+       * System notifications about build step completion.
+       */
       notify: {
          options: {
             title: 'E.B.U.R.P.'

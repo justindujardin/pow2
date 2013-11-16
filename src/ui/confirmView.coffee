@@ -24,7 +24,7 @@ class ConfirmView extends AlertView
     @setButton(1, "YES")
     @setButton(3, "NO")
 
-  command: (text) =>
+  command: (text) ->
     switch text
       when "YES" then @gurk.popView(@yesResult)
       when "NO" then @gurk.popView(@noResult)

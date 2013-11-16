@@ -20,14 +20,14 @@ class Button extends Rect
 
   buttonOn : false
   text : null
-  enable: =>
+  enable: ->
     @buttonOn = true
 
-  disable: =>
+  disable: ->
     @buttonOn = false
 
-  isEnabled: =>
+  isEnabled: ->
     @buttonOn
 
-  setText: (text) =>
+  setText: (text) ->
     @text = text

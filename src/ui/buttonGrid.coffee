@@ -103,7 +103,7 @@ class ButtonGrid extends SceneView
           ButtonGrid.FONT.centerText(@context, button.text, "transparent", renderRect.point.x, renderRect.point.y, renderRect.extent.x, renderRect.extent.y, @cameraScale)
     false
 
-  clicked: (e) =>
+  clicked: (e) ->
     clickPoint = @screenToWorld new Point(e.x, e.y), @cameraScale
     for y in [0..2]
       for x in [0..2]
@@ -113,24 +113,24 @@ class ButtonGrid extends SceneView
           return
     @
 
-  getButtonByKeyNum: (keyNum) =>
+  getButtonByKeyNum: (keyNum) ->
     keyNum--
     y = Math.floor(keyNum / 3)
     x = keyNum % 3
     @buttons[y][x]
 
-  forceClick: (keyNum) =>
+  forceClick: (keyNum) ->
     button = @getButtonByKeyNum(keyNum)
     if (button.buttonOn)
       @gurk.buttonPressed(button.text)
 
 
-  clear: =>
+  clear: ->
     for y in [0..2]
       for x in [0..2]
         @buttons[y][x].disable()
 
-  enableMovement: =>
+  enableMovement: ->
     @buttons[1][0].enable()
     @buttons[1][0].setText("1")
     @buttons[0][1].enable()
@@ -143,16 +143,16 @@ class ButtonGrid extends SceneView
   # 1 2 3
   # 4 5 6
   # 7 8 9
-  setButton: (keyNum, text) =>
+  setButton: (keyNum, text) ->
     button = @getButtonByKeyNum(keyNum)
     button.setText(text)
     button.enable()
 
-  setButtonByPosition: (x, y, text) =>
+  setButtonByPosition: (x, y, text) ->
     button = @buttons[y][x]
     button.setText(text)
     button.enable()
 
-  disableButtonByPosition: (x, y) =>
+  disableButtonByPosition: (x, y) ->
     button = @buttons[y][x]
     button.disable()

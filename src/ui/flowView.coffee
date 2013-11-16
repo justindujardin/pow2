@@ -28,13 +28,13 @@ class FlowView extends AlertView
     super(gurk, icon, title, "", result, altIcon)
     @paragraphs = new Array()
 
-  addParagraph : (text, color) =>
+  addParagraph : (text, color) ->
     @paragraphs.push({"text" : text, "color" : color})
 
-  addGap : =>
+  addGap : ->
     @paragraphs.push({"text" : null})
 
-  doDraw : =>
+  doDraw : ->
     super()
     y = AlertView.ICON_Y * 2 + SceneView.UNIT
     x = AlertView.ICON_X

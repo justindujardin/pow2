@@ -79,7 +79,7 @@ class TileMapView extends SceneView
     image
 
   # Draw a `SceneView.UNIT` sized sprite at a given position.
-  drawTile : (icon, pointOrX, yOrScale,scale=1.0) =>
+  drawTile : (icon, pointOrX, yOrScale,scale=1.0) ->
     if pointOrX instanceof Point
       x = pointOrX.x
       y = pointOrX.y
@@ -114,7 +114,7 @@ class TileMapView extends SceneView
     dstH = height * SceneView.UNIT * @cameraScale
     @context.drawImage(image, desc.x,desc.y,SceneView.UNIT,SceneView.UNIT,dstX, dstY, dstW, dstH)
 
-  drawImage: (image, x, y, width, height) =>
+  drawImage: (image, x, y, width, height) ->
     dstX = x * SceneView.UNIT * @cameraScale
     dstY = y * SceneView.UNIT * @cameraScale
     dstW = dstH = SceneView.UNIT  * @cameraScale
@@ -132,7 +132,7 @@ class TileMapView extends SceneView
     shift = 2 * @cameraScale
     @context.drawImage(image, 0,0,SceneView.UNIT + 4,SceneView.UNIT + 4,dstX - shift,dstY - shift, dstW,dstH)
 
-  drawPixel: (color, x, y) =>
+  drawPixel: (color, x, y) ->
     return false if not @context
     @context.fillStyle = color
     @context.fillRect(x * @cameraScale, y * @cameraScale, @cameraScale, @cameraScale)
@@ -148,7 +148,7 @@ class TileMapView extends SceneView
     @context.fillRect(renderPos.point.x,renderPos.point.y, renderPos.extent.x,renderPos.extent.y)
     @context.restore()
 
-  drawAnim: (anim, x, y, frame) =>
+  drawAnim: (anim, x, y, frame) ->
     coords = Data.sprites[anim];
     srcX = coords.x + (frame * SceneView.UNIT)
     srcY = coords.y
@@ -157,5 +157,5 @@ class TileMapView extends SceneView
     dstW = dstH = SceneView.UNIT * @cameraScale
     @context.drawImage(Screen.TEXTURES[coords.source], srcX, srcY, SceneView.UNIT, SceneView.UNIT, dstX,dstY,dstW,dstH)
 
-  drawCustomAnim: (custom, x, y) =>
+  drawCustomAnim: (custom, x, y) ->
     @context.drawImage(custom, (x - 2) * @cameraScale, (y - 2) * @cameraScale)

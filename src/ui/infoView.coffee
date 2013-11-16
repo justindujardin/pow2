@@ -29,29 +29,29 @@ class InfoView extends View
     @doneVerb = doneVerb
     @setButton(5, @doneVerb)
 
-  clear: =>
+  clear: ->
     @icons = new Array()
     @labels = new Array()
 
-  addIcon: (icon, x, y) =>
+  addIcon: (icon, x, y) ->
     @icons.push({"icon" : icon, "x" : x, "y" : y})
     @icons.length - 1
 
-  changeIcon: (index, icon) =>
+  changeIcon: (index, icon) ->
     @icons[index].icon = icon
 
-  addLabel: (text, color, x, y) =>
+  addLabel: (text, color, x, y) ->
     @labels.push({"text" : text, "color": color, "x" : x, "y" : y})
     @labels.length - 1
 
-  addLabelCentered: (text, color, x, y, width, height) =>
+  addLabelCentered: (text, color, x, y, width, height) ->
     w = Screen.FONT.getWidth(text)
     h = Screen.FONT.fontHeight
     xx = x + Math.floor((width - w) / 2)
     yy = y + Math.floor((height - h) / 2)
     @addLabel(text, color, xx, yy)
 
-  renderFrame: =>
+  renderFrame: ->
     super()
     @fillColor(Screen.GURK_BLUE)
     for icon in @icons
@@ -60,6 +60,6 @@ class InfoView extends View
       @gurk.screen.drawText(label.text, label.color, label.x, label.y,@cameraScale)
     @
 
-  command: (text) =>
+  command: (text) ->
     switch text
       when @doneVerb then @gurk.popView(null)

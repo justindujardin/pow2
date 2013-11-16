@@ -22,7 +22,7 @@ class TileMap extends SceneObject
     super()
     @setMap(mapName, 0, 0)
 
-  setMap : (mapName, x, y) =>
+  setMap : (mapName, x, y) ->
     @mapName = mapName
     @map = Data.maps[@mapName]
     @bounds = new Rect(x,y,@map.width,@map.height)
