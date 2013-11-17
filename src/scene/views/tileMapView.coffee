@@ -21,8 +21,10 @@ class TileMapView extends SceneView
   constructor: (canvas) ->
     super(canvas)
     @screenOverlays = []
-    for i in [1..5]
-      @screenOverlays.push @gurk.imageProcessor.isolateSprite("screen#{i}.png")
+    if @gurk
+      for i in [1..5]
+        @screenOverlays.push @gurk.imageProcessor.isolateSprite("screen#{i}.png")
+    @
 
   featureVisible: (feature) -> true
   tileVisible: (x,y) -> true

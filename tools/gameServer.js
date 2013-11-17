@@ -18,6 +18,7 @@ server.staticPath = function(url,path) {
 };
 
 //server.staticPath(null,);
+server.use(express.compress());
 server.use(express.static(path.resolve(__dirname + "/../web")));
 server.use('/data',express.static(path.resolve(__dirname + "/../data")));
 server.use('/images',express.static(path.resolve(__dirname + "/../images")));

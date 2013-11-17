@@ -31,17 +31,18 @@ class ResourceLoader
       'png' : ImageResource
       'js'  : ScriptResource
       'json': JSONResource
+      '': AudioResource
     }
 
   registerResourceType: (extension,type) ->
     @_types[extension] = type
 
   getResourceExtension: (url) ->
-    file = url.substr url.lastIndexOf '/'
-    return null if not file
-    file.substr(file.lastIndexOf('.') + 1)
+    index = url.lastIndexOf '.'
+    return '' if index == -1
+    url.substr(index + 1)
 
-  load: (sources,done) ->
+  loadAll: (sources, done) ->
     sources = [sources] if not Util.isArray(sources)
     loadQueue = 0
     for src in sources
@@ -58,13 +59,33 @@ class ResourceLoader
       res.once 'ready', (resource) =>
         console.log "Loaded asset: #{resource.url}"
         loadQueue--
-        done() if done and loadQueue is 0
+        done(resource) if done and loadQueue is 0
       res.once 'failed', (resource) =>
         console.log "Failed to load asset: #{resource.url}"
         loadQueue--
-        done() if done and loadQueue is 0
+        done(resource) if done and loadQueue is 0
       res.load()
 
-  get: (url) ->
-    @load url
+  load: (url,done) ->
+      extension = @getResourceExtension url
+      resourceType = @_types[extension]
+      if not resourceType
+        console.error "Unknown resource type: #{url}"
+        return null
+      res = @_resources[url]
+      res = @_resources[url] = new resourceType(url) if not res
+      res.extension = extension
+      if res.isReady()
+        done(res) if done
+        return res
+      res.once 'ready', (resource) =>
+        console.log "Loaded asset: #{resource.url}"
+        done(resource) if done
+      res.once 'failed', (resource) =>
+        console.log "Failed to load asset: #{resource.url}"
+        done(resource) if done
+      res.load()
+
+  get: (url, done) ->
+    @load url, done
     @_resources[url]
