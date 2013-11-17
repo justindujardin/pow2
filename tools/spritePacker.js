@@ -37,6 +37,7 @@ function scalePng(png,scale){
          scaledPng.data[idx+3] = png.data[baseIdx+3];
       }
    }
+   scaledPng.end();
    return scaledPng;
 }
 
@@ -85,6 +86,7 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
    clearFillPng(stream);
    var baseName = path.basename(name);
    var pngName = name + '.png';
+   var writer = fs.createWriteStream(pngName);
    _.each(cells,function(cell){
       cell.png.bitblt(stream,0,0,cell.width,cell.height,cell.x,cell.y);
    });
@@ -109,8 +111,9 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
          name: baseName,
          meta: metaData
       });
+      writer.end();
    });
-   stream.pack().pipe(fs.createWriteStream(pngName));
+   stream.pack().pipe(writer);
    return deferred.promise;
 }
 

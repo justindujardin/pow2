@@ -91,7 +91,7 @@ module.exports = function(grunt) {
          }
       },
 
-     /**
+      /**
        * Uglify the output javascript files in production builds.  This task is only
        * ever invoked with `heroku:production`, and simply obfuscates/minifies the existing
        * files.
@@ -193,28 +193,32 @@ module.exports = function(grunt) {
       var options = this.options({
          metaFile: null
       });
-      this.files.forEach(function(f) {
-         queue.push(spritePacker(f.src, {
-            outName: f.dest,
-            scale: 1
-         }));
-      });
+      var queue = this.files.slice();
       var jsChunks = [];
-      Q.all(queue).then(function(results){
-         results.forEach(function(r){
-            grunt.log.writeln('File "' + r.file + '" created.');
-            jsChunks.push("eburp.registerSprites('" + r.name + "'," + JSON.stringify(r.meta,null,3)+");");
-         });
+      function _next(){
+         if(queue.length > 0){
+            var exec = queue.shift();
+            return spritePacker(exec.src, {outName: exec.dest,scale: 1})
+               .then(function(result){
+                  grunt.log.writeln('File "' + result.file + '" created.');
+                  jsChunks.push("eburp.registerSprites('" + result.name + "'," + JSON.stringify(result.meta,null,3)+");");
+                  return _next();
+               },function(error){
+                  grunt.log.error('Failed to create spritesheet: ' + error);
+                  done(error);
+               });
+         }
+         _done();
+      }
+      function _done(){
          // Write out metadata if specified.
          if(options.metaFile){
             grunt.file.write(options.metaFile,jsChunks.join('\n'));
             grunt.log.writeln('File "' + options.metaFile + '" created.');
          }
          done();
-      },function(error){
-         grunt.log.error('Failed to create spritesheet: ' + error);
-         done(error);
-      });
+      }
+      _next();
    });
 
    grunt.loadNpmTasks('grunt-contrib-coffee');
