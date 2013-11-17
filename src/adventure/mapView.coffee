@@ -321,14 +321,12 @@ class MapView extends TileView
       if (realMove and @game.aboard and @game.getFeature(tx, ty, "ship"))
         # Move onto the next ship
         @game.disembark()
-        if (@map.music)
-          @gurk.playMusic(@map.music)
+        @gurk.playMusic @map.music if @map.music
       @posX = tx
       @posY = ty
       if (@game.aboard and !@getTerrain(tx, ty).shipPassable)
         @game.disembark()
-        if (@map.music)
-          @gurk.playMusic(@map.music)
+        @gurk.playMusic @map.music if @map.music
       if (realMove)
         @gurk.game.moveTo(@posX, @posY)
         @game.moveNum++
@@ -343,10 +341,7 @@ class MapView extends TileView
         if (@game.isChartered(ship.id) or !ship.charter or ship.charter == 0)
           @clearButton(5)
           @game.boardShip(@game.getFeature(tx, ty, "ship").id)
-          if (@map.boatMusic)
-            @gurk.playMusic(@map.boatMusic)
-          else
-            @gurk.playMusic(Data.boatMusic)
+          @gurk.playMusic @map.boatMusic or Data.boatMusic
         else
           @setButton(5, "CHARTER")
           haveFeature = true
@@ -405,8 +400,7 @@ class MapView extends TileView
   setMap : (mapName, x, y) ->
     super(mapName, x, y)
     @tileMap.setMap(mapName)
-    if (@map.music)
-      @gurk.playMusic(@map.music)
+    @gurk.playMusic @map.music if @map.music
 
   addButtonForFeature: (feature, realMove) ->
     @clearButton(5)
@@ -465,17 +459,14 @@ class MapView extends TileView
         @setMap(feature.target, feature.targetX, feature.targetY)
         # Process it as a move
         @move(0, 0)
-        if (@mapMode)
-          @toggleMap()
+        @toggleMap() if @mapMode
+
         @draw()
       when "victory"
-        if (@game.aboard)
-          if (@map.boatMusic)
-            @gurk.playMusic(@map.boatMusic)
-          else
-            @gurk.playMusic(Data.boatMusic)
-        else if (@map.music)
-          @gurk.playMusic(@map.music)
+        if @game.aboard
+          @gurk.playMusic @map.boatMusic or Data.boatMusic
+        else if @map.music
+          @gurk.playMusic @map.music
         feature = @game.getFeature(@posX, @posY, "encounter")
         if (feature)
           @gurk.game.setMarkers(feature.id)
@@ -526,10 +517,7 @@ class MapView extends TileView
         ship = @getTopFeature(@posX, @posY)
         @game.gold -= ship.charter
         @game.boardShip(ship.id)
-        if (@map.boatMusic)
-          @gurk.playMusic(@map.boatMusic)
-        else
-          @gurk.playMusic(Data.boatMusic)
+        @gurk.playMusic @map.boatMusic or Data.boatMusic
         @clearButton(5)
       when "dispatch"
         feature = @getTopFeature(@posX, @posY)

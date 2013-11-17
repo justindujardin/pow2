@@ -141,7 +141,7 @@ class eburp.Gurk extends SceneView
     @controlCanvas = document.getElementById("controlID")
     @controlContext = @controlCanvas.getContext("2d")
     @controlContext.webkitImageSmoothingEnabled = false
-    @controlContext.mozImageSmoothingEnabled = false;
+    @controlContext.mozImageSmoothingEnabled = false
     @buttonGrid = new ButtonGrid(@controlCanvas, this)
     @scene.addView @buttonGrid
 
@@ -276,11 +276,12 @@ class eburp.Gurk extends SceneView
       playAudio(sound)
 
   playMusic : (track) =>
+    musicOn = @getMusicSetting()
     @music = track
-    console.log("Music setting: '" + @getMusicSetting() + "'.")
-    if (@getMusicSetting())
-      console.log("Play track '" + track + "'.")
-      playTrack(track)
+    console.log "Music setting: '#{musicOn}'."
+    if musicOn
+      console.log("Play track '#{track}'.")
+      playTrack track
 
   playCombatMusic : =>
     if (@getCombatMusicSetting())
@@ -290,8 +291,8 @@ class eburp.Gurk extends SceneView
     stopTrack()
 
   resumeMusic : =>
-    if (@music)
-      @playMusic(@music)
+    @playMusic @music if @music
+
 
   phoneClick: (e, offsetX = 0, offsetY = 0) =>
     relMouse = (event) ->
