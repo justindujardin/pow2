@@ -146,7 +146,7 @@ class MapView extends TileView
   renderFeatures:(clipRect) ->
     for x in [clipRect.point.x ... clipRect.getRight()]
       for y in [clipRect.point.y ... clipRect.getBottom()]
-        continue if @map.dark and @shadows[y - clipRect.point.y][x - clipRect.point.x]
+        continue if @map.dark and @shadows[y - @camera.point.y][x - @camera.point.x]
         continue if not @game.getFeatures(x,y)
         feature = @getTopFeature(x, y)
         @drawTile(feature.icon, x, y) if feature and feature.icon
