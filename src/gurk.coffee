@@ -61,7 +61,7 @@ class eburp.Gurk extends SceneView
     #Screen.SCALE = 4
     console.log "Preloading Images at scale: #{Screen.SCALE}"
     eburp.resources = new ResourceLoader()
-    eburp.resources.load eburp.Gurk.requires, => @start()
+    eburp.resources.loadAll eburp.Gurk.requires, => @start()
 
 
   makeResponsive: ()->
@@ -272,27 +272,31 @@ class eburp.Gurk extends SceneView
     Device.setSetting("fast", value)
 
   playSound : (sound) =>
-    if (@getSoundSetting())
-      playAudio(sound)
+    return if not @getSoundSetting()
+    sound = "data/sounds/#{sound}"
+    @activeTrack = eburp.resources.get sound, (resource) =>
+      resource.data.volume = 0.25
+      resource.data.play()
 
-  playMusic : (track) =>
-    musicOn = @getMusicSetting()
+  playMusic : (track,musicOn=@getMusicSetting()) =>
     @music = track
-    console.log "Music setting: '#{musicOn}'."
-    if musicOn
-      console.log("Play track '#{track}'.")
-      playTrack track
+    return if not musicOn
+    track = "data/music/#{track}"
+    @activeTrack = eburp.resources.get track, (resource) =>
+      console.log "Play track '#{track}'."
+      resource.data.play()
 
   playCombatMusic : =>
-    if (@getCombatMusicSetting())
-      playTrack(Data.combatMusic)
+    @playMusic Data.combatMusic, @getCombatMusicSetting()
 
   stopMusic : =>
-    stopTrack()
+    @activeTrack.data.pause() if @activeTrack and @activeTrack.isReady()
 
   resumeMusic : =>
-    @playMusic @music if @music
-
+    if @activeTrack and @activeTrack.isReady()
+      @activeTrack.data.play()
+    else if @music
+      @playMusic @music
 
   phoneClick: (e, offsetX = 0, offsetY = 0) =>
     relMouse = (event) ->
