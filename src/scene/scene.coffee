@@ -17,7 +17,7 @@
 # -----------------------------------------------------------------------------
 
 
-class Scene
+class eburp.Scene
   constructor: (@options) ->
     @options = _.defaults @options or {}, {
       tickRateMS: 100
@@ -50,7 +50,7 @@ class Scene
     _.find @[property], (i) -> i.id == object.id
 
   addView: (view) ->
-    throw new Error "Scene.addView: must be a SceneView" if view not instanceof SceneView
+    throw new Error "Scene.addView: must be a SceneView" if view not instanceof eburp.SceneView
     @addIt 'views',view
 
   removeView: (object) ->
@@ -61,7 +61,7 @@ class Scene
 
   # Add a `SceneObject` to the scene
   addObject: (object) ->
-    throw new Error "Scene.addObject: must be a SceneObject" if object not instanceof SceneObject
+    throw new Error "Scene.addObject: must be a SceneObject" if object not instanceof eburp.SceneObject
     @addIt 'objects', object
 
   # Remove an object from the scene

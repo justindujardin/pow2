@@ -88,7 +88,7 @@ class MapView extends TileView
   shadowOverlay : null
 
   constructor: (gurk) ->
-    @tileMap = new TileMap(gurk.game.map)
+    @tileMap = new eburp.TileMap(gurk.game.map)
     super(gurk, gurk.game.map)
     @name = "MapView"
     @offsetX = -Screen.HALF_UNIT
@@ -156,7 +156,7 @@ class MapView extends TileView
   # TODO: Fix this up.
   renderMiniMap: ->
     return if not @mapMode
-    bounds = new Rect(@camera.point.x * SceneView.UNIT * @cameraScale - 128,5,128,128)
+    bounds = new eburp.Rect(@camera.point.x * @unitSize * @cameraScale - 128,5,128,128)
     sx = bounds.point.x
     sy = bounds.point.y
     @context.globalAlpha = 0.5

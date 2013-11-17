@@ -32,13 +32,13 @@ class AlertView extends View
     @fillColor(Screen.GURK_BLUE)
     @gurk.screen.drawIcon(@icon, AlertView.ICON_X, AlertView.ICON_Y,@cameraScale)
     if (@altIcon)
-      @gurk.screen.drawIcon(@altIcon, Screen.SIZE - SceneView.UNIT - AlertView.ICON_X, AlertView.ICON_Y,@cameraScale)
+      @gurk.screen.drawIcon(@altIcon, Screen.SIZE - @unitSize - AlertView.ICON_X, AlertView.ICON_Y,@cameraScale)
     if (@subtitle)
-      @gurk.screen.drawTextCentered(@title, "#FFF", 0, 1, Screen.SIZE, SceneView.UNIT,@cameraScale)
-      @gurk.screen.drawTextCentered(@subtitle, "#A0A0A0", 0, 9, Screen.SIZE, SceneView.UNIT,@cameraScale)
+      @gurk.screen.drawTextCentered(@title, "#FFF", 0, 1, Screen.SIZE, @unitSize,@cameraScale)
+      @gurk.screen.drawTextCentered(@subtitle, "#A0A0A0", 0, 9, Screen.SIZE, @unitSize,@cameraScale)
     else
-      @gurk.screen.drawTextCentered(@title, "#FFF", 0, AlertView.ICON_Y + 1, Screen.SIZE, SceneView.UNIT,@cameraScale)
-    @gurk.screen.wrapText(@text, "#FFF", AlertView.ICON_X, AlertView.ICON_Y * 2 + SceneView.UNIT, Screen.SIZE - 2 * AlertView.ICON_X,@cameraScale)
+      @gurk.screen.drawTextCentered(@title, "#FFF", 0, AlertView.ICON_Y + 1, Screen.SIZE, @unitSize,@cameraScale)
+    @gurk.screen.wrapText(@text, "#FFF", AlertView.ICON_X, AlertView.ICON_Y * 2 + @unitSize, Screen.SIZE - 2 * AlertView.ICON_X,@cameraScale)
 
   command: (text) ->
     switch text

@@ -23,21 +23,23 @@ class ImageProcessor
   @DOWN : 180
   @LEFT : 270
 
-  constructor : (@canvas, @ctx, @icons) ->
+  constructor : (@canvas, @ctx, @view) ->
     # No-op
 
   drawIcon : (icon, x=2,y=2) ->
     coords = Data.sprites[icon];
     throw new Error "Cannot find sprite sheet for : #{icon}" if not coords
-    @ctx.drawImage(@icons[coords.source].data, coords.x, coords.y, SceneView.UNIT, SceneView.UNIT, x, y, SceneView.UNIT, SceneView.UNIT)
+    image = @view.getSpriteSheet(coords.source)
+    return if not image or not image.isReady()
+    @ctx.drawImage(image.data, coords.x, coords.y, @view.unitSize, @view.unitSize, x, y, @view.unitSize, @view.unitSize)
 
   # Pick a single sprite out of a sheet, and return an image that contains only that sprite.
   isolateSprite: (icon) ->
     saveW = @canvas.width
     saveH = @canvas.height
-    @canvas.width = SceneView.UNIT
-    @canvas.height = SceneView.UNIT
-    @ctx.clearRect(0, 0, SceneView.UNIT, SceneView.UNIT)
+    @canvas.width = @view.unitSize
+    @canvas.height = @view.unitSize
+    @ctx.clearRect(0, 0, @view.unitSize, @view.unitSize)
     @drawIcon(icon,0,0)
     src = @canvas.toDataURL()
     result = new Image()
@@ -56,15 +58,15 @@ class ImageProcessor
     @ctx.restore();
 
   clearRect : ->
-    @ctx.clearRect(0, 0, (SceneView.UNIT + 4), (SceneView.UNIT + 4))
+    @ctx.clearRect(0, 0, (@view.unitSize + 4), (@view.unitSize + 4))
 
   paint : (colors) ->
     arcs = ImageProcessor.computeArcs(colors, 12)
-    size = (SceneView.UNIT + 4)
+    size = (@view.unitSize + 4)
     img = @ctx.getImageData(0, 0, size, size).data
-    for y in [0 ... SceneView.UNIT]
+    for y in [0 ... @view.unitSize]
       yy = (y + 2)
-      for x in [0 ... SceneView.UNIT]
+      for x in [0 ... @view.unitSize]
         xx = (x + 2)
         i = (yy * size + xx) * 4
         r = img[i]
@@ -118,7 +120,7 @@ class ImageProcessor
 
   glow : (colors, intensity) ->
     arcs = ImageProcessor.computeArcs(colors, 30)
-    length = SceneView.UNIT + 4
+    length = @view.unitSize + 4
     cells = Util.create2DArray(length, length)
     size = length
     img = @ctx.getImageData(0, 0, size, size).data

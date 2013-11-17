@@ -17,7 +17,7 @@
 # -----------------------------------------------------------------------------
 
 # An object that may exist in a `Scene`, has a unique `id` and receives ticked updates.
-class SceneObject
+class eburp.SceneObject
   constructor: () ->
     @id = _.uniqueId('eburp')
     this

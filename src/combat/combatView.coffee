@@ -225,7 +225,7 @@ class CombatView extends TileView
 
   drawCombatant : (combatant) =>
     if (combatant.customImage)
-      @drawCustom(combatant.customImage, combatant.x + 1, combatant.y, SceneView.UNIT,SceneView.UNIT)
+      @drawCustom(combatant.customImage, combatant.x + 1, combatant.y, @unitSize, @unitSize)
     else
       @drawTile(combatant.getIcon(), combatant.x + 1, combatant.y)
 

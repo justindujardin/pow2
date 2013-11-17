@@ -16,7 +16,7 @@
 #
 # -----------------------------------------------------------------------------
 
-class Button extends Rect
+class Button extends eburp.Rect
 
   buttonOn : false
   text : null

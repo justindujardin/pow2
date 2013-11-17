@@ -23,15 +23,15 @@
 
   The manager instance triggers events to signal
 ###
-class ResourceLoader
+class eburp.ResourceLoader
   constructor: (@game) ->
     @_resources = {}
     # Expose a few built-in types.
     @_types = {
-      'png' : ImageResource
-      'js'  : ScriptResource
-      'json': JSONResource
-      '': AudioResource
+      'png' : eburp.ImageResource
+      'js'  : eburp.ScriptResource
+      'json': eburp.JSONResource
+      '': eburp.AudioResource
     }
 
   registerResourceType: (extension,type) ->
@@ -43,7 +43,7 @@ class ResourceLoader
     url.substr(index + 1)
 
   loadAll: (sources, done) ->
-    sources = [sources] if not Util.isArray(sources)
+    sources = [sources] if not _.isArray(sources)
     loadQueue = 0
     for src in sources
       extension = @getResourceExtension src

@@ -16,10 +16,10 @@
 #
 # -----------------------------------------------------------------------------
 
-class TileMapView extends SceneView
+class eburp.TileMapView extends eburp.SceneView
 
-  constructor: (canvas) ->
-    super(canvas)
+  constructor: (canvas,loader) ->
+    super(canvas,loader)
     @screenOverlays = []
     if @gurk
       for i in [1..5]
@@ -48,7 +48,7 @@ class TileMapView extends SceneView
 
   renderFrame: (scene) ->
     return if not @tileMap
-    clipRect = new Rect(@camera).clip @tileMap.bounds
+    clipRect = new eburp.Rect(@camera).clip @tileMap.bounds
     for x in [clipRect.point.x ... clipRect.getRight()]
       for y in [clipRect.point.y ... clipRect.getBottom()]
         tile = @tileMap.getTerrainIcon x, y
@@ -73,46 +73,48 @@ class TileMapView extends SceneView
   # Tile Rendering Utilities
   # -----------------------------------------------------------------------------
 
-  # Draw a `SceneView.UNIT` sized sprite at a given position.
+  # Draw a `unitSize` sized sprite at a given position.
   drawTile : (icon, pointOrX, yOrScale,scale=1.0) ->
     return if not @_validateImage icon
-    if pointOrX instanceof Point
+    if pointOrX instanceof eburp.Point
       x = pointOrX.x
       y = pointOrX.y
       scale = yOrScale or 1.0
     else
       x = pointOrX
       y = yOrScale
-    coords = Data.sprites[icon];
-    image = Screen.TEXTURES[coords.source].data
-    srcX = coords.x
-    srcY = coords.y
-    srcW = srcH = SceneView.UNIT
-    dstX = x * SceneView.UNIT * @cameraScale * scale
-    dstY = y * SceneView.UNIT * @cameraScale * scale
-    dstW = dstH = SceneView.UNIT  * @cameraScale * scale
+    desc = Data.sprites[icon]
+    image = @getSpriteSheet desc.source
+    return if not image or not image.isReady()
+    srcX = desc.x
+    srcY = desc.y
+    srcW = srcH = @unitSize
+    dstX = x * @unitSize * @cameraScale * scale
+    dstY = y * @unitSize * @cameraScale * scale
+    dstW = dstH = @unitSize  * @cameraScale * scale
     if scale isnt 1.0
       dstX += (dstW * scale) / 4
       dstY += (dstH * scale) / 4
 
-    @context.drawImage(image,srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH)
+    @context.drawImage(image.data,srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH)
 
-  # Draw a `SceneView.UNIT` sized sprite, but stretched to fill a custom
+  # Draw a `@unitSize` sized sprite, but stretched to fill a custom
   # destination width and height.
   drawTileStretch: (icon, x, y, width, height) ->
     return if not @_validateImage icon
     desc = Data.sprites[icon]
-    image = Screen.TEXTURES[desc.source].data
-    dstX = x * SceneView.UNIT * @cameraScale
-    dstY = y * SceneView.UNIT * @cameraScale
-    dstW = width * SceneView.UNIT * @cameraScale
-    dstH = height * SceneView.UNIT * @cameraScale
-    @context.drawImage(image, desc.x,desc.y,SceneView.UNIT,SceneView.UNIT,dstX, dstY, dstW, dstH)
+    image = @getSpriteSheet desc.source
+    return if not image or not image.isReady()
+    dstX = x * @unitSize * @cameraScale
+    dstY = y * @unitSize * @cameraScale
+    dstW = width * @unitSize * @cameraScale
+    dstH = height * @unitSize * @cameraScale
+    @context.drawImage(image.data, desc.x,desc.y,@unitSize,@unitSize,dstX, dstY, dstW, dstH)
 
   drawImage: (image, x, y, width, height) ->
-    dstX = x * SceneView.UNIT * @cameraScale
-    dstY = y * SceneView.UNIT * @cameraScale
-    dstW = dstH = SceneView.UNIT  * @cameraScale
+    dstX = x * @unitSize * @cameraScale
+    dstY = y * @unitSize * @cameraScale
+    dstW = dstH = @unitSize  * @cameraScale
     @context.drawImage(image, x,y,width,height,dstX, dstY, dstW, dstH)
 
   # Draw an image that has been altered by the `ImageProcessor` class.
@@ -121,11 +123,11 @@ class TileMapView extends SceneView
   # total of 4 along x and y axes.  Because of this we render the image
   # 2 pixels to the up and left and an extra 4 on the extents.
   drawCustom: (image, x, y) ->
-    dstX = x * SceneView.UNIT * @cameraScale
-    dstY = y * SceneView.UNIT * @cameraScale
-    dstW = dstH = (SceneView.UNIT + 4) * @cameraScale
+    dstX = x * @unitSize * @cameraScale
+    dstY = y * @unitSize * @cameraScale
+    dstW = dstH = (@unitSize + 4) * @cameraScale
     shift = 2 * @cameraScale
-    @context.drawImage(image, 0,0,SceneView.UNIT + 4,SceneView.UNIT + 4,dstX - shift,dstY - shift, dstW,dstH)
+    @context.drawImage(image, 0,0,@unitSize + 4,@unitSize + 4,dstX - shift,dstY - shift, dstW,dstH)
 
   drawPixel: (color, x, y) ->
     return false if not @context
@@ -145,13 +147,14 @@ class TileMapView extends SceneView
 
   drawAnim: (anim, x, y, frame) ->
     return if not @_validateImage(anim)
-    coords = Data.sprites[anim]
-    srcX = coords.x + (frame * SceneView.UNIT)
-    srcY = coords.y
-    dstX = x * SceneView.UNIT * @cameraScale
-    dstY = y * SceneView.UNIT * @cameraScale
-    dstW = dstH = SceneView.UNIT * @cameraScale
-    @context.drawImage(Screen.TEXTURES[coords.source].data, srcX, srcY, SceneView.UNIT, SceneView.UNIT, dstX,dstY,dstW,dstH)
+    desc = Data.sprites[anim]
+    image = @getSpriteSheet desc.source
+    srcX = desc.x + (frame * @unitSize)
+    srcY = desc.y
+    dstX = x * @unitSize * @cameraScale
+    dstY = y * @unitSize * @cameraScale
+    dstW = dstH = @unitSize * @cameraScale
+    @context.drawImage(image.data, srcX, srcY, @unitSize, @unitSize, dstX,dstY,dstW,dstH)
 
   drawCustomAnim: (custom, x, y) ->
     @context.drawImage(custom, (x - 2) * @cameraScale, (y - 2) * @cameraScale)
@@ -161,6 +164,6 @@ class TileMapView extends SceneView
     desc = Data.sprites[name]
     throw new Error "Missing sprite data for: #{name}" if not desc
     desc
-    image = Screen.TEXTURES[desc.source]
+    image = @getSpriteSheet desc.source
     throw new Error "Missing image from source: #{desc.source}" if not image
     image.isReady()

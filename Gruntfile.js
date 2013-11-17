@@ -62,15 +62,21 @@ module.exports = function(grunt) {
          options:{
             join:true
          },
-         game: {
+         core: {
             src: [
                "src/core/api.coffee",
-               "src/core/util.coffee",
                "src/core/*.coffee",
                "src/resources/*.coffee",
                "src/scene/*.coffee",
                "src/scene/objects/*.coffee",
-               "src/scene/views/*.coffee",
+               "src/scene/views/*.coffee"
+            ],
+            dest: 'web/<%= pkg.name %>.core.js',
+            ext: '.js'
+         },
+         game: {
+            src: [
+               "src/game/util.coffee",
                "src/device.coffee",
                "src/ui/view.coffee",
                "src/ui/*.coffee",
@@ -96,6 +102,7 @@ module.exports = function(grunt) {
          },
          game: {
             files: {
+               'web/<%= pkg.name %>.core.js'    : ['web/<%= pkg.name %>.core.js'],
                'web/<%= pkg.name %>.data.js'    : ['web/<%= pkg.name %>.data.js'],
                'web/<%= pkg.name %>.maps.js'    : ['web/<%= pkg.name %>.maps.js'],
                'web/<%= pkg.name %>.sprites.js' : ['web/<%= pkg.name %>.sprites.js'],
@@ -150,9 +157,10 @@ module.exports = function(grunt) {
          },
          code: {
             files: [
-               '<%= coffee.game.src %>'
+               '<%= coffee.game.src %>',
+               '<%= coffee.core.src %>'
             ],
-            tasks: ['default', 'notify:code']
+            tasks: ['coffee', 'notify:code']
          },
          maps: {
             files: [

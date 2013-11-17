@@ -19,9 +19,9 @@
 # A view that renders a `Scene`.
 #
 # You should probably only have one of these per Canvas that you render to.
-class SceneView
+class eburp.SceneView
   @UNIT: 16
-  constructor: (@canvas) ->
+  constructor: (@canvas,@loader) ->
     @animations = []
     @id = _.uniqueId 'view'
     throw new Error "A Canvas is required" if not @canvas
@@ -30,8 +30,9 @@ class SceneView
     throw new Error "Could not retrieve Canvas context" if not @context
     @context.webkitImageSmoothingEnabled = false
     @context.mozImageSmoothingEnabled = false
-    @camera = new Rect(0,0,9,9)
+    @camera = new eburp.Rect(0,0,9,9)
     @cameraScale = 1.0
+    @unitSize = eburp.SceneView.UNIT
 
   # Scene rendering interfaces
   # -----------------------------------------------------------------------------
@@ -79,6 +80,8 @@ class SceneView
     @context.restore()
 
 
+  getSpriteSheet: (name, done=->) ->
+    @loader.get "images/#{name}.png", done
 
   # Scene Camera updates
   # -----------------------------------------------------------------------------
@@ -102,20 +105,20 @@ class SceneView
   # Convert a Rect/Point/Number from world coordinates (game units) to
   # screen coordinates (pixels)
   worldToScreen: (value,scale=@cameraScale) ->
-    if value instanceof Rect
-      return new Rect(value).scale (SceneView.UNIT * scale)
-    else if value instanceof Point
-      return new Point(value).multiply (SceneView.UNIT * scale)
-    value * (SceneView.UNIT * scale)
+    if value instanceof eburp.Rect
+      return new eburp.Rect(value).scale (@unitSize * scale)
+    else if value instanceof eburp.Point
+      return new eburp.Point(value).multiply (@unitSize * scale)
+    value * (@unitSize * scale)
 
   # Convert a Rect/Point/Number from screen coordinates (pixels) to
   # game world coordinates (game unit sizes)
   screenToWorld: (value,scale=1) ->
-    if value instanceof Rect
-      return new Rect(value).scale 1 / (SceneView.UNIT * scale)
-    else if value instanceof Point
-      return new Point(value).multiply 1 / (SceneView.UNIT * scale)
-    value * (1 / (SceneView.UNIT * scale))
+    if value instanceof eburp.Rect
+      return new eburp.Rect(value).scale 1 / (@unitSize * scale)
+    else if value instanceof eburp.Point
+      return new eburp.Point(value).multiply 1 / (@unitSize * scale)
+    value * (1 / (@unitSize * scale))
 
 
   # Convert a mouse event on the canvas into coordinates that are relative
@@ -124,7 +127,7 @@ class SceneView
     canoffset = $(event.currentTarget).offset();
     x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
     y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
-    new Point x, y
+    new eburp.Point x, y
 
   # Animations
   # -----------------------------------------------------------------------------

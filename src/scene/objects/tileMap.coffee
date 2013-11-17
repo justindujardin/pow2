@@ -16,7 +16,7 @@
 #
 # -----------------------------------------------------------------------------
 
-class TileMap extends SceneObject
+class eburp.TileMap extends eburp.SceneObject
   map : null
   constructor : (mapName) ->
     super()
@@ -25,7 +25,7 @@ class TileMap extends SceneObject
   setMap : (mapName, x, y) ->
     @mapName = mapName
     @map = Data.maps[@mapName]
-    @bounds = new Rect(x,y,@map.width,@map.height)
+    @bounds = new eburp.Rect(x,y,@map.width,@map.height)
 
   getTerrain : (x, y) ->
     return null if not @bounds.pointInRect(x,y)

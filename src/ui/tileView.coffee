@@ -39,7 +39,7 @@ class TileView extends View
 
   constructor : (@gurk, @mapName) ->
     super(@gurk.canvas,@gurk)
-    @tileMap = new TileMap(@mapName)
+    @tileMap = new eburp.TileMap(@mapName)
     if @gurk.scene and @tileMap
       @gurk.scene.addObject @tileMap if not @gurk.scene.findObject @tileMap
     @setMap(@mapName, 0, 0)
@@ -127,7 +127,7 @@ class TileView extends View
       @drawTile(Data.icons.bannerLeft, left, y)
       @drawTileStretch(Data.icons.banner,middle,y,middleWidth,1)
       @drawTile(Data.icons.bannerRight, right, y)
-      rect = new Rect(@camera.point.x, y, @camera.extent.x,1).scale(SceneView.UNIT)
+      rect = new eburp.Rect(@camera.point.x, y, @camera.extent.x,1).scale(@unitSize)
       @gurk.screen.drawTextCentered(@banner, "#FFF", rect.point.x, rect.point.y, rect.extent.x, rect.extent.y,@cameraScale)
 
   setTopBanner : (numMoves, numAttacks, half = false) ->
@@ -141,14 +141,14 @@ class TileView extends View
       if (@topBannerLeft)
         leftX = -Screen.HALF_UNIT
       else
-        leftX = (@camera.extent.x / 2) * SceneView.UNIT - Screen.HALF_UNIT
+        leftX = (@camera.extent.x / 2) * @unitSize - Screen.HALF_UNIT
       y = 0
       x = leftX
       @gurk.screen.drawIcon(Data.icons.bannerLeft, x, y,@cameraScale)
       for i in [0...2]
-        x += SceneView.UNIT
+        x += @unitSize
         @gurk.screen.drawIcon(Data.icons.banner, x, y,@cameraScale)
-      x += SceneView.UNIT
+      x += @unitSize
       @gurk.screen.drawIcon(Data.icons.bannerRight, x, y,@cameraScale)
       x = leftX + Screen.HALF_UNIT + 5
       y = 5

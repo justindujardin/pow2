@@ -19,7 +19,7 @@
 ###*
   Use jQuery to load a JSON file from a URL.
 ###
-class JSONResource extends Resource
+class eburp.JSONResource extends eburp.Resource
   load: () ->
     request = $.getJSON @url
     request.done (object) =>

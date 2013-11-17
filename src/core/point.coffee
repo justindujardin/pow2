@@ -15,14 +15,13 @@
 # limitations under the License.
 #
 # -----------------------------------------------------------------------------
-
-class Point
+class eburp.Point
   constructor: (pointOrX,y) ->
     # No params, default to 0,0
     if pointOrX is undefined
       @set(0,0)
     # Copy constructor from Point
-    else if pointOrX instanceof Point
+    else if pointOrX instanceof eburp.Point
       @set(pointOrX.x,pointOrX.y)
     # Specified as 2 numbers: x,y
     else if y isnt undefined

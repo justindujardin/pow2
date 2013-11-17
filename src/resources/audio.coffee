@@ -19,7 +19,7 @@
 ###*
   Use jQuery to load an Audio resource.
 ###
-class AudioResource extends Resource
+class eburp.AudioResource extends eburp.Resource
   types: {
     'mp3' : 'audio/mpeg'
     'ogg' : 'audio/ogg'

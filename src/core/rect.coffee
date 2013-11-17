@@ -16,29 +16,29 @@
 #
 # -----------------------------------------------------------------------------
 
-class Rect
+class eburp.Rect
   constructor: (rectOrPointOrX,extentOrY,width,height) ->
-    if rectOrPointOrX instanceof Rect
-      @point = new Point rectOrPointOrX.point
-      @extent = new Point rectOrPointOrX.extent
+    if rectOrPointOrX instanceof eburp.Rect
+      @point = new eburp.Point rectOrPointOrX.point
+      @extent = new eburp.Point rectOrPointOrX.extent
     else if width and height
-      @point = new Point rectOrPointOrX,extentOrY
-      @extent = new Point width,height
-    else if rectOrPointOrX instanceof Point and extentOrY instanceof Point
-      @point = new Point rectOrPointOrX
-      @extent = new Point extentOrY
+      @point = new eburp.Point rectOrPointOrX,extentOrY
+      @extent = new eburp.Point width,height
+    else if rectOrPointOrX instanceof eburp.Point and extentOrY instanceof eburp.Point
+      @point = new eburp.Point rectOrPointOrX
+      @extent = new eburp.Point extentOrY
     else
-      @point = new Point
-      @extent = new Point 1, 1
+      @point = new eburp.Point
+      @extent = new eburp.Point 1, 1
 
   set: (rectOrPointOrX,extentOrY,width,height) ->
-    if rectOrPointOrX instanceof Rect
+    if rectOrPointOrX instanceof eburp.Rect
       @point.set(rectOrPointOrX.point)
       @extent.set(rectOrPointOrX.extent)
     else if width and height
       @point.set(rectOrPointOrX,extentOrY)
       @extent.set(width,height)
-    else if rectOrPointOrX instanceof Point and extentOrY instanceof Point
+    else if rectOrPointOrX instanceof eburp.Point and extentOrY instanceof eburp.Point
       @point.set(rectOrPointOrX)
       @extent.set(extentOrY)
 
@@ -65,7 +65,7 @@ class Rect
     @extent.x >= 0 and @extent.y >= 0
 
   pointInRect: (pointOrX,y) ->
-    if pointOrX instanceof Point
+    if pointOrX instanceof eburp.Point
       x = pointOrX.x
       y = pointOrX.y
     else
@@ -75,10 +75,10 @@ class Rect
     true
 
   getCenter: () ->
-    new Point(@point.x + Math.floor(@extent.x * 0.5),@point.y + Math.floor(@extent.y * 0.5))
+    new eburp.Point(@point.x + Math.floor(@extent.x * 0.5),@point.y + Math.floor(@extent.y * 0.5))
 
   setCenter: (pointOrX,y) ->
-    if pointOrX instanceof Point
+    if pointOrX instanceof eburp.Point
       x = pointOrX.x
       y = pointOrX.y
     else

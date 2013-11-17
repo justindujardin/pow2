@@ -22,9 +22,9 @@
   Supports loading and success/error handling. A resource is immediately
   available, and you can get at its internal data when `isReady` returns true.
 
-  Resource objects trigger 'ready' and 'failed' events during their initial loading.
+  eburp.Resource objects trigger 'ready' and 'failed' events during their initial loading.
 ###
-class Resource
+class eburp.Resource
   _.extend @prototype, Backbone.Events
   constructor: (@url,@data=null) ->
     @_ready = @data isnt null

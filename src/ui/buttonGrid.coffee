@@ -16,7 +16,7 @@
 #
 # -----------------------------------------------------------------------------
 
-class ButtonGrid extends SceneView
+class ButtonGrid extends eburp.SceneView
 
   @GURKOID_GLYPHS : {
       'A' : {x : 1, y : 1, width: 5, height: 9},
@@ -68,18 +68,18 @@ class ButtonGrid extends SceneView
     ButtonGrid.offImage = eburp.resources.get("images/buttonoff" + Screen.SCALE + ".png").data
     ButtonGrid.topImage = eburp.resources.get("images/buttontop" + Screen.SCALE + ".png").data
     @buttons = new Array(3)
-    @camera = new Rect(0,0,9,4)
+    @camera = new eburp.Rect(0,0,9,4)
     for y in [0..2]
       @buttons[y] = new Array(3)
       for x in [0..2]
-        @buttons[y][x] = new Button new Rect
+        @buttons[y][x] = new Button new eburp.Rect
     # Set up and enable the directional arrows
     @enableMovement()
     false
 
   processCamera: () ->
     super()
-    oneThird = new Point(@camera.extent).divide(3)
+    oneThird = new eburp.Point(@camera.extent).divide(3)
     for y in [0..2]
       for x in [0..2]
         button = @buttons[y][x]
@@ -99,12 +99,12 @@ class ButtonGrid extends SceneView
         @context.drawImage(image, renderPos.point.x, renderPos.point.y, renderPos.extent.x, renderPos.extent.y);
 
         if button.buttonOn and button.text
-          renderRect = new Rect(button).scale(Screen.UNIT)
+          renderRect = new eburp.Rect(button).scale(Screen.UNIT)
           ButtonGrid.FONT.centerText(@context, button.text, "transparent", renderRect.point.x, renderRect.point.y, renderRect.extent.x, renderRect.extent.y, @cameraScale)
     false
 
   clicked: (e) ->
-    clickPoint = @screenToWorld new Point(e.x, e.y), @cameraScale
+    clickPoint = @screenToWorld new eburp.Point(e.x, e.y), @cameraScale
     for y in [0..2]
       for x in [0..2]
         if @buttons[y][x].pointInRect(clickPoint)

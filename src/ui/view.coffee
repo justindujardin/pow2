@@ -16,7 +16,7 @@
 #
 # -----------------------------------------------------------------------------
 
-class View extends TileMapView
+class View extends eburp.TileMapView
   @LEFT : "1"
   @UP : "2"
   @RIGHT : "3"
@@ -26,7 +26,7 @@ class View extends TileMapView
   name : "No Name"
 
   constructor: (@canvas, @gurk) ->
-    super(@canvas,@gurk)
+    super(@canvas,@gurk.loader)
     @buttons = new Array(3)
     for y in [0..2]
       @buttons[y] = new Array(3)

@@ -20,7 +20,7 @@
 #
 # -----------------------------------------------------------------------------
 
-class eburp.Gurk extends SceneView
+class eburp.Gurk extends eburp.SceneView
 
   stack: null
   view : null
@@ -60,7 +60,7 @@ class eburp.Gurk extends SceneView
     # Get all the images in here
     #Screen.SCALE = 4
     console.log "Preloading Images at scale: #{Screen.SCALE}"
-    eburp.resources = new ResourceLoader()
+    @loader = eburp.resources = new eburp.ResourceLoader()
     eburp.resources.loadAll eburp.Gurk.requires, => @start()
 
 
@@ -123,11 +123,11 @@ class eburp.Gurk extends SceneView
     canvasWork = document.getElementById("workID")
     ctxWork = canvasWork.getContext("2d")
     @screen = new Screen(@screenCanvas,ctx)
-    @imageProcessor = new ImageProcessor(canvasWork, ctxWork, @screen.icons)
+    @imageProcessor = new ImageProcessor(canvasWork, ctxWork, @)
 
     #
     # Create a scene, and add this view to it.
-    @scene = new Scene {
+    @scene = new eburp.Scene {
       game: @game
       debugRender: false
       autoStart:true

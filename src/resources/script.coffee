@@ -19,7 +19,7 @@
 ###*
   Use jQuery to load a Javascript file from a URL.
 ###
-class ScriptResource extends Resource
+class eburp.ScriptResource extends eburp.Resource
   load: () ->
     request = $.getScript @url
     request.done ( script ) =>

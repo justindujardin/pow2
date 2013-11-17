@@ -36,7 +36,7 @@ class FlowView extends AlertView
 
   doDraw : ->
     super()
-    y = AlertView.ICON_Y * 2 + SceneView.UNIT
+    y = AlertView.ICON_Y * 2 + @unitSize
     x = AlertView.ICON_X
     for paragraph in @paragraphs
       if (!paragraph.text)

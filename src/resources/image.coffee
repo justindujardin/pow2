@@ -19,7 +19,7 @@
 ###*
   Use canvas Image to load an image resource.
 ###
-class ImageResource extends Resource
+class eburp.ImageResource extends eburp.Resource
   load: () ->
     reference = new Image()
     reference.onload = =>
