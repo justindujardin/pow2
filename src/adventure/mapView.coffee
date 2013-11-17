@@ -465,8 +465,10 @@ class MapView extends TileView
       when "victory"
         if @game.aboard
           @gurk.playMusic @map.boatMusic or Data.boatMusic
-        else if @map.music
+        else if @map.music && @gurk.getMusicSetting()
           @gurk.playMusic @map.music
+        else
+          @gurk.stopMusic()
         feature = @game.getFeature(@posX, @posY, "encounter")
         if (feature)
           @gurk.game.setMarkers(feature.id)

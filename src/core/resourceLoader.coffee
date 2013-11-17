@@ -76,7 +76,7 @@ class ResourceLoader
       res = @_resources[url] = new resourceType(url) if not res
       res.extension = extension
       if res.isReady()
-        done(res) if done
+        _.defer(() => done(res)) if done
         return res
       res.once 'ready', (resource) =>
         console.log "Loaded asset: #{resource.url}"
