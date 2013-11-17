@@ -135,13 +135,14 @@ class MapView extends TileView
     super()
     partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
     @drawTile(partyIcon, @camera.getCenter())
-    @drawBanner()
-    @drawTopBanner()
-    @renderMiniMap()
 
   renderPost: () ->
     super()
     @fillImage(@shadowOverlay) if @tileMap.map.dark
+    @drawBanner()
+    @drawTopBanner()
+    @renderMiniMap()
+
 
   renderFeatures:(clipRect) ->
     for x in [clipRect.point.x ... clipRect.getRight()]
