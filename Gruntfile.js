@@ -160,7 +160,7 @@ module.exports = function(grunt) {
       recess: {
          options: {
             compile: true,
-            includePath: ["less"]
+            includePath: ["web"]
          },
          game: {
             src: ['web/index.less'],

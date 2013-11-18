@@ -1,5 +1,6 @@
 <!-- EBURP-->
 <!doctype html>
+<html ng-app="eburpDemo">
 <head>
     <title>E.B.U.R.P.</title>
 
@@ -23,14 +24,13 @@
 
 </head>
 <body>
-<div class="button clear">
-    <div class="inner-button button">
-        <h2>OSRPG</h2>
-    </div>
 
+<div class="game-container">
+    <div class="title large" eight-bit-panel>256px challenge</div>
+    <div class="bottom small" eight-bit-panel>And some other things...</div>
+    <canvas id="screenID" width="576" height="576"></canvas>
 </div>
 
-<div><canvas id="screenID" width="576" height="576"></canvas></div>
 <div><canvas id="controlID" width="640" height="400" onclick="phoneClick(event, 0, 0)"></canvas></div>
 <canvas id="workID" width="60px" height="60px"></canvas>
 

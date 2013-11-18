@@ -1,6 +1,5 @@
-@btnColor: white;
-@btnFillColor: #004c62;
-@shadowColor:rgba(0, 0, 0, 0.7);
+@import "less/bootstrap/mixins.less";
+
 //
 body {
   padding:0;
@@ -23,87 +22,77 @@ canvas {
   left:-9000px;
   top:-9000px;
 }
-@media (min-width: 980px){
-  body {
-    padding-top:25px;
+.game-container {
+  position: relative;
+  .title {
+    .eight-bit-panel(10px);
+    font-weight: bold;
+    font-size: 50px;
+    padding: 10px;
+    position: absolute;
+    top: 5%;
+    width:75%;
+    right: 0;
+    left: 0;
+    margin: auto;
+  }
+  .bottom {
+    .eight-bit-panel(6px);
+    font-size: 16px;
+    padding: 4px;
+    position: absolute;
+    bottom: 5%;
+    width:75%;
+    right: 0;
+    left: 0;
+    margin: auto;
   }
 }
-
-
-// Clearfix
-.clear:before, .clear:after {
-  content: "\0020";
-  display: block;
-  height: 0;
-  overflow: hidden;
-}
-
-.clear:after {
-  clear: both;
-}
-
-
 //
 
 
 
-
-// Demo button.
-
-/* main button block */
-.button {
+// eight-bit-panel
+.eight-bit-panel(@btnBorderWidth:10px,@btnColor: white, @btnFillColor:#004c62) {
+  @shadowColor:rgba(0, 0, 0, 0.7);
+  @shadowDepth: @btnBorderWidth / 5;
+  @btnHalfBorder: @btnBorderWidth / 2;
   display:inline-block;
   position: relative;
-  line-height: 90%;
   text-align: center;
-  padding: 5px 5px;
-  height: 90%;
+  padding: @btnHalfBorder @btnHalfBorder;
   color:white;
-  text-shadow: 2px 2px 0 @shadowColor;
-  font-size: 32px;
+  text-shadow: @shadowDepth @shadowDepth 0 @shadowColor;
   font-smooth: never;
   -webkit-font-smoothing : none;
   -moz-font-smoothing : none;
-}
-
-/* common background color to all */
-.button, .button::before, .button::after {
-  background-color: @btnColor;
-  z-index: 50;
-}
-
-.inner-button, .inner-button::before, .inner-button::after {
+  border:@btnBorderWidth solid @btnColor;
+  border-left:none;
+  border-right: none;
   background-color: @btnFillColor;
-  z-index: 100;
-}
 
-.inner-button{
-  //-webkit-box-shadow: 1px 1px 0px 0px @shadowColor;
-//  &::before{
-//    -webkit-box-shadow: -3px 0px 1px -1px @shadowColor;
-//  }
-  &::after{
-    //-webkit-box-shadow: 1px 1px 0px 0px @shadowColor;
+  &::before, &::after{
+    background-color: @btnColor;
+    content: "";
+    position: absolute;
+    width: @btnBorderWidth;
+    height:auto;
+    top: 0;
+    bottom:0;
   }
+  &::before { left: -@btnBorderWidth; }
+  &::after  { right: -@btnBorderWidth; }
+
+  .tl, .tr, .bl, .br {
+    position: absolute;
+    width: @btnBorderWidth;
+    height: @btnBorderWidth;
+    background-color: @btnColor;
+  }
+  .tl{ left: -@btnHalfBorder; top: -@btnHalfBorder; }
+  .tr{ right: -@btnHalfBorder; top: -@btnHalfBorder; }
+  .bl{ left: -@btnHalfBorder; bottom: -@btnHalfBorder; }
+  .br{ right: -@btnHalfBorder; bottom: -@btnHalfBorder; }
 }
 
 
-/* shared styles to make left and right lines */
-.button::before, .button::after {
-  content: "";
-  position: absolute;
-  height: 90%;
-  width: 5%;
-  top: 5%;
-
-}
-
-/* pull the left 'line' out to the left */
-.button::before {
-  left: -5%;
-}
-
-/* pull the right 'line' out to the right */
-.button::after {
-  right: -5%;
-}

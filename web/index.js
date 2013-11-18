@@ -19,3 +19,35 @@ function getData(key) {
 function doCustomDraws() {
    return true;
 }
+
+
+///////////////////////////////
+"use strict";
+/*globals angular,window*/
+
+/**
+ * @class
+ * @singleton
+ */
+var demoGame = window.demoGame = {
+   controllers: {},
+   directives: {}
+};
+
+/**
+ * @singleton
+ * @class
+ * @type {angular.module}
+ */
+demoGame.app = angular.module('eburpDemo', []);
+
+demoGame.app.directive('eightBitPanel', function($compile) {
+   return {
+      restrict: 'A',
+      link: function (scope, element, attrs) {
+         element.addClass('eight-bit-panel');
+         var compiled = $compile('<div class="tl"></div><div class="tr"></div><div class="bl"></div><div class="br"></div>')(scope);
+         element.append(compiled);
+      }
+   };
+});
