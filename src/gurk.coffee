@@ -174,6 +174,7 @@ class eburp.Gurk extends eburp.SceneView
     @view.doLayout()
     @view.setButtons(@buttonGrid)
     @view.draw()
+    $('.game-container .eight-bit-panel').toggle(@view instanceof SplashView);
 
   pushView: (view) =>
     @stack.unshift(@view)
