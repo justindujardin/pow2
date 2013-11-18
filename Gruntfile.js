@@ -16,6 +16,11 @@ module.exports = function(grunt) {
                message: 'Sprite Sheets built.'
             }
          },
+         recess:{
+            options: {
+               message: 'CSS styles built.'
+            }
+         },
          maps:{
             options: {
                message: 'Maps compiled.'
@@ -147,6 +152,22 @@ module.exports = function(grunt) {
             }
          }
       },
+
+
+      /**
+       * Compile game LESS styles to CSS
+       */
+      recess: {
+         options: {
+            compile: true,
+            includePath: ["less"]
+         },
+         game: {
+            src: ['web/index.less'],
+            dest: 'web/css/index.css'
+         }
+      },
+
       /**
        * Trigger a new build when files change
        */
@@ -173,6 +194,12 @@ module.exports = function(grunt) {
                'data/textures/**/*.png'
             ],
             tasks: ['sprites', 'notify:sprites']
+         },
+         styles: {
+            files: [
+               'web/index.less'
+            ],
+            tasks: ['recess', 'notify:recess']
          },
          express: {
             files:  [ 'index.html', 'tools/gameServer.js' ],
@@ -224,15 +251,16 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-contrib-coffee');
    grunt.loadNpmTasks('grunt-contrib-concat');
    grunt.loadNpmTasks('grunt-contrib-uglify');
+   grunt.loadNpmTasks('grunt-recess');
    // Support system notifications in non-production environments
    if(process.env.NODE_ENV !== 'production'){
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-notify');
-      grunt.registerTask('default', ['sprites', 'concat', 'coffee']);
+      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'recess']);
    }
    else {
-      grunt.registerTask('default', ['sprites', 'concat', 'coffee']);
-      grunt.registerTask('heroku:production', ['sprites','concat','coffee', 'uglify']);
+      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'recess']);
+      grunt.registerTask('heroku:production', ['sprites','concat','coffee', 'uglify', 'recess']);
    }
 };

@@ -8,6 +8,10 @@
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" type="text/css" href="css/index.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="fonts/minecraftia/stylesheet.css" media="all" />
+
+
     <script type="text/javascript">
         var pixelWidth = 4;
     </script>
@@ -15,37 +19,17 @@
     <script type="text/javascript" src="js/backbone-min.js"></script>
     <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="js/enquire.js"></script>
-    <style type="text/css">
-        body {
-            padding:0;
-            margin:0;
-            text-align: center;
-            background-color: #080808;
-        }
-        canvas {
-            image-rendering: optimizeSpeed;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: -o-crisp-edges;
-            image-rendering: optimize-contrast;
-            -ms-interpolation-mode: nearest-neighbor;
-        }
-        #workID{
-            position:absolute;
-            left:-9000px;
-            top:-9000px;
-        }
-        @media (min-width: 980px){
-            body {
-                padding-top:25px;
-            }
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
 
-        }
-
-
-    </style>
 </head>
 <body>
+<div class="button clear">
+    <div class="inner-button button">
+        <h2>OSRPG</h2>
+    </div>
+
+</div>
+
 <div><canvas id="screenID" width="576" height="576"></canvas></div>
 <div><canvas id="controlID" width="640" height="400" onclick="phoneClick(event, 0, 0)"></canvas></div>
 <canvas id="workID" width="60px" height="60px"></canvas>

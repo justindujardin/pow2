@@ -1,0 +1,109 @@
+@btnColor: white;
+@btnFillColor: #004c62;
+@shadowColor:rgba(0, 0, 0, 0.7);
+//
+body {
+  padding:0;
+  margin:0;
+  text-align: center;
+  background-color: #080808;
+  font-family: 'minecraftiaregular',monospace !important;
+  color:white;
+}
+canvas {
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -o-crisp-edges;
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+#workID{
+  position:absolute;
+  left:-9000px;
+  top:-9000px;
+}
+@media (min-width: 980px){
+  body {
+    padding-top:25px;
+  }
+}
+
+
+// Clearfix
+.clear:before, .clear:after {
+  content: "\0020";
+  display: block;
+  height: 0;
+  overflow: hidden;
+}
+
+.clear:after {
+  clear: both;
+}
+
+
+//
+
+
+
+
+// Demo button.
+
+/* main button block */
+.button {
+  display:inline-block;
+  position: relative;
+  line-height: 90%;
+  text-align: center;
+  padding: 5px 5px;
+  height: 90%;
+  color:white;
+  text-shadow: 2px 2px 0 @shadowColor;
+  font-size: 32px;
+  font-smooth: never;
+  -webkit-font-smoothing : none;
+  -moz-font-smoothing : none;
+}
+
+/* common background color to all */
+.button, .button::before, .button::after {
+  background-color: @btnColor;
+  z-index: 50;
+}
+
+.inner-button, .inner-button::before, .inner-button::after {
+  background-color: @btnFillColor;
+  z-index: 100;
+}
+
+.inner-button{
+  //-webkit-box-shadow: 1px 1px 0px 0px @shadowColor;
+//  &::before{
+//    -webkit-box-shadow: -3px 0px 1px -1px @shadowColor;
+//  }
+  &::after{
+    //-webkit-box-shadow: 1px 1px 0px 0px @shadowColor;
+  }
+}
+
+
+/* shared styles to make left and right lines */
+.button::before, .button::after {
+  content: "";
+  position: absolute;
+  height: 90%;
+  width: 5%;
+  top: 5%;
+
+}
+
+/* pull the left 'line' out to the left */
+.button::before {
+  left: -5%;
+}
+
+/* pull the right 'line' out to the right */
+.button::after {
+  right: -5%;
+}
