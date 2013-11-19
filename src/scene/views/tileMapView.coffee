@@ -21,9 +21,6 @@ class eburp.TileMapView extends eburp.SceneView
   constructor: (canvas,loader) ->
     super(canvas,loader)
     @screenOverlays = []
-    if @gurk
-      for i in [1..5]
-        @screenOverlays.push @gurk.imageProcessor.isolateSprite("screen#{i}.png")
     @
 
   featureVisible: (feature) -> true
@@ -57,7 +54,7 @@ class eburp.TileMapView extends eburp.SceneView
     @
 
   renderPost: (scene) ->
-    overlay = @screenOverlays[@cameraScale-1]
+    overlay = @getScreenOverlay()
     return if not overlay
     @fillTiles(overlay)
 
@@ -69,6 +66,12 @@ class eburp.TileMapView extends eburp.SceneView
         @drawTile(feature.icon, feature.x, feature.y) if feature.icon
     @
 
+  # Overlay to make scaled up pixel art look nice.
+  getScreenOverlay: () ->
+    if @imageProcessor and @screenOverlays.length == 0
+      for i in [1..5]
+        @screenOverlays.push @imageProcessor.isolateSprite("screen#{i}.png")
+    @screenOverlays[3]
 
   # Tile Rendering Utilities
   # -----------------------------------------------------------------------------
