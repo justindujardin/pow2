@@ -64,6 +64,7 @@ class eburp.TileMapView extends eburp.SceneView
         continue if not clipRect.pointInRect feature.x, feature.y
         continue if not @featureVisible(feature)
         @drawTile(feature.icon, feature.x, feature.y) if feature.icon
+        @drawImage(feature.image, feature.x, feature.y) if feature.image
     @
 
   # Overlay to make scaled up pixel art look nice.
@@ -114,11 +115,11 @@ class eburp.TileMapView extends eburp.SceneView
     dstH = height * @unitSize * @cameraScale
     @context.drawImage(image.data, desc.x,desc.y,@unitSize,@unitSize,dstX, dstY, dstW, dstH)
 
-  drawImage: (image, x, y, width, height) ->
+  drawImage: (image, x, y, width=@unitSize, height=@unitSize) ->
     dstX = x * @unitSize * @cameraScale
     dstY = y * @unitSize * @cameraScale
     dstW = dstH = @unitSize  * @cameraScale
-    @context.drawImage(image, x,y,width,height,dstX, dstY, dstW, dstH)
+    @context.drawImage(image, 0,0,width,height,dstX, dstY, dstW, dstH)
 
   # Draw an image that has been altered by the `eburp.ImageProcessor` class.
   #

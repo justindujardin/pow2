@@ -46,6 +46,7 @@ twoFiftySix.app.directive('twoFiftySix', function($compile) {
             "images/items.png",
             "images/ui.png"
          ],function(){
+            var image = $(".drop-target img")[0];
             var tileView = new eburp.TileMapView(element[0],loader);
             tileView.imageProcessor = new eburp.ImageProcessor(renderCanvas[0], tileView);
             tileView.tileMap = new eburp.TileMap("town");
@@ -58,16 +59,18 @@ twoFiftySix.app.directive('twoFiftySix', function($compile) {
                type : "sign",
                x : 12,
                y : 8,
-               icon : "party.png"
+               image : image
             };
             tileView.tileMap.map.features.push(challengeSpriteFeature);
             // HACKS: Draw the party sprite.  TODO: require image-drop directive.
             var sprite = tileView.imageProcessor.isolateSprite("party.png");
-            sprite.onload = function(){
+            image.src = sprite.src;
+            image.onload = function(){
                var canvas = $("canvas.image-drop")[0];
                var context = canvas.getContext("2d");
                context.clearRect(0,0,128,128);
                context.drawImage(sprite,0,0,128,128); // Or at whatever offset you like
+
             };
             console.log("READY TO GO!");
          });
@@ -117,14 +120,15 @@ twoFiftySix.app.directive('imageDrop', function($compile) {
       // When the file is done loading, POST to the server.
       reader.onloadend = function(evt){
          var data = evt.target.result;
-         var img = new Image;
-         img.onload = function(){
+         var image = $(".drop-target img")[0];
+         image.onload = function(){
             context.clearRect(0,0,128,128);
-            context.drawImage(img,0,0,128,128);
+            context.drawImage(image,0,0,128,128);
             // TODO: Append this image and stretch it up.  This way designers can save-as.
             $(".drop-target .filename").text(file.name);
+
          };
-         img.src = data;
+         image.src =  data;
 
 
 
