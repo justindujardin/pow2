@@ -57,6 +57,12 @@ server.get('/', function(req, res) {
     });
 });
 
+server.get('/256', function(req, res) {
+    fs.readFile(path.join(__dirname,'../web/twofiftysix.html'), 'utf8', function(err, text){
+        res.send(text);
+    });
+});
+
 
 var listen = server.listen(serverPort);
 listen.on('error', function (e) {

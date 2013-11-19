@@ -20,7 +20,7 @@ class Screen
 
   @UNIT : 16
   @HALF_UNIT : Screen.UNIT / 2
-  @SCALE : pixelWidth
+  @SCALE : 4
   # Screen.SIZE is the size of the screen = 9 world units = 144px of source textures.
   @SIZE : @UNIT * 9
   @GURK_BLUE : "#004c62"

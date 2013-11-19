@@ -40,16 +40,3 @@ var demoGame = window.demoGame = {
  * @type {angular.module}
  */
 demoGame.app = angular.module('eburpDemo', []);
-
-demoGame.app.directive('eightBitPanel', function($compile) {
-   return {
-      restrict: 'A',
-      transclude:true,
-      template: '<div class="ebp-frame"><div class="tl"></div><div class="tr"></div><div class="bl"></div><div class="br"></div><div class="content"  ng-transclude></div></div>',
-      link: function (scope, element, attrs) {
-         element.addClass('ebp');
-         var compiled = $compile('')(scope);
-         element.append(compiled);
-      }
-   };
-});

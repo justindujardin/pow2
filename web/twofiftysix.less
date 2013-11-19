@@ -1,0 +1,51 @@
+// Core variables and mixins
+@import "less/bootstrap/variables";
+@import "less/bootstrap/mixins";
+
+// Reset
+@import "less/bootstrap/normalize";
+@import "less/bootstrap/print";
+
+// Core CSS
+@import "less/bootstrap/scaffolding";
+@import "less/bootstrap/type";
+@import "less/bootstrap/code";
+@import "less/bootstrap/grid";
+@import "less/bootstrap/tables";
+@import "less/bootstrap/forms";
+@import "less/bootstrap/buttons";
+
+// Utility classes
+@import "less/bootstrap/utilities";
+@import "less/bootstrap/responsive-utilities";
+@import "less/eightBitPanel";
+
+body {
+  text-align:center;
+  background-color: darken(#212121,5%);
+}
+
+.container {
+  .row {
+    margin-top:25px;
+  }
+  .game-view {
+    .ebp-frame {
+      padding:0;
+
+      .content {
+        height:576px;
+      }
+    }
+  }
+  .drop-target {
+    margin-left:auto;
+    margin-right:auto;
+    width:256px;
+    height:256px;
+    .ebp-frame {
+      width:100%;
+      height:100%;
+    }
+  }
+}

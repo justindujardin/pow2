@@ -163,8 +163,10 @@ module.exports = function(grunt) {
             includePath: ["web"]
          },
          game: {
-            src: ['web/index.less'],
-            dest: 'web/css/index.css'
+            files: [
+               {src: 'web/index.less', dest: 'web/css/index.css'},
+               {src: 'web/twofiftysix.less', dest: 'web/css/twofiftysix.css'}
+            ]
          }
       },
 
@@ -197,7 +199,9 @@ module.exports = function(grunt) {
          },
          styles: {
             files: [
-               'web/index.less'
+               'web/*.less',
+               'web/less/*.less',
+               'web/less/bootstrap/*.less'
             ],
             tasks: ['recess', 'notify:recess']
          },
