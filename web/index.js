@@ -19,3 +19,24 @@ function getData(key) {
 function doCustomDraws() {
    return true;
 }
+
+
+///////////////////////////////
+"use strict";
+/*globals angular,window*/
+
+/**
+ * @class
+ * @singleton
+ */
+var demoGame = window.demoGame = {
+   controllers: {},
+   directives: {}
+};
+
+/**
+ * @singleton
+ * @class
+ * @type {angular.module}
+ */
+demoGame.app = angular.module('eburpDemo', []);

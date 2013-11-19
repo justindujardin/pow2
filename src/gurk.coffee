@@ -121,9 +121,8 @@ class eburp.Gurk extends eburp.SceneView
     ctx.webkitImageSmoothingEnabled = false
     ctx.mozImageSmoothingEnabled = false;
     canvasWork = document.getElementById("workID")
-    ctxWork = canvasWork.getContext("2d")
     @screen = new Screen(@screenCanvas,ctx)
-    @imageProcessor = new ImageProcessor(canvasWork, ctxWork, @)
+    @imageProcessor = new eburp.ImageProcessor canvasWork, @
 
     #
     # Create a scene, and add this view to it.
@@ -174,6 +173,7 @@ class eburp.Gurk extends eburp.SceneView
     @view.doLayout()
     @view.setButtons(@buttonGrid)
     @view.draw()
+    $('.game-container .eight-bit-panel').toggle(@view instanceof SplashView);
 
   pushView: (view) =>
     @stack.unshift(@view)

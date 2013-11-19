@@ -1,0 +1,60 @@
+// Core variables and mixins
+@import "less/bootstrap/variables";
+@import "less/bootstrap/mixins";
+
+// Reset
+@import "less/bootstrap/normalize";
+@import "less/bootstrap/print";
+
+// Core CSS
+@import "less/bootstrap/scaffolding";
+@import "less/bootstrap/type";
+@import "less/bootstrap/code";
+@import "less/bootstrap/grid";
+@import "less/bootstrap/tables";
+@import "less/bootstrap/forms";
+@import "less/bootstrap/buttons";
+
+// Utility classes
+@import "less/bootstrap/utilities";
+@import "less/bootstrap/responsive-utilities";
+
+//@import "less/bootstrap/bootstrap.less";//
+body {
+  padding:0;
+  margin:0;
+  text-align: center;
+  background-color: black;
+}
+canvas {
+  image-rendering: optimizeSpeed;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: -o-crisp-edges;
+  image-rendering: optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+#workID{
+  position:absolute;
+  left:-9000px;
+  top:-9000px;
+}
+.game-container {
+  position: relative;
+  .title {
+    position: absolute;
+    top: 5%;
+    width:75%;
+    right: 0;
+    left: 0;
+    margin: auto;
+  }
+  .bottom {
+    position: absolute;
+    bottom: 5%;
+    width:45%;
+    right: 0;
+    left: 0;
+    margin: auto;
+  }
+}

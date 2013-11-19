@@ -1,0 +1,69 @@
+
+.ebp {
+  .ebp-frame{
+    width:auto;
+    height:auto;
+    .eight-bit-panel(6px);
+    font-size: 16px;
+    padding: 6px;
+  }
+  &.small .ebp-frame {
+    .eight-bit-panel(2px);
+    font-size: 14px;
+    padding: 2px;
+  }
+  &.large .ebp-frame {
+    .eight-bit-panel(10px);
+    font-weight: bold;
+    font-size: 50px;
+    padding: 10px;
+  }
+
+}
+
+// eight-bit-panel
+.eight-bit-panel(@borderWidth:10px,@color: white, @backgroundColor:#004c62) {
+  @shadowColor:rgba(0, 0, 0, 0.7);
+  @shadowDepth: @borderWidth / 5;
+  @btnHalfBorder: @borderWidth / 2;
+  font-family: 'minecraftiaregular',monospace;
+  color: @color;
+  display:inline-block;
+  position: relative;
+  text-align: center;
+  padding: @btnHalfBorder @btnHalfBorder;
+  text-shadow: @shadowDepth @shadowDepth 0 @shadowColor;
+  font-smooth: never;
+  -webkit-font-smoothing : none;
+  -moz-font-smoothing : none;
+  border: @borderWidth solid @color;
+  border-left:none;
+  border-right: none;
+  background-color: @backgroundColor;
+  margin-left:-@borderWidth;
+  margin-right:-@borderWidth;
+
+  &::before, &::after{
+    background-color: @color;
+    content: "";
+    position: absolute;
+    width: @borderWidth;
+    height:auto;
+    top: 0;
+    bottom:0;
+  }
+  &::before { left: -@borderWidth; }
+  &::after  { right: -@borderWidth; }
+
+  .tl, .tr, .bl, .br {
+    position: absolute;
+    width: @borderWidth;
+    height: @borderWidth;
+    background-color: @color;
+  }
+  .tl{ left: -@btnHalfBorder; top: -@btnHalfBorder; }
+  .tr{ right: -@btnHalfBorder; top: -@btnHalfBorder; }
+  .bl{ left: -@btnHalfBorder; bottom: -@btnHalfBorder; }
+  .br{ right: -@btnHalfBorder; bottom: -@btnHalfBorder; }
+}
+

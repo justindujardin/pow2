@@ -16,14 +16,19 @@
 #
 # -----------------------------------------------------------------------------
 
-class ImageProcessor
+class eburp.ImageProcessor
 
   @UP : 0
   @RIGHT : 90
   @DOWN : 180
   @LEFT : 270
 
-  constructor : (@canvas, @ctx, @view) ->
+  constructor : (@canvas, @view) ->
+    @context = @canvas.getContext("2d")
+    throw new Error "Could not retrieve Canvas context" if not @context
+    @context.webkitImageSmoothingEnabled = false
+    @context.mozImageSmoothingEnabled = false
+
     # No-op
 
   drawIcon : (icon, x=2,y=2) ->
@@ -31,7 +36,7 @@ class ImageProcessor
     throw new Error "Cannot find sprite sheet for : #{icon}" if not coords
     image = @view.getSpriteSheet(coords.source)
     return if not image or not image.isReady()
-    @ctx.drawImage(image.data, coords.x, coords.y, @view.unitSize, @view.unitSize, x, y, @view.unitSize, @view.unitSize)
+    @context.drawImage(image.data, coords.x, coords.y, @view.unitSize, @view.unitSize, x, y, @view.unitSize, @view.unitSize)
 
   # Pick a single sprite out of a sheet, and return an image that contains only that sprite.
   isolateSprite: (icon) ->
@@ -39,7 +44,7 @@ class ImageProcessor
     saveH = @canvas.height
     @canvas.width = @view.unitSize
     @canvas.height = @view.unitSize
-    @ctx.clearRect(0, 0, @view.unitSize, @view.unitSize)
+    @context.clearRect(0, 0, @view.unitSize, @view.unitSize)
     @drawIcon(icon,0,0)
     src = @canvas.toDataURL()
     result = new Image()
@@ -49,21 +54,21 @@ class ImageProcessor
 
     result
   drawRotated : (icon, degrees) ->
-    @ctx.save();
+    @context.save();
     t = (Screen.HALF_UNIT + 2)
-    @ctx.translate(t, t)
-    @ctx.rotate(degrees * Math.PI / 180)
-    @ctx.translate(-t, -t)
+    @context.translate(t, t)
+    @context.rotate(degrees * Math.PI / 180)
+    @context.translate(-t, -t)
     @drawIcon(icon)
-    @ctx.restore();
+    @context.restore();
 
   clearRect : ->
-    @ctx.clearRect(0, 0, (@view.unitSize + 4), (@view.unitSize + 4))
+    @context.clearRect(0, 0, (@view.unitSize + 4), (@view.unitSize + 4))
 
   paint : (colors) ->
-    arcs = ImageProcessor.computeArcs(colors, 12)
+    arcs = eburp.ImageProcessor.computeArcs(colors, 12)
     size = (@view.unitSize + 4)
-    img = @ctx.getImageData(0, 0, size, size).data
+    img = @context.getImageData(0, 0, size, size).data
     for y in [0 ... @view.unitSize]
       yy = (y + 2)
       for x in [0 ... @view.unitSize]
@@ -74,12 +79,12 @@ class ImageProcessor
         b = img[i + 2]
         a = img[i + 3]
         if a > 0 and (r > 0 or g > 0 or b > 0)
-          c = ImageProcessor.blend(colors, arcs, Screen.HALF_UNIT - y, Screen.HALF_UNIT - x)
+          c = eburp.ImageProcessor.blend(colors, arcs, Screen.HALF_UNIT - y, Screen.HALF_UNIT - x)
           r = if c.red > 0 then Math.min(255, r + c.red) else Math.max(0, r + c.red)
           g = if c.green > 0 then Math.min(255, g + c.green) else Math.max(0, g + c.green)
           b = if c.blue > 0 then Math.min(255, b + c.blue) else Math.max(0, b + c.blue)
-          @ctx.fillStyle = "rgba(#{r},#{g},#{b},#{a})"
-          @ctx.fillRect(xx, yy, 1, 1)
+          @context.fillStyle = "rgba(#{r},#{g},#{b},#{a})"
+          @context.fillRect(xx, yy, 1, 1)
     src = @canvas.toDataURL()
     result = new Image()
     result.src = src
@@ -108,7 +113,22 @@ class ImageProcessor
     else
       p1 = a2 - min * arcs / Math.PI / 2
       p2 = max * arcs / Math.PI / 2 - a2
-      return Util.blendColors(colors[a1 % colors.length], colors[a2 % colors.length], p1 / (p1 + p2), p2 / (p1 + p2))
+      return @blendColors(colors[a1 % colors.length], colors[a2 % colors.length], p1 / (p1 + p2), p2 / (p1 + p2))
+
+
+  create2DArray: (width, height,value) ->
+    a = []
+    for y in [0 ... height]
+      b = []
+      a.push(b)
+      b.push(value) for x in [0 ... width]
+    a
+
+  blendColors : (color1, color2, p1, p2) ->
+    red = Math.round(color1.red * p1 + color2.red * p2)
+    green = Math.round(color1.green * p1 + color2.green * p2)
+    blue = Math.round(color1.blue * p1 + color2.blue * p2)
+    {"red" : red, "green" : green, "blue" : blue}
 
   @computeArcs : (colors, target) ->
     n = colors.length
@@ -119,11 +139,11 @@ class ImageProcessor
       return k * n
 
   glow : (colors, intensity) ->
-    arcs = ImageProcessor.computeArcs(colors, 30)
+    arcs = eburp.ImageProcessor.computeArcs(colors, 30)
     length = @view.unitSize + 4
-    cells = Util.create2DArray(length, length)
+    cells = @create2DArray(length, length)
     size = length
-    img = @ctx.getImageData(0, 0, size, size).data
+    img = @context.getImageData(0, 0, size, size).data
     for y in [0 ... length - 2]
       yy = y
       for x in [0 ... length]
@@ -171,13 +191,13 @@ class ImageProcessor
           xx = x
           i = (yy * size + xx) * 4
           if (cells[y][x] == 1)
-            @ctx.globalAlpha = intensity / 100 / 3
+            @context.globalAlpha = intensity / 100 / 3
           else
-            @ctx.globalAlpha = intensity / 100
-          c = ImageProcessor.blend(colors, arcs, length / 2 - y, length / 2 - x)
-          @ctx.fillStyle = "rgba(#{c.red},#{c.green},#{c.blue},255)"
-          @ctx.fillRect(xx, yy, 1, 1)
-    @ctx.globalAlpha = 1
+            @context.globalAlpha = intensity / 100
+          c = eburp.ImageProcessor.blend(colors, arcs, length / 2 - y, length / 2 - x)
+          @context.fillStyle = "rgba(#{c.red},#{c.green},#{c.blue},255)"
+          @context.fillRect(xx, yy, 1, 1)
+    @context.globalAlpha = 1
     src = @canvas.toDataURL()
     result = new Image()
     result.src = src

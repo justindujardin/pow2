@@ -1,6 +1,6 @@
 <!-- EBURP-->
 <!doctype html>
-<html ng-app="eburpDemo">
+<html ng-app="twoFiftySix">
 <head>
     <title>E.B.U.R.P.</title>
 
@@ -9,28 +9,29 @@
     <meta http-equiv="Content-Script-Type" content="text/javascript" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" type="text/css" href="css/index.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="css/twofiftysix.css" media="all" />
     <link rel="stylesheet" type="text/css" href="fonts/minecraftia/stylesheet.css" media="all" />
-
-
-    <script type="text/javascript">
-        var pixelWidth = 4;
-    </script>
+    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="js/underscore-min.js"></script>
     <script type="text/javascript" src="js/backbone-min.js"></script>
-    <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="js/enquire.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
-
 </head>
 <body>
 
-<div class="game-container">
-    <canvas id="screenID" width="576" height="576"></canvas>
+<div class="drop-overlay"></div>
+<div class="container">
+    <div class="row large" eight-bit-panel>256px challenge</div>
+    <div class="game-view row large" eight-bit-panel>
+        <canvas width="576" height="576" two-fifty-six>Your browser doesn't support this.</canvas>
+    </div>
 </div>
 
-<div><canvas id="controlID" width="640" height="400" onclick="phoneClick(event, 0, 0)"></canvas></div>
-<canvas id="workID" width="60px" height="60px"></canvas>
+<div class="container">
+    <div class="drop-target row" eight-bit-panel>
+        <canvas width="128" height="128" image-drop></canvas>
+        <span class="filename">Party.PNG</span>
+    </div>
+</div>
 
 <!-- Compiled Game Files -->
 <script type="text/javascript" src="eburp.core.js"></script>
@@ -38,7 +39,7 @@
 <script type="text/javascript" src="eburp.data.js"></script>
 <script type="text/javascript" src="eburp.sprites.js"></script>
 <script type="text/javascript" src="eburp.maps.js"></script>
-<script type="text/javascript" src="index.js"></script>
+<script type="text/javascript" src="twofiftysix.js"></script>
 
 </body>
 </html>

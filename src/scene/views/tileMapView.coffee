@@ -21,9 +21,6 @@ class eburp.TileMapView extends eburp.SceneView
   constructor: (canvas,loader) ->
     super(canvas,loader)
     @screenOverlays = []
-    if @gurk
-      for i in [1..5]
-        @screenOverlays.push @gurk.imageProcessor.isolateSprite("screen#{i}.png")
     @
 
   featureVisible: (feature) -> true
@@ -57,7 +54,7 @@ class eburp.TileMapView extends eburp.SceneView
     @
 
   renderPost: (scene) ->
-    overlay = @screenOverlays[@cameraScale-1]
+    overlay = @getScreenOverlay()
     return if not overlay
     @fillTiles(overlay)
 
@@ -69,6 +66,12 @@ class eburp.TileMapView extends eburp.SceneView
         @drawTile(feature.icon, feature.x, feature.y) if feature.icon
     @
 
+  # Overlay to make scaled up pixel art look nice.
+  getScreenOverlay: () ->
+    if @imageProcessor and @screenOverlays.length == 0
+      for i in [1..5]
+        @screenOverlays.push @imageProcessor.isolateSprite("screen#{i}.png")
+    @screenOverlays[3]
 
   # Tile Rendering Utilities
   # -----------------------------------------------------------------------------
@@ -117,7 +120,7 @@ class eburp.TileMapView extends eburp.SceneView
     dstW = dstH = @unitSize  * @cameraScale
     @context.drawImage(image, x,y,width,height,dstX, dstY, dstW, dstH)
 
-  # Draw an image that has been altered by the `ImageProcessor` class.
+  # Draw an image that has been altered by the `eburp.ImageProcessor` class.
   #
   # The ImageProcessor pads out images by 2 pixels on all sides, for a
   # total of 4 along x and y axes.  Because of this we render the image

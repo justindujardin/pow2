@@ -26,6 +26,7 @@ class View extends eburp.TileMapView
   name : "No Name"
 
   constructor: (@canvas, @gurk) ->
+    @imageProcessor = @gurk.imageProcessor
     super(@canvas,@gurk.loader)
     @buttons = new Array(3)
     for y in [0..2]
