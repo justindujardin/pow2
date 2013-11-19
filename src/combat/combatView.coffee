@@ -197,14 +197,14 @@ class CombatView extends TileView
     dy = ty - sy;
     if (Math.abs(dx) > Math.abs(dy))
       if (dx > 0)
-        angle = ImageProcessor.RIGHT
+        angle = eburp.ImageProcessor.RIGHT
       else
-        angle = ImageProcessor.LEFT
+        angle = eburp.ImageProcessor.LEFT
     else
       if (dy > 0)
-        angle = ImageProcessor.DOWN
+        angle = eburp.ImageProcessor.DOWN
       else
-        angle = ImageProcessor.UP
+        angle = eburp.ImageProcessor.UP
     @gurk.imageProcessor.rotate(animation, angle)
 
   queueFly : (sx, sy, tx, ty, animation, info) =>

@@ -117,7 +117,7 @@ class eburp.TileMapView extends eburp.SceneView
     dstW = dstH = @unitSize  * @cameraScale
     @context.drawImage(image, x,y,width,height,dstX, dstY, dstW, dstH)
 
-  # Draw an image that has been altered by the `ImageProcessor` class.
+  # Draw an image that has been altered by the `eburp.ImageProcessor` class.
   #
   # The ImageProcessor pads out images by 2 pixels on all sides, for a
   # total of 4 along x and y axes.  Because of this we render the image
