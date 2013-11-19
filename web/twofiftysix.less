@@ -24,7 +24,18 @@ body {
   text-align:center;
   background-color: darken(#212121,5%);
 }
-
+.drop-overlay {
+  padding: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  position: fixed;
+  background-color: #222222;
+  display: none;
+  z-index: 50;
+  opacity: 0.9;
+}
 .container {
   .row {
     margin-top:25px;
@@ -42,7 +53,11 @@ body {
     margin-left:auto;
     margin-right:auto;
     width:256px;
-    height:256px;
+    text-align:center;
+    canvas {
+      display: block;
+      margin: auto;
+    }
     .ebp-frame {
       width:100%;
       height:100%;
