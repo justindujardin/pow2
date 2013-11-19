@@ -120,10 +120,13 @@ twoFiftySix.app.directive('imageDrop', function($compile) {
          var img = new Image;
          img.onload = function(){
             context.clearRect(0,0,128,128);
-            context.drawImage(img,0,0,128,128); // Or at whatever offset you like
+            context.drawImage(img,0,0,128,128);
+            // TODO: Append this image and stretch it up.  This way designers can save-as.
             $(".drop-target .filename").text(file.name);
          };
          img.src = data;
+
+
 
       };
 
