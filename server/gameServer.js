@@ -78,10 +78,11 @@ server.get('/', function (req, res) {
 server.get('/auth/facebook', function (req, res) {
 // we don't have a code yet
 // so we'll redirect to the oauth dialog
+   var redirect = "http://" + req.headers.host + "/auth/facebook";
    if (!req.query.code) {
       var authUrl = graph.getOauthUrl({
          "appId": conf.appId,
-         "redirect_uri": "http://" + req.headers.host + "/auth/facebook",
+         "redirect_uri": redirect,
          "scope": conf.scope
       });
 
@@ -98,7 +99,7 @@ server.get('/auth/facebook', function (req, res) {
 
    graph.authorize({
       "appId": conf.appId,
-      "redirect_uri": conf.redirect_uri,
+      "redirect_uri": redirect,
       "appSecret": conf.appSecret,
       "code": req.query.code
    }, function (err, result) {
