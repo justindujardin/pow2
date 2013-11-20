@@ -15,8 +15,7 @@ if(!process.env.FB_APPID || !process.env.FB_SECRET){
 var conf = {
    appId: process.env.FB_APPID || require("../.env.json").appId,
    appSecret: process.env.FB_SECRET || require("../.env.json").appSecret,
-   scope: 'email',
-   redirect_uri: 'http://localhost:5215/auth/facebook'
+   scope: 'email'
 };
 
 server.staticPath = function (url, path) {
@@ -82,7 +81,7 @@ server.get('/auth/facebook', function (req, res) {
    if (!req.query.code) {
       var authUrl = graph.getOauthUrl({
          "appId": conf.appId,
-         "redirect_uri": conf.redirect_uri,
+         "redirect_uri": "http://" + req.headers.host + "/auth/facebook",
          "scope": conf.scope
       });
 
