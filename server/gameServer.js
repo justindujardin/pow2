@@ -8,13 +8,13 @@ var graph = require('fbgraph');
 var server = express();
 var serverPort = process.env.PORT || 5215;
 
-if(!process.env.FACEBOOK_APP_ID || !process.env.FACEBOOK_SECRET){
+if(!process.env.FB_APPID || !process.env.FB_SECRET){
    console.log("No Facebook environment variables, attempting to load from '../.env.json'");
    var config = require('../.env.json');
 }
 var conf = {
-   client_id: process.env.FACEBOOK_APP_ID || require("../.env.json").appId,
-   client_secret: process.env.FACEBOOK_SECRET || require("../.env.json").appSecret,
+   appId: process.env.FB_APPID || require("../.env.json").appId,
+   appSecret: process.env.FB_SECRET || require("../.env.json").appSecret,
    scope: 'email',
    redirect_uri: 'http://localhost:5215/auth/facebook'
 };
@@ -81,7 +81,7 @@ server.get('/auth/facebook', function (req, res) {
 // so we'll redirect to the oauth dialog
    if (!req.query.code) {
       var authUrl = graph.getOauthUrl({
-         "client_id": conf.client_id,
+         "appId": conf.appId,
          "redirect_uri": conf.redirect_uri,
          "scope": conf.scope
       });
@@ -98,9 +98,9 @@ server.get('/auth/facebook', function (req, res) {
    // we'll send that and get the access token
 
    graph.authorize({
-      "client_id": conf.client_id,
+      "appId": conf.appId,
       "redirect_uri": conf.redirect_uri,
-      "client_secret": conf.client_secret,
+      "appSecret": conf.appSecret,
       "code": req.query.code
    }, function (err, result) {
       if(!err){
@@ -114,7 +114,7 @@ server.get('/auth/facebook', function (req, res) {
 server.get('/256', function (req, res) {
    if(req.session && req.session.fbToken){
       graph.setAccessToken(req.session.fbToken);
-      graph.get('/' + conf.client_id,function(err,app){
+      graph.get('/' + conf.appId,function(err,app){
          graph.get('/me',function(err,user){
             res.render('../web/twofiftysix.html', {
                app:app,
