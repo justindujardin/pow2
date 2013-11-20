@@ -38,13 +38,13 @@ twoFiftySix.app.directive('twoFiftySix', function($compile) {
 
          var loader = new eburp.ResourceLoader();
          loader.loadAll([
-            "images/animation.png",
-            "images/characters.png",
-            "images/creatures.png",
-            "images/environment.png",
-            "images/equipment.png",
-            "images/items.png",
-            "images/ui.png"
+            "/images/animation.png",
+            "/images/characters.png",
+            "/images/creatures.png",
+            "/images/environment.png",
+            "/images/equipment.png",
+            "/images/items.png",
+            "/images/ui.png"
          ],function(){
             var image = $(".drop-target img")[0];
             var tileView = new eburp.TileMapView(element[0],loader);
@@ -115,6 +115,11 @@ twoFiftySix.app.directive('imageDrop', function($compile) {
    }
 
    function processDropImage(file,context){
+
+      if(file.type !== 'image/png'){
+         // TODO: Error in scope.
+         return;
+      }
       var reader = new FileReader();
 
       // When the file is done loading, POST to the server.
@@ -126,12 +131,8 @@ twoFiftySix.app.directive('imageDrop', function($compile) {
             context.drawImage(image,0,0,128,128);
             // TODO: Append this image and stretch it up.  This way designers can save-as.
             $(".drop-target .filename").text(file.name);
-
          };
          image.src =  data;
-
-
-
       };
 
       // Handle errors that might occur while reading the file (before upload).
@@ -166,12 +167,13 @@ twoFiftySix.app.directive('imageDrop', function($compile) {
          function onDrop(evt) {
             noopHandler(evt);
             var files = evt.originalEvent.dataTransfer.files;
-            if(typeof files == "undefined" || files.length == 0)
-               return;
-            for(var i = 0, length = files.length; i < length; i++) {
-               processDropImage(files[i],context);
+            if(typeof files !== "undefined" && files.length > 0){
+               for(var i = 0, length = files.length; i < length; i++) {
+                  processDropImage(files[i],context);
+               }
             }
             $(".drop-overlay").fadeOut(125);
+
          }
          var overlay = $(".drop-overlay");
          $("body").on("dragenter", onDragEnter);

@@ -143,7 +143,7 @@ module.exports = function(grunt) {
        */
       express: {
          options: {
-            script: 'tools/gameServer.js',
+            script: 'server/gameServer.js',
             port: 5215
          },
          production: {
@@ -206,7 +206,7 @@ module.exports = function(grunt) {
             tasks: ['recess', 'notify:recess']
          },
          express: {
-            files:  [ 'index.html', 'tools/gameServer.js' ],
+            files:  [ 'index.html', 'server/gameServer.js' ],
             tasks:  [ 'express', 'notify:server' ],
             options: {
                nospawn: true //Without this option specified express won't be reloaded
@@ -219,7 +219,7 @@ module.exports = function(grunt) {
    {
       var Q = require('q');
       var done = this.async();
-      var spritePacker = require('./tools/spritePacker');
+      var spritePacker = require('./server/spritePacker');
       var queue = [];
       var options = this.options({
          metaFile: null
