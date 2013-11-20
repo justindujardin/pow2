@@ -121,7 +121,7 @@ class Screen
 
   constructor: (@canvas,@ctx) ->
 
-    Screen.FONT = new Font(Screen.MICRO_GLYPHS, "images/font_micro.png")
+    Screen.FONT = new Font(Screen.MICRO_GLYPHS, "/images/font_micro.png")
     Screen.CENTER_OFFSET = Math.floor(Screen.WIN_SIZE / 2);
 
   clear: =>
@@ -139,7 +139,7 @@ class Screen
     if not coords
       throw new Error("Missing image from map " + icon)
 
-    image = eburp.resources.get("images/#{coords.source}.png")
+    image = eburp.resources.get("/images/#{coords.source}.png")
     return if not image or not image.isReady()
     k = Screen.UNIT * scale
     @ctx.drawImage(image.data,coords.x, coords.y, Screen.UNIT, Screen.UNIT, x * scale, y * scale, k, k)

@@ -81,7 +81,7 @@ class eburp.SceneView
 
 
   getSpriteSheet: (name, done=->) ->
-    @loader.get "images/#{name}.png", done
+    @loader.get "/images/#{name}.png", done
 
   # Scene Camera updates
   # -----------------------------------------------------------------------------

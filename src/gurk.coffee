@@ -37,19 +37,19 @@ class eburp.Gurk extends eburp.SceneView
     HUGE   : "(min-width:760px)" # 720
 
   @requires = [
-    "images/animation.png"
-    "images/characters.png"
-    "images/creatures.png"
-    "images/environment.png"
-    "images/equipment.png"
-    "images/items.png"
-    "images/ui.png"
-    "images/font_micro.png"
-    "images/font_gurkoid.png"
-    "images/button" + Screen.SCALE + ".png"
-    "images/buttonoff" + Screen.SCALE + ".png"
-    "images/buttontop" + Screen.SCALE + ".png"
-    "images/shadow.png"
+    "/images/animation.png"
+    "/images/characters.png"
+    "/images/creatures.png"
+    "/images/environment.png"
+    "/images/equipment.png"
+    "/images/items.png"
+    "/images/ui.png"
+    "/images/font_micro.png"
+    "/images/font_gurkoid.png"
+    "/images/button" + Screen.SCALE + ".png"
+    "/images/buttonoff" + Screen.SCALE + ".png"
+    "/images/buttontop" + Screen.SCALE + ".png"
+    "/images/shadow.png"
   ]
 
 
