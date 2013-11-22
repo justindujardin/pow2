@@ -23,8 +23,8 @@
 
     <div class="login row" eight-bit-panel>
     <% if(user){ %>
-        <span class="username"><%= user.name %></span> - <a href="/auth/logout">Log out</a> | <a href="javascript:void(0);" ng-click="shareImage()">Share</a>
-        <a href="{{sharedUrl}}">{{sharedUrl}}</a>
+        <span class="username"><%= user.name %></span> - <a href="/auth/logout">Log out</a> | <a ng-hide="sharedUrl" href="javascript:void(0);" ng-click="shareImage()">Share</a>
+        <a ng-hide="shared" href="{{sharedUrl}}">{{sharedUrl}}</a>
     <% } else { %>
         <a href="/auth/facebook">Login to share your work</a>
     <% } %>
@@ -64,7 +64,7 @@
 
 <!-- Image drop screen overlay -->
 <div class="drop-overlay">
-    <div class="large" eight-bit-panel>Drop your image anywhere.</div>
+    <div class="medium" eight-bit-panel>Drop your image anywhere.</div>
 </div>
 
 </body>

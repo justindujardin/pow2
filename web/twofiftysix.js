@@ -121,11 +121,25 @@ twoFiftySix.app.directive('twoFiftySix', function($compile,gameData) {
 
 
 ///
-twoFiftySix.app.directive('imageDrop', function($compile,gameData) {
+twoFiftySix.app.directive('imageDrop', function($compile,$timeout,gameData) {
    return {
       restrict: 'A',
-      scope:true,
       controller: function($scope) {
+         $scope.toggleOverlay = function(show){
+            return $(".drop-overlay")[show ? 'fadeIn' : 'fadeOut'](125);
+         };
+
+         $scope.beginDrop = function(message) {
+            $scope.overlayText.text(message);
+            $scope.toggleOverlay(true);
+         };
+         $scope.finishDrop = function(message) {
+            $scope.overlayText.text(message);
+            $timeout(function(){
+               $scope.toggleOverlay(false);
+            },1500);
+         };
+
          $scope.noopHandler = function(evt) {
             evt.stopPropagation();
             evt.preventDefault();
@@ -134,52 +148,41 @@ twoFiftySix.app.directive('imageDrop', function($compile,gameData) {
          $scope.onDrop = function(evt) {
             $scope.noopHandler(evt);
             var files = evt.originalEvent.dataTransfer.files;
-            if(typeof files !== "undefined" && files.length > 0){
-               for(var i = 0, length = files.length; i < length; i++) {
-                  $scope.processDropImage(files[i]);
-               }
+            if(typeof files === 'undefined'){
+               return $scope.finishDrop("SORRY: You can only drop files here.");
             }
-            $(".drop-overlay").fadeOut(125);
-
+            if(files.length !== 1){
+               return $scope.finishDrop("SORRY: You can only drop one file");
+            }
+            var file = files[0];
+            if(!file){
+               return $scope.finishDrop("SORRY: That's not a valid file.");
+            }
+            if(file.type !== 'image/png'){
+               return $scope.finishDrop("SORRY: You have to drop a png image.");
+            }
+            $scope.processDropImage(files[0]);
          };
          $scope.onDragEnter = function(evt) {
-            $(".drop-overlay").fadeIn(125);
+            $scope.beginDrop("Drop a 16x16 PNG anywhere.");
          };
 
          $scope.onDragLeave = function(e) {
             var evt = e.originalEvent;
-            /*
-             * We have to double-check the 'leave' event state because this event stupidly
-             * gets fired by JavaScript when you mouse over the child of a parent element;
-             * instead of firing a subsequent enter event for the child, JavaScript first
-             * fires a LEAVE event for the parent then an ENTER event for the child even
-             * though the mouse is still technically inside the parent bounds. If we trust
-             * the dragenter/dragleave events as-delivered, it leads to "flickering" when
-             * a child element (drop prompt) is hovered over as it becomes invisible,
-             * then visible then invisible again as that continually triggers the enter/leave
-             * events back to back. Instead, we use a 10px buffer around the window frame
-             * to capture the mouse leaving the window manually instead. (using 1px didn't
-             * work as the mouse can skip out of the window before hitting 1px with high
-             * enough acceleration).
-             */
+            /* Create a buffer around the window to catch dragleave at high velocities. */
             if(evt.pageX < 10 || evt.pageY < 10 || $(window).width() - evt.pageX < 10  || $(window).height - evt.pageY < 10) {
-               $(".drop-overlay").fadeOut(125);
+               $scope.toggleOverlay(false);
             }
          };
 
          $scope.processDropImage = function(file){
-
-            if(file.type !== 'image/png'){
-               $scope.error = "You have to drop a png image.";
-               return;
-            }
             var reader = new FileReader();
             reader.onloadend = function(evt){
                var data = evt.target.result;
                var image = new Image();
                image.onload = function(){
                   if(image.naturalWidth !== 16 || image.naturalHeight !== 16){
-                     $scope.error = "Image must be 16x16 pixels.";
+                     $scope.finishDrop("Image must be 16x16 pixels.");
                      return;
                   }
                   gameData.imageData = data;
@@ -189,6 +192,7 @@ twoFiftySix.app.directive('imageDrop', function($compile,gameData) {
                   sprite.onload = function(){
                      $scope.context.clearRect(0,0,128,128);
                      $scope.context.drawImage(sprite,0,0,128,128);
+                     $scope.finishDrop("Got it!");
                   }
                };
                image.src = data;
@@ -209,7 +213,7 @@ twoFiftySix.app.directive('imageDrop', function($compile,gameData) {
                      message = "Cannot read " + file.name + ".";
                      break;
                }
-               $scope.error = message;
+               $scope.finishDrop(message);
             };
             // Start reading the image off disk into a Data URI format.
             reader.readAsDataURL(file);
@@ -222,11 +226,12 @@ twoFiftySix.app.directive('imageDrop', function($compile,gameData) {
          scope.context = scope.canvas.getContext("2d");
          scope.context.webkitImageSmoothingEnabled = false;
          scope.context.mozImageSmoothingEnabled = false;
-         var overlay = $(".drop-overlay");
+         scope.overlay = $(".drop-overlay");
+         scope.overlayText = scope.overlay.find('.content');
          $("body").on("dragenter", scope.onDragEnter);
-         overlay.on("dragleave", scope.onDragLeave);
-         overlay.on("dragover", scope.noopHandler);
-         overlay.on('drop',scope.onDrop);
+         scope.overlay.on("dragleave", scope.onDragLeave);
+         scope.overlay.on("dragover", scope.noopHandler);
+         scope.overlay.on('drop',scope.onDrop);
 
       }
    };
