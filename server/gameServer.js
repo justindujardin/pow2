@@ -3,6 +3,7 @@ var express = require('express');
 var fs = require('graceful-fs');
 var _ = require('underscore');
 var path = require('path');
+var Q = require('q');
 
 
 var fb = require('./facebook');
@@ -49,22 +50,42 @@ server.get('/', function (req, res) {
       res.send(text);
    });
 });
-server.get('/256', function (req, res) {
-   if(req.session && req.session.fbToken){
-      fb.graph.setAccessToken(req.session.fbToken);
-      fb.graph.get('/me',function(err,user){
-         res.render('../web/twofiftysix.html', {
-            user:user
+
+
+function twoFiftySixHandler(req,res){
+   function noOp(){
+      var deferred = Q.defer();
+      _.defer(function(){
+         deferred.resolve()
+      });
+      return deferred.promise;
+   }
+   var data = {
+      user:null,
+      shared:null
+   };
+   function render(){
+      if(req.session && req.session.fbToken){
+         fb.graph.setAccessToken(req.session.fbToken);
+         fb.graph.get('/me',function(err,user){
+            data.user = user;
+            res.render('../web/twofiftysix.html',data);
          });
-      });
+      }
+      else {
+         res.render('../web/twofiftysix.html',data);
+      }
    }
-   else {
-      res.render('../web/twofiftysix.html',{
-         user:null,
-         app:null
-      });
-   }
-});
+   var getImage = req.params.id ? db.getImage(req.params.id) : noOp();
+   getImage.then(function(image){
+      data.shared = image;
+      render();
+   },function(){
+      render();
+   });
+}
+server.get('/256', twoFiftySixHandler);
+server.get('/256/:id', twoFiftySixHandler);
 
 var listen = server.listen(serverPort);
 listen.on('error', function (e) {

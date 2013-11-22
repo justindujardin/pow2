@@ -24,9 +24,9 @@ module.exports = {
       }));
 
       server.get('/auth/facebook', function (req, res) {
-// we don't have a code yet
-// so we'll redirect to the oauth dialog
          var redirect = "http://" + req.headers.host + "/auth/facebook";
+         // The Facebook app is configured to send a code= parameter in its callback
+         // to this function, so if it doesn't exist, show the OAuth dialog.
          if (!req.query.code) {
             var authUrl = graph.getOauthUrl({
                "client_id": conf.FB_APPID,
@@ -59,6 +59,7 @@ module.exports = {
                   }
                   db.findUser(fbUser.id).then(function(user){
                      if(user){
+                        req.session.userId = user._id.toString();
                         return res.redirect('/256');
                      }
                      user = {
@@ -67,11 +68,11 @@ module.exports = {
                         email: fbUser.email
                      };
                      db.createUser(user).then(function(result){
+                        req.session.userId = result._id.toString();
                         res.redirect('/256');
                      });
                   });
                });
-               res.redirect('/256');
             }
          });
       });
@@ -81,5 +82,24 @@ module.exports = {
          res.redirect("/256");
       });
 
+
+      server.post("/share",function(req, res){
+         function _nope(){
+            res.send("nope");
+            res.end();
+         }
+         var imageData = req.body.data;
+         if(!imageData){
+            return _nope();
+         }
+         if(!req.session || !req.session.fbToken || !req.session.userId){
+            return _nope();
+         }
+         var url = require('./crc32').crc32(req.session.userId + imageData);
+         db.storeImage(req.session.userId,url,imageData).then(function(){
+            var fullUrl = "http://" + req.headers.host + "/256/" + url;
+            res.json({url:fullUrl});
+         });
+      });
    }
 };

@@ -68,6 +68,44 @@ var db = module.exports = {
          return deferred.resolve(result[0]);
       });
       return deferred.promise;
+   },
+
+
+   storeImage: function(userId,url,imageData){
+      var deferred = Q.defer();
+      if(!_db){
+         throw new Error("No database connection");
+      }
+      var collection = _db.collection('spriteSubmissions');
+      collection.insert({
+         user: userId,
+         url: url,
+         data: imageData
+      },function(err,result){
+         if(err){
+            return deferred.reject(err);
+         }
+         return deferred.resolve(result[0]);
+      });
+      return deferred.promise;
+   },
+
+
+
+   getImage: function(url){
+      var deferred = Q.defer();
+      if(!_db){
+         throw new Error("No database connection");
+      }
+      var collection = _db.collection('spriteSubmissions');
+      collection.find({url:parseInt(url,10)})
+         .each(function(err,result){
+            if(err || !result){
+               return deferred.reject(err);
+            }
+            return deferred.resolve(result.data);
+         });
+      return deferred.promise;
    }
 
 

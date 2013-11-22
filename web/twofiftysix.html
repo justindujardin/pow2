@@ -16,27 +16,24 @@
     <script type="text/javascript" src="/js/backbone-min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
 </head>
-<body>
+<body ng-controller="twoFiftySixApp">
 
-<% if(user){ %>
+<div class="container">
+    <div class="row large" eight-bit-panel>256px challenge</div>
+
+    <% if(user){ %>
     <div class="login" eight-bit-panel>
-        Logged in as <span class="username"><%= user.name %></span>.
-        <a href="/auth/logout">Log out</a>
+        <span class="username"><%= user.name %></span> - <a href="/auth/logout">Log out</a> | <a href="javascript:void(0);" ng-click="shareImage()">Share</a>
     </div>
-    <div class="user-panel">
-
+    <div class="user-panel" eight-bit-panel ng-show="{{sharedUrl}}">
+        You can share this with friends by giving them this link: <a href="{{sharedUrl}}">{{sharedUrl}}</a>
     </div>
-<% } else { %>
+    <% } else { %>
     <div class="login" eight-bit-panel>
         <a href="/auth/facebook">Login to share your work</a>
     </div>
-<% } %>
+    <% } %>
 
-<div class="drop-overlay">
-    <div class="large" eight-bit-panel>Drop your image, right there.</div>
-</div>
-<div class="container">
-    <div class="row large" eight-bit-panel>256px challenge</div>
     <div class="game-view row large" eight-bit-panel>
         <canvas width="576" height="576" two-fifty-six>Your browser doesn't support this.</canvas>
     </div>
@@ -45,12 +42,14 @@
 <div class="container">
     <div class="drop-target row" eight-bit-panel>
         <div class="file-source">
+            <% if(shared){ %>
+            <img src="<%= shared %>">
+            <% } else { %>
             <img>
+            <% } %>
             <span class="filename">Party.PNG</span>
         </div>
-
         <canvas width="128" height="128" image-drop></canvas>
-
     </div>
 </div>
 
@@ -61,6 +60,16 @@
 <script type="text/javascript" src="/eburp.sprites.js"></script>
 <script type="text/javascript" src="/eburp.maps.js"></script>
 <script type="text/javascript" src="/twofiftysix.js"></script>
+
+<!-- Error messages overlay -->
+<div class="error-overlay" ng-show="error">
+    <div class="large" eight-bit-panel>{{error}}</div>
+</div>
+
+<!-- Image drop screen overlay -->
+<div class="drop-overlay">
+    <div class="large" eight-bit-panel>Drop your image anywhere.</div>
+</div>
 
 </body>
 </html>
