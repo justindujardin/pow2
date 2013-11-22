@@ -21,18 +21,14 @@
 <div class="container">
     <div class="row large" eight-bit-panel>256px challenge</div>
 
+    <div class="login row" eight-bit-panel>
     <% if(user){ %>
-    <div class="login" eight-bit-panel>
         <span class="username"><%= user.name %></span> - <a href="/auth/logout">Log out</a> | <a href="javascript:void(0);" ng-click="shareImage()">Share</a>
-    </div>
-    <div class="user-panel" eight-bit-panel ng-show="{{sharedUrl}}">
-        You can share this with friends by giving them this link: <a href="{{sharedUrl}}">{{sharedUrl}}</a>
-    </div>
+        <a href="{{sharedUrl}}">{{sharedUrl}}</a>
     <% } else { %>
-    <div class="login" eight-bit-panel>
         <a href="/auth/facebook">Login to share your work</a>
-    </div>
     <% } %>
+    </div>
 
     <div class="game-view row large" eight-bit-panel>
         <canvas width="576" height="576" two-fifty-six>Your browser doesn't support this.</canvas>
