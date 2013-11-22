@@ -51,6 +51,26 @@ server.get('/', function (req, res) {
    });
 });
 
+// Share a sprite for others to see.
+server.post("/share",function(req, res){
+   function _nope(){
+      res.json({authenticated:false});
+      res.end();
+   }
+   var imageData = req.body.data;
+   if(!imageData){
+      return _nope();
+   }
+   if(!req.session || !req.session.fbToken || !req.session.userId){
+      return _nope();
+   }
+   var url = require('./crc32').crc32(req.session.userId + imageData);
+   db.storeImage(req.session.userId,url,imageData).then(function(){
+      var fullUrl = "http://" + req.headers.host + "/256/" + url;
+      res.json({url:fullUrl});
+   });
+});
+
 
 function twoFiftySixHandler(req,res){
    function noOp(){

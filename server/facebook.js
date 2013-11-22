@@ -6,6 +6,12 @@ var db = require('./database');
 module.exports = {
 
    graph: graph,
+
+   resumeSession: function(req){
+      var deferred = Q.defer();
+      return deferred.promise;
+   },
+
    routes: function(server) {
 
       if(!process.env.FB_APPID || !process.env.FB_SECRET){
@@ -82,24 +88,5 @@ module.exports = {
          res.redirect("/256");
       });
 
-
-      server.post("/share",function(req, res){
-         function _nope(){
-            res.send("nope");
-            res.end();
-         }
-         var imageData = req.body.data;
-         if(!imageData){
-            return _nope();
-         }
-         if(!req.session || !req.session.fbToken || !req.session.userId){
-            return _nope();
-         }
-         var url = require('./crc32').crc32(req.session.userId + imageData);
-         db.storeImage(req.session.userId,url,imageData).then(function(){
-            var fullUrl = "http://" + req.headers.host + "/256/" + url;
-            res.json({url:fullUrl});
-         });
-      });
    }
 };
