@@ -12,7 +12,7 @@ twoFiftySix.app.directive('eightBitPanel', function($compile) {
    return {
       restrict: 'A',
       transclude:true,
-      template: '<div class="ebp-frame"><div class="tl"></div><div class="tr"></div><div class="bl"></div><div class="br"></div><div class="content"  ng-transclude></div></div>',
+      template: '<div class="tl"></div><div class="tr"></div><div class="bl"></div><div class="br"></div><div class="content"  ng-transclude></div>',
       link: function (scope, element, attrs) {
          element.addClass('ebp');
          var compiled = $compile('')(scope);
@@ -23,7 +23,7 @@ twoFiftySix.app.directive('eightBitPanel', function($compile) {
 
 //
 
-twoFiftySix.app.factory('gameData', function($q,$rootScope){
+twoFiftySix.app.factory('game', function($q,$rootScope){
    return {
       files:[
          "/images/animation.png",
@@ -48,23 +48,23 @@ twoFiftySix.app.factory('gameData', function($q,$rootScope){
    }
 });
 
-twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gameData){
+twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,game){
    $scope.error = null;
    $scope.notify = function(){};
    $scope.shareImage = function(){
-      $http.post('/share', {data:gameData.imageData}).success(function(data){
+      $http.post('/share', {data:game.imageData}).success(function(data){
          $scope.sharedUrl = data.url;
          $scope.notify("Your image has been updated.");
       });
    };
-   gameData.load().then(function(){
-      $scope.gameData = gameData;
+   game.load().then(function(){
+      $scope.game = game;
    });
 });
 
 
 
-twoFiftySix.app.directive('twoFiftySix', function($compile,gameData) {
+twoFiftySix.app.directive('twoFiftySix', function($compile,game) {
    return {
       restrict: 'A',
       link: function (scope, element, attrs) {
@@ -76,9 +76,9 @@ twoFiftySix.app.directive('twoFiftySix', function($compile,gameData) {
          element.append(renderCanvas);
 
 
-         var loader = gameData.loader;
-         gameData.load().then(function(){
-            var image = $(".drop-target img")[0];
+         var loader = game.loader;
+         game.load().then(function(){
+            var image = $(".user-sprite img")[0];
             var tileView = new eburp.TileMapView(element[0],loader);
             tileView.imageProcessor = new eburp.ImageProcessor(renderCanvas[0], tileView);
             tileView.tileMap = new eburp.TileMap("town");
@@ -102,13 +102,13 @@ twoFiftySix.app.directive('twoFiftySix', function($compile,gameData) {
                var sprite = tileView.imageProcessor.isolateSprite("party.png");
                image.src = sprite.src;
                image.onload = function(){
-                  context.clearRect(0,0,128,128);
-                  context.drawImage(sprite,0,0,128,128);
+                  context.clearRect(0,0,96,96);
+                  context.drawImage(sprite,0,0,96,96);
                };
             }
             else {
-               context.clearRect(0,0,128,128);
-               context.drawImage(image,0,0,128,128);
+               context.clearRect(0,0,96,96);
+               context.drawImage(image,0,0,96,96);
             }
             console.log("READY TO GO!");
          });
@@ -121,7 +121,7 @@ twoFiftySix.app.directive('twoFiftySix', function($compile,gameData) {
 
 
 ///
-twoFiftySix.app.directive('imageDrop', function($compile,$timeout,gameData) {
+twoFiftySix.app.directive('imageDrop', function($compile,$timeout,game) {
    return {
       restrict: 'A',
       controller: function($scope) {
@@ -185,13 +185,13 @@ twoFiftySix.app.directive('imageDrop', function($compile,$timeout,gameData) {
                      $scope.finishDrop("Image must be 16x16 pixels.");
                      return;
                   }
-                  gameData.imageData = data;
-                  var sprite = $(".drop-target img")[0];
+                  game.imageData = data;
+                  var sprite = $(".user-sprite img")[0];
                   sprite.src = null;
                   sprite.src = data;
                   sprite.onload = function(){
-                     $scope.context.clearRect(0,0,128,128);
-                     $scope.context.drawImage(sprite,0,0,128,128);
+                     $scope.context.clearRect(0,0,96,96);
+                     $scope.context.drawImage(sprite,0,0,96,96);
                      $scope.finishDrop("Got it!");
                   }
                };

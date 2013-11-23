@@ -20,11 +20,86 @@
 @import "less/bootstrap/responsive-utilities";
 @import "less/eightBitPanel";
 
+
+
 body {
-  text-align:center;
   background-color: darken(#212121,5%);
 }
-.drop-overlay, .error-overlay {
+
+.container {
+  margin-top:20px;
+}
+
+.toolbar {
+  .title {
+    margin-bottom:20px;
+  }
+  .head {
+    font-size: 42px;
+  }
+  .pointer {
+    font-size: 32px;
+  }
+  .ebp {
+    width:100%;
+  }
+}
+
+.content-view {
+  * {
+    text-align: left;
+  }
+  .ebp {
+    width:100%;
+    height:100%;
+  }
+}
+
+.user-sprite {
+  .ebp {
+    padding:10px;
+  }
+  .file-source{
+    text-align: center;
+    margin-bottom:10px;
+    margin-left:-16px;
+    img {
+      max-width:16px;
+      max-height:16px;
+      margin-bottom:4px;
+    }
+  }
+  canvas {
+    display: block;
+    margin: auto;
+  }
+}
+
+
+.game-view {
+  text-align:center;
+  .ebp {
+    width:auto;
+    height:auto;
+    padding:0;
+    .content {
+      height:576px !important;
+    }
+
+  }
+}
+
+.control {
+  position:relative;
+  .ebp{
+    position:absolute;
+    left:20px;
+    right:20px;
+    margin-bottom:25px;
+  }
+}
+
+.drop-overlay {
   padding: 0;
   top: 0;
   left: 0;
@@ -35,53 +110,14 @@ body {
   background-color: rgba(34,34,34,0.9);
   display: none;
   z-index: 50;
-
   .ebp {
     top: 38%;
-    left: 0;
-    right:0;
+    left: 20px;
+    right:20px;
     margin:auto;
     position: absolute;
-    .ebp-frame {
-      padding:25px;
-    }
+    padding:25px;
+    font-size: 32px;
 
-  }
-}
-
-.container {
-  .row {
-    margin-top:25px;
-  }
-  .game-view {
-    .ebp-frame {
-      padding:0;
-
-      .content {
-        height:576px;
-      }
-    }
-  }
-  .drop-target {
-    margin-left:auto;
-    margin-right:auto;
-    width:256px;
-    text-align:center;
-    .file-source{
-      margin-bottom:10px;
-      img {
-        max-width:16px;
-        max-height:16px;
-        margin-bottom:4px;
-      }
-    }
-    canvas {
-      display: block;
-      margin: auto;
-    }
-    .ebp-frame {
-      width:100%;
-      height:100%;
-    }
   }
 }

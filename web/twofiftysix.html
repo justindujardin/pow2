@@ -19,33 +19,55 @@
 <body ng-controller="twoFiftySixApp">
 
 <div class="container">
-    <div class="row large" eight-bit-panel>256px challenge</div>
-
-    <div class="login row" eight-bit-panel>
-    <% if(user){ %>
-        <span class="username"><%= user.name %></span> - <a href="/auth/logout">Log out</a> | <a ng-hide="sharedUrl" href="javascript:void(0);" ng-click="shareImage()">Share</a>
-        <a ng-hide="shared" href="{{sharedUrl}}">{{sharedUrl}}</a>
-    <% } else { %>
-        <a href="/auth/facebook">Login to share your work</a>
-    <% } %>
+    <div class="row">
     </div>
+    <div class="row">
+        <div class="toolbar col-xs-9">
+            <div class="title" eight-bit-panel>
+                <span class="head">256px challenge</span>
+            </div>
+            <div eight-bit-panel>
+                <span class="col-xs-11">
+                    Create a better sprite than this, drop it on the page, and share with your friends.</span>
+                <span class="col-xs-1 pointer">></span>
+            </div>
+        </div>
+        <div class="user-sprite col-xs-3">
+            <div eight-bit-panel>
+                <div class="file-source">
+                    <% if(shared){ %>
+                    <img src="<%= shared %>">
+                    <% } else { %>
+                    <img>
+                    <% } %>
+                    <span class="filename">Sprite</span>
+                </div>
+                <canvas width="96" height="96" image-drop></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="game-view container">
+    <div class="row">
+        <div class="large col-xs-12" eight-bit-panel>
+            <canvas width="576" height="576" two-fifty-six>Your browser doesn't support this.</canvas>
+        </div>
 
-    <div class="game-view row large" eight-bit-panel>
-        <canvas width="576" height="576" two-fifty-six>Your browser doesn't support this.</canvas>
     </div>
 </div>
 
-<div class="container">
-    <div class="drop-target row" eight-bit-panel>
-        <div class="file-source">
-            <% if(shared){ %>
-            <img src="<%= shared %>">
-            <% } else { %>
-            <img>
-            <% } %>
-            <span class="filename">Party.PNG</span>
+<div class="control container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div eight-bit-panel>
+                <% if(user){ %>
+                <span class="username"><%= user.name %></span> - <a href="/auth/logout">Log out</a> | <a ng-hide="sharedUrl" href="javascript:void(0);" ng-click="shareImage()">Share</a>
+                <a ng-show="sharedUrl" href="{{sharedUrl}}">{{sharedUrl}}</a>
+                <% } else { %>
+                <a href="/auth/facebook">Login to share your work</a>
+                <% } %>
+            </div>
         </div>
-        <canvas width="128" height="128" image-drop></canvas>
     </div>
 </div>
 
@@ -57,14 +79,9 @@
 <script type="text/javascript" src="/eburp.maps.js"></script>
 <script type="text/javascript" src="/twofiftysix.js"></script>
 
-<!-- Error messages overlay -->
-<div class="error-overlay" ng-show="error">
-    <div class="large" eight-bit-panel>{{error}}</div>
-</div>
-
 <!-- Image drop screen overlay -->
 <div class="drop-overlay">
-    <div class="medium" eight-bit-panel>Drop your image anywhere.</div>
+    <div eight-bit-panel>Drop your image anywhere.</div>
 </div>
 
 </body>
