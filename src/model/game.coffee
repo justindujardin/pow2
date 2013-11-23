@@ -164,7 +164,7 @@ class Game
     false
 
   buildFeatures : =>
-    list = Data.maps[@map].features
+    list = eburp.getMap(@map).features
     @features = {}
     @shops = {}
     if (list)

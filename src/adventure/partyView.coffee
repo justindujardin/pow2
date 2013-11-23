@@ -33,7 +33,7 @@ class PartyView extends SelectView
     y = 2;
     @addLabelCentered("The Adventurers", "#FFF", 0, y, 128, Screen.FONT.fontHeight)
     y += 10
-    map = Data.maps[@game.map]
+    map = eburp.getMap @game.map
     @addLabel("In: #{map.name}", "#FFF", 3, y)
     y += 8
     @addLabel("Gold: #{@game.gold}", "#E8C627", 3, y)

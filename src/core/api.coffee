@@ -39,3 +39,4 @@ window.eburp.registerSprites = (name,data) ->
 
 # Abstract away getting a map, to make getting rid of window.Data easier in the future.
 window.eburp.getMap = (name) -> window.Data.maps[name]
+window.eburp.getMaps = (name) -> window.Data.maps

@@ -47,7 +47,7 @@ class TileView extends View
 
   setMap : (mapName, x, y) ->
     @mapName = mapName
-    @map = Data.maps[@mapName]
+    @map = eburp.getMap @mapName
     @height = @map.height
     @width = @map.width
     @posX = x

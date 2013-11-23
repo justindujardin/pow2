@@ -412,7 +412,7 @@ class MapView extends TileView
           @setButton(5, command)
       when "transition"
         if (realMove)
-          name = Data.maps[feature.target].name
+          name = eburp.getMap(feature.target).name
           @setBanner(name)
         @setButton(5, "GO")
       when "shop"

@@ -86,7 +86,7 @@ class Validate
     console.log("-- MAPS")
     idSet = {}
     locationSet = {}
-    for name,map of Data.maps
+    for name,map of eburp.getMaps()
       if (map.encounterChance and map.encounterChance > 0 and !map.combatMap)
         console.log(" Missing combat map for #{name}.")
       if (map.features)
