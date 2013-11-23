@@ -36,3 +36,6 @@ window.eburp.registerSprites = (name,data) ->
   for property of data
     if (data.hasOwnProperty(property))
       window.Data.sprites[property] = data[property];
+
+# Abstract away getting a map, to make getting rid of window.Data easier in the future.
+window.eburp.getMap = (name) -> window.Data.maps[name]

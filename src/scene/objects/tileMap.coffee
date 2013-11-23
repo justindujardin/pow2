@@ -23,8 +23,10 @@ class eburp.TileMap extends eburp.SceneObject
     @setMap(mapName, 0, 0)
 
   setMap : (mapName, x, y) ->
+    newMap = eburp.getMap mapName
+    return false if not newMap
+    @map = newMap
     @mapName = mapName
-    @map = Data.maps[@mapName]
     @bounds = new eburp.Rect(x,y,@map.width,@map.height)
 
   getTerrain : (x, y) ->
