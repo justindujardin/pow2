@@ -17,4 +17,9 @@
 # -----------------------------------------------------------------------------
 
 class eburp.TileObject extends eburp.SceneObject
-  constructor : (@point=new Point(0,0),@image=null) ->
+  constructor : (options) ->
+    _.extend @, _.defaults options or {}, {
+      point: new eburp.Point(0,0)
+      image: null
+    }
+    @

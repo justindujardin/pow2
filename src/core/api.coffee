@@ -27,6 +27,8 @@ window.Data ?= {}
 window.eburp.registerData = (key,value) ->
   window.Data[key] = value
 
+window.eburp.getData = (key) -> window.Data[key]
+
 # Register a map on the existing window.Data.maps object.
 window.eburp.registerMap = (name,data) ->
   window.Data.maps[name] = data;

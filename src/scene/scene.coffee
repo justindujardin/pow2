@@ -72,6 +72,8 @@ class eburp.Scene
   findObject: (object) -> @findIt 'objects', object
 
   objectsByType: (type) -> _.filter @objects, (o) -> o instanceof type
+  objectByType: (type) -> _.find @objects, (o) -> o instanceof type
+
 
   # Update each object in the list because a tick of time has gone by.
   tickObjects: (elapsedMS) ->

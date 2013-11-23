@@ -20,6 +20,7 @@ class eburp.TileMap extends eburp.SceneObject
   map : null
   constructor : (mapName) ->
     super()
+    @tiles = eburp.getData "tiles"
     @setMap(mapName, 0, 0)
 
   setMap : (mapName, x, y) ->
@@ -28,13 +29,35 @@ class eburp.TileMap extends eburp.SceneObject
     @map = newMap
     @mapName = mapName
     @bounds = new eburp.Rect(x,y,@map.width,@map.height)
+    @buildFeatures()
 
   getTerrain : (x, y) ->
     return null if not @bounds.pointInRect(x,y)
     index = y * @map.width + x
     c = @map.map.charAt(index)
-    Data.tiles[c]
+    @tiles[c]
 
   getTerrainIcon : (x, y) ->
     terrain = @getTerrain(x, y)
     if terrain then terrain.icon else null
+
+  featureKey: (x,y) -> "" + x + "_" + y
+  buildFeatures : ->
+    return false if not @map
+    list = @map.features
+    @features = {}
+    for feature in list
+      x = feature.x
+      y = feature.y
+      key = @featureKey(x, y)
+      object = @features[key]
+      if (!object)
+        object = {}
+        @features[key] = object
+      object[feature.type] = feature
+    @
+  getFeature: (x,y) ->
+    return {} if not @features
+    return @features[@featureKey(x,y)]
+  getFeatures: () -> @features
+

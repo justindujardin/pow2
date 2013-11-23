@@ -72,7 +72,8 @@ class eburp.TileMapView extends eburp.SceneView
   renderPost: (scene) ->
     overlay = @getScreenOverlay()
     return if not overlay
-    @fillTiles(overlay)
+    clipRect = new eburp.Rect(@camera).clip @tileMap.bounds
+    @fillTiles(overlay, clipRect)
 
   renderFeatures:(clipRect) ->
     if @tileMap.map.features
@@ -158,8 +159,8 @@ class eburp.TileMapView extends eburp.SceneView
     renderPos = @worldToScreen(@camera.point, @cameraScale)
     @context.drawImage(image, renderPos.x, renderPos.y, @$el.width(), @$el.height())
 
-  fillTiles: (image) ->
-    renderPos = @worldToScreen(@camera, @cameraScale)
+  fillTiles: (image, rect=@camera) ->
+    renderPos = @worldToScreen(rect, @cameraScale)
     @context.save();
     @context.fillStyle = @context.createPattern image, 'repeat'
     @context.fillRect(renderPos.point.x,renderPos.point.y, renderPos.extent.x,renderPos.extent.y)

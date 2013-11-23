@@ -76,27 +76,47 @@ twoFiftySix.app.directive('twoFiftySix', function($compile,game) {
          element.append(renderCanvas);
 
          var tileMap = new eburp.TileMap("town");
-         var spriteObject = new eburp.TileObject(tileMap.bounds.getCenter());
-
-         $(document).keydown(_.throttle(function(e){
+         var spriteObject = new eburp.MovableTileObject({
+            point: tileMap.bounds.getCenter()
+         });
+         $(document).keyup(function(e){
             switch(e.keyCode){
                case 37: // Left
-                  spriteObject.point.x -= 1;
+                  spriteObject.velocity.x = 0;
                   break;
                case 38: // Up
-                  spriteObject.point.y -= 1;
+                  spriteObject.velocity.y = 0;
                   break;
                case 39: // Right
-                  spriteObject.point.x += 1;
+                  spriteObject.velocity.x = 0;
                   break;
                case 40: // Down
-                  spriteObject.point.y += 1;
+                  spriteObject.velocity.y = 0;
                   break;
                default:
                   return true;
             }
             e.stopImmediatePropagation();
-         },200));
+         });
+         $(document).keydown(function(e){
+            switch(e.keyCode){
+               case 37: // Left
+                  spriteObject.velocity.x = -1;
+                  break;
+               case 38: // Up
+                  spriteObject.velocity.y = -1;
+                  break;
+               case 39: // Right
+                  spriteObject.velocity.x = 1;
+                  break;
+               case 40: // Down
+                  spriteObject.velocity.y = 1;
+                  break;
+               default:
+                  return true;
+            }
+            e.stopImmediatePropagation();
+         });
 
          var loader = game.loader;
          game.load().then(function(){
@@ -104,14 +124,13 @@ twoFiftySix.app.directive('twoFiftySix', function($compile,game) {
             var tileView = new eburp.TileMapView(element[0],loader);
             tileView.imageProcessor = new eburp.ImageProcessor(renderCanvas[0], tileView);
             tileView.tileMap = tileMap;
-            //TODO: CHOP OUT DEBUG STUFF
-            window.eburp.activeMap = tileView.tileMap;
             var scene = new eburp.Scene({autoStart: true});
             scene.addView(tileView);
 
             tileView.camera.point.set(15,10);
             tileView.trackObject(spriteObject);
             scene.addObject(spriteObject);
+            scene.addObject(tileMap);
 
             var canvas = $("canvas.image-drop")[0];
             var context = canvas.getContext("2d");
@@ -125,6 +144,7 @@ twoFiftySix.app.directive('twoFiftySix', function($compile,game) {
                };
             }
             else {
+               spriteObject.image = image;
                context.clearRect(0,0,96,96);
                context.drawImage(image,0,0,96,96);
             }

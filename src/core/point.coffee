@@ -41,13 +41,13 @@ class eburp.Point
     @
 
   add: (point) ->
-    @x -= point.x
-    @y -= point.y
+    @x += point.x
+    @y += point.y
     @
 
   subtract: (point) ->
-    @x += point.x
-    @y += point.y
+    @x -= point.x
+    @y -= point.y
     @
 
   multiply: (number) ->

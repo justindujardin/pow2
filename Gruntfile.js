@@ -74,7 +74,9 @@ module.exports = function(grunt) {
                "src/resources/*.coffee",
                "src/scene/*.coffee",
                "src/scene/objects/*.coffee",
-               "src/scene/views/*.coffee"
+               "src/scene/views/*.coffee",
+               "src/tile/*.coffee",
+               "src/tile/objects/*.coffee"
             ],
             dest: 'web/<%= pkg.name %>.core.js',
             ext: '.js'
