@@ -20,13 +20,19 @@ class eburp.MovableTileObject extends eburp.TileObject
   constructor : (options) ->
     options = _.defaults options or {}, {
       velocity: new eburp.Point(0,0)
+      tickRateMS: 250
     }
+    @_elapsed = 0
     super(options)
     @
 
   tick: (elapsed) ->
     # Early out if no velocity
     return if @velocity.x == 0 and @velocity.y == 0
+    @_elapsed += elapsed
+    return if @_elapsed < @tickRateMS
+    @_elapsed -= @tickRateMS
+
     map = @scene.objectByType eburp.TileMap
     return @point.add @velocity if !map
 
