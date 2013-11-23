@@ -6,6 +6,11 @@ var db = require('./database');
 module.exports = {
 
    graph: graph,
+   config:  {
+      FB_APPID: process.env.FB_APPID || require("../.env.json").FB_APPID,
+      FB_SECRET: process.env.FB_SECRET || require("../.env.json").FB_SECRET,
+      scope: 'email'
+   },
 
    resumeSession: function(req){
       var deferred = Q.defer();
@@ -18,11 +23,7 @@ module.exports = {
          console.log("No Facebook environment variables, attempting to load from '../.env.json'");
          require('../.env.json');
       }
-      var conf = {
-         FB_APPID: process.env.FB_APPID || require("../.env.json").FB_APPID,
-         FB_SECRET: process.env.FB_SECRET || require("../.env.json").FB_SECRET,
-         scope: 'email'
-      };
+      var conf =  module.exports.config;
 
       // Encrypt session cookies
       server.use(express.session({

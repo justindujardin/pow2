@@ -5,7 +5,7 @@ var _ = require('underscore');
 var path = require('path');
 var Q = require('q');
 
-
+//var carrot = new require("./Carrot");
 var fb = require('./facebook');
 var db = require('./database');
 
@@ -64,6 +64,8 @@ server.post("/share",function(req, res){
    if(!req.session || !req.session.fbToken || !req.session.userId){
       return _nope();
    }
+//   var c = new carrot.Carrot(fb.config.FB_APPID, req.session.fbToken, fb.config.FB_SECRET, req.headers.host);
+//   c.postAction("create", "first_sprite");
    var url = require('./crc32').crc32(req.session.userId + imageData);
    db.storeImage(req.session.userId,url,imageData).then(function(){
       var fullUrl = "http://" + req.headers.host + "/256/" + url;
