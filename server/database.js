@@ -4,17 +4,22 @@ var MongoClient = mongodb.MongoClient;
 var Q = require('q');
 
 var _ready = false;
+var _error = null;
 var _db = null;
 var db = module.exports = {
    SPRITES: "spriteSubmissions",
    USERS: "users",
    routes:function(server){
       MongoClient.connect(process.env.MONGOHQ_URL || require("../.env.json").MONGOHQ_URL, {}, function(err, db) {
+         _error = err;
          _db = db;
       });
    },
 
    instance: function(){
+      if(_error){
+         throw new Error("Failed to connect to DB");
+      }
       if(!_db){
          throw new Error("DB not connected.  Connection is established when routes(expressServer) is called.");
       }
