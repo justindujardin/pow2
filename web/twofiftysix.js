@@ -75,26 +75,43 @@ twoFiftySix.app.directive('twoFiftySix', function($compile,game) {
 
          element.append(renderCanvas);
 
+         var tileMap = new eburp.TileMap("town");
+         var spriteObject = new eburp.TileObject(tileMap.bounds.getCenter());
+
+         $(document).keydown(_.throttle(function(e){
+            switch(e.keyCode){
+               case 37: // Left
+                  spriteObject.point.x -= 1;
+                  break;
+               case 38: // Up
+                  spriteObject.point.y -= 1;
+                  break;
+               case 39: // Right
+                  spriteObject.point.x += 1;
+                  break;
+               case 40: // Down
+                  spriteObject.point.y += 1;
+                  break;
+               default:
+                  return true;
+            }
+            e.stopImmediatePropagation();
+         },200));
 
          var loader = game.loader;
          game.load().then(function(){
             var image = $(".user-sprite img")[0];
             var tileView = new eburp.TileMapView(element[0],loader);
             tileView.imageProcessor = new eburp.ImageProcessor(renderCanvas[0], tileView);
-            tileView.tileMap = new eburp.TileMap("town");
+            tileView.tileMap = tileMap;
+            //TODO: CHOP OUT DEBUG STUFF
+            window.eburp.activeMap = tileView.tileMap;
             var scene = new eburp.Scene({autoStart: true});
             scene.addView(tileView);
 
-            // Rig the view, and toss a party sprite in there.
-            tileView.camera.point.set(8,4);
-            var challengeSpriteFeature = {
-               type : "sign",
-               x : 12,
-               y : 8,
-               image : image
-            };
-            tileView.tileMap.map.features.push(challengeSpriteFeature);
-            // HACKS: Draw the party sprite.  TODO: require image-drop directive.
+            tileView.camera.point.set(15,10);
+            tileView.trackObject(spriteObject);
+            scene.addObject(spriteObject);
 
             var canvas = $("canvas.image-drop")[0];
             var context = canvas.getContext("2d");
@@ -102,6 +119,7 @@ twoFiftySix.app.directive('twoFiftySix', function($compile,game) {
                var sprite = tileView.imageProcessor.isolateSprite("party.png");
                image.src = sprite.src;
                image.onload = function(){
+                  spriteObject.image = image;
                   context.clearRect(0,0,96,96);
                   context.drawImage(sprite,0,0,96,96);
                };

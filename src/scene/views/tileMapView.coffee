@@ -23,6 +23,13 @@ class eburp.TileMapView extends eburp.SceneView
     @screenOverlays = []
     @
 
+  # Object Tracking
+  # -----------------------------------------------------------------------------
+  trackObject: (tileObject) ->
+    @tracking = tileObject
+
+  # Features and visibility
+  # -----------------------------------------------------------------------------
   featureVisible: (feature) -> true
   tileVisible: (x,y) -> true
 
@@ -31,7 +38,9 @@ class eburp.TileMapView extends eburp.SceneView
   processCamera: () ->
     super()
     @cameraScale = Math.round(@cameraScale)
-
+    if @tracking and @tracking instanceof eburp.TileObject
+      @camera.setCenter @tracking.point
+    @
   # Render Methods
   # -----------------------------------------------------------------------------
 
@@ -51,6 +60,13 @@ class eburp.TileMapView extends eburp.SceneView
         tile = @tileMap.getTerrainIcon x, y
         @drawTile(tile, x, y) if tile and @tileVisible(x,y)
     @renderFeatures(clipRect)
+    @renderObjects(clipRect)
+    @
+
+  renderObjects:(clipRect) ->
+    _.each @scene.objectsByType(eburp.TileObject), (object) =>
+      return if not clipRect.pointInRect object.point.x, object.point.y
+      @drawImage(object.image, object.point.x, object.point.y) if object.image
     @
 
   renderPost: (scene) ->
