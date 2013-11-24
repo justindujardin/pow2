@@ -55,8 +55,12 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
    $scope.shareImage = function(){
       $http.post('/share', {data:game.imageData}).success(function(data){
          $scope.sharedUrl = data.url;
-         $scope.notify("Your image has been updated.");
+         $scope.clearImageData();
       });
+   };
+   $scope.clearImageData = function() {
+      $scope.hasImage = false;
+      delete localStorage["sharedImage"];
    };
    $scope.setImageData = function(data){
       localStorage["sharedImage"] = data;

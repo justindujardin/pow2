@@ -24,7 +24,6 @@
             <div eight-bit-panel>
                 <% if(user){ %>
                 <span class="username"><%= user.name %></span> - <a href="/auth/logout">Log out</a>
-                <a ng-show="sharedUrl" href="{{sharedUrl}}">{{sharedUrl}}</a>
                 <% } else { %>
                 <a href="/auth/facebook">Login with Facebook</a>
                 <% } %>
@@ -43,7 +42,10 @@
             </div>
             <div eight-bit-panel>
                 <span class="col-xs-11">
-                    Create a replacement sprite, drop it on the page, and share with your friends.</span>
+                    <span ng-show="sharedUrl">
+                        Great, your sprite URL is <a href="{{sharedUrl}}">{{sharedUrl}}</a>
+                    </span>
+                    <span ng-hide="sharedUrl">Create a replacement sprite, drop it on the page, and share with your friends.</span></span>
                 <span class="col-xs-1 pointer">></span>
             </div>
         </div>
