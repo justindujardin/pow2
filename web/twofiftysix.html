@@ -20,19 +20,24 @@
 
 <div class="container">
     <div class="row">
-        <div class="toolbar col-xs-9">
+        <div class="toolbar col-sm-9">
             <div class="title" eight-bit-panel>
                 <span class="head">256px challenge</span>
             </div>
-            <div eight-bit-panel>
-                <span class="col-xs-11">
+            <div class="greetings" eight-bit-panel>
+                <span class="col-sm-11">
                     <span ng-show="sharedUrl">Great, your sprite URL is <a class="shared-url" href="{{sharedUrl}}">{{sharedUrl}}</a></span>
                     <span ng-hide="sharedUrl">Create a 16x16 replacement sprite, drop it on the page, and share with your friends.</span>
                 </span>
-                <span class="col-xs-1 pointer">></span>
+                <span class="col-sm-1 pointer">></span>
+            </div>
+            <div class="greetings-sm" eight-bit-panel>
+                <span class="col-sm-12">
+                    <span>The page looks bad in mobile right now.  You can still view the sprite, but the game view has been hidden.</span>
+                </span>
             </div>
         </div>
-        <div class="user-sprite col-xs-3">
+        <div class="user-sprite col-sm-3">
             <div eight-bit-panel>
                 <div class="file-source">
                     <div>

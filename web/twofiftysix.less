@@ -26,34 +26,31 @@ body {
   background-color: darken(#212121,5%);
 }
 
-[contenteditable="true"]:active,
-[contenteditable="true"]:focus{
-  border:none;
-  outline:none;
-}
-
-
 .container {
   margin-top:20px;
   max-width:750px;
 }
 
 .toolbar {
-  .title {
-    margin-bottom:20px;
+  > * {
+    margin-bottom:10px;
   }
   .head {
-    font-size: 42px;
+    font-size: 18px;
   }
   .pointer {
-    font-size: 32px;
+    font-size: 16px;
+    display: none;
   }
   .ebp {
     width:100%;
   }
-
   .shared-url{
     display: block;
+  }
+  
+  .greetings {
+    display: none;
   }
 }
 
@@ -68,6 +65,9 @@ body {
 }
 
 .user-sprite {
+  a {
+    display: block;
+  }
   .ebp {
     padding:10px;
     width:100%;
@@ -82,12 +82,12 @@ body {
     }
   }
   canvas {
-    display: block;
     margin: auto;
   }
 }
 
 .game-view {
+  display: none;
   text-align:center;
   .map-name {
     position: absolute;
@@ -143,3 +143,49 @@ body {
 
   }
 }
+
+@media(min-width: @screen-sm) {
+  .toolbar {
+    .title {
+      margin-bottom:20px;
+    }
+    .head {
+      font-size: 42px;
+    }
+    .pointer {
+      display: inherit;
+      font-size: 32px;
+    }
+    .greetings {
+      display: block;
+    }
+    .greetings-sm {
+      display: none;
+    }
+  }
+
+  .user-sprite {
+    canvas {
+      display: block;
+    }
+  }
+  .game-view {
+    display: block;
+    .map-name {
+      font-size: 20px;
+      .ebp { padding:5px; }
+    }
+    .ebp {
+      &.arrow {
+        width:48px;
+        height:60px;
+        font-size: 32px;
+      }
+      canvas {
+        height:576px !important;
+      }
+
+    }
+  }
+}
+
