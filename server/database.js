@@ -50,26 +50,6 @@ var db = module.exports = {
       return deferred.promise;
    },
 
-   getUser: function(facebookId){
-      var deferred = Q.defer();
-      var collection = db.users();
-      collection.find({
-         facebookId:facebookId
-      }).each(function(err,result){
-            if(err){
-               return deferred.reject(err);
-            }
-            if(result){
-               return deferred.resolve(result);
-
-            }
-            return db.createUser(facebookId).then(function(user){
-               deferred.resolve(user);
-            });
-         });
-      return deferred.promise;
-   },
-
    createUser: function(data){
       if(!data || typeof data.facebookId === 'undefined'){
          throw new Error("Invalid user data");
