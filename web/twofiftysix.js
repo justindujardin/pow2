@@ -35,6 +35,48 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          "/images/ui.png"
       ],
       loader: new eburp.ResourceLoader(),
+      bindInput: function(){
+         var self = this;
+         $(document).keyup(function(e){
+            switch(e.keyCode){
+               case 37: // Left
+                  self.sprite.velocity.x = 0;
+                  break;
+               case 38: // Up
+                  self.sprite.velocity.y = 0;
+                  break;
+               case 39: // Right
+                  self.sprite.velocity.x = 0;
+                  break;
+               case 40: // Down
+                  self.sprite.velocity.y = 0;
+                  break;
+               default:
+                  return true;
+            }
+            e.stopImmediatePropagation();
+         });
+         $(document).keydown(function(e){
+            switch(e.keyCode){
+               case 37: // Left
+                  self.sprite.moveLeft();
+                  break;
+               case 38: // Up
+                  self.sprite.moveUp();
+                  break;
+               case 39: // Right
+                  self.sprite.moveRight();
+                  break;
+               case 40: // Down
+                  self.sprite.moveDown();
+                  break;
+               default:
+                  return true;
+            }
+            e.stopImmediatePropagation();
+         });
+
+      },
       load : function(){
          var deferred = $q.defer();
          var self = this;
