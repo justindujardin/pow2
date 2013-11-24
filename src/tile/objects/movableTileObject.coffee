@@ -37,8 +37,6 @@ class eburp.MovableTileObject extends eburp.TileObject
     map = @scene.objectByType eburp.TileMap
     toAdd = if @impulse.isZero() then @velocity else @impulse
     if map
-
-      # Do horrible integer movement.
       tx = @point.x + toAdd.x
       ty = @point.y + toAdd.y
       terrain = map.getTerrain(tx,ty)
