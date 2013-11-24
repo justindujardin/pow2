@@ -35,7 +35,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          "/images/ui.png"
       ],
       maps: _.keys(eburp.getMaps()),
-      currentMap: 0,
+      currentMap: 19,
       loader: new eburp.ResourceLoader(),
       bindInput: function(){
          var self = this;
@@ -83,7 +83,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          var self = this;
          this.loader.loadAll(this.files,function(){
             self.scene = new eburp.Scene({autoStart: true});
-            self.tileMap = new eburp.TileMap(self.maps[0]);
+            self.tileMap = new eburp.TileMap(self.maps[self.currentMap]);
             self.sprite = new eburp.MovableTileObject({
                point: self.tileMap.bounds.getCenter()
             });
@@ -97,24 +97,28 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          });
          return deferred.promise;
       },
+      getCurrentMapName: function(){
+        if(!this.tileMap || !this.tileMap.map){
+           return null;
+        }
+        return this.tileMap.map.name;
+      },
       /**
        * Guess a good starting point for a player in a new map.
        *
        * Try to get a transition feature (door or exit), then
        * fall back to the map center.
        */
-      setMapSpawn: function() {
+      setMapSpawn: function(mapName) {
+         this.tileMap.setMap(mapName);
          var map = this.tileMap.map;
          var point = new eburp.Point(0,0);
          if(map){
-            if(!map.features){
-               point = this.tileMap.bounds.getCenter();
-            }
-            else {
+            point = this.tileMap.bounds.getCenter();
+            if(map.features){
                // Pick the first transition feature we find.
                var feature = _.where(this.tileMap.map.features,{type : "transition"})[0];
                if(feature){
-
                   point = new eburp.Point(feature.x,feature.y);
                }
             }
@@ -129,8 +133,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             next = 0;
          }
          this.currentMap = next;
-         this.tileMap.setMap(this.maps[next]);
-         this.setMapSpawn();
+         this.setMapSpawn(this.maps[next]);
       },
       previousMap : function(){
          var curr = this.currentMap;
@@ -139,8 +142,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             next = this.maps.length - 1;
          }
          this.currentMap = next;
-         this.tileMap.setMap(this.maps[next]);
-         this.setMapSpawn();
+         this.setMapSpawn(this.maps[next]);
       }
 
    }
@@ -178,10 +180,16 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
 
    $scope.nextMap = function(){
       game.nextMap();
+      $scope.mapName = game.getCurrentMapName();
    };
    $scope.previousMap = function(){
       game.previousMap();
+      $scope.mapName = game.getCurrentMapName();
    };
+   game.load().then(function(){
+      $scope.mapName = game.getCurrentMapName();
+   });
+
 });
 
 
