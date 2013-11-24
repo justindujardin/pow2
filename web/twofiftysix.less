@@ -70,6 +70,7 @@ body {
 .user-sprite {
   .ebp {
     padding:10px;
+    width:100%;
   }
   .file-source{
     text-align: center;
@@ -86,10 +87,22 @@ body {
   }
 }
 
-
 .game-view {
   text-align:center;
+  .col-xs-1 {
+    padding:0;
+  }
   .ebp {
+    &.arrow {
+      width:48px;
+      height:60px;
+      font-size: 32px;
+      &:focus {
+        outline:none;
+      }
+    }
+
+
     width:auto;
     height:auto;
     padding:0;

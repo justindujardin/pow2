@@ -37,7 +37,16 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
       loader: new eburp.ResourceLoader(),
       load : function(){
          var deferred = $q.defer();
+         var self = this;
          this.loader.loadAll(this.files,function(){
+            self.scene = new eburp.Scene({autoStart: true});
+            self.tileMap = new eburp.TileMap("town");
+            self.sprite = new eburp.MovableTileObject({
+               point: self.tileMap.bounds.getCenter()
+            });
+            self.scene.addObject(self.sprite);
+            self.scene.addObject(self.tileMap);
+
             deferred.resolve();
             if (!$rootScope.$$phase) {
                $rootScope.$apply();

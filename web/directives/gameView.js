@@ -8,24 +8,19 @@ twoFiftySix.app.directive('gameView', function($compile,game) {
          context.mozImageSmoothingEnabled = false;
 
          element.append(renderCanvas);
-
-         var tileMap = new eburp.TileMap("town");
-         var spriteObject = new eburp.MovableTileObject({
-            point: tileMap.bounds.getCenter()
-         });
          $(document).keyup(function(e){
             switch(e.keyCode){
                case 37: // Left
-                  spriteObject.velocity.x = 0;
+                  game.sprite.velocity.x = 0;
                   break;
                case 38: // Up
-                  spriteObject.velocity.y = 0;
+                  game.sprite.velocity.y = 0;
                   break;
                case 39: // Right
-                  spriteObject.velocity.x = 0;
+                  game.sprite.velocity.x = 0;
                   break;
                case 40: // Down
-                  spriteObject.velocity.y = 0;
+                  game.sprite.velocity.y = 0;
                   break;
                default:
                   return true;
@@ -35,16 +30,16 @@ twoFiftySix.app.directive('gameView', function($compile,game) {
          $(document).keydown(function(e){
             switch(e.keyCode){
                case 37: // Left
-                  spriteObject.velocity.x = -1;
+                  game.sprite.velocity.x = -1;
                   break;
                case 38: // Up
-                  spriteObject.velocity.y = -1;
+                  game.sprite.velocity.y = -1;
                   break;
                case 39: // Right
-                  spriteObject.velocity.x = 1;
+                  game.sprite.velocity.x = 1;
                   break;
                case 40: // Down
-                  spriteObject.velocity.y = 1;
+                  game.sprite.velocity.y = 1;
                   break;
                default:
                   return true;
@@ -57,14 +52,11 @@ twoFiftySix.app.directive('gameView', function($compile,game) {
             var image = $(".user-sprite img")[0];
             var tileView = new eburp.TileMapView(element[0],loader);
             tileView.imageProcessor = new eburp.ImageProcessor(renderCanvas[0], tileView);
-            tileView.tileMap = tileMap;
-            var scene = new eburp.Scene({autoStart: true});
-            scene.addView(tileView);
+            tileView.tileMap = game.tileMap;
+            game.scene.addView(tileView);
 
             tileView.camera.point.set(15,10);
-            tileView.trackObject(spriteObject);
-            scene.addObject(spriteObject);
-            scene.addObject(tileMap);
+            tileView.trackObject(game.sprite);
 
             var canvas = $("canvas.image-drop")[0];
             var context = canvas.getContext("2d");
@@ -79,13 +71,13 @@ twoFiftySix.app.directive('gameView', function($compile,game) {
                   image.src = storedImage;
                }
                image.onload = function(){
-                  spriteObject.image = image;
+                  game.sprite.image = image;
                   context.clearRect(0,0,96,96);
                   context.drawImage(image,0,0,96,96);
                };
             }
             else {
-               spriteObject.image = image;
+               game.sprite.image = image;
                context.clearRect(0,0,96,96);
                context.drawImage(image,0,0,96,96);
             }
