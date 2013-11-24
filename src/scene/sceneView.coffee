@@ -92,12 +92,22 @@ class eburp.SceneView
 
   # Clear the canvas context with a color
   fillColor: (color="rgb(0,0,0)") ->
-    return false if not @context
+    return false if not @context or not @context.canvas
     @context.fillStyle = color
-    @context.fillRect(0, 0, @canvas.width, @canvas.height)
+    x = y = 0
+    if @camera
+      renderPos = @worldToScreen(@camera.point)
+      x = renderPos.x
+      y = renderPos.y
+    @context.fillRect(x, y, @context.canvas.width, @context.canvas.height)
 
   clearRect: () ->
-    @context.clearRect(0, 0, @canvas.width, @canvas.height)
+    x = y = 0
+    if @camera
+      renderPos = @worldToScreen(@camera.point)
+      x = renderPos.x
+      y = renderPos.y
+    @context.clearRect(x, y, @context.canvas.width, @context.canvas.height)
 
   # Coordinate Conversions (World/Screen)
   # -----------------------------------------------------------------------------

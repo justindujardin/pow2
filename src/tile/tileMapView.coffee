@@ -53,6 +53,7 @@ class eburp.TileMapView extends eburp.SceneView
     @context.translate worldTilePos.x - worldCameraPos.x,worldTilePos.y - worldCameraPos.y
 
   renderFrame: (scene) ->
+    @fillColor()
     return if not @tileMap
     clipRect = new eburp.Rect(@camera).clip @tileMap.bounds
     for x in [clipRect.point.x ... clipRect.getRight()]
@@ -72,6 +73,7 @@ class eburp.TileMapView extends eburp.SceneView
   renderPost: (scene) ->
     overlay = @getScreenOverlay()
     return if not overlay
+    return if not @camera or not @context or not @tileMap
     clipRect = new eburp.Rect(@camera).clip @tileMap.bounds
     @fillTiles(overlay, clipRect)
 
