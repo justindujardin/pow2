@@ -20,7 +20,7 @@ class eburp.MovableTileObject extends eburp.TileObject
   constructor : (options) ->
     options = _.defaults options or {}, {
       velocity: new eburp.Point(0,0)
-      tickRateMS: 100
+      tickRateMS: 150
     }
     @_elapsed = 0
     super(options)
