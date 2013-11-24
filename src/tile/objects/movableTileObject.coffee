@@ -21,6 +21,7 @@ class eburp.MovableTileObject extends eburp.TileObject
     options = _.defaults options or {}, {
       velocity: new eburp.Point(0,0)
       tickRateMS: 150
+      impulse: new eburp.Point(0,0)
     }
     @_elapsed = 0
     super(options)
@@ -28,17 +29,28 @@ class eburp.MovableTileObject extends eburp.TileObject
 
   tick: (elapsed) ->
     # Early out if no velocity
-    return if @velocity.x == 0 and @velocity.y == 0
+    return if @velocity.isZero() and @impulse.isZero()
     @_elapsed += elapsed
     return if @_elapsed < @tickRateMS
     @_elapsed -= @tickRateMS
 
     map = @scene.objectByType eburp.TileMap
-    return @point.add @velocity if !map
+    toAdd = if @impulse.isZero() then @velocity else @impulse
+    if map
 
-    # Do horrible integer movement.
-    tx = @point.x + @velocity.x
-    ty = @point.y + @velocity.y
-    terrain = map.getTerrain(tx,ty)
-    if terrain and terrain.passable
-      @point.add @velocity
+      # Do horrible integer movement.
+      tx = @point.x + toAdd.x
+      ty = @point.y + toAdd.y
+      terrain = map.getTerrain(tx,ty)
+      if not terrain or !terrain.passable
+        @impulse.zero()
+        return
+    @point.add toAdd
+    @impulse.zero()
+
+  moveLeft: () -> @velocity.x = @impulse.x = -1
+  moveRight: () -> @velocity.x = @impulse.x = 1
+  moveUp: () -> @velocity.y = @impulse.y = -1
+  moveDown: () -> @velocity.y = @impulse.y = 1
+
+

@@ -75,3 +75,6 @@ class eburp.Point
     @x = Math.floor factor
     @y = Math.floor factor
     @
+
+  isZero: () -> @x == 0 and @y == 0
+  zero: () -> @x = @y = 0
