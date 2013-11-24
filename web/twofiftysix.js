@@ -60,15 +60,23 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
    };
    $scope.clearImageData = function() {
       $scope.hasImage = false;
-      delete localStorage["sharedImage"];
+      game.imageData = null;
+      localStorage.removeItem("sharedImage")
    };
    $scope.setImageData = function(data){
-      localStorage["sharedImage"] = data;
+      if(!data){
+         return $scope.clearImageData();
+      }
+      localStorage.setItem("sharedImage",data);
       game.imageData = data;
       $scope.hasImage = true;
    };
    $scope.getImageData = function(){
-      return localStorage["sharedImage"];
+
+      return localStorage.getItem("sharedImage");
+   };
+   $scope.syncImageData = function(){
+      $scope.setImageData($scope.getImageData());
    };
    game.load().then(function(){
       $scope.game = game;

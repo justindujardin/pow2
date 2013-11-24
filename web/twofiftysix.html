@@ -42,16 +42,19 @@
                         <img>
                         <% } %>
                         <span class="filename"<% if(user){ %> ng-hide="hasImage"<% } %>>Sprite</span>
+                        <span ng-show="hasImage">
                         <% if(user){ %>
-                        <a ng-show="hasImage" href="javascript:void(0);" ng-click="shareImage()">Share</a>
+                            <a href="javascript:void(0);" ng-click="shareImage()">Share</a>
                         <% } %>
+                            <a href="javascript:void(0);" ng-click="clearImageData()">&times;</a>
+                        </span>
                     </div>
                 </div>
                 <canvas width="96" height="96" image-drop></canvas>
                 <% if(user){ %>
                 <div class="username"><%= user.name %></div> <a href="/auth/logout">Log out</a>
                 <% } else { %>
-                <a href="/auth/facebook">Login with Facebook</a>
+                <a href="/auth/facebook">Login</a>
                 <% } %>
             </div>
         </div>
