@@ -58,8 +58,6 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
 });
 
 twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,game){
-   $scope.error = null;
-   $scope.notify = function(){};
    $scope.hasImage = false;
    $scope.shareImage = function(){
       $http.post('/share', {data:game.imageData}).success(function(data){
@@ -70,7 +68,7 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
    $scope.clearImageData = function() {
       $scope.hasImage = false;
       game.imageData = null;
-      localStorage.removeItem("sharedImage")
+      localStorage.removeItem("sharedImage");
    };
    $scope.setImageData = function(data){
       if(!data){
@@ -87,9 +85,6 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
    $scope.syncImageData = function(){
       $scope.setImageData($scope.getImageData());
    };
-   game.load().then(function(){
-      $scope.game = game;
-   });
 });
 
 
