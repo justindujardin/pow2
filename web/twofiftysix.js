@@ -34,6 +34,8 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          "/images/items.png",
          "/images/ui.png"
       ],
+      maps: _.keys(eburp.getMaps()),
+      currentMap: 0,
       loader: new eburp.ResourceLoader(),
       bindInput: function(){
          var self = this;
@@ -75,14 +77,13 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             }
             e.stopImmediatePropagation();
          });
-
       },
       load : function(){
          var deferred = $q.defer();
          var self = this;
          this.loader.loadAll(this.files,function(){
             self.scene = new eburp.Scene({autoStart: true});
-            self.tileMap = new eburp.TileMap("town");
+            self.tileMap = new eburp.TileMap(self.maps[0]);
             self.sprite = new eburp.MovableTileObject({
                point: self.tileMap.bounds.getCenter()
             });
@@ -95,12 +96,59 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             }
          });
          return deferred.promise;
+      },
+      /**
+       * Guess a good starting point for a player in a new map.
+       *
+       * Try to get a transition feature (door or exit), then
+       * fall back to the map center.
+       */
+      setMapSpawn: function() {
+         var map = this.tileMap.map;
+         var point = new eburp.Point(0,0);
+         if(map){
+            if(!map.features){
+               point = this.tileMap.bounds.getCenter();
+            }
+            else {
+               // Pick the first transition feature we find.
+               var feature = _.where(this.tileMap.map.features,{type : "transition"})[0];
+               if(feature){
+
+                  point = new eburp.Point(feature.x,feature.y);
+               }
+            }
+         }
+         this.sprite.point = point;
+         //self.tileMap.bounds.getCenter()
+      },
+      nextMap: function(){
+         var curr = this.currentMap;
+         var next = curr + 1;
+         if(next >= this.maps.length){
+            next = 0;
+         }
+         this.currentMap = next;
+         this.tileMap.setMap(this.maps[next]);
+         this.setMapSpawn();
+      },
+      previousMap : function(){
+         var curr = this.currentMap;
+         var next = curr - 1;
+         if(next < 0){
+            next = this.maps.length - 1;
+         }
+         this.currentMap = next;
+         this.tileMap.setMap(this.maps[next]);
+         this.setMapSpawn();
       }
+
    }
 });
 
 twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,game){
    $scope.hasImage = false;
+
    $scope.shareImage = function(){
       $http.post('/share', {data:game.imageData}).success(function(data){
          $scope.sharedUrl = data.url;
@@ -126,6 +174,13 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
    };
    $scope.syncImageData = function(){
       $scope.setImageData($scope.getImageData());
+   };
+
+   $scope.nextMap = function(){
+      game.nextMap();
+   };
+   $scope.previousMap = function(){
+      game.previousMap();
    };
 });
 

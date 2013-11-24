@@ -46,6 +46,7 @@ class eburp.TileMap extends eburp.SceneObject
     return false if not @map
     list = @map.features
     @features = {}
+    return if not list
     for feature in list
       x = feature.x
       y = feature.y
