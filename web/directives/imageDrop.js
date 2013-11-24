@@ -3,6 +3,7 @@ twoFiftySix.app.directive('imageDrop', function($compile,$timeout,game) {
    return {
       restrict: 'A',
       controller: function($scope) {
+         $scope.hasImage = $scope.getImageData();
          $scope.toggleOverlay = function(show){
             return $(".drop-overlay")[show ? 'fadeIn' : 'fadeOut'](125);
          };

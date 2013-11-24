@@ -18,23 +18,7 @@
 </head>
 <body ng-controller="twoFiftySixApp">
 
-<div class="control container">
-    <div class="row">
-        <div class="col-xs-12">
-            <div eight-bit-panel>
-                <% if(user){ %>
-                <span class="username"><%= user.name %></span> - <a href="/auth/logout">Log out</a>
-                <% } else { %>
-                <a href="/auth/facebook">Login with Facebook</a>
-                <% } %>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="container">
-    <div class="row">
-    </div>
     <div class="row">
         <div class="toolbar col-xs-9">
             <div class="title" eight-bit-panel>
@@ -42,7 +26,7 @@
             </div>
             <div eight-bit-panel>
                 <span class="col-xs-11">
-                    <span ng-show="sharedUrl">Great, your sprite URL is <a href="{{sharedUrl}}">{{sharedUrl}}</a></span>
+                    <span ng-show="sharedUrl">Great, your sprite URL is <a class="shared-url" href="{{sharedUrl}}">{{sharedUrl}}</a></span>
                     <span ng-hide="sharedUrl">Create a 16x16 replacement sprite, drop it on the page, and share with your friends.</span>
                 </span>
                 <span class="col-xs-1 pointer">></span>
@@ -57,13 +41,18 @@
                         <% } else { %>
                         <img>
                         <% } %>
-                        <span class="filename">Sprite</span>
+                        <span class="filename"<% if(user){ %> ng-hide="hasImage"<% } %>>Sprite</span>
+                        <% if(user){ %>
+                        <a ng-show="hasImage" href="javascript:void(0);" ng-click="shareImage()">Share</a>
+                        <% } %>
                     </div>
-                    <% if(user){ %>
-                    <a ng-show="hasImage" href="javascript:void(0);" ng-click="shareImage()">Share</a>
-                    <% } %>
                 </div>
                 <canvas width="96" height="96" image-drop></canvas>
+                <% if(user){ %>
+                <div class="username"><%= user.name %></div> <a href="/auth/logout">Log out</a>
+                <% } else { %>
+                <a href="/auth/facebook">Login with Facebook</a>
+                <% } %>
             </div>
         </div>
     </div>
