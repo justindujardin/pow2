@@ -191,7 +191,7 @@ module.exports = function(grunt) {
             files: [
                '<%= concat.maps.src %>'
             ],
-            tasks: ['concat', 'notify:maps']
+            tasks: ['concat:maps', 'notify:maps']
          },
          sprites: {
             files: [
