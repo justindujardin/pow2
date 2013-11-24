@@ -66,7 +66,9 @@
         <div class="col-xs-1"><button class="arrow" type='button' eight-bit-panel ng-click="previousMap()"><</button></div>
         <div class="col-xs-10">
             <div class="large" eight-bit-panel>
-                <span class="map-name">{{mapName}}</span>
+                <span class="map-name">
+                    <span eight-bit-panel>{{mapName}}</span>
+                </span>
                 <canvas width="576" height="576" game-view>Your browser doesn't support this.</canvas>
             </div>
         </div>

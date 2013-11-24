@@ -46,18 +46,18 @@
   &::before { left: -@borderWidth; }
   &::after  { right: -@borderWidth; }
 
-  .tl, .tr, .bl, .br {
+  > .tl, > .tr, > .bl, > .br {
     position: absolute;
     width: @borderWidth;
     height: @borderWidth;
     background-color: @color;
   }
-  .tl{ left: -@btnHalfBorder; top: -@btnHalfBorder; }
-  .tr{ right: -@btnHalfBorder; top: -@btnHalfBorder; }
-  .bl{ left: -@btnHalfBorder; bottom: -@btnHalfBorder; }
-  .br{ right: -@btnHalfBorder; bottom: -@btnHalfBorder; }
+  > .tl{ left: -@btnHalfBorder; top: -@btnHalfBorder; }
+  > .tr{ right: -@btnHalfBorder; top: -@btnHalfBorder; }
+  > .bl{ left: -@btnHalfBorder; bottom: -@btnHalfBorder; }
+  > .br{ right: -@btnHalfBorder; bottom: -@btnHalfBorder; }
 
-  .content {
+  > .content {
     .clearfix;
   }
 }
