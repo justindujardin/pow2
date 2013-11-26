@@ -124,7 +124,8 @@ module.exports = function(grunt) {
       sprites: {
          game: {
             options: {
-               metaFile: 'web/<%= pkg.name %>.sprites.js'
+               metaFile: 'web/<%= pkg.name %>.sprites.js',
+               indexFiles: true
             },
             files: [
                {src: 'data/textures/characters/*.png', dest: 'web/images/characters'},
@@ -224,7 +225,8 @@ module.exports = function(grunt) {
       var spritePacker = require('./server/spritePacker');
       var queue = [];
       var options = this.options({
-         metaFile: null
+         metaFile: null,
+         indexFiles:false
       });
       var queue = this.files.slice();
       var jsChunks = [];
@@ -234,6 +236,11 @@ module.exports = function(grunt) {
             return spritePacker(exec.src, {outName: exec.dest,scale: 1})
                .then(function(result){
                   grunt.log.writeln('File "' + result.file + '" created.');
+                  if(options.indexFiles){
+                     var index = exec.dest + '.json';
+                     grunt.file.write(index, JSON.stringify(exec.src,null,3));
+                     grunt.log.writeln('File "' + index + '" created.');
+                  }
                   jsChunks.push("eburp.registerSprites('" + result.name + "'," + JSON.stringify(result.meta,null,3)+");");
                   return _next();
                },function(error){

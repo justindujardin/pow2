@@ -27,7 +27,11 @@
             <div class="greetings" eight-bit-panel>
                 <span class="col-sm-11">
                     <span ng-show="sharedUrl">Great, your sprite URL is <a class="shared-url" href="{{sharedUrl}}">{{sharedUrl}}</a></span>
-                    <span ng-hide="sharedUrl">Create a 16x16 replacement sprite, drop it on the page, and share with your friends.</span>
+                    <span ng-hide="sharedUrl">
+                        Create a 16x16 replacement sprite, drop it on the page, and share with your friends.<br/>
+                        <a href="javscript:void(0);" ng-hide="spriteCatalog" ng-click="showSpriteCatalog()">View Sprite Catalog</a>
+                        <a href="javscript:void(0);" ng-show="spriteCatalog" ng-click="hideSpriteCatalog()">Hide Sprite Catalog</a>
+                    </span>
                 </span>
                 <span class="col-sm-1 pointer">></span>
             </div>
@@ -66,7 +70,7 @@
     </div>
 </div>
 
-<div class="game-view container">
+<div class="game-view container" ng-hide="spriteCatalog">
     <div class="row">
         <div class="col-xs-1"><button class="arrow" type='button' eight-bit-panel ng-click="previousMap()"><</button></div>
         <div class="col-xs-10">
@@ -81,13 +85,22 @@
     </div>
 </div>
 
+<div class="sprites-view container" ng-show="spriteCatalog">
+    <div class="row" ng-repeat="(key,value) in spriteCategories">
+        <div eight-bit-panel>
+            <p>{{key}}</p>
+            <img class="thumbnail" ng-repeat="sprite in value" src="{{sprite}}">
+        </div>
+    </div>
+</div>
+
+
 <div class="container external-links">
     <div eight-bit-panel>
         <a href="/">Game</a> / <a href="https://github.com/justindujardin/pow2">Github</a>
     </div>
 
 </div>
-
 
 <!-- Compiled Game Files -->
 <script type="text/javascript" src="/eburp.core.js"></script>
@@ -96,6 +109,7 @@
 <script type="text/javascript" src="/eburp.sprites.js"></script>
 <script type="text/javascript" src="/eburp.maps.js"></script>
 <script type="text/javascript" src="/twofiftysix.js"></script>
+<script type="text/javascript" src="/services/sourceSprites.js"></script>
 <script type="text/javascript" src="/directives/gameView.js"></script>
 <script type="text/javascript" src="/directives/imageDrop.js"></script>
 
@@ -105,13 +119,13 @@
 </div>
 
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-8701293-5', 'pow2.herokuapp.com');
-  ga('send', 'pageview');
+    ga('create', 'UA-8701293-5', 'pow2.herokuapp.com');
+    ga('send', 'pageview');
 </script>
 </body>
 </html>

@@ -98,10 +98,10 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          return deferred.promise;
       },
       getCurrentMapName: function(){
-        if(!this.tileMap || !this.tileMap.map){
-           return null;
-        }
-        return this.tileMap.map.name;
+         if(!this.tileMap || !this.tileMap.map){
+            return null;
+         }
+         return this.tileMap.map.name;
       },
       /**
        * Guess a good starting point for a player in a new map.
@@ -148,9 +148,30 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
    }
 });
 
-twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,game){
+twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,game,sourceSprites){
    $scope.hasImage = false;
-
+   $scope.sprites = [];
+   $scope.spriteCategories = {};
+   $scope.spriteCatalog = false;
+   $scope.showSpriteCatalog = function() {
+      $scope.spriteCatalog = true;
+      if($scope.spriteCategories.length > 0){
+         return;
+      }
+      setTimeout(function() {
+         $scope.$apply(function() {
+            var cats = sourceSprites.getCategories();
+            _.each(cats,function(cat){
+               sourceSprites.getSprites(cat,2).then(function(sources){
+                  $scope.spriteCategories[cat] = sources;
+               });
+            });
+         });
+      }, 100);
+   };
+   $scope.hideSpriteCatalog = function(){
+     $scope.spriteCatalog = false;
+   };
    $scope.shareImage = function(){
       $http.post('/share', {data:game.imageData}).success(function(data){
          $scope.sharedUrl = data.url;

@@ -65,6 +65,7 @@ class eburp.ResourceLoader
         loadQueue--
         done(resource) if done and loadQueue is 0
       res.load()
+      res
 
   load: (url,done) ->
       extension = @getResourceExtension url
