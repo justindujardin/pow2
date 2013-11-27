@@ -40,8 +40,8 @@
                     <span>The game view doesn't look so hot in mobile resolutions at the moment.  You can still view sprites, but the game view has been hidden.</span>
                 </span>
                 <div>
-                    <a href="javscript:void(0);" ng-hide="spriteCatalog" ng-click="showSpriteCatalog()">View Sprite Catalog</a>
-                    <a href="javscript:void(0);" ng-show="spriteCatalog" ng-click="hideSpriteCatalog()">Hide Sprite Catalog</a>
+                    <a ng-hide="spriteCatalog" ng-click="showSpriteCatalog()">View Sprite Catalog</a>
+                    <a ng-show="spriteCatalog" ng-click="hideSpriteCatalog()">Hide Sprite Catalog</a>
                 </div>
             </div>
         </div>
@@ -92,7 +92,7 @@
 <div class="sprites-view container" ng-show="spriteCatalog">
     <div class="row" ng-repeat="(key,value) in spriteCategories">
         <div eight-bit-panel>
-            <p>{{key}}</p>
+            <p>{{key}} - <a href="/images/{{key}}.png" target="_blank">download</a></p>
             <img class="thumbnail" ng-repeat="sprite in value" src="{{sprite}}">
         </div>
     </div>
