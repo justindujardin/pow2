@@ -25,6 +25,17 @@
 </head>
 <body>
 
+<div class="fb-container">
+    <div eight-bit-panel>
+        <% if(user){ %>
+        <div class="username"><%= user.name %></div> <a href="/auth/logout?r=/">Log out</a>
+        <% } else { %>
+        <a href="/auth/facebook?r=/">Login</a>
+        <% } %>
+    </div>
+</div>
+
+
 <div class="game-container">
     <canvas id="screenID" width="576" height="576"></canvas>
 </div>

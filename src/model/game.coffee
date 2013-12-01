@@ -61,7 +61,7 @@ class Game
     @moveNum = 0
     @buildFeatures()
 
-  saveGame : =>
+  saveGame : ->
     copy = JSON.parse(JSON.stringify(this))
     delete copy.features
     for player in copy.players
@@ -75,7 +75,7 @@ class Game
         item.template = item.template.name
     copy
 
-  loadGame : (json) =>
+  loadGame : (json) ->
     saved = JSON.parse(json)
     @players = []
     for obj in saved.players
@@ -97,51 +97,48 @@ class Game
     @buildFeatures()
     true
 
-  createBag : =>
+  createBag : ->
     if (!@bag)
       @bag = new Player(Library.getCharacterByName("Bag of Holding"))
 
-  death : =>
+  death : ->
     @ships = {}
     for player in @players
       player.healCompletely()
     @gold = 0
     @buildFeatures()
 
-  getStart : =>
+  getStart : ->
     best = Data.start[0]
     for start in Data.start
       if (start.after and @hasMarker(start.after))
         best = start
     best
 
-  @getKey : (x, y) =>
+  @getKey : (x, y) ->
     "" + x + "_" + y
 
-  setMarkers : (listOrSingle) =>
-    if (listOrSingle == "bagOfHolding" and !@bag)
-      @createBag()
-    if (listOrSingle == "gameOver")
-      Device.setSetting("won", true)
+  setMarkers : (listOrSingle) ->
+    return false if not listOrSingle
+    @createBag() if listOrSingle == "bagOfHolding" and not @bag
+    Device.setSetting "won", true if listOrSingle == "gameOver"
     newMarkers = false
-    if (listOrSingle)
-      if (listOrSingle instanceof Array)
-        for a in listOrSingle
-          if (!@markers[a])
-            @markers[a] = true
-            newMarkers = true
-      else
-        if (!@markers[listOrSingle])
-          @markers[listOrSingle] = true
-          newMarkers = true
-    if (newMarkers)
-      @buildFeatures()
+    listOrSingle = [listOrSingle] if listOrSingle not instanceof Array
+    for a in listOrSingle
+      if not @markers[a]
+        @markers[a] = true
+        newMarkers = true
+      for quest,info of Data.quests
+        if info.done == a and info.graphId
+          $.post "/c/quest/#{info.graphId}"
+
+    @buildFeatures() if newMarkers
     newMarkers
 
-  hasMarker : (marker) =>
+  hasMarker : (marker) ->
     return !!@markers[marker]
 
-  hasAllMarkers : (listOrSingle) =>
+  hasAllMarkers : (listOrSingle) ->
     if (listOrSingle)
       if (listOrSingle instanceof Array)
         for a in listOrSingle
@@ -152,7 +149,7 @@ class Game
           return false
     true
 
-  hasAnyMarkers : (listOrSingle) =>
+  hasAnyMarkers : (listOrSingle) ->
     if (listOrSingle)
       if (listOrSingle instanceof Array)
         for a in listOrSingle
@@ -163,7 +160,7 @@ class Game
           return true
     false
 
-  buildFeatures : =>
+  buildFeatures : ->
     list = eburp.getMap(@map).features
     @features = {}
     @shops = {}
@@ -184,7 +181,7 @@ class Game
           if (feature.type == "shop")
             @populateShopItems(key, feature)
 
-  populateShopItems : (key, shop) =>
+  populateShopItems : (key, shop) ->
     items = []
     @shops[key] = items
     for i in [0 ... Game.NUM_SHOP_ITEMS]
@@ -192,18 +189,18 @@ class Game
       if (item)
         items.push(item)
 
-  getShopItems : (x, y) =>
+  getShopItems : (x, y) ->
     key = Game.getKey(x, y)
     @shops[key]
 
-  isChartered : (shipID) =>
+  isChartered : (shipID) ->
     if (@ships[shipID]) then true else false
 
-  boardShip : (shipID) =>
+  boardShip : (shipID) ->
     @aboard = shipID
     @moveShip(@x, @y)
 
-  moveShip : (x, y) =>
+  moveShip : (x, y) ->
     oldPos = @ships[@aboard]
     if (oldPos)
       oldKey = Game.getKey(oldPos.x, oldPos.y)
@@ -225,17 +222,17 @@ class Game
     @features[key] = object
     object["ship"] = feature
 
-  disembark : =>
+  disembark : ->
     @aboard = null
 
-  getCombatMap : =>
+  getCombatMap : ->
     @getTerrainInfo().combatMap
 
-  getFeatures : (x, y) =>
+  getFeatures : (x, y) ->
     key = Game.getKey(x, y)
     @features[key]
 
-  getFeature : (x, y, type) =>
+  getFeature : (x, y, type) ->
     key = Game.getKey(x, y)
     object = @features[key]
     if (!object)
@@ -243,37 +240,37 @@ class Game
     else
       object[type]
 
-  addPlayer : (player) =>
+  addPlayer : (player) ->
     @players.push(player)
 
-  getVisitedArray : =>
+  getVisitedArray : ->
     array = @visited[@map]
     if (!array)
       array = Util.create2DArray(Data.maps[@map].width, Data.maps[@map].height,0)
       @visited[@map] = array
     array
 
-  markVisited : (x, y) =>
+  markVisited : (x, y) ->
     array = @getVisitedArray()
     array[y][x] = 1
 
-  wasVisited : (x, y) =>
+  wasVisited : (x, y) ->
     array = @getVisitedArray()
     return array[y][x] == 1
 
-  moveTo : (x, y) =>
+  moveTo : (x, y) ->
     @x = x
     @y = y
     if (@aboard)
       @moveShip(x, y)
 
-  transitionTo : (map, x, y) =>
+  transitionTo : (map, x, y) ->
     @map = map
     @buildFeatures()
     @x = x
     @y = y
 
-  doesItemExist : (name) =>
+  doesItemExist : (name) ->
     ## 1) Check all players
     for player in @players
       if (player.hasItem(name))
@@ -287,11 +284,11 @@ class Game
           return true
     false
 
-  createItem : (template, bonus = 0, charges = 0) =>
+  createItem : (template, bonus = 0, charges = 0) ->
     @itemId++
     new Item(template, @itemId, bonus, charges)
 
-  getRandomTemplate : (templates) =>
+  getRandomTemplate : (templates) ->
     sum = 0
     for template in templates
       sum += template.rarity ? 1000
@@ -304,7 +301,7 @@ class Game
         value -= rarity
     null
 
-  getRandomItem : (mapLevel, groups) =>
+  getRandomItem : (mapLevel, groups) ->
     level = Library.getLevelNear(mapLevel)
     templates = Library.getItemTemplates(level, groups)
     realLevel = level
@@ -345,17 +342,17 @@ class Game
     else
       null
 
-  playersNeedHealing: () =>
+  playersNeedHealing: () ->
     for player in @players
       if (player.hitPoints < player.maxHitPoints)
         return true
     false
 
-  healParty : =>
+  healParty : ->
     for player in @players
       player.healCompletely()
 
-  regenerateParty : =>
+  regenerateParty : ->
     for player in @players
       if (player.isAlive())
         if (player.hitPoints < player.maxHitPoints)
@@ -363,7 +360,7 @@ class Game
         if (player.spellPoints < player.maxSpellPoints)
           player.spellPoints++
 
-  @getCreatureQuantity: (creatureLevel, mapLevel, limit = false) =>
+  @getCreatureQuantity: (creatureLevel, mapLevel, limit = false) ->
     diff = creatureLevel - mapLevel
     if (diff < -3)
       diff = -3
@@ -383,7 +380,7 @@ class Game
         amount = 2
     amount
 
-  getEncounter: (feature) =>
+  getEncounter: (feature) ->
     creatures = []
     for creature in feature.creatures
       template = Library.getCreatureByName(creature.name)
@@ -409,7 +406,7 @@ class Game
       ambushed = false
     {"creatures" : creatures, "items" : items, "gold" : gold, "ambushed" : ambushed}
 
-  giveExperience : (creatures) =>
+  giveExperience : (creatures) ->
     totalXP = 0
     for creature in creatures
       totalXP += creature.template.experienceValue
@@ -432,12 +429,16 @@ class Game
             switch attr
               when 0
                 player.strength++
+                break
               when 1
                 player.accuracy++
+                break
               when 2
                 player.awareness++
+                break
               when 3
                 player.constitution++
+                break
           constitutionBonus = player.getAttributeBonus(player.getConstitution())
           awarenessBonus = player.getAttributeBonus(player.getAwareness())
           hitPointBonus = Util.random(2, 8) + constitutionBonus
@@ -459,14 +460,14 @@ class Game
           upgrades.push({"player" : player, "attrBonuses" : attrBonuses, "hitPointBonus" : hitPointBonus, "spellPointBonus" : spellPointBonus, "newSpells" : newSpells})
     upgrades
 
-  getAveragePlayerLevel : =>
+  getAveragePlayerLevel : ->
     total = 0
     for player in @players
       if (player.isAlive())
         total += player.level
     total / 3
 
-  getTile : (x, y) =>
+  getTile : (x, y) ->
     override = @getFeature(x, y, "override")
     if (override)
       override.tile
@@ -474,7 +475,7 @@ class Game
       index = y * Data.maps[@map].width + x
       Data.maps[@map].map.charAt(index)
 
-  getTerrainInfo : =>
+  getTerrainInfo : ->
     tile = @getTile(@x, @y)
     terrain = Data.maps[@map].terrain?[tile]
     if (terrain)
@@ -488,7 +489,7 @@ class Game
         groups: map.groups
       }
 
-  checkForRandomEncounter : =>
+  checkForRandomEncounter : ->
     terrain = @getTerrainInfo()
     encounterChance = terrain.encounterChance
     if (encounterChance)
@@ -500,7 +501,7 @@ class Game
         return true
     false
 
-  createEncounter: () =>
+  createEncounter: () ->
     terrain = @getTerrainInfo()
     mapLevel = terrain.level
     groups = terrain.groups
