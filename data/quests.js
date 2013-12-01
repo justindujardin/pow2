@@ -1,6 +1,13 @@
 eburp.registerData("quests",{ // This populates the QUESTS view. Quests are triggered by variables been set based on the map features below
+   "The Chosen Path" :
+   {
+      graphId:"the_chosen_path",
+      done : "ruinsStart",
+      text : "Agree to investigate the ruins of Kinstown harbor."
+   },
    "Kinstown Ruins" :
    {
+      graphId:"kinstown_ruins",
       started : "ruinsStart",
       done : "ruinsDone",
       icon : "oldMan.png",
@@ -8,6 +15,7 @@ eburp.registerData("quests",{ // This populates the QUESTS view. Quests are trig
    },
    "Forest of Nothia" :
    {
+      graphId:"forest_of_nothia",
       started : "portStart",
       done : "portDone",
       icon : "man3.png",
@@ -15,6 +23,7 @@ eburp.registerData("quests",{ // This populates the QUESTS view. Quests are trig
    },
    "Goblin Fortress" :
    {
+      graphId:"goblin_fortress",
       started : "goblinStart",
       done : "goblinDone",
       icon : "gnomeKing.png",
@@ -22,6 +31,7 @@ eburp.registerData("quests",{ // This populates the QUESTS view. Quests are trig
    },
    "Castle Bashgar" :
    {
+      graphId:"castle_bashgar",
       started : "castleStart",
       done : "castleDone",
       icon : "gnomeKing.png",
@@ -29,6 +39,7 @@ eburp.registerData("quests",{ // This populates the QUESTS view. Quests are trig
    },
    "Ashvari Crypts" :
    {
+      graphId:"ashvari_crypts",
       started : "cryptsStart",
       done : "cryptsDone",
       icon : "emperor.png",
@@ -36,6 +47,7 @@ eburp.registerData("quests",{ // This populates the QUESTS view. Quests are trig
    },
    "Roogard Keep" :
    {
+      graphId:"roogard_keep",
       started : "keepStart",
       done : "keepDone",
       icon : "emperor.png",
@@ -43,6 +55,7 @@ eburp.registerData("quests",{ // This populates the QUESTS view. Quests are trig
    },
    "Vygurn Tower" :
    {
+      graphId:"vygurn_tower",
       started : "towerStart",
       done : "towerDone",
       icon : "dwarfKing.png",
@@ -50,6 +63,7 @@ eburp.registerData("quests",{ // This populates the QUESTS view. Quests are trig
    },
    "Mount Vezu" :
    {
+      graphId:"mount_vezu",
       started : "vezuStart",
       done : "gameOver",
       icon : "oolanMaster.png",
