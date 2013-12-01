@@ -31,6 +31,11 @@ module.exports = function(grunt) {
                message: 'Server restarted.'
             }
          },
+         data:{
+            options: {
+               message: 'Data files built.'
+            }
+         },
          code:{
             options: {
                message: 'Code build complete.'
@@ -45,7 +50,7 @@ module.exports = function(grunt) {
          options: {
             separator: '\n'
          },
-         game: {
+         data: {
             src: [
                "data/game.js",
                "data/*.js"
@@ -187,6 +192,12 @@ module.exports = function(grunt) {
                '<%= coffee.core.src %>'
             ],
             tasks: ['coffee', 'notify:code']
+         },
+         data: {
+            files: [
+               '<%= concat.data.src %>'
+            ],
+            tasks: ['concat:data', 'notify:data']
          },
          maps: {
             files: [
