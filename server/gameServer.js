@@ -5,7 +5,7 @@ var _ = require('underscore');
 var path = require('path');
 var Q = require('q');
 
-//var carrot = new require("./Carrot");
+var carrot = new require("./Carrot");
 var fb = require('./facebook');
 var db = require('./database');
 
@@ -23,6 +23,28 @@ server.staticPath = function (url, path) {
 server.use(express.bodyParser());
 server.use(express.cookieParser());
 server.use(express.compress());
+// Encrypt session cookies
+server.use(express.session({
+   secret: process.env.SESSION_SECRET || require("../.env.json").SESSION_SECRET
+}));
+
+// Routes
+server.get('/', function (req, res) {
+   var data = {
+      user:null
+   };
+   if(req.session && req.session.fbToken){
+      fb.graph.setAccessToken(req.session.fbToken);
+      fb.graph.get('/me',function(err,user){
+         data.user = user;
+         res.render('../web/index.html',data);
+      });
+   }
+   else {
+      res.render('../web/index.html',data);
+   }
+});
+
 server.use(express.static(path.resolve(__dirname + "/../web")));
 server.use('/data', express.static(path.resolve(__dirname + "/../data")));
 server.use('/images', express.static(path.resolve(__dirname + "/../images")));
@@ -44,12 +66,6 @@ server.configure("production", function () {
    server.use(express.errorHandler());
 });
 
-// Routes
-server.get('/', function (req, res) {
-   fs.readFile(path.join(__dirname, '../web/index.html'), 'utf8', function (err, text) {
-      res.send(text);
-   });
-});
 
 // Share a sprite for others to see.
 server.post("/share",function(req, res){
@@ -70,6 +86,27 @@ server.post("/share",function(req, res){
    db.storeImage(req.session.userId,url,imageData).then(function(){
       var fullUrl = "http://" + req.headers.host + "/256/" + url;
       res.json({url:fullUrl});
+   });
+});
+
+// Share a sprite for others to see.
+server.post("/c/quest/:id",function(req, res){
+   function _nope(){
+      res.json({authenticated:false},400);
+      res.end();
+   }
+   if(!req.session || !req.session.fbToken || !req.session.userId){
+      return _nope();
+   }
+   var cSecret = process.env.CARROT_SECRET || require("../.env.json").CARROT_SECRET;
+   var cAppId = process.env.CARROT_APPID || require("../.env.json").CARROT_APPID;
+   var c = new carrot.Carrot(cAppId, req.session.userId, cSecret);
+   c.validateUser(req.session.fbToken,function(result){
+      c.postAction("complete", req.params.id,null,null,function(result){
+         res.json({success:true});
+         res.end();
+      });
+
    });
 });
 

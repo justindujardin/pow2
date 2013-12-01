@@ -127,7 +127,7 @@
       return function(jqXHR) {
         var ret;
         ret = Carrot.Status.Error;
-        switch (jqXHR.status) {
+        switch (jqXHR) {
           case 200:
             ret = Carrot.Status.Ok;
             break;
