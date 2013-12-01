@@ -28,9 +28,9 @@
 <div class="fb-container">
     <div eight-bit-panel>
         <% if(user){ %>
-        <div class="username"><%= user.name %></div> <a href="/auth/logout?r=/">Log out</a>
+        <span class="username"><%= user.name %></span> - <a href="/auth/logout?r=/">Log out</a>
         <% } else { %>
-        <a href="/auth/facebook?r=/">Login</a>
+        <a href="/auth/facebook?r=/">Login With Facebook</a>
         <% } %>
     </div>
 </div>
