@@ -25,16 +25,14 @@ module.exports = {
       }
       var conf =  module.exports.config;
 
-      // Encrypt session cookies
-      server.use(express.session({
-         secret: process.env.SESSION_SECRET || require("../.env.json").SESSION_SECRET
-      }));
 
       server.get('/auth/facebook', function (req, res) {
+         var redirectTo = req.query.r || req.session.authCallback || '/256';
          var redirect = "http://" + req.headers.host + "/auth/facebook";
          // The Facebook app is configured to send a code= parameter in its callback
          // to this function, so if it doesn't exist, show the OAuth dialog.
          if (!req.query.code) {
+            req.session.authCallback = redirectTo;
             var authUrl = graph.getOauthUrl({
                "client_id": conf.FB_APPID,
                "redirect_uri": redirect,
@@ -67,7 +65,7 @@ module.exports = {
                   db.findUser(fbUser.id).then(function(user){
                      if(user){
                         req.session.userId = user._id.toString();
-                        return res.redirect('/256');
+                        return res.redirect(redirectTo);
                      }
                      user = {
                         facebookId: fbUser.id,
@@ -76,7 +74,7 @@ module.exports = {
                      };
                      db.createUser(user).then(function(result){
                         req.session.userId = result._id.toString();
-                        res.redirect('/256');
+                        res.redirect(redirectTo);
                      });
                   });
                });
@@ -85,8 +83,9 @@ module.exports = {
       });
 
       server.get("/auth/logout",function(req,res){
+         var redirectTo = req.query.r || '/256';
          req.session.destroy();
-         res.redirect("/256");
+         res.redirect(redirectTo);
       });
 
    }
