@@ -26,6 +26,9 @@ class CharacterRollView extends InfoView
     @setButton(7, "BACK")
     @roll()
 
+  getBonusColor: (value) ->
+    if value < 0 then "#FF8080" else "#80FF80"
+
   roll : =>
     @player = new Player(@character)
     @clear()
@@ -42,32 +45,32 @@ class CharacterRollView extends InfoView
       @addLabel("HP: #{@player.hitPoints}/#{@player.maxHitPoints}, SP: #{@player.spellPoints}/#{@player.maxSpellPoints}", "#FFF", 20, y)
     else
       @addLabel("Hit Points: #{@player.hitPoints}/#{@player.maxHitPoints}", "#FFF", 20, y)
-    y += 8
-    @addLabel("Armor Class: #{@player.getArmorClass()}", "#FFF", 20, y)
+#    y += 8
+#    @addLabel("Armor Class: #{@player.getArmorClass()}", "#FFF", 20, y)
     y += 16
     @addLabel("Strength: #{@player.getStrength()}", "#FFF", 20, y)
     y += 8
     strengthBonus = @player.getAttributeBonus(@player.getStrength())
     if (strengthBonus != 0)
-      @addLabel("Damage Bonus: #{strengthBonus}", "#A0A0A0", 28, y)
+      @addLabel("Damage Bonus: #{strengthBonus}", @getBonusColor(strengthBonus), 28, y)
     y += 10
     @addLabel("Accuracy: #{@player.getAccuracy()}", "#FFF", 20, y)
     y += 8
     accuracyBonus = @player.getAttributeBonus(@player.getAccuracy())
     if (accuracyBonus != 0)
-      @addLabel("To-Hit Bonus: #{accuracyBonus}", "#A0A0A0", 28, y)
+      @addLabel("To-Hit Bonus: #{accuracyBonus}", @getBonusColor(accuracyBonus), 28, y)
     y += 10
     @addLabel("Awareness: #{@player.getAwareness()}", "#FFF", 20, y)
     y += 8
     awarenessBonus = @player.getAttributeBonus(@player.getAwareness())
     if (awarenessBonus != 0)
-      @addLabel("Armor Class Bonus: #{awarenessBonus}", "#A0A0A0", 28, y)
+      @addLabel("Armor Class Bonus: #{awarenessBonus}", @getBonusColor(awarenessBonus), 28, y)
     y += 10
     @addLabel("Toughness: #{@player.getConstitution()}", "#FFF", 20, y)
     y += 8
     constitutionBonus = @player.getAttributeBonus(@player.getConstitution())
     if (constitutionBonus != 0)
-      @addLabel("HP Bonus/Level: #{constitutionBonus}", "#A0A0A0", 28, y)
+      @addLabel("HP Bonus/Level: #{constitutionBonus}", @getBonusColor(constitutionBonus), 28, y)
 
   command : (text) =>
     switch (text)
