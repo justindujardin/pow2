@@ -47,4 +47,4 @@ class CharacterInfoView extends InfoView
 
   doDraw : =>
     super()
-    @screen.wrapText(@character.description, "#A0A0A0", 3, @blurbY, 122)
+    @gurk.screen.wrapText(@character.description, "#A0A0A0", 3, @blurbY, 122)
