@@ -20,6 +20,8 @@ server.staticPath = function (url, path) {
    }
 };
 
+var mixpanelToken = process.env.MIXPANEL_TOKEN || require('../.env.json').MIXPANEL_TOKEN;
+
 server.use(express.bodyParser());
 server.use(express.cookieParser());
 server.use(express.compress());
@@ -28,20 +30,43 @@ server.use(express.session({
    secret: process.env.SESSION_SECRET || require("../.env.json").SESSION_SECRET
 }));
 
-// Routes
+// 256px challenge game
 server.get('/', function (req, res) {
    var data = {
-      user:null
+      user:null,
+      mixpanelToken:mixpanelToken
    };
    if(req.session && req.session.fbToken){
       fb.graph.setAccessToken(req.session.fbToken);
       fb.graph.get('/me',function(err,user){
-         data.user = user;
+         data.user = fb.parseUser(req,user);
          res.render('../web/index.html',data);
       });
    }
    else {
       res.render('../web/index.html',data);
+   }
+});
+
+
+// 8 hour challenge code
+server.get('/8', function (req, res) {
+   var data = {
+      user:null,
+      title:"8hr Code Challenge",
+      code:fs.readFileSync(path.join(__dirname, '../src/core/rect.coffee'), 'utf8'),
+      mixpanelToken:mixpanelToken
+   };
+
+   if(req.session && req.session.fbToken){
+      fb.graph.setAccessToken(req.session.fbToken);
+      fb.graph.get('/me',function(err,user){
+         data.user = fb.parseUser(req,user);
+         res.render('../web/code.html',data);
+      });
+   }
+   else {
+      res.render('../web/code.html',data);
    }
 });
 
@@ -121,13 +146,14 @@ function twoFiftySixHandler(req,res){
    }
    var data = {
       user:null,
-      shared:null
+      shared:null,
+      mixpanelToken:mixpanelToken
    };
    function render(){
       if(req.session && req.session.fbToken){
          fb.graph.setAccessToken(req.session.fbToken);
          fb.graph.get('/me',function(err,user){
-            data.user = user;
+            data.user = fb.parseUser(req,user);
             res.render('../web/twofiftysix.html',data);
          });
       }

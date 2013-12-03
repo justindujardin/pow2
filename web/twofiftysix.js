@@ -153,7 +153,21 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
    $scope.sprites = [];
    $scope.spriteCategories = {};
    $scope.spriteCatalog = false;
+   if(window._user){
+      mixpanel.identify(window._user.id);
+      mixpanel.people.set({
+         "Last name": window._user.first,
+         "First name": window._user.last,
+         "Gender": window._user.gender,
+         "$email": window._user.email
+      });
+   }
+   mixpanel.track("Art: PageView",{
+      LoggedIn:(typeof window._user !== 'undefined')
+   });
+
    $scope.showSpriteCatalog = function() {
+      mixpanel.track("Art: SpriteCatalog");
       $scope.spriteCatalog = true;
       if($scope.spriteCategories.length > 0){
          return;
@@ -173,6 +187,7 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
      $scope.spriteCatalog = false;
    };
    $scope.shareImage = function(){
+      mixpanel.track("Art: Share");
       $http.post('/share', {data:game.imageData}).success(function(data){
          $scope.sharedUrl = data.url;
          $scope.clearImageData();
@@ -197,6 +212,15 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
    };
    $scope.syncImageData = function(){
       $scope.setImageData($scope.getImageData());
+   };
+
+   $scope.login = function() {
+      mixpanel.track("Art: Login");
+     window.location.href = "/auth/facebook";
+   };
+   $scope.logout = function() {
+      mixpanel.track("Art: Logout");
+     window.location.href = "/auth/logout";
    };
 
    $scope.nextMap = function(){

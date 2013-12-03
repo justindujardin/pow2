@@ -38,10 +38,13 @@ twoFiftySix.app.directive('imageDrop', function($compile,$timeout,game) {
             if(!file){
                return $scope.finishDrop("SORRY: That's not a valid file.");
             }
+            mixpanel.track("Art: FileDrop",{
+               Type:file.type
+            });
             if(file.type !== 'image/png'){
                return $scope.finishDrop("SORRY: You have to drop a png image.");
             }
-            $scope.processDropImage(files[0]);
+            $scope.processDropImage(file);
          };
          $scope.onDragEnter = function(evt) {
             $scope.beginDrop("Drop a 16x16 PNG anywhere.");

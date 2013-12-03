@@ -12,6 +12,24 @@ module.exports = {
       scope: 'email'
    },
 
+   parseUser: function(req,user){
+      if(!user || !req){
+         return {};
+      }
+      var result = {
+         email: user.email,
+         gender: user.gender,
+         first: user.first_name,
+         last: user.last_name
+      };
+      if(user.location && user.location.name){
+         result.location = user.location.name;
+      }
+      if(req.session && req.session.userId){
+         result.id = req.session.userId;
+      }
+      return result;
+   },
    resumeSession: function(req){
       var deferred = Q.defer();
       return deferred.promise;
