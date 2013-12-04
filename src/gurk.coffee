@@ -100,7 +100,7 @@ class eburp.Gurk extends eburp.SceneView
     @setView(mapView)
 
   startNewGame : (game) =>
-    eburp.track 'New Game', Finish: true
+    eburp.track 'New Game', Progress: 'Finished'
     @game = game
     club = @game.createItem(Library.getItemTemplateByName("Crude Club"))
     sling = @game.createItem(Library.getItemTemplateByName("Sling"))

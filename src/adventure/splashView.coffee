@@ -76,7 +76,7 @@ class SplashView extends TileView
       when "NEW"
         #@gurk.startTestGame()
         @showIntro()
-        eburp.track 'New Game', Start:true
+        eburp.track 'New Game', Progress: 'Started'
       when "CREATE"
         #@gurk.setView(new CreateView(@gurk))
         @game = new Game()
