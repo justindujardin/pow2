@@ -17,28 +17,31 @@
 # -----------------------------------------------------------------------------
 
 # The global namespace things should go in.  Working on this bit.
-window.eburp ?= {}
+window.eburp =
+  data: {}
+  # Register data
+  registerData : (key,value) ->
+    eburp.data[key] = value
 
-# Stub the data object
-# TODO: Remove entirely, and file away somewhere safe, like window.eburp
-window.Data ?= {}
+  getData : (key) -> eburp.data[key]
 
-# Register data on existing window.Data object.
-window.eburp.registerData = (key,value) ->
-  window.Data[key] = value
+  # Register a map
+  registerMap : (name,data) ->
+    eburp.data.maps[name] = data;
 
-window.eburp.getData = (key) -> window.Data[key]
+  # Register a sprite sheet
+  registerSprites : (name,data) ->
+    for property of data
+      if (data.hasOwnProperty(property))
+        eburp.data.sprites[property] = data[property]
 
-# Register a map on the existing window.Data.maps object.
-window.eburp.registerMap = (name,data) ->
-  window.Data.maps[name] = data;
+  # Map Accessors
+  getMap : (name) -> eburp.data.maps[name]
+  getMaps : () -> eburp.data.maps
 
-# Register a sprite sheet
-window.eburp.registerSprites = (name,data) ->
-  for property of data
-    if (data.hasOwnProperty(property))
-      window.Data.sprites[property] = data[property];
+  # Analytics tracking
+  track: (name, properties) ->
+    return if not window.mixpanel
+    mixpanel.track name, properties
 
-# Abstract away getting a map, to make getting rid of window.Data easier in the future.
-window.eburp.getMap = (name) -> window.Data.maps[name]
-window.eburp.getMaps = (name) -> window.Data.maps
+window.Data = eburp.data;
