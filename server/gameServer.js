@@ -20,7 +20,9 @@ server.staticPath = function (url, path) {
    }
 };
 
-var mixpanelToken = process.env.MIXPANEL_TOKEN || require('../.env.json').MIXPANEL_TOKEN;
+server.getProp = function(propName){
+  return process.env[propName] || require('../.env.json')[propName];
+};
 
 server.use(express.bodyParser());
 server.use(express.cookieParser());
@@ -30,11 +32,11 @@ server.use(express.session({
    secret: process.env.SESSION_SECRET || require("../.env.json").SESSION_SECRET
 }));
 
-// 256px challenge game
+// POW2 game
 server.get('/', function (req, res) {
    var data = {
       user:null,
-      mixpanelToken:mixpanelToken
+      mixpanelToken:server.getProp("MIXPANEL_POW2")
    };
    if(req.session && req.session.fbToken){
       fb.graph.setAccessToken(req.session.fbToken);
@@ -147,7 +149,7 @@ function twoFiftySixHandler(req,res){
    var data = {
       user:null,
       shared:null,
-      mixpanelToken:mixpanelToken
+      mixpanelToken:server.getProp("MIXPANEL_256")
    };
    function render(){
       if(req.session && req.session.fbToken){

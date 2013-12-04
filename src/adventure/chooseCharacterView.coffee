@@ -70,4 +70,5 @@ class ChooseCharacterView extends SelectView
 
   processResult : (result) =>
     if (result == "NEXT")
+      eburp.track "Choose Character", Type: Util.capitalize(@type)
       @gurk.popView(result)

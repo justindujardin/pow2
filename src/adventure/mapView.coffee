@@ -456,6 +456,7 @@ class MapView extends TileView
         @draw()
       when "transition"
         feature = @getTopFeature(@posX, @posY)
+        eburp.track 'Travel', Location: feature.target
         @game.transitionTo(feature.target, feature.targetX, feature.targetY)
         @setMap(feature.target, feature.targetX, feature.targetY)
         # Process it as a move
@@ -464,6 +465,7 @@ class MapView extends TileView
 
         @draw()
       when "victory"
+        eburp.track 'Combat', Win:true
         if @game.aboard
           @gurk.playMusic @map.boatMusic or Data.boatMusic
         else if @map.music && @gurk.getMusicSetting()
@@ -505,6 +507,11 @@ class MapView extends TileView
           nextAction = "treasure"
         else
           nextAction = null
+        actionProps = {}
+        for upgrade in @upgrades
+          actionProps[upgrade.player.character.job] = upgrade.player.level
+
+        eburp.track 'Level Up', actionProps
         @gurk.pushView(new LevelUpView(@gurk, @upgrades, nextAction))
       when "treasure"
         treasure = @encounter.items
@@ -526,6 +533,7 @@ class MapView extends TileView
         feature = @getTopFeature(@posX, @posY)
         @gurk.game.setMarkers(feature.sets)
       when "defeat"
+        eburp.track 'Combat', Win:false
         @game.death()
         start = @game.getStart()
         @map = start.map

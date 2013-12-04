@@ -130,6 +130,9 @@ class Game
         newMarkers = true
       for quest,info of Data.quests
         if info.done == a and info.graphId
+          eburp.track "Complete Quest",
+            Name: quest
+            GraphID: info.graphId
           $.post "/c/quest/#{info.graphId}"
 
     @buildFeatures() if newMarkers

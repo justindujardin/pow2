@@ -95,10 +95,12 @@ class eburp.Gurk extends eburp.SceneView
   startSavedGame: =>
     @game = new Game()
     @game.loadGame(Device.loadGame())
+    eburp.track 'Load Game'
     mapView = new MapView(this)
     @setView(mapView)
 
   startNewGame : (game) =>
+    eburp.track 'New Game', Finish: true
     @game = game
     club = @game.createItem(Library.getItemTemplateByName("Crude Club"))
     sling = @game.createItem(Library.getItemTemplateByName("Sling"))
