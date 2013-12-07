@@ -8,16 +8,15 @@ twoFiftySix.app.directive('gameView', function($compile,game) {
          context.mozImageSmoothingEnabled = false;
          element.append(renderCanvas);
          game.load().then(function(){
-            game.bindInput();
-            var image = $(".user-sprite img")[0];
+
             $scope.tileView = new eburp.TileMapView(element[0],game.loader);
+            $scope.tileView.camera.extent.set(10,10);
             $scope.tileView.imageProcessor = new eburp.ImageProcessor(renderCanvas[0], $scope.tileView);
             $scope.tileView.tileMap = game.tileMap;
             game.scene.addView($scope.tileView);
-
-            $scope.tileView.camera.point.set(15,10);
             $scope.tileView.trackObject(game.sprite);
 
+            var image = $(".user-sprite img")[0];
             var canvas = $("canvas.image-drop")[0];
             var context = canvas.getContext("2d");
             var storedImage = $scope.getImageData();

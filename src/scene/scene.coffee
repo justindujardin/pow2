@@ -20,7 +20,7 @@
 class eburp.Scene
   constructor: (@options) ->
     @options = _.defaults @options or {}, {
-      tickRateMS: 100
+      tickRateMS: 32
       debugRender: false,
       autoStart: false
     }
@@ -90,7 +90,7 @@ class eburp.Scene
   # a second pass is done to each view's `debugRender` method when the
   # scene option `debugRender` is true.
   renderFrame: (elapsed) ->
-    view._render() for view in @views
+    view._render(elapsed) for view in @views
     @updateFPS(elapsed)
 
   # Stop the scene time from advancing

@@ -35,65 +35,47 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          "/images/ui.png"
       ],
       maps: _.keys(eburp.getMaps()),
-      currentMap: 19,
+      state:'Uninitialized',
+      listeners:[],
+      currentMap: 23,
       loader: new eburp.ResourceLoader(),
-      bindInput: function(){
-         var self = this;
-         $(document).keyup(function(e){
-            switch(e.keyCode){
-               case 37: // Left
-                  self.sprite.velocity.x = 0;
-                  break;
-               case 38: // Up
-                  self.sprite.velocity.y = 0;
-                  break;
-               case 39: // Right
-                  self.sprite.velocity.x = 0;
-                  break;
-               case 40: // Down
-                  self.sprite.velocity.y = 0;
-                  break;
-               default:
-                  return true;
-            }
-            e.stopImmediatePropagation();
-         });
-         $(document).keydown(function(e){
-            switch(e.keyCode){
-               case 37: // Left
-                  self.sprite.moveLeft();
-                  break;
-               case 38: // Up
-                  self.sprite.moveUp();
-                  break;
-               case 39: // Right
-                  self.sprite.moveRight();
-                  break;
-               case 40: // Down
-                  self.sprite.moveDown();
-                  break;
-               default:
-                  return true;
-            }
-            e.stopImmediatePropagation();
-         });
-      },
       load : function(){
          var deferred = $q.defer();
          var self = this;
-         this.loader.loadAll(this.files,function(){
-            self.scene = new eburp.Scene({autoStart: true});
-            self.tileMap = new eburp.TileMap(self.maps[self.currentMap]);
-            self.sprite = new eburp.MovableTileObject({
-               point: self.tileMap.bounds.getCenter()
+         this.listeners.push(deferred);
+         function done(){
+            _.defer(function(){
+               var listeners = self.listeners;
+               self.listeners = [];
+               $rootScope.$apply(function(){
+                  angular.forEach(listeners,function(l){
+                     l.resolve();
+                  });
+               });
             });
-            self.scene.addObject(self.sprite);
-            self.scene.addObject(self.tileMap);
-
-            deferred.resolve();
-            if (!$rootScope.$$phase) {
-               $rootScope.$apply();
-            }
+         }
+         if(this.state === 'Loaded'){
+            done();
+            return deferred.promise;
+         }
+         else if(this.state === 'Loading'){
+            return deferred.promise;
+         }
+         this.state = 'Loading';
+         self.scene = new eburp.Scene({
+            autoStart: true,
+            debugRender:true
+         });
+         self.input = self.scene.input = new eburp.Input();
+         self.tileMap = new eburp.TileMap(self.maps[self.currentMap]);
+         self.sprite = new eburp.MovableTileObject({
+            point: self.tileMap.bounds.getCenter()
+         });
+         self.scene.addObject(self.sprite);
+         self.scene.addObject(self.tileMap);
+         this.loader.loadAll(this.files,function(){
+            self.state = 'Loaded';
+            return done();
          });
          return deferred.promise;
       },

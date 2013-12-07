@@ -83,12 +83,17 @@ class eburp.Rect
       y = pointOrX.y
     else
       x = pointOrX
-    @point.x = Math.ceil(x - @extent.x / 2)
-    @point.y = Math.ceil(y - @extent.y / 2)
+    @point.x = x - @extent.x / 2
+    @point.y = y - @extent.y / 2
 
   scale: (scale) ->
     @point.multiply(scale)
     @extent.multiply(scale)
+    @
+
+  round: () ->
+    @point.truncate()
+    @extent.set(Math.ceil(@extent.x),Math.ceil(@extent.y))
     @
 
   getLeft:()  -> @point.x

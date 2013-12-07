@@ -20,35 +20,61 @@ class eburp.MovableTileObject extends eburp.TileObject
   constructor : (options) ->
     options = _.defaults options or {}, {
       velocity: new eburp.Point(0,0)
-      tickRateMS: 150
-      impulse: new eburp.Point(0,0)
+      tickRateMS: 350
+      renderPoint: new eburp.Point(0,0)
     }
     @_elapsed = 0
     super(options)
     @
 
+  collideMove: () ->
+    map = @scene.objectByType eburp.TileMap
+    if map
+      tx = Math.floor @point.x + @velocity.x
+      ty = Math.floor @point.y + @velocity.y
+      terrain = map.getTerrain(tx,ty)
+      return true if not terrain or not terrain.passable
+    false
+
+
+  interpolateTick: (elapsed) ->
+    # Interpolate position based on tickrate and elapsed time
+    factor = @_elapsed / @tickRateMS
+    @renderPoint.set(@point.x,@point.y)
+    return if @velocity.isZero() or @collideMove()
+
+    next = new eburp.Point(@point).add(@velocity)
+    @renderPoint.interpolate(@point,next,factor)
+    @renderPoint.x = @renderPoint.x.toPrecision(3)
+    @renderPoint.y = @renderPoint.y.toPrecision(3)
+    #console.log("INTERP Vel(#{@velocity.x},#{@velocity.y}) factor(#{factor})")
+    #console.log("INTERP From(#{@point.x},#{@point.y}) to (#{@renderPoint.x},#{@renderPoint.y})")
+
   tick: (elapsed) ->
-    # Early out if no velocity
-    return if @velocity.isZero() and @impulse.isZero()
+    #    angle = @rotation * (180/Math.PI)
+    #    angle = (angle + 1) % 360
+    #    @rotation = angle * (Math.PI/180)
+
     @_elapsed += elapsed
     return if @_elapsed < @tickRateMS
-    @_elapsed -= @tickRateMS
 
-    map = @scene.objectByType eburp.TileMap
-    toAdd = if @impulse.isZero() then @velocity else @impulse
-    if map
-      tx = @point.x + toAdd.x
-      ty = @point.y + toAdd.y
-      terrain = map.getTerrain(tx,ty)
-      if not terrain or !terrain.passable
-        @impulse.zero()
-        return
-    @point.add toAdd
-    @impulse.zero()
+    # Don't subtract elapsed here, but take the modulus so that
+    # if for some reason we get a HUGE elapsed, it just does one
+    # tick and keeps the remainder toward the next.
+    @_elapsed = @_elapsed % @tickRateMS
 
-  moveLeft: () -> @velocity.x = @impulse.x = -1
-  moveRight: () -> @velocity.x = @impulse.x = 1
-  moveUp: () -> @velocity.y = @impulse.y = -1
-  moveDown: () -> @velocity.y = @impulse.y = 1
+    if not @velocity.isZero() and not @collideMove()
+      @point.add @velocity
+
+    @velocity.x = 0
+    @velocity.x -= 1 if @scene.input.keyDown eburp.Input.Keys.LEFT
+    @velocity.x += 1 if @scene.input.keyDown eburp.Input.Keys.RIGHT
+
+    @velocity.y = 0
+    @velocity.y -= 1 if @scene.input.keyDown eburp.Input.Keys.UP
+    @velocity.y += 1 if @scene.input.keyDown eburp.Input.Keys.DOWN
+
+
+
 
 

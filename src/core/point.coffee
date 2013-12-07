@@ -31,8 +31,8 @@ class eburp.Point
     @
 
   set: (x,y) ->
-    @x = Math.floor x
-    @y = Math.floor y
+    @x = x
+    @y = y
     this
 
   truncate: () ->
@@ -51,15 +51,15 @@ class eburp.Point
     @
 
   multiply: (number) ->
-    @x = Math.floor @x * number
-    @y = Math.floor @y * number
+    @x = @x * number
+    @y = @y * number
     @
   scale : (number) -> @multiply number
 
   divide: (number) ->
     throw new Error "Divide by zero error" if number == 0
-    @x = Math.floor @x / number
-    @y = Math.floor @y / number
+    @x = @x / number
+    @y = @y / number
     @
 
   negate: () ->
@@ -72,9 +72,17 @@ class eburp.Point
 
   normalize: (scale=1) ->
     factor = scale / Math.sqrt(@x * @x + @y * @y)
-    @x = Math.floor factor
-    @y = Math.floor factor
+    @x = factor
+    @y = factor
     @
 
   isZero: () -> @x == 0 and @y == 0
-  zero: () -> @x = @y = 0
+  zero: () ->
+    @x = @y = 0
+    @
+
+  interpolate: (from,to,factor) ->
+    factor = Math.min Math.max(factor,0), 1
+    @x = (from.x * (1.0 - factor)) + (to.x * factor)
+    @y = (from.y * (1.0 - factor)) + (to.y * factor)
+    @

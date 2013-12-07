@@ -122,8 +122,8 @@ class MapView extends TileView
 
   tileVisible: (x,y) ->
     return true if not @map.dark
-    x -= @camera.point.x
-    y -= @camera.point.y
+    x -= Math.min Math.floor(@camera.point.x), 0
+    y -= Math.ceil(@camera.point.y)
     return false if y >= @shadows.length or @shadows[y][x] == true
     true
 
@@ -147,7 +147,9 @@ class MapView extends TileView
   renderFeatures:(clipRect) ->
     for x in [clipRect.point.x ... clipRect.getRight()]
       for y in [clipRect.point.y ... clipRect.getBottom()]
-        continue if @map.dark and @shadows[y - @camera.point.y][x - @camera.point.x]
+        xx = x - Math.min Math.floor(@camera.point.x), 0
+        yy = y - Math.ceil(@camera.point.y)
+        continue if @map.dark and @shadows[yy][xx]
         continue if not @game.getFeatures(x,y)
         feature = @getTopFeature(x, y)
         @drawTile(feature.icon, x, y) if feature and feature.icon
