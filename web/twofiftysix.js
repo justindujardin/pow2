@@ -62,11 +62,14 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             return deferred.promise;
          }
          this.state = 'Loading';
-         self.scene = new eburp.Scene({
-            autoStart: true,
-            debugRender:true
+         self.world = new eburp.World({
+            scene:new eburp.Scene({
+               autoStart: true,
+               debugRender:true
+            })
          });
-         self.input = self.scene.input = new eburp.Input();
+         self.scene = self.world.scene;
+         self.input = self.scene.input = self.world.input;
          self.tileMap = new eburp.TileMap(self.maps[self.currentMap]);
          self.sprite = new eburp.MovableTileObject({
             point: self.tileMap.bounds.getCenter()
@@ -166,7 +169,7 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
       }, 100);
    };
    $scope.hideSpriteCatalog = function(){
-     $scope.spriteCatalog = false;
+      $scope.spriteCatalog = false;
    };
    $scope.shareImage = function(){
       mixpanel.track("Art: Share");
@@ -198,11 +201,11 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
 
    $scope.login = function() {
       mixpanel.track("Art: Login");
-     window.location.href = "/auth/facebook";
+      window.location.href = "/auth/facebook";
    };
    $scope.logout = function() {
       mixpanel.track("Art: Logout");
-     window.location.href = "/auth/logout";
+      window.location.href = "/auth/logout";
    };
 
    $scope.nextMap = function(){

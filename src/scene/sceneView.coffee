@@ -82,7 +82,7 @@ class eburp.SceneView
     @context.font = "bold #{fontSize}px Arial";
     renderPos = @worldToScreen @camera.point
     x = renderPos.x + 20
-    y = renderPos.y + 120
+    y = renderPos.y + 40
     for string in debugStrings
       @context.fillStyle = "rgba(0,0,0,0.8)";
       @context.fillText string, x + 2, y + 2

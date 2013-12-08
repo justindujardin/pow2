@@ -16,21 +16,22 @@
 #
 # -----------------------------------------------------------------------------
 
-# An object that may exist in a `Scene`, has a unique `id` and receives ticked updates.
-class eburp.SceneObject
-  constructor: (options) ->
+# Not sure how to tie this in yet, maybe a state machine for dealing with
+# different feature types?
+class eburp.TileFeatureObject extends eburp.TileObject
+  constructor : (options) ->
+    super()
     _.extend @, _.defaults options or {}, {
-      id: _.uniqueId('eburp')
-      name: null
-      world: null
+      type : "",
+      x : 0,
+      y : 0,
+      icon : ""
     }
+    @point.x = @x
+    @point.y = @y
     @
 
-  # Perform any updates to this object's state, after a tick of time has passed.
-  tick: (elapsed) -> @
-
-
-  interpolateTick: (elapsed) -> @
-
-
-  destroy: () -> @scene?.removeObject @
+  onAddToScene: (scene) ->
+    return if not @icon
+    @iconCoords = @world.sprites.getSpriteCoords @icon
+    @world.sprites.getSingleSprite @icon, (image) => @image = image

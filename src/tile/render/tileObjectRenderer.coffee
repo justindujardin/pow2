@@ -16,21 +16,21 @@
 #
 # -----------------------------------------------------------------------------
 
-# An object that may exist in a `Scene`, has a unique `id` and receives ticked updates.
-class eburp.SceneObject
-  constructor: (options) ->
-    _.extend @, _.defaults options or {}, {
-      id: _.uniqueId('eburp')
-      name: null
-      world: null
-    }
-    @
+class eburp.TileObjectRenderer extends eburp.SceneObjectRenderer
+  render: (object,view) ->
+    return if not object.image
+    point = object.renderPoint or object.point
 
-  # Perform any updates to this object's state, after a tick of time has passed.
-  tick: (elapsed) -> @
-
-
-  interpolateTick: (elapsed) -> @
-
-
-  destroy: () -> @scene?.removeObject @
+    if object.icon and object.iconCoords
+      c = object.iconCoords
+      width = view.unitSize * view.cameraScale
+      height = view.unitSize * view.cameraScale
+      x = point.x * width
+      y = point.y * height
+      view.context.drawImage(object.image, c.x, x.y,view.unitSize,view.unitSize,x,y,width,height)
+    else
+      width = object.image.width * view.cameraScale
+      height = object.image.height * view.cameraScale
+      x = point.x * width
+      y = point.y * height
+      view.context.drawImage(object.image,x,y,width,height)

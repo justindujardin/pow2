@@ -81,7 +81,8 @@ module.exports = function(grunt) {
                "src/scene/objects/*.coffee",
                "src/scene/views/*.coffee",
                "src/tile/*.coffee",
-               "src/tile/objects/*.coffee"
+               "src/tile/objects/*.coffee",
+               "src/tile/render/*.coffee"
             ],
             dest: 'web/<%= pkg.name %>.core.js',
             ext: '.js'
@@ -173,7 +174,8 @@ module.exports = function(grunt) {
          game: {
             files: [
                {src: 'web/index.less', dest: 'web/css/index.css'},
-               {src: 'web/twofiftysix.less', dest: 'web/css/twofiftysix.css'}
+               {src: 'web/twofiftysix.less', dest: 'web/css/twofiftysix.css'},
+               {src: 'web/code.less', dest: 'web/css/code.css'}
             ]
          }
       },

@@ -23,6 +23,29 @@ class eburp.TileMap extends eburp.SceneObject
     @tiles = eburp.getData "tiles"
     @setMap(mapName, 0, 0)
 
+
+  #
+  # Scene Object Lifetime
+  #
+  onAddToScene: (scene) -> @addFeaturesToScene()
+  onRemoveFromScene: (scene) -> @removeFeaturesFromScene()
+
+  # Construct
+  addFeaturesToScene: ->
+    return if not @scene
+    for k,v of @features
+      for k,f of v
+        f.object = new eburp.TileFeatureObject f
+        @scene.addObject f.object
+    @
+
+  removeFeaturesFromScene: ->
+    for k,v of @features
+      for k,f of v when f.object
+        f.object.destroy()
+        delete f.object
+    @features = {}
+
   setMap : (mapName) ->
     newMap = eburp.getMap mapName
     return false if not newMap
@@ -42,10 +65,12 @@ class eburp.TileMap extends eburp.SceneObject
     if terrain then terrain.icon else null
 
   featureKey: (x,y) -> "" + x + "_" + y
+
   buildFeatures : ->
+    @removeFeaturesFromScene()
     return false if not @map
     list = @map.features
-    @features = {}
+
     return if not list
     for feature in list
       x = feature.x
@@ -55,7 +80,9 @@ class eburp.TileMap extends eburp.SceneObject
       if (!object)
         object = {}
         @features[key] = object
+
       object[feature.type] = feature
+    @addFeaturesToScene() if @scene
     @
   getFeature: (x,y) ->
     return {} if not @features

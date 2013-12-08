@@ -21,6 +21,7 @@ class eburp.TileMapView extends eburp.SceneView
   constructor: (canvas,loader) ->
     super(canvas,loader)
     @screenOverlays = []
+    @renderer = new eburp.TileObjectRenderer
     @
 
   # Object Tracking
@@ -81,10 +82,9 @@ class eburp.TileMapView extends eburp.SceneView
 
   renderObjects:(clipRect,elapsed) ->
     objects = @scene.objectsByType eburp.TileObject
-    @tileRenderer ?= new eburp.TileObjectRenderer
     _.each objects, (object) =>
       #return if not clipRect.pointInRect object.point.x, object.point.y
-      @tileRenderer.render(object, @,elapsed)
+      @renderer.render(object, @,elapsed)
     @
 
   renderPost: (scene) ->
@@ -115,11 +115,12 @@ class eburp.TileMapView extends eburp.SceneView
           @context.strokeStyle = "#FF2222"
           @context.strokeRect(x * @unitSize * @cameraScale, y * @unitSize * @cameraScale, @cameraScale * @unitSize, @cameraScale * @unitSize)
 
-    objects = @scene.objectsByType eburp.TileObject
-    @tileRenderer ?= new eburp.TileObjectRenderer
-    _.each objects, (object) =>
-      debugStrings.push "Player: (#{object.point.x},#{object.point.y})"
-      debugStrings.push "Render: (#{object.renderPoint.x},#{object.renderPoint.y})"
+
+    tiles = @scene.objectsByType eburp.TileObject
+    _.each tiles, (object) =>
+      @context.strokeStyle = "#2222FF"
+      point = object.renderPoint or object.point
+      @context.strokeRect(point.x * @unitSize * @cameraScale, point.y * @unitSize * @cameraScale, @cameraScale * @unitSize, @cameraScale * @unitSize)
     @
     super(debugStrings)
 

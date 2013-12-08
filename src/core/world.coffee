@@ -16,21 +16,24 @@
 #
 # -----------------------------------------------------------------------------
 
-# An object that may exist in a `Scene`, has a unique `id` and receives ticked updates.
-class eburp.SceneObject
-  constructor: (options) ->
-    _.extend @, _.defaults options or {}, {
-      id: _.uniqueId('eburp')
-      name: null
-      world: null
+# Encapsulate all the services a game might need to run.
+class eburp.World
+  constructor: (services) ->
+    # Instantiate services, with any user passed options overriding them.
+    services = _.defaults services or {}, {
+      loader: new eburp.ResourceLoader
+      scene:  new eburp.Scene
+      input:  new eburp.Input
+      sprites:new eburp.SpriteRender
     }
-    @
+    _.extend @, services
 
-  # Perform any updates to this object's state, after a tick of time has passed.
-  tick: (elapsed) -> @
+    # Mark all the services with a world reference
+    @mark s for k, s of services
 
+  # Mark an object with a world reference.
+  mark: (object)-> object.world = @ if object
 
-  interpolateTick: (elapsed) -> @
+  # Remove a world reference from an object.
+  erase: (object) -> delete object.world if object
 
-
-  destroy: () -> @scene?.removeObject @

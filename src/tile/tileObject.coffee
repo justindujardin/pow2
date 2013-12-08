@@ -18,6 +18,7 @@
 
 class eburp.TileObject extends eburp.SceneObject
   constructor : (options) ->
+    super()
     _.extend @, _.defaults options or {}, {
       point: new eburp.Point(0,0)
       rotation: 0 # Radians

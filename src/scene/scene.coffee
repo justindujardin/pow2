@@ -18,11 +18,12 @@
 
 
 class eburp.Scene
-  constructor: (@options) ->
-    @options = _.defaults @options or {}, {
+  constructor: (options) ->
+    @options = _.defaults options or {}, {
       tickRateMS: 32
-      debugRender: false,
+      debugRender: false
       autoStart: false
+      world:null
     }
     @objects = []
     @views = []
@@ -35,8 +36,11 @@ class eburp.Scene
 
   # Remove an object from a collection the the
   removeIt: (property,object) ->
-    _.filter @[property], (obj) ->
+    @[property] = _.filter @[property], (obj) ->
       if obj.id == object.id
+        obj.onRemoveFromScene(@) if obj.onRemoveFromScene
+        #TODO: Should mark/erase object from world in sync with scene?
+        @world.erase(obj) if @world
         obj.scene = null
         return false
       true
@@ -44,7 +48,11 @@ class eburp.Scene
   addIt: (property,object) ->
     throw new Error "Object added twice" if _.find @[property], (i) -> i.id == object.id
     @[property].push object
+    #TODO: Should mark/erase object from world in sync with scene?
+    @world.mark(object) if @world
     object.scene = @
+    object.onAddToScene(@) if object.onAddToScene
+
 
   findIt: (property, object) ->
     _.find @[property], (i) -> i.id == object.id
