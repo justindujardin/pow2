@@ -81,10 +81,10 @@ class eburp.TileMapView extends eburp.SceneView
     @
 
   renderObjects:(clipRect,elapsed) ->
-    objects = @scene.objectsByType eburp.TileObject
-    _.each objects, (object) =>
-      #return if not clipRect.pointInRect object.point.x, object.point.y
-      @renderer.render(object, @,elapsed)
+    objects = @scene.objectsByType eburp.TileFeatureObject
+    _.each objects, (object) => @renderer.render object, @
+    player = @scene.objectsByType eburp.MovableTileObject
+    @renderer.render player[0], @
     @
 
   renderPost: (scene) ->
@@ -94,7 +94,7 @@ class eburp.TileMapView extends eburp.SceneView
     @fillTiles(overlay, @getCameraClip())
 
   renderFeatures:(clipRect) ->
-    if @tileMap.map.features
+    if false and @tileMap.map.features
       for feature in @tileMap.map.features
         continue if not clipRect.pointInRect feature.x, feature.y
         continue if not @featureVisible(feature)
@@ -111,7 +111,7 @@ class eburp.TileMapView extends eburp.SceneView
     for x in [clipRect.point.x ... clipRect.getRight()]
       for y in [clipRect.point.y ... clipRect.getBottom()]
         tile = @tileMap.getTerrain x, y
-        if not tile.passable
+        if tile and not tile.passable
           @context.strokeStyle = "#FF2222"
           @context.strokeRect(x * @unitSize * @cameraScale, y * @unitSize * @cameraScale, @cameraScale * @unitSize, @cameraScale * @unitSize)
 

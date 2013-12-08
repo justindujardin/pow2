@@ -27,7 +27,7 @@ class eburp.TileObjectRenderer extends eburp.SceneObjectRenderer
       height = view.unitSize * view.cameraScale
       x = point.x * width
       y = point.y * height
-      view.context.drawImage(object.image, c.x, x.y,view.unitSize,view.unitSize,x,y,width,height)
+      view.context.drawImage(object.image, c.x, c.y,view.unitSize,view.unitSize,x,y,width,height)
     else
       width = object.image.width * view.cameraScale
       height = object.image.height * view.cameraScale

@@ -34,4 +34,4 @@ class eburp.TileFeatureObject extends eburp.TileObject
   onAddToScene: (scene) ->
     return if not @icon
     @iconCoords = @world.sprites.getSpriteCoords @icon
-    @world.sprites.getSingleSprite @icon, (image) => @image = image
+    @world.sprites.getSpriteSheet @iconCoords.source, (image) => @image = image.data
