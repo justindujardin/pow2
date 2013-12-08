@@ -24,15 +24,21 @@ class eburp.MovableTileObject extends eburp.TileObject
       renderPoint: new eburp.Point(0,0)
     }
     @_elapsed = 0
+    @collideBox = new eburp.Rect
     super(options)
     @
 
   collideMove: () ->
+    results = []
+    @collideBox.point.x = Math.floor @point.x + @velocity.x
+    @collideBox.point.y = Math.floor @point.y + @velocity.y
+    if @scene.db.queryRect(@collideBox,eburp.TileFeatureObject,results)
+      for o in results
+        return true if o.passable is false or o.type == 'block'
+
     map = @scene.objectByType eburp.TileMap
     if map
-      tx = Math.floor @point.x + @velocity.x
-      ty = Math.floor @point.y + @velocity.y
-      terrain = map.getTerrain(tx,ty)
+      terrain = map.getTerrain(@collideBox.point.x,@collideBox.point.y)
       return true if not terrain or not terrain.passable
     false
 
