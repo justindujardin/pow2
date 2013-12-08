@@ -42,6 +42,8 @@ class eburp.Rect
       @point.set(rectOrPointOrX)
       @extent.set(extentOrY)
 
+  clone: () -> new Rect @point.clone(), @extent.clone()
+
   clip: (clipRect) ->
     right = @point.x + @extent.x
     bottom = @point.y + @extent.y
@@ -100,3 +102,10 @@ class eburp.Rect
   getRight:() -> @point.x + @extent.x
   getTop:()   -> @point.y
   getBottom:()-> @point.y + @extent.y
+
+
+  inflate: (x=1,y=1) ->
+    @point.x -= x
+    @extent.x += 2*x
+    @point.y -= y
+    @extent.y += 2*y

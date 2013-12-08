@@ -30,10 +30,12 @@ class eburp.Point
       throw new Error "Unsupported point constructor type"
     @
 
+  clone: -> new eburp.Point @x, @y
+
   set: (x,y) ->
     @x = x
     @y = y
-    this
+    @
 
   truncate: () ->
     @x = Math.floor @x
@@ -70,11 +72,14 @@ class eburp.Point
   equal: (point) ->
     @x == point.x and @y == point.y
 
-  normalize: (scale=1) ->
-    factor = scale / Math.sqrt(@x * @x + @y * @y)
-    @x = factor
-    @y = factor
-    @
+  normalize: ->
+    length = @x * @x + @y * @y
+    if length > 0
+      length = Math.sqrt(length)
+      invLength = 1.0 / length
+      @x *= invLength
+      @y *= invLength
+    return length
 
   isZero: () -> @x == 0 and @y == 0
   zero: () ->
