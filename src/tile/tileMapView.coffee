@@ -22,6 +22,7 @@ class eburp.TileMapView extends eburp.SceneView
     super(canvas,loader)
     @screenOverlays = []
     @renderer = new eburp.TileObjectRenderer
+    @overlayPattern = null
     @
 
   # Object Tracking
@@ -90,8 +91,9 @@ class eburp.TileMapView extends eburp.SceneView
   renderPost: (scene) ->
     overlay = @getScreenOverlay()
     return if not overlay
+    @overlayPattern ?= @context.createPattern overlay, 'repeat'
     return if not @camera or not @context or not @tileMap
-    @fillTiles(overlay, @getCameraClip())
+    @fillTiles(overlay, @overlayPattern, @getCameraClip())
 
   renderFeatures:(clipRect) ->
     if false and @tileMap.map.features
@@ -199,12 +201,12 @@ class eburp.TileMapView extends eburp.SceneView
     renderPos = @worldToScreen(@camera.point, @cameraScale)
     @context.drawImage(image, renderPos.x, renderPos.y, @$el.width(), @$el.height())
 
-  fillTiles: (image, rect=@camera) ->
+  fillTiles: (image, pattern, rect=@camera) ->
     renderPos = @worldToScreen(rect, @cameraScale)
-    @context.save();
-    @context.fillStyle = @context.createPattern image, 'repeat'
+    fillSave = @context.fillStyle
+    @context.fillStyle = pattern
     @context.fillRect(renderPos.point.x,renderPos.point.y, renderPos.extent.x,renderPos.extent.y)
-    @context.restore()
+    @context.fillStyle = fillSave
 
   drawAnim: (anim, x, y, frame) ->
     return if not @_validateImage(anim)
