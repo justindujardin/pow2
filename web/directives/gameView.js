@@ -9,12 +9,12 @@ twoFiftySix.app.directive('gameView', function($compile,game) {
          element.append(renderCanvas);
          game.load().then(function(){
 
-            $scope.tileView = new eburp.TileMapView(element[0],game.loader);
-            $scope.tileView.camera.extent.set(10,10);
-            $scope.tileView.imageProcessor = new eburp.ImageProcessor(renderCanvas[0], $scope.tileView);
-            $scope.tileView.tileMap = game.tileMap;
-            game.scene.addView($scope.tileView);
-            $scope.tileView.trackObject(game.sprite);
+            game.tileView = new eburp.TileMapView(element[0],game.loader);
+            game.tileView.camera.extent.set(10,10);
+            game.tileView.imageProcessor = new eburp.ImageProcessor(renderCanvas[0], game.tileView);
+            game.tileView.tileMap = game.tileMap;
+            game.scene.addView(game.tileView);
+            game.tileView.trackObject(game.sprite);
 
             var image = $(".user-sprite img")[0];
             var canvas = $("canvas.image-drop")[0];
@@ -22,7 +22,7 @@ twoFiftySix.app.directive('gameView', function($compile,game) {
             var storedImage = $scope.getImageData();
             if(!image.src){
                if(!storedImage){
-                  var sprite = $scope.tileView.imageProcessor.isolateSprite("party.png");
+                  var sprite = game.tileView.imageProcessor.isolateSprite("party.png");
                   image.src = sprite.src;
                }
                else {

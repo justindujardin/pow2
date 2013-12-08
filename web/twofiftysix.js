@@ -107,6 +107,13 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                   point = new eburp.Point(feature.x,feature.y);
                }
             }
+            if(this.tileView && map.width < 10 && map.height < 10){
+               this.tileView.camera.point.zero();
+               this.tileView.trackObject(null);
+            }
+            else if(this.tileView && this.sprite) {
+               this.tileView.trackObject(this.sprite);
+            }
          }
          this.sprite.point = point;
          //self.tileMap.bounds.getCenter()
