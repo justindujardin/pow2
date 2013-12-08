@@ -25,6 +25,7 @@ class eburp.Scene
       autoStart: false
       world:null
     }
+    @db = new eburp.SceneSpatialDatabase
     @objects = []
     @views = []
     @lastTime = 0
@@ -36,21 +37,31 @@ class eburp.Scene
 
   # Remove an object from a collection the the
   removeIt: (property,object) ->
-    @[property] = _.filter @[property], (obj) ->
+    # Filter out the object to be removed.
+    @[property] = _.filter @[property], (obj) =>
       if obj.id == object.id
+        # Remove from spatial db
+        @db.removeObject object
+        # Notify object of removal from scene
         obj.onRemoveFromScene(@) if obj.onRemoveFromScene
-        #TODO: Should mark/erase object from world in sync with scene?
+        # Remove from world
         @world.erase(obj) if @world
-        obj.scene = null
+        # Remove scene reference from object.
+        delete obj.scene
         return false
       true
 
   addIt: (property,object) ->
     throw new Error "Object added twice" if _.find @[property], (i) -> i.id == object.id
+    # Add to object list
     @[property].push object
-    #TODO: Should mark/erase object from world in sync with scene?
+    # Add to eburp.World
     @world.mark(object) if @world
+    # Add to spatial database
+    @db.addObject object
+    # Mark in scene
     object.scene = @
+    # Notify of addition to scene.
     object.onAddToScene(@) if object.onAddToScene
 
 

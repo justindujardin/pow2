@@ -65,7 +65,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          self.world = new eburp.World({
             scene:new eburp.Scene({
                autoStart: true,
-               debugRender:true
+               debugRender:false
             })
          });
          self.scene = self.world.scene;

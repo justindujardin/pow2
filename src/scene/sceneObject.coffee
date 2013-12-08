@@ -33,4 +33,4 @@ class eburp.SceneObject
   interpolateTick: (elapsed) -> @
 
 
-  destroy: () -> @scene?.removeObject @
+  destroy: () -> @scene.removeObject @ if @scene
