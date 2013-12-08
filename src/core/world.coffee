@@ -22,6 +22,7 @@ class eburp.World
     # Instantiate services, with any user passed options overriding them.
     services = _.defaults services or {}, {
       loader: new eburp.ResourceLoader
+      time:   new eburp.Time autoStart: true
       scene:  new eburp.Scene
       input:  new eburp.Input
       sprites:new eburp.SpriteRender
@@ -32,8 +33,15 @@ class eburp.World
     @mark s for k, s of services
 
   # Mark an object with a world reference.
-  mark: (object)-> object.world = @ if object
+  mark: (object)->
+    if object
+      object.world = @
+      object.onAddToWorld(@) if object.onAddToWorld
+    @
 
   # Remove a world reference from an object.
-  erase: (object) -> delete object.world if object
-
+  erase: (object) ->
+    if object
+      delete object.world
+      object.onRemoveFromWorld(@) if object.onRemoveFromWorld
+    @

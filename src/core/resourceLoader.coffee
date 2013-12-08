@@ -24,7 +24,7 @@
   The manager instance triggers events to signal
 ###
 class eburp.ResourceLoader
-  constructor: (@game) ->
+  constructor: () ->
     @_resources = {}
     # Expose a few built-in types.
     @_types = {
@@ -33,6 +33,14 @@ class eburp.ResourceLoader
       'json': eburp.JSONResource
       '': eburp.AudioResource
     }
+    @_doneQueue = []
+
+  onAddToWorld: (world) -> world.time.addObject @
+  onRemoveFromWorld: (world) -> world.time.removeObject @
+
+  processFrame: () ->
+    done.cb(done.result) for done in @_doneQueue
+    @_doneQueue = []
 
   registerResourceType: (extension,type) ->
     @_types[extension] = type
@@ -77,7 +85,10 @@ class eburp.ResourceLoader
       res = @_resources[url] = new resourceType(url) if not res
       res.extension = extension
       if res.isReady()
-        _.defer(() => done(res)) if done
+        if @world and done
+          @_doneQueue.push { cb: done, result: res }
+        else if done
+          _.defer(() => done(res))
         return res
       res.once 'ready', (resource) =>
         console.log "Loaded asset: #{resource.url}"
