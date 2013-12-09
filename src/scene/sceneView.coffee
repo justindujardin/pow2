@@ -60,7 +60,6 @@ class eburp.SceneView
   # Render the scene
   # @private
   _render: (elapsed) ->
-    @interpolateTick(elapsed)
     @processCamera()
     @setRenderState()
     @renderFrame(elapsed)
@@ -91,8 +90,6 @@ class eburp.SceneView
       @context.fillText string, x, y
       y += fontSize
     @context.restore()
-
-  interpolateTick: (elapsed) ->
 
   getSpriteSheet: (name, done) ->
     if not @_sheets[name]

@@ -98,6 +98,10 @@ class eburp.Scene
   tickObjects: (elapsedMS) ->
     object.tick(elapsedMS) for object in @objects
 
+  # Interpolate object properties between ticks.
+  interpolateObjects: (elapsedMS) ->
+    object.interpolateTick(elapsedMS) for object in @objects when object.interpolateTick
+
   updateFPS: (elapsed) ->
     currFPS = if elapsed then 1000 / elapsed else 0
     @fps += (currFPS - @fps) / 10
@@ -137,6 +141,7 @@ class eburp.Scene
         #@leftOver += elapsed % this.options.tickRateMS
         @lastTime = time
         @tickObjects(elapsed)
+      @interpolateObjects(elapsed)
       @renderFrame(elapsed)
       @mspf = new Date().getMilliseconds() - now
       window.requestAnimationFrame _frameCallback
