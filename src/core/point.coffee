@@ -33,8 +33,12 @@ class eburp.Point
   clone: -> new eburp.Point @x, @y
 
   set: (x,y) ->
-    @x = x
-    @y = y
+    if x instanceof eburp.Point
+      @x = x.x
+      @y = x.y
+    else
+      @x = x
+      @y = y
     @
 
   truncate: () ->
