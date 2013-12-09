@@ -21,6 +21,7 @@ class eburp.MovableTileObject extends eburp.TileObject
     options = _.defaults options or {}, {
       velocity: new eburp.Point(0,0)
       tickRateMS: 350
+      targetPoint: new eburp.Point(0,0)
       renderPoint: new eburp.Point(0,0)
     }
     @_elapsed = 0
@@ -28,14 +29,14 @@ class eburp.MovableTileObject extends eburp.TileObject
     super(options)
     @
 
-  collideMove: () ->
+  collideMove: (x,y) ->
     results = []
-    @collideBox.point.x = Math.floor @point.x + @velocity.x
-    @collideBox.point.y = Math.floor @point.y + @velocity.y
+    @collideBox.point.x = Math.floor x
+    @collideBox.point.y = Math.floor y
     if @scene.db.queryRect(@collideBox,eburp.TileFeatureObject,results)
       for o in results
+        console.log "Collide -> #{o.type}"
         return true if o.enter and o.enter(@) == false
-
     map = @scene.objectByType eburp.TileMap
     if map
       terrain = map.getTerrain(@collideBox.point.x,@collideBox.point.y)
@@ -47,20 +48,15 @@ class eburp.MovableTileObject extends eburp.TileObject
     # Interpolate position based on tickrate and elapsed time
     factor = @_elapsed / @tickRateMS
     @renderPoint.set(@point.x,@point.y)
-    return if @velocity.isZero() or @collideMove()
+    return if @velocity.isZero()
 
-    next = new eburp.Point(@point).add(@velocity)
-    @renderPoint.interpolate(@point,next,factor)
+    @renderPoint.interpolate(@point,@targetPoint,factor)
     @renderPoint.x = @renderPoint.x.toPrecision(3)
     @renderPoint.y = @renderPoint.y.toPrecision(3)
     #console.log("INTERP Vel(#{@velocity.x},#{@velocity.y}) factor(#{factor})")
     #console.log("INTERP From(#{@point.x},#{@point.y}) to (#{@renderPoint.x},#{@renderPoint.y})")
 
   tick: (elapsed) ->
-    #    angle = @rotation * (180/Math.PI)
-    #    angle = (angle + 1) % 360
-    #    @rotation = angle * (Math.PI/180)
-
     @_elapsed += elapsed
     return if @_elapsed < @tickRateMS
 
@@ -69,16 +65,30 @@ class eburp.MovableTileObject extends eburp.TileObject
     # tick and keeps the remainder toward the next.
     @_elapsed = @_elapsed % @tickRateMS
 
-    if not @velocity.isZero() and not @collideMove()
-      @point.add @velocity
+    # Advance the object if it can be advanced.
+    # Check that targetPoint != point first, because otherwsie if
+    # we don't, the collide check will see if we collide with our
+    # current position.
+    isMove = not @targetPoint.equal(@point)
+    @point.add @velocity if isMove and not @collideMove @targetPoint.x, @targetPoint.y
 
+
+    # Update velocity
     @velocity.x = 0
     @velocity.x -= 1 if @scene.input.keyDown eburp.Input.Keys.LEFT
     @velocity.x += 1 if @scene.input.keyDown eburp.Input.Keys.RIGHT
-
     @velocity.y = 0
     @velocity.y -= 1 if @scene.input.keyDown eburp.Input.Keys.UP
     @velocity.y += 1 if @scene.input.keyDown eburp.Input.Keys.DOWN
+
+    # If the next point won't collide then set the new target.
+    @targetPoint.set(@point)
+    if not @velocity.isZero()
+      @targetPoint.add @velocity
+      if @collideMove @targetPoint.x, @targetPoint.y
+        @targetPoint.set(@point)
+
+
 
 
 

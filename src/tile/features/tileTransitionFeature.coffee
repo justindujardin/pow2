@@ -27,6 +27,7 @@ class eburp.TileTransitionFeature extends eburp.TileFeatureObject
 
   enter: (object) ->
     return if not @target or not @tileMap
-    @tileMap.setMap @target
     object.point.set(@targetX,@targetY)
+    @tileMap.setMap @target
+
 
