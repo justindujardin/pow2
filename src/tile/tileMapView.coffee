@@ -30,12 +30,6 @@ class eburp.TileMapView extends eburp.SceneView
   trackObject: (tileObject) ->
     @tracking = tileObject
 
-
-  interpolateTick: (elapsed) ->
-    @tileObjects = @scene.objectsByType eburp.TileObject
-    _.each @tileObjects, (object) -> object.interpolateTick(elapsed)
-    @
-
   # Features and visibility
   # -----------------------------------------------------------------------------
   featureVisible: (feature) -> true
