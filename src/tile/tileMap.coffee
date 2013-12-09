@@ -30,12 +30,22 @@ class eburp.TileMap extends eburp.SceneObject
   onAddToScene: (scene) -> @addFeaturesToScene()
   onRemoveFromScene: (scene) -> @removeFeaturesFromScene()
 
+
+  getObjectForFeature: (feature) ->
+    options = _.extend {}, feature, {tileMap:@}
+    name = feature.type
+    name = name.charAt(0).toUpperCase() + name.slice(1)
+    instanceType = eburp.TileFeatureObject
+    typeName = "Tile#{name}Feature"
+    instanceType = eburp[typeName] if typeof eburp[typeName] isnt 'undefined'
+    new instanceType options
+
   # Construct
   addFeaturesToScene: ->
     return if not @scene
     for k,v of @features
       for k,f of v
-        f.object = new eburp.TileFeatureObject f
+        f.object = @getObjectForFeature(f)
         @scene.addObject f.object
     @
 

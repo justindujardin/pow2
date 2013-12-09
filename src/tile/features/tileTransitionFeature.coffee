@@ -16,30 +16,17 @@
 #
 # -----------------------------------------------------------------------------
 
-# Not sure how to tie this in yet, maybe a state machine for dealing with
-# different feature types?
-class eburp.TileFeatureObject extends eburp.TileObject
+
+class eburp.TileTransitionFeature extends eburp.TileFeatureObject
   constructor : (options) ->
-    super()
-    _.extend @, _.defaults options or {}, {
-      type : "",
-      x : 0,
-      y : 0,
-      icon : ""
-    }
-    @point.x = @x
-    @point.y = @y
+    super _.defaults options or {},
+      target : "",
+      targetX : 16,
+      targetY : 51
     @
 
-  onAddToScene: (scene) ->
-    return if not @icon
-    @iconCoords = @world.sprites.getSpriteCoords @icon
-    @world.sprites.getSpriteSheet @iconCoords.source, (image) => @image = image.data
+  enter: (object) ->
+    return if not @target or not @tileMap
+    @tileMap.setMap @target
+    object.point.set(@targetX,@targetY)
 
-
-  # An object will enter this feature if false is not returned
-  enter: (object) -> return false if @type == 'block' or @passable == false
-
-
-  # An object will exit this feature if false is not returned
-  exit: (object) ->

@@ -34,7 +34,7 @@ class eburp.MovableTileObject extends eburp.TileObject
     @collideBox.point.y = Math.floor @point.y + @velocity.y
     if @scene.db.queryRect(@collideBox,eburp.TileFeatureObject,results)
       for o in results
-        return true if o.passable is false or o.type == 'block'
+        return true if o.enter and o.enter(@) == false
 
     map = @scene.objectByType eburp.TileMap
     if map
