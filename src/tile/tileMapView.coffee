@@ -82,11 +82,43 @@ class eburp.TileMapView extends eburp.SceneView
     @renderer.render player[0], @
     @
 
+  renderAnalog: () ->
+    return if not @world or not @world.input
+    if typeof @world.input.touches isnt 'undefined'
+      screenCamera = @worldToScreen @camera.point
+      touchStart = @world.input.touchStart.clone().add screenCamera
+      touchCurrent = @world.input.touchCurrent.clone().add screenCamera
+
+      @context.save();
+      for touch in @world.input.touches 
+        if (touch.identifier == @world.input.touchId)
+           @context.beginPath();
+           @context.strokeStyle = "cyan";
+           @context.lineWidth = 6;
+           @context.arc(touchStart.x, touchStart.y, 40, 0, Math.PI * 2, true);
+           @context.stroke();
+           @context.beginPath();
+           @context.strokeStyle = "cyan";
+           @context.lineWidth = 2;
+           @context.arc(touchStart.x, touchStart.y, 60, 0, Math.PI * 2, true);
+           @context.stroke();
+           @context.beginPath();
+           @context.strokeStyle = "cyan";
+           @context.arc(touchCurrent.x, touchCurrent.y, 40, 0, Math.PI * 2, true);
+           @context.stroke();
+           @context.fillStyle = "white";
+           @context.fillText("move vec -- x:" + @world.input.analogVector.x + " y:" + @world.input.analogVector.y, screenCamera.x + touch.gameX + 30, screenCamera.y + touch.gameY - 30);
+      @context.restore();
+    @
+
   renderPost: (scene) ->
+    return if not @camera or not @context or not @tileMap
+    @renderAnalog()
+
     overlay = @getScreenOverlay()
     return if not overlay
     @overlayPattern ?= @context.createPattern overlay, 'repeat'
-    return if not @camera or not @context or not @tileMap
+
     @fillTiles(overlay, @overlayPattern, @getCameraClip())
 
   renderFeatures:(clipRect) ->

@@ -31,8 +31,8 @@ class eburp.MovableTileObject extends eburp.TileObject
 
   collideMove: (x,y) ->
     results = []
-    @collideBox.point.x = Math.floor x
-    @collideBox.point.y = Math.floor y
+    @collideBox.point.x = x
+    @collideBox.point.y = y
     if @scene.db.queryRect(@collideBox,eburp.TileFeatureObject,results)
       for o in results
         console.log "Collide -> #{o.type}"
@@ -51,8 +51,8 @@ class eburp.MovableTileObject extends eburp.TileObject
     return if @velocity.isZero()
 
     @renderPoint.interpolate(@point,@targetPoint,factor)
-    @renderPoint.x = @renderPoint.x.toPrecision(3)
-    @renderPoint.y = @renderPoint.y.toPrecision(3)
+    @renderPoint.x = @renderPoint.x.toPrecision(4)
+    @renderPoint.y = @renderPoint.y.toPrecision(4)
     #console.log("INTERP Vel(#{@velocity.x},#{@velocity.y}) factor(#{factor})")
     #console.log("INTERP From(#{@point.x},#{@point.y}) to (#{@renderPoint.x},#{@renderPoint.y})")
 
@@ -66,27 +66,58 @@ class eburp.MovableTileObject extends eburp.TileObject
     @_elapsed = @_elapsed % @tickRateMS
 
     # Advance the object if it can be advanced.
-    # Check that targetPoint != point first, because otherwsie if
-    # we don't, the collide check will see if we collide with our
-    # current position.
-    isMove = not @targetPoint.equal(@point)
-    @point.add @velocity if isMove and not @collideMove @targetPoint.x, @targetPoint.y
+    #
+    # Check that targetPoint != point first, because or else
+    # the collision check will see be against the current position.
+    if not @targetPoint.equal(@point) and not @collideMove @targetPoint.x, @targetPoint.y
+      @point.set @targetPoint
 
 
-    # Update velocity
-    @velocity.x = 0
-    @velocity.x -= 1 if @scene.input.keyDown eburp.Input.Keys.LEFT
-    @velocity.x += 1 if @scene.input.keyDown eburp.Input.Keys.RIGHT
-    @velocity.y = 0
-    @velocity.y -= 1 if @scene.input.keyDown eburp.Input.Keys.UP
-    @velocity.y += 1 if @scene.input.keyDown eburp.Input.Keys.DOWN
+    # Touch movement
+    if document.createTouch and @world.input.analogVector instanceof eburp.Point
+      @velocity.x = 0
+      if @scene.input.analogVector.x < -20
+        @velocity.x -= 1
+      else if @scene.input.analogVector.x > 20
+        @velocity.x += 1
+      @velocity.y = 0
+      if @scene.input.analogVector.y < -20
+        @velocity.y -= 1
+      else if @scene.input.analogVector.y > 20
+        @velocity.y += 1
+    # Keyboard input
+    else
+      @velocity.x = 0
+      @velocity.x -= 1 if @scene.input.keyDown eburp.Input.Keys.LEFT
+      @velocity.x += 1 if @scene.input.keyDown eburp.Input.Keys.RIGHT
+      @velocity.y = 0
+      @velocity.y -= 1 if @scene.input.keyDown eburp.Input.Keys.UP
+      @velocity.y += 1 if @scene.input.keyDown eburp.Input.Keys.DOWN
 
     # If the next point won't collide then set the new target.
     @targetPoint.set(@point)
-    if not @velocity.isZero()
-      @targetPoint.add @velocity
-      if @collideMove @targetPoint.x, @targetPoint.y
-        @targetPoint.set(@point)
+    return if @velocity.isZero()
+    # Check to see if both axes can advance by simply going to the
+    # target point.
+    @targetPoint.add @velocity
+    return if not @collideMove @targetPoint.x, @targetPoint.y
+
+    # If not, can we move only along the y axis?
+    if not @collideMove @point.x, @targetPoint.y
+      @targetPoint.x = @point.x
+      return
+
+    # How about the X axis?  We'll take any axis we can get.
+    if not @collideMove @targetPoint.x, @point.y
+      @targetPoint.y = @point.y
+      return
+
+    # Nope, collisions in all directions, just reset the target point
+    @targetPoint.set(@point)
+#
+#
+#      if @collideMove @targetPoint.x, @targetPoint.y
+#        @targetPoint.set(@point)
 
 
 

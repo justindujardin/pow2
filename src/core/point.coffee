@@ -31,6 +31,10 @@ class eburp.Point
     @
 
   clone: -> new eburp.Point @x, @y
+  copy: (point) ->
+    @x = point.x
+    @y = point.y
+    @
 
   set: (x,y) ->
     if x instanceof eburp.Point
@@ -68,7 +72,7 @@ class eburp.Point
     @y = @y / number
     @
 
-  negate: () ->
+  inverse: () ->
     @x = -@x
     @y = -@y
     @
@@ -76,16 +80,8 @@ class eburp.Point
   equal: (point) ->
     @x == point.x and @y == point.y
 
-  normalize: ->
-    length = @x * @x + @y * @y
-    if length > 0
-      length = Math.sqrt(length)
-      invLength = 1.0 / length
-      @x *= invLength
-      @y *= invLength
-    return length
-
   isZero: () -> @x == 0 and @y == 0
+
   zero: () ->
     @x = @y = 0
     @
@@ -95,3 +91,14 @@ class eburp.Point
     @x = (from.x * (1.0 - factor)) + (to.x * factor)
     @y = (from.y * (1.0 - factor)) + (to.y * factor)
     @
+
+  magnitude : () -> Math.sqrt @x * @x + @y * @y
+  magnitudeSquared: () -> @x * @x + @y * @y
+
+  normalize : () ->
+    m = this.magnitude()
+    if m > 0
+      @x /= m
+      @y /= m
+    @
+
