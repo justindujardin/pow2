@@ -50,6 +50,12 @@ class eburp.Point
     @y = Math.floor @y
     @
 
+
+  growTruncate: () ->
+    @x = Math.floor @x
+    @y = Math.ceil @y
+    @
+
   add: (point) ->
     @x += point.x
     @y += point.y

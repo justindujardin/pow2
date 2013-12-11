@@ -123,7 +123,7 @@ class MapView extends TileView
   tileVisible: (x,y) ->
     return true if not @map.dark
     x -= Math.min Math.floor(@camera.point.x), 0
-    y -= Math.ceil(@camera.point.y)
+    y -= Math.floor(@camera.point.y)
     return false if y >= @shadows.length or @shadows[y][x] == true
     true
 
@@ -134,7 +134,7 @@ class MapView extends TileView
   renderFrame: () ->
     super()
     partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
-    @drawTile(partyIcon, @camera.getCenter())
+    @drawTile(partyIcon, @camera.getCenter().growTruncate())
 
   renderPost: () ->
     super()
@@ -148,7 +148,7 @@ class MapView extends TileView
     for x in [clipRect.point.x ... clipRect.getRight()]
       for y in [clipRect.point.y ... clipRect.getBottom()]
         xx = x - Math.min Math.floor(@camera.point.x), 0
-        yy = y - Math.ceil(@camera.point.y)
+        yy = y - Math.floor(@camera.point.y)
         continue if @map.dark and @shadows[yy][xx]
         continue if not @game.getFeatures(x,y)
         feature = @getTopFeature(x, y)

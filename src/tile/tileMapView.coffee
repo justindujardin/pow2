@@ -47,8 +47,8 @@ class eburp.TileMapView extends eburp.SceneView
   # Return the current world camera clip rectangle
   getCameraClip: () ->
     return @camera if not @tileMap
-    clipGrow = @camera.round()
-    clipRect = new eburp.Rect(clipGrow).clip @tileMap.bounds
+    clipGrow = @camera.clone().round()
+    clipRect = clipGrow.clip @tileMap.bounds
     clipRect.round()
     clipRect
 
@@ -79,7 +79,7 @@ class eburp.TileMapView extends eburp.SceneView
     objects = @scene.objectsByType eburp.TileFeatureObject
     _.each objects, (object) => @renderer.render object, @
     player = @scene.objectsByType eburp.MovableTileObject
-    @renderer.render player[0], @
+    @renderer.render player[0], @ if player.length > 0
     @
 
   renderAnalog: () ->

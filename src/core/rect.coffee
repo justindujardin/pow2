@@ -77,7 +77,7 @@ class eburp.Rect
     true
 
   getCenter: () ->
-    new eburp.Point(@point.x + Math.floor(@extent.x * 0.5),@point.y + Math.floor(@extent.y * 0.5))
+    new eburp.Point(@point.x + @extent.x * 0.5,@point.y + @extent.y * 0.5)
 
   setCenter: (pointOrX,y) ->
     if pointOrX instanceof eburp.Point

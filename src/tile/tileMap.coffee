@@ -42,6 +42,10 @@ class eburp.TileMap extends eburp.SceneObject
 
   # Construct
   addFeaturesToScene: ->
+    # This is to prevent the old game from constructing TileFeatureObjects
+    # and adding them to the scene.  It doesn't interact with them, so don't
+    # bother.
+    return if not @world
     return if not @scene
     for k,v of @features
       for k,f of v
