@@ -60,7 +60,11 @@ class eburp.TileMapView extends eburp.SceneView
     return if not @camera or not @context or not @tileMap
     # Adjust render position for camera.
     worldTilePos = @worldToScreen @tileMap.bounds.point
+    worldTilePos.x = worldTilePos.x.toFixed(2)
+    worldTilePos.y = worldTilePos.y.toFixed(2)
     worldCameraPos = @worldToScreen @camera.point
+    worldCameraPos.x = worldCameraPos.x.toFixed(2)
+    worldCameraPos.y = worldCameraPos.y.toFixed(2)
     @context.translate worldTilePos.x - worldCameraPos.x,worldTilePos.y - worldCameraPos.y
 
   renderFrame: (elapsed) ->

@@ -134,7 +134,7 @@ class MapView extends TileView
   renderFrame: () ->
     super()
     partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
-    @drawTile(partyIcon, @camera.getCenter().growTruncate())
+    @drawTile(partyIcon, @camera.getCenter().round())
 
   renderPost: () ->
     super()

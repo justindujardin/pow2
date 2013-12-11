@@ -74,8 +74,9 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          self.sprite = new eburp.MovableTileObject({
             point: self.tileMap.bounds.getCenter()
          });
-         self.scene.addObject(self.sprite);
          self.scene.addObject(self.tileMap);
+         self.scene.addObject(self.sprite);
+
          this.loader.loadAll(this.files,function(){
             self.state = 'Loaded';
             return done();
@@ -107,6 +108,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                   point = new eburp.Point(feature.x,feature.y);
                }
             }
+            this.sprite.setPoint(point);
             if(this.tileView && map.width < 10 && map.height < 10){
                this.tileView.camera.point.zero();
                this.tileView.trackObject(null);
@@ -114,8 +116,9 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             else if(this.tileView && this.sprite) {
                this.tileView.trackObject(this.sprite);
             }
+            return;
          }
-         this.sprite.point = point;
+         this.sprite.setPoint(point);
          //self.tileMap.bounds.getCenter()
       },
       nextMap: function(){

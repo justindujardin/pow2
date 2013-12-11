@@ -27,6 +27,7 @@ class eburp.TileTransitionFeature extends eburp.TileFeatureObject
 
   enter: (object) ->
     return if not @target or not @tileMap
+    console.log "Transition to: #{@target}"
     object.point.set(@targetX,@targetY)
     @tileMap.setMap @target
 

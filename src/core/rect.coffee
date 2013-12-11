@@ -77,7 +77,7 @@ class eburp.Rect
     true
 
   getCenter: () ->
-    new eburp.Point(@point.x + @extent.x * 0.5,@point.y + @extent.y * 0.5)
+    new eburp.Point((@point.x + @extent.x * 0.5).toFixed(2),(@point.y + @extent.y * 0.5).toFixed(2))
 
   setCenter: (pointOrX,y) ->
     if pointOrX instanceof eburp.Point
@@ -85,8 +85,8 @@ class eburp.Rect
       y = pointOrX.y
     else
       x = pointOrX
-    @point.x = x - @extent.x / 2
-    @point.y = y - @extent.y / 2
+    @point.x = (x - @extent.x * .5).toFixed(2)
+    @point.y = (y - @extent.y * .5).toFixed(2)
 
   scale: (scale) ->
     @point.multiply(scale)

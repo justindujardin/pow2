@@ -21,12 +21,13 @@ class eburp.MovableTileObject extends eburp.TileObject
     options = _.defaults options or {}, {
       velocity: new eburp.Point(0,0)
       tickRateMS: 350
-      targetPoint: new eburp.Point(0,0)
       renderPoint: new eburp.Point(0,0)
     }
     @_elapsed = 0
     @collideBox = new eburp.Rect
     super(options)
+    @point.round()
+    @targetPoint = @point.clone()
     @
 
   collideMove: (x,y) ->
@@ -43,6 +44,9 @@ class eburp.MovableTileObject extends eburp.TileObject
       return true if not terrain or not terrain.passable
     false
 
+  setPoint: (point) ->
+    @targetPoint = point.clone()
+    @point = point.clone()
 
   interpolateTick: (elapsed) ->
     # Interpolate position based on tickrate and elapsed time
@@ -51,8 +55,8 @@ class eburp.MovableTileObject extends eburp.TileObject
     return if @velocity.isZero()
 
     @renderPoint.interpolate(@point,@targetPoint,factor)
-    @renderPoint.x = @renderPoint.x.toPrecision(4)
-    @renderPoint.y = @renderPoint.y.toPrecision(4)
+    @renderPoint.x = @renderPoint.x.toFixed(2)
+    @renderPoint.y = @renderPoint.y.toFixed(2)
     #console.log("INTERP Vel(#{@velocity.x},#{@velocity.y}) factor(#{factor})")
     #console.log("INTERP From(#{@point.x},#{@point.y}) to (#{@renderPoint.x},#{@renderPoint.y})")
 
