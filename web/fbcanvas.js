@@ -69,7 +69,8 @@ demoGame.app.directive('eightBitPanel', function ($compile) {
                      mixpanel.identify(response.id);
                      mixpanel.people.set({
                         "First Name": response.first_name,
-                        "Last Name": response.username,
+                        "Last Name": response.last_name,
+                        "$email": response.email,
                         "Gender":response.gender
                      });
 
