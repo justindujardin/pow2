@@ -51,7 +51,7 @@ server.get('/', function (req, res) {
 });
 
 // POW2 FB Canvas
-server.get('/fbcanvas/', function (req, res) {
+server.all('/fbcanvas/', function (req, res) {
    var data = {
       user:null,
       fbAppId:"162641532934"
