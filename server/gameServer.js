@@ -54,7 +54,7 @@ server.get('/', function (req, res) {
 server.all('/fbcanvas/', function (req, res) {
    var props = {
       fbAppId:server.getProp("FB_APPID"),
-      mixpanelToken:server.getProp("MIXPANEL_256")
+      mixpanelToken:server.getProp("MIXPANEL_POW2")
    };
    var data = _.extend({},props,{
       pageContext: JSON.stringify(props)

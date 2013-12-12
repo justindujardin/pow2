@@ -66,6 +66,13 @@ demoGame.app.directive('eightBitPanel', function ($compile) {
                FB.api('/me', function (response) {
                   $scope.$apply(function(){
                      $scope.user = response;
+                     mixpanel.identify(response.id);
+                     mixpanel.people.set({
+                        "First Name": response.first_name,
+                        "Last Name": response.username,
+                        "Gender":response.gender
+                     });
+
                   });
                });
             } else if (response.status === 'not_authorized') {
