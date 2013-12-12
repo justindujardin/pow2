@@ -52,10 +52,13 @@ server.get('/', function (req, res) {
 
 // POW2 FB Canvas
 server.all('/fbcanvas/', function (req, res) {
-   var data = {
-      user:null,
-      fbAppId:"162641532934"
+   var props = {
+      fbAppId:server.getProp("FB_APPID"),
+      mixpanelToken:server.getProp("MIXPANEL_256")
    };
+   var data = _.extend({},props,{
+      pageContext: JSON.stringify(props)
+   });
    if(req.session && req.session.fbToken){
       fb.graph.setAccessToken(req.session.fbToken);
       fb.graph.get('/me',function(err,user){
