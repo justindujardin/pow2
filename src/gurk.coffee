@@ -65,6 +65,7 @@ class eburp.Gurk extends eburp.SceneView
 
 
   makeResponsive: ()->
+    return if @notResponsive
     disableSmoothing = () =>
       @context.webkitImageSmoothingEnabled = @context.mozImageSmoothingEnabled = false
       @controlContext.webkitImageSmoothingEnabled = @controlContext.mozImageSmoothingEnabled = false

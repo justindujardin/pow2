@@ -4,6 +4,7 @@ $(document).ready(function () {
       window.App = {
          gurk: new eburp.Gurk($("#screenID")[0])
       };
+      App.gurk.notResponsive = true;
    }, 500);
 });
 function phoneClick(event, x, y) {
