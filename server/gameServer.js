@@ -50,6 +50,24 @@ server.get('/', function (req, res) {
    }
 });
 
+// POW2 FB Canvas
+server.get('/fbcanvas/', function (req, res) {
+   var data = {
+      user:null,
+      fbAppId:"162641532934"
+   };
+   if(req.session && req.session.fbToken){
+      fb.graph.setAccessToken(req.session.fbToken);
+      fb.graph.get('/me',function(err,user){
+         data.user = fb.parseUser(req,user);
+         res.render('../web/fbcanvas.html',data);
+      });
+   }
+   else {
+      res.render('../web/fbcanvas.html',data);
+   }
+});
+
 
 // 8 hour challenge code
 server.get('/8', function (req, res) {
