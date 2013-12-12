@@ -207,8 +207,16 @@ class ItemView extends SelectView
 
   processResult: (param) =>
     item = @items[@selected]
-    if (param == "SELL_YES")
+    if param is "SELL_YES"
+      oldGold = @gurk.game.gold
       @gurk.game.gold += item.getShopValue(@sellRate)
+      eburp.track 'Sell Item',
+        name: item.name,
+        id: item.id,
+        type: item.template.type,
+        value: item.template.baseValue
+        playerBefore:oldGold
+        playerAfter:@gurk.game.gold
       @player.dropItem(item)
       @doLayout()
     else if (param == "DROP_YES")
@@ -261,7 +269,15 @@ class ItemView extends SelectView
           else
             @items.splice(@selected, 1)
             if (@itemAction == ItemView.ACTION_BUY)
+              oldGold = @gurk.game.gold
               @gurk.game.gold -= item.getShopValue(@buyRate)
+              eburp.track 'Buy Item',
+                name: item.name,
+                id: item.id,
+                type: item.template.type,
+                value: item.template.baseValue
+                playerBefore:oldGold
+                playerAfter:@gurk.game.gold
           target.addItem(item)
           if (@items.length == 0)
             @gurk.popView(null)
