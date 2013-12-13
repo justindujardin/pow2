@@ -208,15 +208,7 @@ class ItemView extends SelectView
   processResult: (param) =>
     item = @items[@selected]
     if param is "SELL_YES"
-      oldGold = @gurk.game.gold
       @gurk.game.gold += item.getShopValue(@sellRate)
-      eburp.track 'Sell Item',
-        name: item.name,
-        id: item.id,
-        type: item.template.type,
-        value: item.template.baseValue
-        playerBefore:oldGold
-        playerAfter:@gurk.game.gold
       @player.dropItem(item)
       @doLayout()
     else if (param == "DROP_YES")
