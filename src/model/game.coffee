@@ -133,7 +133,14 @@ class Game
           eburp.track "Complete Quest",
             Name: quest
             GraphID: info.graphId
-          $.post "/c/quest/#{info.graphId}"
+
+          # Support client side action posting, if we know the FB graph token.
+          # This covers cases where a server session is not established, e.g.
+          # in the FB canvas.
+          url = "/c/quest/#{info.graphId}"
+          if window._context and window._context.graphToken
+            url += "/#{window._context.graphToken}"
+          $.post url
 
     @buildFeatures() if newMarkers
     newMarkers

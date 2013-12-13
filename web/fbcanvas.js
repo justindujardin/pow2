@@ -65,6 +65,7 @@ demoGame.app.directive('eightBitPanel', function ($compile) {
             if (response.status === 'connected') {
                FB.api('/me', function (response) {
                   $scope.$apply(function(){
+                     window._context.graphToken = FB.getAuthResponse()['accessToken'];
                      $scope.user = response;
                      mixpanel.identify(response.id);
                      mixpanel.people.set({

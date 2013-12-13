@@ -158,6 +158,28 @@ server.post("/c/quest/:id",function(req, res){
    });
 });
 
+server.post("/c/quest/:id/:token",function(req, res){
+   function _nope(){
+      res.json({authenticated:false},400);
+      res.end();
+   }
+   fb.graph.setAccessToken(req.params.token);
+   fb.graph.get('/me',function(err,user){
+      if(err || !user){
+         return _nope();
+      }
+      var cSecret = process.env.CARROT_SECRET || require("../.env.json").CARROT_SECRET;
+      var cAppId = process.env.CARROT_APPID || require("../.env.json").CARROT_APPID;
+      var c = new carrot.Carrot(cAppId, user.id, cSecret);
+      c.validateUser(req.params.token,function(result){
+         c.postAction("complete", req.params.id,null,null,function(result){
+            res.json({success:true});
+            res.end();
+         });
+      });
+   });
+});
+
 
 function twoFiftySixHandler(req,res){
    function noOp(){
