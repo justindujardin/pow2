@@ -21,7 +21,7 @@ class SpellInfoView extends InfoView
   constructor : (gurk, @player, @spell) ->
     super(gurk, "DONE")
     range = @player.getSpellRange(@spell)
-    @addIcon(Data.icons.spell, 3, 3)
+    @addIcon(eburp.data.icons.spell, 3, 3)
     @addLabelCentered(@spell.name, "#FFF", 0, 4, 128, 16)
     y = 23
     x = 3

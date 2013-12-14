@@ -25,7 +25,7 @@ class Validate
   @run : ->
     console.log("--- VALIDATING ...")
     console.log("-- SPELLS")
-    for spell in Data.spells
+    for spell in eburp.data.spells
       if (spell.type == "summon")
         if (!spell.creature)
           console.log(" No creature for summon spell #{spell.name}.")
@@ -35,7 +35,7 @@ class Validate
         console.log(" Animation missing for spell #{spell.name}")
     console.log("-- CREATURES")
     spellSet = {}
-    for creature in Data.creatures
+    for creature in eburp.data.creatures
       Validate.require(creature, "icon", creature.name)
       Validate.require(creature, "groups", creature.name)
       Validate.require(creature, "meleeMinDamage", creature.name)
@@ -61,7 +61,7 @@ class Validate
           else
             spellSet[spell.name] = true
     console.log("-- ITEMS")
-    for item in Data.items
+    for item in eburp.data.items
       Validate.require(item, "icon", item.name)
       Validate.require(item, "type", item.name)
       Validate.require(item, "groups", item.name)
@@ -94,10 +94,10 @@ class Validate
           if (feature.type == "transition")
             if (!feature.target)
               console.log(" Missing transition target in #{name}.")
-            else if (!Data.maps[feature.target])
+            else if (!eburp.data.maps[feature.target])
               console.log(" Transition target #{feature.target} not found in #{name}.")
             else
-              target = Data.maps[feature.target]
+              target = eburp.data.maps[feature.target]
               if (feature.targetX >= target.width or feature.targetY >= target.height)
                 console.log(" Transition target location is not valid in #{feature.target} for #{name}.")
           else if (feature.type == "encounter")
@@ -118,7 +118,7 @@ class Validate
               for item in feature.items
                 if (!Library.getItemTemplateByName(item.name))
                   console.log(" Item #{item.name} not found in #{name}.")
-    for spell in Data.spells
+    for spell in eburp.data.spells
       if (!spellSet[spell.name] && !spell.who)
         console.log(" Unused spell: #{spell.name}")
     console.log("--- VALIDATION COMPLETE.")

@@ -114,7 +114,7 @@ class ItemView extends SelectView
               @items.push(item)
         if (@items.length == 0)
           @gurk.popView(null)
-    @addIcon(Data.icons.blank, Screen.SIZE - (Screen.UNIT + Screen.HALF_UNIT), Screen.HALF_UNIT)
+    @addIcon(eburp.data.icons.blank, Screen.SIZE - (Screen.UNIT + Screen.HALF_UNIT), Screen.HALF_UNIT)
     y = 9
     if (@items.length > 0)
       for item in @items

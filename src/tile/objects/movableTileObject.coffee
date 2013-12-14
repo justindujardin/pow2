@@ -58,7 +58,7 @@ class eburp.MovableTileObject extends eburp.TileObject
     @renderPoint.x = @renderPoint.x.toFixed(2)
     @renderPoint.y = @renderPoint.y.toFixed(2)
     #console.log("INTERP Vel(#{@velocity.x},#{@velocity.y}) factor(#{factor})")
-    #console.log("INTERP From(#{@point.x},#{@point.y}) to (#{@renderPoint.x},#{@renderPoint.y})")
+    console.log("INTERP From(#{@point.x},#{@point.y}) to (#{@renderPoint.x},#{@renderPoint.y})")
 
   tick: (elapsed) ->
     @_elapsed += elapsed

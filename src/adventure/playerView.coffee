@@ -43,7 +43,7 @@ class PlayerView extends InfoView
     y += 8
     @addLabel("Level #{@player.level} #{@player.character.job}", "#FFF", 20, y)
     y += 8
-    levelUp = Data.levels[@player.level]
+    levelUp = eburp.data.levels[@player.level]
     @addLabel("XP: #{@player.experience}/#{levelUp}", "#FFF", 20, y)
     y += 8
     # todo - add spell points if there are any, use HP, SP

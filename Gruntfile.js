@@ -66,6 +66,33 @@ module.exports = function(grunt) {
       },
 
       /**
+       * Compile TypeScript library
+       */
+      typescript: {
+         core: {
+            options: {
+               module: 'amd', //or commonjs
+               target: 'es5', //or es3
+               base_path: 'src',
+               sourcemap: true,
+               declaration: true
+            },
+            src: [
+               "src/core/api.ts",
+               "src/core/*.ts",
+               "src/resources/*.ts",
+               "src/scene/*.ts",
+               "src/scene/objects/*.ts",
+               "src/scene/views/*.ts",
+               "src/tile/*.ts",
+               "src/tile/objects/*.ts"
+            ],
+            dest: 'web/<%= pkg.name %>.typescript.js'
+         }
+      },
+
+
+      /**
        * Compile CoffeeScript
        */
       coffee: {
@@ -191,10 +218,15 @@ module.exports = function(grunt) {
          },
          code: {
             files: [
-               '<%= coffee.game.src %>',
-               '<%= coffee.core.src %>'
+               '<%= coffee.game.src %>'
             ],
             tasks: ['coffee', 'notify:code']
+         },
+         typescript: {
+            files: [
+               '<%= typescript.core.src %>'
+            ],
+            tasks: ['typescript', 'notify:code']
          },
          data: {
             files: [
@@ -234,10 +266,8 @@ module.exports = function(grunt) {
 
    grunt.registerMultiTask('sprites', 'Pack sprites into output sheets', function()
    {
-      var Q = require('q');
       var done = this.async();
       var spritePacker = require('./server/spritePacker');
-      var queue = [];
       var options = this.options({
          metaFile: null,
          indexFiles:false
@@ -278,16 +308,17 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-contrib-coffee');
    grunt.loadNpmTasks('grunt-contrib-concat');
    grunt.loadNpmTasks('grunt-contrib-uglify');
+   grunt.loadNpmTasks('grunt-typescript');
    grunt.loadNpmTasks('grunt-recess');
    // Support system notifications in non-production environments
    if(process.env.NODE_ENV !== 'production'){
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-notify');
-      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'recess']);
+      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'typescript', 'recess']);
    }
    else {
-      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'recess']);
-      grunt.registerTask('heroku:production', ['sprites','concat','coffee', 'uglify', 'recess']);
+      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'typescript', 'recess']);
+      grunt.registerTask('heroku:production', ['sprites','concat','coffee', 'typescript', 'uglify', 'recess']);
    }
 };

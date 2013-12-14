@@ -26,7 +26,7 @@ class ChooseCharacterView extends SelectView
 
   doLayout : =>
     @characters = []
-    for character in Data.characters
+    for character in eburp.data.characters
       if (character.type == @type)
         if (!character.after || Device.getSetting(character.after, false))
           @characters.push(character)

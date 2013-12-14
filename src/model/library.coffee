@@ -20,40 +20,40 @@
 class Library
 
   @getItemTemplateByName: (name) =>
-    for item in Data.items
+    for item in eburp.data.items
       if (item.name == name)
         return item
     null
 
   @getItemTemplates: (level, groups) =>
     results = new Array()
-    for item in Data.items
+    for item in eburp.data.items
       if (item.level == level and (!groups or Util.hasCommonElements(groups, item.groups)))
         results.push(item)
     results
 
   @getCharacterByName : (name) =>
-    for character in Data.characters
+    for character in eburp.data.characters
       if (character.name == name)
         return character
     null
 
   @getCreatureByName: (name) =>
-    for creature in Data.creatures
+    for creature in eburp.data.creatures
       if (creature.name == name)
         return creature
     null
 
   @getCreatures: (level, groups) =>
     results = new Array()
-    for creature in Data.creatures
+    for creature in eburp.data.creatures
       if (creature.level == level and (!groups or Util.hasCommonElements(groups, creature.groups)))
         results.push(creature)
     results
 
   @getLevelNear: (level) =>
     x = Util.random(0, 9999)
-    a = Data.levelTransformations[level - 1]
+    a = eburp.data.levelTransformations[level - 1]
     i = 0
     while (x > a[i])
       x -= a[i]
@@ -64,7 +64,7 @@ class Library
     type = character.type
     job = character.job
     results = new Array()
-    for spell in Data.spells
+    for spell in eburp.data.spells
       if ((spell.who == type or spell.who == job) and spell.level <= level)
         results.push(spell)
     results
@@ -72,13 +72,13 @@ class Library
   @newSpellsForCharacterAndLevel : (character, level) =>
     type = character.type
     job = character.job
-    for spell in Data.spells
+    for spell in eburp.data.spells
       if ((spell.who == type or spell.who == job) and spell.level == level)
         return true
     false
 
   @getSpellByName : (name) =>
-    for spell in Data.spells
+    for spell in eburp.data.spells
       if (spell.name == name)
         return spell
     null

@@ -37,7 +37,7 @@ class CreateView extends InfoView
   getCharacters : =>
     @characters = []
     type = @types[@index]
-    for character in Data.characters
+    for character in eburp.data.characters
       if (character.type == type)
         @characters.push(character)
     @charIndex = 0
@@ -52,7 +52,7 @@ class CreateView extends InfoView
     y += 8
     @addLabel("Level #{@player.level} #{@player.character.job}", "#FFF", 20, y)
     y += 8
-    levelUp = Data.levels[@player.level + 1]
+    levelUp = eburp.data.levels[@player.level + 1]
     @addLabel("XP: #{@player.experience}/#{levelUp}", "#FFF", 20, y)
     y += 8
     # todo - add spell points if there are any, use HP, SP

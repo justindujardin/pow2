@@ -176,7 +176,7 @@ class eburp.TileMapView extends eburp.SceneView
     else
       x = pointOrX
       y = yOrScale
-    desc = Data.sprites[icon]
+    desc = eburp.data.sprites[icon]
     image = @getSpriteSheet desc.source
     return if not image or not image.isReady()
     srcX = desc.x
@@ -195,7 +195,7 @@ class eburp.TileMapView extends eburp.SceneView
   # destination width and height.
   drawTileStretch: (icon, x, y, width, height) ->
     return if not @_validateImage icon
-    desc = Data.sprites[icon]
+    desc = eburp.data.sprites[icon]
     image = @getSpriteSheet desc.source
     return if not image or not image.isReady()
     dstX = x * @unitSize * @cameraScale
@@ -240,7 +240,7 @@ class eburp.TileMapView extends eburp.SceneView
 
   drawAnim: (anim, x, y, frame) ->
     return if not @_validateImage(anim)
-    desc = Data.sprites[anim]
+    desc = eburp.data.sprites[anim]
     image = @getSpriteSheet desc.source
     srcX = desc.x + (frame * @unitSize)
     srcY = desc.y
@@ -254,7 +254,7 @@ class eburp.TileMapView extends eburp.SceneView
 
 
   _validateImage: (name) ->
-    desc = Data.sprites[name]
+    desc = eburp.data.sprites[name]
     throw new Error "Missing sprite data for: #{name}" if not desc
     desc
     image = @getSpriteSheet desc.source

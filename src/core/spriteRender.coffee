@@ -31,7 +31,7 @@ class eburp.SpriteRender
 
   # Pick a single sprite out of a sheet, and return an image that contains only that sprite.
   getSingleSprite: (spriteName, done) ->
-    coords = Data.sprites[spriteName]
+    coords = eburp.data.sprites[spriteName]
     throw new Error "Cannot find sprite sheet for : #{spriteName}" if not coords
     @getSpriteSheet coords.source, (image) =>
       @context.clearRect(0, 0, @canvas.width, @canvas.width)
@@ -45,7 +45,7 @@ class eburp.SpriteRender
 
 
   getSpriteCoords: (name) ->
-    desc = Data.sprites[name]
+    desc = eburp.data.sprites[name]
     throw new Error "Missing sprite data for: #{name}" if not desc
     desc
 

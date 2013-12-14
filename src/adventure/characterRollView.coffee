@@ -38,7 +38,7 @@ class CharacterRollView extends InfoView
     y += 8
     @addLabel("Level #{@player.level} #{@player.character.job}", "#FFF", 20, y)
     y += 8
-    levelUp = Data.levels[@player.level + 1]
+    levelUp = eburp.data.levels[@player.level + 1]
     @addLabel("XP: #{@player.experience}/#{levelUp}", "#FFF", 20, y)
     y += 8
     if (@player.maxSpellPoints > 0)

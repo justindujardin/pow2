@@ -41,7 +41,7 @@ class SpellView extends SelectView
     @clear()
     @spells = @player.getSpells()
     @castable = []
-    # @addIcon(Data.icons.spell, 128 - 17, 1)
+    # @addIcon(eburp.data.icons.spell, 128 - 17, 1)
     if (@creature)
       @addLabelCentered("#{@creature.template.name}'s Spells (SP: #{@player.spellPoints})", "#A0A0A0", 0, 1, 128, 8)
     else
@@ -91,7 +91,7 @@ class SpellView extends SelectView
         if (@gurk.game.playersNeedHealing())
           @gurk.pushView(new PlayerDialog(@gurk, PlayerDialog.ACTION_HEAL))
         else
-          @gurk.pushView(new AlertView(@gurk, Data.icons.party, "Fully Healed", "There is nobody to target with that spell, all of the adventures are fully healed!", null))
+          @gurk.pushView(new AlertView(@gurk, eburp.data.icons.party, "Fully Healed", "There is nobody to target with that spell, all of the adventures are fully healed!", null))
 
   command: (text) =>
     @resultMode = "NORMAL"
