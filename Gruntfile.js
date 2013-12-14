@@ -80,12 +80,7 @@ module.exports = function(grunt) {
             src: [
                "src/core/api.ts",
                "src/core/*.ts",
-               "src/resources/*.ts",
-               "src/scene/*.ts",
-               "src/scene/objects/*.ts",
-               "src/scene/views/*.ts",
-               "src/tile/*.ts",
-               "src/tile/objects/*.ts"
+               "src/resources/*.ts"
             ],
             dest: 'web/<%= pkg.name %>.typescript.js'
          }
@@ -144,6 +139,7 @@ module.exports = function(grunt) {
          game: {
             files: {
                'web/<%= pkg.name %>.core.js'    : ['web/<%= pkg.name %>.core.js'],
+               'web/<%= pkg.name %>.typescript.js'    : ['web/<%= pkg.name %>.typescript.js'],
                'web/<%= pkg.name %>.data.js'    : ['web/<%= pkg.name %>.data.js'],
                'web/<%= pkg.name %>.maps.js'    : ['web/<%= pkg.name %>.maps.js'],
                'web/<%= pkg.name %>.sprites.js' : ['web/<%= pkg.name %>.sprites.js'],
@@ -218,6 +214,7 @@ module.exports = function(grunt) {
          },
          code: {
             files: [
+               '<%= coffee.core.src %>',
                '<%= coffee.game.src %>'
             ],
             tasks: ['coffee', 'notify:code']
