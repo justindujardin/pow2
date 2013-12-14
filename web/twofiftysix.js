@@ -35,65 +35,51 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          "/images/ui.png"
       ],
       maps: _.keys(eburp.getMaps()),
-      currentMap: 19,
+      state:'Uninitialized',
+      listeners:[],
+      currentMap: 23,
       loader: new eburp.ResourceLoader(),
-      bindInput: function(){
-         var self = this;
-         $(document).keyup(function(e){
-            switch(e.keyCode){
-               case 37: // Left
-                  self.sprite.velocity.x = 0;
-                  break;
-               case 38: // Up
-                  self.sprite.velocity.y = 0;
-                  break;
-               case 39: // Right
-                  self.sprite.velocity.x = 0;
-                  break;
-               case 40: // Down
-                  self.sprite.velocity.y = 0;
-                  break;
-               default:
-                  return true;
-            }
-            e.stopImmediatePropagation();
-         });
-         $(document).keydown(function(e){
-            switch(e.keyCode){
-               case 37: // Left
-                  self.sprite.moveLeft();
-                  break;
-               case 38: // Up
-                  self.sprite.moveUp();
-                  break;
-               case 39: // Right
-                  self.sprite.moveRight();
-                  break;
-               case 40: // Down
-                  self.sprite.moveDown();
-                  break;
-               default:
-                  return true;
-            }
-            e.stopImmediatePropagation();
-         });
-      },
       load : function(){
          var deferred = $q.defer();
          var self = this;
-         this.loader.loadAll(this.files,function(){
-            self.scene = new eburp.Scene({autoStart: true});
-            self.tileMap = new eburp.TileMap(self.maps[self.currentMap]);
-            self.sprite = new eburp.MovableTileObject({
-               point: self.tileMap.bounds.getCenter()
+         this.listeners.push(deferred);
+         function done(){
+            _.defer(function(){
+               var listeners = self.listeners;
+               self.listeners = [];
+               $rootScope.$apply(function(){
+                  angular.forEach(listeners,function(l){
+                     l.resolve();
+                  });
+               });
             });
-            self.scene.addObject(self.sprite);
-            self.scene.addObject(self.tileMap);
+         }
+         if(this.state === 'Loaded'){
+            done();
+            return deferred.promise;
+         }
+         else if(this.state === 'Loading'){
+            return deferred.promise;
+         }
+         this.state = 'Loading';
+         self.world = new eburp.World({
+            scene:new eburp.Scene({
+               autoStart: true,
+               debugRender:true
+            })
+         });
+         self.scene = self.world.scene;
+         self.input = self.scene.input = self.world.input;
+         self.tileMap = new eburp.TileMap(self.maps[self.currentMap]);
+         self.sprite = new eburp.MovableTileObject({
+            point: self.tileMap.bounds.getCenter()
+         });
+         self.scene.addObject(self.tileMap);
+         self.scene.addObject(self.sprite);
 
-            deferred.resolve();
-            if (!$rootScope.$$phase) {
-               $rootScope.$apply();
-            }
+         this.loader.loadAll(this.files,function(){
+            self.state = 'Loaded';
+            return done();
          });
          return deferred.promise;
       },
@@ -122,8 +108,17 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                   point = new eburp.Point(feature.x,feature.y);
                }
             }
+            this.sprite.setPoint(point);
+            if(this.tileView && map.width < 10 && map.height < 10){
+               this.tileView.camera.point.zero();
+               this.tileView.trackObject(null);
+            }
+            else if(this.tileView && this.sprite) {
+               this.tileView.trackObject(this.sprite);
+            }
+            return;
          }
-         this.sprite.point = point;
+         this.sprite.setPoint(point);
          //self.tileMap.bounds.getCenter()
       },
       nextMap: function(){
@@ -184,7 +179,7 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
       }, 100);
    };
    $scope.hideSpriteCatalog = function(){
-     $scope.spriteCatalog = false;
+      $scope.spriteCatalog = false;
    };
    $scope.shareImage = function(){
       mixpanel.track("Art: Share");
@@ -216,11 +211,11 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
 
    $scope.login = function() {
       mixpanel.track("Art: Login");
-     window.location.href = "/auth/facebook";
+      window.location.href = "/auth/facebook";
    };
    $scope.logout = function() {
       mixpanel.track("Art: Logout");
-     window.location.href = "/auth/logout";
+      window.location.href = "/auth/logout";
    };
 
    $scope.nextMap = function(){

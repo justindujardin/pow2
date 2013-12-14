@@ -41,13 +41,13 @@ class SplashView extends TileView
     @setButton(9, "CHECK")
 
   showIntro : =>
-    @gurk.pushView(new AlertView(@gurk, Data.icons.party, "Welcome", "Welcome to realm of Gurk!\n\nRoll the stats for your Warrior, Archer and Mage, then lead them on to thrilling adventure!", "CREATE"))
+    @gurk.pushView(new AlertView(@gurk, eburp.data.icons.party, "Welcome", "Welcome to realm of Gurk!\n\nRoll the stats for your Warrior, Archer and Mage, then lead them on to thrilling adventure!", "CREATE"))
 
   command : (text) =>
     switch (text)
       when "NEW"
         if (Device.hasSavedGame())
-          @gurk.pushView(new ConfirmView(@gurk, Data.icons.party, "Warning!", "Creating a new game will delete your existing game. Are you sure you want to do this?", "NEW", "CANCEL"))
+          @gurk.pushView(new ConfirmView(@gurk, eburp.data.icons.party, "Warning!", "Creating a new game will delete your existing game. Are you sure you want to do this?", "NEW", "CANCEL"))
         else
           # @gurk.startTestGame()
           @showIntro()
@@ -60,7 +60,7 @@ class SplashView extends TileView
       when "CHECK"
         Validate.run()
       when "FLOW"
-        flow = new FlowView(@gurk, Data.icons.death, "Flow View", null)
+        flow = new FlowView(@gurk, eburp.data.icons.death, "Flow View", null)
         flow.addParagraph("Berserk", "#FFF")
         flow.addParagraph("While berserk, combatant will get an extra attack (or spell cast) each turn.", "#A0A0A0")
         flow.addGap()

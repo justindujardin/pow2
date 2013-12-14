@@ -18,12 +18,14 @@
 
 
 class eburp.Scene
-  constructor: (@options) ->
-    @options = _.defaults @options or {}, {
-      tickRateMS: 100
-      debugRender: false,
+  constructor: (options) ->
+    @options = _.defaults options or {}, {
+      tickRateMS: 32
+      debugRender: false
       autoStart: false
+      world:null
     }
+    @db = new eburp.SceneSpatialDatabase
     @objects = []
     @views = []
     @lastTime = 0
@@ -35,16 +37,33 @@ class eburp.Scene
 
   # Remove an object from a collection the the
   removeIt: (property,object) ->
-    _.filter @[property], (obj) ->
+    # Filter out the object to be removed.
+    @[property] = _.filter @[property], (obj) =>
       if obj.id == object.id
-        obj.scene = null
+        # Remove from spatial db
+        @db.removeObject object
+        # Notify object of removal from scene
+        obj.onRemoveFromScene(@) if obj.onRemoveFromScene
+        # Remove from world
+        @world.erase(obj) if @world
+        # Remove scene reference from object.
+        delete obj.scene
         return false
       true
 
   addIt: (property,object) ->
     throw new Error "Object added twice" if _.find @[property], (i) -> i.id == object.id
+    # Add to object list
     @[property].push object
+    # Add to eburp.World
+    @world.mark(object) if @world
+    # Add to spatial database
+    @db.addObject object
+    # Mark in scene
     object.scene = @
+    # Notify of addition to scene.
+    object.onAddToScene(@) if object.onAddToScene
+
 
   findIt: (property, object) ->
     _.find @[property], (i) -> i.id == object.id
@@ -79,6 +98,10 @@ class eburp.Scene
   tickObjects: (elapsedMS) ->
     object.tick(elapsedMS) for object in @objects
 
+  # Interpolate object properties between ticks.
+  interpolateObjects: (elapsedMS) ->
+    object.interpolateTick(elapsedMS) for object in @objects when object.interpolateTick
+
   updateFPS: (elapsed) ->
     currFPS = if elapsed then 1000 / elapsed else 0
     @fps += (currFPS - @fps) / 10
@@ -90,7 +113,7 @@ class eburp.Scene
   # a second pass is done to each view's `debugRender` method when the
   # scene option `debugRender` is true.
   renderFrame: (elapsed) ->
-    view._render() for view in @views
+    view._render(elapsed) for view in @views
     @updateFPS(elapsed)
 
   # Stop the scene time from advancing
@@ -118,6 +141,7 @@ class eburp.Scene
         #@leftOver += elapsed % this.options.tickRateMS
         @lastTime = time
         @tickObjects(elapsed)
+      @interpolateObjects(elapsed)
       @renderFrame(elapsed)
       @mspf = new Date().getMilliseconds() - now
       window.requestAnimationFrame _frameCallback

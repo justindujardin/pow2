@@ -122,8 +122,8 @@ class MapView extends TileView
 
   tileVisible: (x,y) ->
     return true if not @map.dark
-    x -= @camera.point.x
-    y -= @camera.point.y
+    x -= Math.min Math.floor(@camera.point.x), 0
+    y -= Math.floor(@camera.point.y)
     return false if y >= @shadows.length or @shadows[y][x] == true
     true
 
@@ -133,8 +133,8 @@ class MapView extends TileView
 
   renderFrame: () ->
     super()
-    partyIcon = if @game.aboard then Data.icons.ship else Data.icons.party
-    @drawTile(partyIcon, @camera.getCenter())
+    partyIcon = if @game.aboard then eburp.data.icons.ship else eburp.data.icons.party
+    @drawTile(partyIcon, @camera.getCenter().round())
 
   renderPost: () ->
     super()
@@ -147,7 +147,9 @@ class MapView extends TileView
   renderFeatures:(clipRect) ->
     for x in [clipRect.point.x ... clipRect.getRight()]
       for y in [clipRect.point.y ... clipRect.getBottom()]
-        continue if @map.dark and @shadows[y - @camera.point.y][x - @camera.point.x]
+        xx = x - Math.min Math.floor(@camera.point.x), 0
+        yy = y - Math.floor(@camera.point.y)
+        continue if @map.dark and @shadows[yy][xx]
         continue if not @game.getFeatures(x,y)
         feature = @getTopFeature(x, y)
         @drawTile(feature.icon, x, y) if feature and feature.icon
@@ -219,7 +221,7 @@ class MapView extends TileView
         save = JSON.stringify(@game.saveGame())
         # console.log(save)
         Device.saveGame(save)
-        @gurk.pushView(new AlertView(@gurk, Data.icons.party, "Game Saved", "Your game has been saved!", null))
+        @gurk.pushView(new AlertView(@gurk, eburp.data.icons.party, "Game Saved", "Your game has been saved!", null))
       else
         @processFeature(text)
 
@@ -293,7 +295,7 @@ class MapView extends TileView
 
   getTerrain : (x, y) ->
     tileCharacter = @game.getTile(x, y)
-    Data.tiles[tileCharacter]
+    eburp.data.tiles[tileCharacter]
 
   getTopFeature : (x, y) ->
     for type in MapView.FEATURE_TYPES
@@ -342,7 +344,7 @@ class MapView extends TileView
         if (@game.isChartered(ship.id) or !ship.charter or ship.charter == 0)
           @clearButton(5)
           @game.boardShip(@game.getFeature(tx, ty, "ship").id)
-          @gurk.playMusic @map.boatMusic or Data.boatMusic
+          @gurk.playMusic @map.boatMusic or eburp.data.boatMusic
         else
           @setButton(5, "CHARTER")
           haveFeature = true
@@ -395,7 +397,7 @@ class MapView extends TileView
               else
                 text = "Your adventurers have been attacked!"
               @gurk.playCombatMusic()
-              @gurk.pushView(new AlertView(@gurk, Data.icons.combat, "Encounter", text, "combat"))
+              @gurk.pushView(new AlertView(@gurk, eburp.data.icons.combat, "Encounter", text, "combat"))
               return null
 
   setMap : (mapName, x, y) ->
@@ -467,7 +469,7 @@ class MapView extends TileView
       when "victory"
         eburp.track 'Combat', Win:true
         if @game.aboard
-          @gurk.playMusic @map.boatMusic or Data.boatMusic
+          @gurk.playMusic @map.boatMusic or eburp.data.boatMusic
         else if @map.music && @gurk.getMusicSetting()
           @gurk.playMusic @map.music
         else
@@ -483,17 +485,17 @@ class MapView extends TileView
         action = null
         if (treasure.length > 0)
           action = "treasure"
-          icon = Data.icons.treasure
+          icon = eburp.data.icons.treasure
           if (gold > 0)
             text = "You find #{gold} gold pieces and treasure amongst your defeated foes!"
           else
             text = "You find treasure amongst your defeated your foes!"
         else
           if (gold > 0)
-            icon = Data.icons.gold
+            icon = eburp.data.icons.gold
             text = "You find #{gold} gold pieces amongst your defeated foes!"
           else
-            icon = Data.icons.party
+            icon = eburp.data.icons.party
             text = "You have defeated your foes!"
         @upgrades = @game.giveExperience(@encounter.creatures)
         if (@upgrades.length > 0)
@@ -527,7 +529,7 @@ class MapView extends TileView
         ship = @getTopFeature(@posX, @posY)
         @game.gold -= ship.charter
         @game.boardShip(ship.id)
-        @gurk.playMusic @map.boatMusic or Data.boatMusic
+        @gurk.playMusic @map.boatMusic or eburp.data.boatMusic
         @clearButton(5)
       when "dispatch"
         feature = @getTopFeature(@posX, @posY)
@@ -542,8 +544,8 @@ class MapView extends TileView
         @game.transitionTo(start.map, start.x, start.y)
         @setMap(start.map, start.x, start.y)
         @move(0, 0)
-        @gurk.pushView(new AlertView(@gurk, Data.icons.death, "Defeat", "You have been defeated! As blackness closes in, a strange feeling comes over the adventurers...", null))
+        @gurk.pushView(new AlertView(@gurk, eburp.data.icons.death, "Defeat", "You have been defeated! As blackness closes in, a strange feeling comes over the adventurers...", null))
       when "debug1"
         @game.players[0].takeDamage(3)
-        image = @gurk.imageProcessor.rotate(Data.icons.death, ImageProcessor.LEFT)
-        @fly(Data.icons.death, 1, 7, 7, 1, 75, @animDone, image)
+        image = @gurk.imageProcessor.rotate(eburp.data.icons.death, ImageProcessor.LEFT)
+        @fly(eburp.data.icons.death, 1, 7, 7, 1, 75, @animDone, image)

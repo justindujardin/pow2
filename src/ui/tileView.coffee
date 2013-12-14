@@ -59,7 +59,7 @@ class TileView extends View
       @animateBlockFrame(anim,x,y,radius,frame, callback)
 
   animateBlockFrame : (anim, x, y, radius, frame, callback) ->
-    frames = Data.sprites[anim].frames or 1
+    frames = eburp.data.sprites[anim].frames or 1
     if frame >= frames
       callback() if callback
       return true
@@ -76,7 +76,7 @@ class TileView extends View
       @animateFrame(anim,x,y,frame, callback)
 
   animateFrame : (anim, x, y, frame, callback) ->
-    spriteMeta = Data.sprites[anim]
+    spriteMeta = eburp.data.sprites[anim]
     throw new Error "Unable to find animation sprite: #{anim}" if not spriteMeta
     frames = spriteMeta.frames or 1
     if frame >= frames
@@ -96,7 +96,7 @@ class TileView extends View
 
     x = x1 + (x2 - x1) * step / n
     y = y1 + (y2 - y1) * step / n
-    frames = Data.sprites[anim].frames or 1
+    frames = eburp.data.sprites[anim].frames or 1
     frame = step % frames
     if (custom)
       @drawCustomAnim(custom, x, y)
@@ -124,9 +124,9 @@ class TileView extends View
       middle = x+1
       middleWidth = @camera.extent.x - 1
       right = x + @camera.extent.x
-      @drawTile(Data.icons.bannerLeft, left, y)
-      @drawTileStretch(Data.icons.banner,middle,y,middleWidth,1)
-      @drawTile(Data.icons.bannerRight, right, y)
+      @drawTile(eburp.data.icons.bannerLeft, left, y)
+      @drawTileStretch(eburp.data.icons.banner,middle,y,middleWidth,1)
+      @drawTile(eburp.data.icons.bannerRight, right, y)
       rect = new eburp.Rect(@camera.point.x, y, @camera.extent.x,1).scale(@unitSize)
       @gurk.screen.drawTextCentered(@banner, "#FFF", rect.point.x, rect.point.y, rect.extent.x, rect.extent.y,@cameraScale)
 
@@ -144,12 +144,12 @@ class TileView extends View
         leftX = (@camera.extent.x / 2) * @unitSize - Screen.HALF_UNIT
       y = 0
       x = leftX
-      @gurk.screen.drawIcon(Data.icons.bannerLeft, x, y,@cameraScale)
+      @gurk.screen.drawIcon(eburp.data.icons.bannerLeft, x, y,@cameraScale)
       for i in [0...2]
         x += @unitSize
-        @gurk.screen.drawIcon(Data.icons.banner, x, y,@cameraScale)
+        @gurk.screen.drawIcon(eburp.data.icons.banner, x, y,@cameraScale)
       x += @unitSize
-      @gurk.screen.drawIcon(Data.icons.bannerRight, x, y,@cameraScale)
+      @gurk.screen.drawIcon(eburp.data.icons.bannerRight, x, y,@cameraScale)
       x = leftX + Screen.HALF_UNIT + 5
       y = 5
       @gurk.screen.drawText("~", "#A0A0A0", x, y)

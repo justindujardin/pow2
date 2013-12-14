@@ -160,7 +160,7 @@ class BasicStrategy
               @combat.targetY = target.y
           if (couldCast)
             @combat.addSound("spell", "AI Cast Sound")
-            @combat.queueAnimation(me.x, me.y, Data.icons.animSpellCast, "Enemy Cast Animation")
+            @combat.queueAnimation(me.x, me.y, eburp.data.icons.animSpellCast, "Enemy Cast Animation")
             if (spell.target == "range" or spell.target == "area")
               @combat.queueFly(me.x, me.y, target.x, target.y, spell.animation, "Enemy Spell Range Animation")
             if (spell.fast)

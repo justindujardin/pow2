@@ -21,6 +21,8 @@ class eburp.TileMapView extends eburp.SceneView
   constructor: (canvas,loader) ->
     super(canvas,loader)
     @screenOverlays = []
+    @renderer = new eburp.TileObjectRenderer
+    @overlayPattern = null
     @
 
   # Object Tracking
@@ -39,8 +41,17 @@ class eburp.TileMapView extends eburp.SceneView
     super()
     @cameraScale = Math.round(@cameraScale)
     if @tracking and @tracking instanceof eburp.TileObject
-      @camera.setCenter @tracking.point
+      @camera.setCenter @tracking.renderPoint or @tracking.point
     @
+
+  # Return the current world camera clip rectangle
+  getCameraClip: () ->
+    return @camera if not @tileMap
+    clipGrow = @camera.clone().round()
+    clipRect = clipGrow.clip @tileMap.bounds
+    clipRect.round()
+    clipRect
+
   # Render Methods
   # -----------------------------------------------------------------------------
 
@@ -49,42 +60,101 @@ class eburp.TileMapView extends eburp.SceneView
     return if not @camera or not @context or not @tileMap
     # Adjust render position for camera.
     worldTilePos = @worldToScreen @tileMap.bounds.point
+    worldTilePos.x = worldTilePos.x.toFixed(2)
+    worldTilePos.y = worldTilePos.y.toFixed(2)
     worldCameraPos = @worldToScreen @camera.point
+    worldCameraPos.x = worldCameraPos.x.toFixed(2)
+    worldCameraPos.y = worldCameraPos.y.toFixed(2)
     @context.translate worldTilePos.x - worldCameraPos.x,worldTilePos.y - worldCameraPos.y
 
-  renderFrame: (scene) ->
+  renderFrame: (elapsed) ->
     @fillColor()
     return if not @tileMap
-    clipRect = new eburp.Rect(@camera).clip @tileMap.bounds
+    clipRect = @getCameraClip()
     for x in [clipRect.point.x ... clipRect.getRight()]
       for y in [clipRect.point.y ... clipRect.getBottom()]
         tile = @tileMap.getTerrainIcon x, y
         @drawTile(tile, x, y) if tile and @tileVisible(x,y)
     @renderFeatures(clipRect)
-    @renderObjects(clipRect)
+    @renderObjects(clipRect,elapsed)
     @
 
-  renderObjects:(clipRect) ->
-    _.each @scene.objectsByType(eburp.TileObject), (object) =>
-      return if not clipRect.pointInRect object.point.x, object.point.y
-      @drawImage(object.image, object.point.x, object.point.y) if object.image
+  renderObjects:(clipRect,elapsed) ->
+    objects = @scene.objectsByType eburp.TileFeatureObject
+    _.each objects, (object) => @renderer.render object, @
+    player = @scene.objectsByType eburp.MovableTileObject
+    @renderer.render player[0], @ if player.length > 0
+    @
+
+  renderAnalog: () ->
+    return if not @world or not @world.input
+    if typeof @world.input.touches isnt 'undefined'
+      screenCamera = @worldToScreen @camera.point
+      touchStart = @world.input.touchStart.clone().add screenCamera
+      touchCurrent = @world.input.touchCurrent.clone().add screenCamera
+
+      @context.save();
+      for touch in @world.input.touches 
+        if (touch.identifier == @world.input.touchId)
+           @context.beginPath();
+           @context.strokeStyle = "cyan";
+           @context.lineWidth = 6;
+           @context.arc(touchStart.x, touchStart.y, 40, 0, Math.PI * 2, true);
+           @context.stroke();
+           @context.beginPath();
+           @context.strokeStyle = "cyan";
+           @context.lineWidth = 2;
+           @context.arc(touchStart.x, touchStart.y, 60, 0, Math.PI * 2, true);
+           @context.stroke();
+           @context.beginPath();
+           @context.strokeStyle = "cyan";
+           @context.arc(touchCurrent.x, touchCurrent.y, 40, 0, Math.PI * 2, true);
+           @context.stroke();
+           @context.fillStyle = "white";
+           @context.fillText("move vec -- x:" + @world.input.analogVector.x + " y:" + @world.input.analogVector.y, screenCamera.x + touch.gameX + 30, screenCamera.y + touch.gameY - 30);
+      @context.restore();
     @
 
   renderPost: (scene) ->
+    return if not @camera or not @context or not @tileMap
+    @renderAnalog()
+
     overlay = @getScreenOverlay()
     return if not overlay
-    return if not @camera or not @context or not @tileMap
-    clipRect = new eburp.Rect(@camera).clip @tileMap.bounds
-    @fillTiles(overlay, clipRect)
+    @overlayPattern ?= @context.createPattern overlay, 'repeat'
+
+    @fillTiles(overlay, @overlayPattern, @getCameraClip())
 
   renderFeatures:(clipRect) ->
-    if @tileMap.map.features
+    if false and @tileMap.map.features
       for feature in @tileMap.map.features
         continue if not clipRect.pointInRect feature.x, feature.y
         continue if not @featureVisible(feature)
         @drawTile(feature.icon, feature.x, feature.y) if feature.icon
         @drawImage(feature.image, feature.x, feature.y) if feature.image
     @
+
+  debugRender: (debugStrings=[]) ->
+    debugStrings.push "Camera: (#{@camera.point.x},#{@camera.point.y})"
+    clipRect = @getCameraClip()
+    @context.strokeStyle = "#FF2222"
+    screenClip = @worldToScreen(clipRect)
+    @context.strokeRect(screenClip.point.x,screenClip.point.y,screenClip.extent.x,screenClip.extent.y)
+    for x in [clipRect.point.x ... clipRect.getRight()]
+      for y in [clipRect.point.y ... clipRect.getBottom()]
+        tile = @tileMap.getTerrain x, y
+        if tile and not tile.passable
+          @context.strokeStyle = "#FF2222"
+          @context.strokeRect(x * @unitSize * @cameraScale, y * @unitSize * @cameraScale, @cameraScale * @unitSize, @cameraScale * @unitSize)
+
+
+    tiles = @scene.objectsByType eburp.TileObject
+    _.each tiles, (object) =>
+      @context.strokeStyle = "#2222FF"
+      point = object.renderPoint or object.point
+      @context.strokeRect(point.x * @unitSize * @cameraScale, point.y * @unitSize * @cameraScale, @cameraScale * @unitSize, @cameraScale * @unitSize)
+    @
+    super(debugStrings)
 
   # Overlay to make scaled up pixel art look nice.
   getScreenOverlay: () ->
@@ -106,7 +176,7 @@ class eburp.TileMapView extends eburp.SceneView
     else
       x = pointOrX
       y = yOrScale
-    desc = Data.sprites[icon]
+    desc = eburp.data.sprites[icon]
     image = @getSpriteSheet desc.source
     return if not image or not image.isReady()
     srcX = desc.x
@@ -125,7 +195,7 @@ class eburp.TileMapView extends eburp.SceneView
   # destination width and height.
   drawTileStretch: (icon, x, y, width, height) ->
     return if not @_validateImage icon
-    desc = Data.sprites[icon]
+    desc = eburp.data.sprites[icon]
     image = @getSpriteSheet desc.source
     return if not image or not image.isReady()
     dstX = x * @unitSize * @cameraScale
@@ -161,16 +231,16 @@ class eburp.TileMapView extends eburp.SceneView
     renderPos = @worldToScreen(@camera.point, @cameraScale)
     @context.drawImage(image, renderPos.x, renderPos.y, @$el.width(), @$el.height())
 
-  fillTiles: (image, rect=@camera) ->
+  fillTiles: (image, pattern, rect=@camera) ->
     renderPos = @worldToScreen(rect, @cameraScale)
-    @context.save();
-    @context.fillStyle = @context.createPattern image, 'repeat'
+    fillSave = @context.fillStyle
+    @context.fillStyle = pattern
     @context.fillRect(renderPos.point.x,renderPos.point.y, renderPos.extent.x,renderPos.extent.y)
-    @context.restore()
+    @context.fillStyle = fillSave
 
   drawAnim: (anim, x, y, frame) ->
     return if not @_validateImage(anim)
-    desc = Data.sprites[anim]
+    desc = eburp.data.sprites[anim]
     image = @getSpriteSheet desc.source
     srcX = desc.x + (frame * @unitSize)
     srcY = desc.y
@@ -184,7 +254,7 @@ class eburp.TileMapView extends eburp.SceneView
 
 
   _validateImage: (name) ->
-    desc = Data.sprites[name]
+    desc = eburp.data.sprites[name]
     throw new Error "Missing sprite data for: #{name}" if not desc
     desc
     image = @getSpriteSheet desc.source

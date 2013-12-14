@@ -22,12 +22,12 @@ class GearView extends SelectView
 
   constructor : (gurk, @player) ->
     GearView.slotIcons = [
-      Data.icons.noWeapon,
-      Data.icons.noShield,
-      Data.icons.noHat,
-      Data.icons.noArmor,
-      Data.icons.noBoots,
-      Data.icons.noAmulet
+      eburp.data.icons.noWeapon,
+      eburp.data.icons.noShield,
+      eburp.data.icons.noHat,
+      eburp.data.icons.noArmor,
+      eburp.data.icons.noBoots,
+      eburp.data.icons.noAmulet
     ]
     super(gurk, "EQUIP", "X")
     @setButton(7, "BACK")

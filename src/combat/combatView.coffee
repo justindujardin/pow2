@@ -192,7 +192,7 @@ class CombatView extends TileView
     setTimeout(@nextAction, @pauseTime)
 
   getCustomAnimation : (sx, sy, tx, ty, animation) =>
-    return null if Data.sprites[animation].frames
+    return null if eburp.data.sprites[animation].frames
     dx = tx - sx;
     dy = ty - sy;
     if (Math.abs(dx) > Math.abs(dy))
@@ -248,9 +248,9 @@ class CombatView extends TileView
     if (@selectMode != CombatView.SELECT_OFF and @selectMode != CombatView.SELECT_TARGETED)
       switch (@selectMode)
         when CombatView.SELECT_ACTIVE
-          selectIcon = Data.icons.selectActive
+          selectIcon = eburp.data.icons.selectActive
         when CombatView.SELECT_TARGET
-          targetIcon = Data.icons.selectTarget
+          targetIcon = eburp.data.icons.selectTarget
           if (@areaSpell or @areaAttack)
             minY = Math.max(CombatView.TOP_EDGE, @targetY - 1)
             maxY = Math.min(CombatView.BOTTOM_EDGE, @targetY + 1)
@@ -275,9 +275,9 @@ class CombatView extends TileView
             @drawTile(targetIcon.top, @targetX + 1, @targetY - 1)
             @drawTile(targetIcon.right, @targetX + 2, @targetY)
             @drawTile(targetIcon.bottom, @targetX + 1, @targetY + 1)
-          selectIcon = Data.icons.selectActive
+          selectIcon = eburp.data.icons.selectActive
         when CombatView.SELECT_VIEW
-          selectIcon = Data.icons.selectView
+          selectIcon = eburp.data.icons.selectView
       if (@selectMode != CombatView.SELECT_TARGET or @targetX != @selectX or @targetY != @selectY)
         @drawTile(selectIcon.center, @selectX + 1, @selectY)
         @drawTile(selectIcon.left, @selectX, @selectY)
@@ -507,7 +507,7 @@ class CombatView extends TileView
             @targetY = combatant.y
             @selectMode = CombatView.SELECT_TARGETED;
             @updateBanner()
-            @doDamage(combatant, damage, Data.icons.animPoison)
+            @doDamage(combatant, damage, eburp.data.icons.animPoison)
           @addAction(f, "Do Poison Damage")
           @addPause("Pause After Poison Damage")
       fx = =>
@@ -651,7 +651,7 @@ class CombatView extends TileView
     else
       @selectMode = CombatView.SELECT_TARGETED
       @addSound("spell", "Cast Sound")
-      @queueAnimation(player.x, player.y, Data.icons.animSpellCast, "Spell Cast Animation")
+      @queueAnimation(player.x, player.y, eburp.data.icons.animSpellCast, "Spell Cast Animation")
       if (@castingSpell.target == "range" or @castingSpell.target == "area")
         @queueFly(player.x, player.y, @targetX, @targetY, @castingSpell.animation, "Spell Range Animation")
       @addAction(@doSpellResult, "Spell Result Action")
@@ -683,7 +683,7 @@ class CombatView extends TileView
           @doAreaHealing(bounds, spell.healType)
         else
           @addSound("heal", "Heal Sound")
-          @queueAnimation(@targetX, @targetY, Data.icons.animHeal, "Heal Animation")
+          @queueAnimation(@targetX, @targetY, eburp.data.icons.animHeal, "Heal Animation")
           amount = Util.random(bounds.min, bounds.max)
           target.doHeal(amount, spell.healType, @imageProcessor)
           @updateBanner()
@@ -702,14 +702,14 @@ class CombatView extends TileView
             @doResist(target)
             amount = 0
           else
-            @doDamage(target, damage, Data.icons.animHitSpell)
+            @doDamage(target, damage, eburp.data.icons.animHitSpell)
             amount = Math.round(spell.value * damage / 100)
             if (amount < 1)
               amount = 1
         if (amount > 0 and !caster.isFullyHealed())
           f = =>
             @addSound("heal", "Drain Sound")
-            @queueAnimation(caster.x, caster.y, Data.icons.animHeal, "Drain Animation")
+            @queueAnimation(caster.x, caster.y, eburp.data.icons.animHeal, "Drain Animation")
             caster.doHeal(amount, "heal", @imageProcessor)
             @setTarget(caster)
             @updateBanner()
@@ -726,10 +726,10 @@ class CombatView extends TileView
           if (amount == 0)
             @doResist(target)
           else
-            @doDamage(target, amount, Data.icons.animHitSpell)
+            @doDamage(target, amount, eburp.data.icons.animHitSpell)
       when "summon"
         @addSound("summon", "Summon Sound")
-        @queueAnimation(@targetX, @targetY, Data.icons.animHeal, "Summon Animation")
+        @queueAnimation(@targetX, @targetY, eburp.data.icons.animHeal, "Summon Animation")
         if (fromItem)
           bonus = @usingItem.bonus
         else
@@ -742,13 +742,13 @@ class CombatView extends TileView
         if (!@areEnemies(caster, @teleportTarget) or !@doSavingThrow(caster, @teleportTarget))
           @teleportTarget.invisible = true
           @addSound("tele", "Start Teleport Sound")
-          @queueAnimation(@teleportTarget.x, @teleportTarget.y, Data.icons.animHeal, "Teleport Start Animation")
+          @queueAnimation(@teleportTarget.x, @teleportTarget.y, eburp.data.icons.animHeal, "Teleport Start Animation")
           f = =>
             @moveCombatant(@teleportTarget.x, @teleportTarget.y, @targetX, @targetY)
             @teleportTarget.invisible = false
             @teleportTarget = null
             @addSound("port", "End Teleport Sound")
-            @queueAnimation(@targetX, @targetY, Data.icons.animHeal, "Teleport Animation")
+            @queueAnimation(@targetX, @targetY, eburp.data.icons.animHeal, "Teleport Animation")
           @addAction(f, "Complete Teleportation")
         else
           @showResist(@teleportTarget)
@@ -770,7 +770,7 @@ class CombatView extends TileView
               @addSound("afflicted", "Afflict Sound")
             else
               @addSound("enhanced", "Enhance Sound")
-            @queueAnimation(@targetX, @targetY, Data.icons.animHeal, "Effect Animation")
+            @queueAnimation(@targetX, @targetY, eburp.data.icons.animHeal, "Effect Animation")
             value = spell.value
             target.addEffect(spell.effect, value, Util.random(spell.minAmount, spell.maxAmount), caster)
             f = => @processIcon(target)
@@ -849,7 +849,7 @@ class CombatView extends TileView
             @addAction(@doSpellResult, "Do Hit Spell")
     else
       @addSound("miss", "Miss Sound")
-      @queueAnimation(target.x, target.y, Data.icons.animMiss, "Miss Animation")
+      @queueAnimation(target.x, target.y, eburp.data.icons.animMiss, "Miss Animation")
 
   doAreaEffect : (spell, bonus) =>
     @queueBlockAnimation(@targetX, @targetY, 1, @castingSpell.animation, "Area Spell Animation")
@@ -870,7 +870,7 @@ class CombatView extends TileView
                         @addSound("afflicted", "Area Afflict Sound")
                       else
                         @addSound("enhanced", "Area Enhance Sound")
-                      @queueAnimation(showTarget.x, showTarget.y, Data.icons.animHeal, "Area Effect Animation")
+                      @queueAnimation(showTarget.x, showTarget.y, eburp.data.icons.animHeal, "Area Effect Animation")
                       showTarget.addEffect(spell.effect, value, Util.random(spell.minAmount, spell.maxAmount), caster)
                       h = =>
                         @processIcon(showTarget)
@@ -945,14 +945,14 @@ class CombatView extends TileView
     @targetY = target.y
     @updateBanner()
     @addSound("heal", "Heal Sound")
-    @queueAnimation(target.x, target.y, Data.icons.animHeal, "Heal Animation")
+    @queueAnimation(target.x, target.y, eburp.data.icons.animHeal, "Heal Animation")
 
   showResist : (target) =>
     @targetX = target.x
     @targetY = target.y
     @updateBanner()
     @addSound("resist", "Resist Sound")
-    @queueAnimation(target.x, target.y, Data.icons.animResist, "Resist Animation")
+    @queueAnimation(target.x, target.y, eburp.data.icons.animResist, "Resist Animation")
 
   showAreaDamage : (target, damage) =>
     dead = target.doDamage(damage)
@@ -967,7 +967,7 @@ class CombatView extends TileView
       @removeCombatant(target)
     else
       @addSound("hit", "Hit Sound")
-    @queueAnimation(target.x, target.y, Data.icons.animHitSpell, "Hit Animation")
+    @queueAnimation(target.x, target.y, eburp.data.icons.animHitSpell, "Hit Animation")
 
   doResist : (target) =>
     @showResist(target)
@@ -984,7 +984,7 @@ class CombatView extends TileView
     else
       @addSound("hit", "Hit Sound")
     if (anim == null)
-      anim = Data.icons.animHit
+      anim = eburp.data.icons.animHit
     @queueAnimation(target.x, target.y, anim, "Hit Animation")
     dead
 
@@ -1316,8 +1316,8 @@ class CombatView extends TileView
       # Automatically win combat
       @gurk.popView("victory")
     else if (result == "debug2")
-      @queueAnimation(1, 1, Data.icons.animHitSpell, "Test Animation")
-      @queueBlockAnimation(4, 4, 2, Data.icons.animHit, "Test Block Animation")
+      @queueAnimation(1, 1, eburp.data.icons.animHitSpell, "Test Animation")
+      @queueBlockAnimation(4, 4, 2, eburp.data.icons.animHit, "Test Block Animation")
       @nextAction()
     else if (result.spellPoints)
       # It's a spell

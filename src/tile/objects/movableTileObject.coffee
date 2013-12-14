@@ -20,35 +20,112 @@ class eburp.MovableTileObject extends eburp.TileObject
   constructor : (options) ->
     options = _.defaults options or {}, {
       velocity: new eburp.Point(0,0)
-      tickRateMS: 150
-      impulse: new eburp.Point(0,0)
+      tickRateMS: 350
+      renderPoint: new eburp.Point(0,0)
     }
     @_elapsed = 0
+    @collideBox = new eburp.Rect
     super(options)
+    @point.round()
+    @targetPoint = @point.clone()
     @
 
+  collideMove: (x,y) ->
+    results = []
+    @collideBox.point.x = x
+    @collideBox.point.y = y
+    if @scene.db.queryRect(@collideBox,eburp.TileFeatureObject,results)
+      for o in results
+        console.log "Collide -> #{o.type}"
+        return true if o.enter and o.enter(@) == false
+    map = @scene.objectByType eburp.TileMap
+    if map
+      terrain = map.getTerrain(@collideBox.point.x,@collideBox.point.y)
+      return true if not terrain or not terrain.passable
+    false
+
+  setPoint: (point) ->
+    @targetPoint = point.clone()
+    @point = point.clone()
+
+  interpolateTick: (elapsed) ->
+    # Interpolate position based on tickrate and elapsed time
+    factor = @_elapsed / @tickRateMS
+    @renderPoint.set(@point.x,@point.y)
+    return if @velocity.isZero()
+
+    @renderPoint.interpolate(@point,@targetPoint,factor)
+    @renderPoint.x = @renderPoint.x.toFixed(2)
+    @renderPoint.y = @renderPoint.y.toFixed(2)
+    #console.log("INTERP Vel(#{@velocity.x},#{@velocity.y}) factor(#{factor})")
+    console.log("INTERP From(#{@point.x},#{@point.y}) to (#{@renderPoint.x},#{@renderPoint.y})")
+
   tick: (elapsed) ->
-    # Early out if no velocity
-    return if @velocity.isZero() and @impulse.isZero()
     @_elapsed += elapsed
     return if @_elapsed < @tickRateMS
-    @_elapsed -= @tickRateMS
 
-    map = @scene.objectByType eburp.TileMap
-    toAdd = if @impulse.isZero() then @velocity else @impulse
-    if map
-      tx = @point.x + toAdd.x
-      ty = @point.y + toAdd.y
-      terrain = map.getTerrain(tx,ty)
-      if not terrain or !terrain.passable
-        @impulse.zero()
-        return
-    @point.add toAdd
-    @impulse.zero()
+    # Don't subtract elapsed here, but take the modulus so that
+    # if for some reason we get a HUGE elapsed, it just does one
+    # tick and keeps the remainder toward the next.
+    @_elapsed = @_elapsed % @tickRateMS
 
-  moveLeft: () -> @velocity.x = @impulse.x = -1
-  moveRight: () -> @velocity.x = @impulse.x = 1
-  moveUp: () -> @velocity.y = @impulse.y = -1
-  moveDown: () -> @velocity.y = @impulse.y = 1
+    # Advance the object if it can be advanced.
+    #
+    # Check that targetPoint != point first, because or else
+    # the collision check will see be against the current position.
+    if not @targetPoint.equal(@point) and not @collideMove @targetPoint.x, @targetPoint.y
+      @point.set @targetPoint
+
+
+    # Touch movement
+    if document.createTouch and @world.input.analogVector instanceof eburp.Point
+      @velocity.x = 0
+      if @scene.input.analogVector.x < -20
+        @velocity.x -= 1
+      else if @scene.input.analogVector.x > 20
+        @velocity.x += 1
+      @velocity.y = 0
+      if @scene.input.analogVector.y < -20
+        @velocity.y -= 1
+      else if @scene.input.analogVector.y > 20
+        @velocity.y += 1
+    # Keyboard input
+    else
+      @velocity.x = 0
+      @velocity.x -= 1 if @scene.input.keyDown eburp.Input.Keys.LEFT
+      @velocity.x += 1 if @scene.input.keyDown eburp.Input.Keys.RIGHT
+      @velocity.y = 0
+      @velocity.y -= 1 if @scene.input.keyDown eburp.Input.Keys.UP
+      @velocity.y += 1 if @scene.input.keyDown eburp.Input.Keys.DOWN
+
+    # If the next point won't collide then set the new target.
+    @targetPoint.set(@point)
+    return if @velocity.isZero()
+    # Check to see if both axes can advance by simply going to the
+    # target point.
+    @targetPoint.add @velocity
+    return if not @collideMove @targetPoint.x, @targetPoint.y
+
+    # If not, can we move only along the y axis?
+    if not @collideMove @point.x, @targetPoint.y
+      @targetPoint.x = @point.x
+      return
+
+    # How about the X axis?  We'll take any axis we can get.
+    if not @collideMove @targetPoint.x, @point.y
+      @targetPoint.y = @point.y
+      return
+
+    # Nope, collisions in all directions, just reset the target point
+    @targetPoint.set(@point)
+#
+#
+#      if @collideMove @targetPoint.x, @targetPoint.y
+#        @targetPoint.set(@point)
+
+
+
+
+
 
 

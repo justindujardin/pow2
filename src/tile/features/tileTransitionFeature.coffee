@@ -16,21 +16,19 @@
 #
 # -----------------------------------------------------------------------------
 
-# An object that may exist in a `Scene`, has a unique `id` and receives ticked updates.
-class eburp.SceneObject
-  constructor: (options) ->
-    _.extend @, _.defaults options or {}, {
-      id: _.uniqueId('eburp')
-      name: null
-      world: null
-    }
+
+class eburp.TileTransitionFeature extends eburp.TileFeatureObject
+  constructor : (options) ->
+    super _.defaults options or {},
+      target : "",
+      targetX : 16,
+      targetY : 51
     @
 
-  # Perform any updates to this object's state, after a tick of time has passed.
-  tick: (elapsed) -> @
+  enter: (object) ->
+    return if not @target or not @tileMap
+    console.log "Transition to: #{@target}"
+    object.point.set(@targetX,@targetY)
+    @tileMap.setMap @target
 
 
-  interpolateTick: (elapsed) -> @
-
-
-  destroy: () -> @scene.removeObject @ if @scene

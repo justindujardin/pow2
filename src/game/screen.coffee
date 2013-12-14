@@ -135,7 +135,7 @@ class Screen
     @ctx.drawImage(@screen, 0, 0)
 
   drawIcon: (icon, x, y,scale=Screen.SCALE) =>
-    coords = Data.sprites[icon];
+    coords = eburp.data.sprites[icon];
     if not coords
       throw new Error("Missing image from map " + icon)
 

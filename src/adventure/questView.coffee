@@ -26,7 +26,7 @@ class QuestView extends SelectView
     @addLabelCentered("Quests", "#A0A0A0", 0, 1, 128, 8)
     haveQuests = false
     y = 9
-    for quest,info of Data.quests
+    for quest,info of eburp.data.quests
       if (@gurk.game.hasMarker(info.started))
         haveQuests = true
         if (@gurk.game.hasMarker(info.done))
@@ -37,7 +37,7 @@ class QuestView extends SelectView
       @addLabel("(No quests yet)", "#FFF", 6, y)
 
   itemSelected: (index, label) =>
-    questInfo = Data.quests[label.text]
+    questInfo = eburp.data.quests[label.text]
     done = @gurk.game.hasMarker(questInfo.done)
     infoView = new AlertView(@gurk, questInfo.icon, label.text, questInfo.text, null)
     if (done)

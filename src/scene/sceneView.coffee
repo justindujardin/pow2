@@ -33,12 +33,13 @@ class eburp.SceneView
     @camera = new eburp.Rect(0,0,9,9)
     @cameraScale = 1.0
     @unitSize = eburp.SceneView.UNIT
+    @_sheets = {}
 
   # Scene rendering interfaces
   # -----------------------------------------------------------------------------
 
   # Render a frame. Subclass this to do your specific rendering.
-  renderFrame: () ->
+  renderFrame: (elapsed) ->
 
   # Render post effects
   renderPost: () ->
@@ -54,34 +55,46 @@ class eburp.SceneView
     @context.restore()
 
   # Public render invocation.
-  render: () -> @_render()
+  render: () -> @_render(0)
 
   # Render the scene
   # @private
-  _render: () ->
+  _render: (elapsed) ->
     @processCamera()
     @setRenderState()
-    @renderFrame(@scene)
-    @renderAnimations()
-    @renderPost(@scene)
-    @debugRender(@scene) if @scene and @scene.options.debugRender
+    @renderFrame(elapsed)
+    @renderAnimations(elapsed)
+    @renderPost(elapsed)
+    @debugRender() if @scene and @scene.options.debugRender
 
     @restoreRenderState()
 
   # Do any debug rendering for this view.
-  debugRender: (scene) ->
+  debugRender: (debugStrings=[]) ->
     return false if not @context
+    fontSize = 16
+    debugStrings.push s for s in [
+      "MSPF: #{@scene.mspf}"
+      "FPS: #{@scene.fps.toFixed(0)}"
+    ]
     # MSPF/FPS Counter debug
     @context.save()
-    @context.fillStyle = "rgba(255,255,255,0.7)";
-    @context.font = "bold 16px Arial";
-    @context.fillText("MSPF: #{@scene.mspf}",12,25);
-    @context.fillText("FPS: #{@scene.fps.toFixed(0)}",12,40);
+    @context.font = "bold #{fontSize}px Arial";
+    renderPos = @worldToScreen @camera.point
+    x = renderPos.x + 20
+    y = renderPos.y + 40
+    for string in debugStrings
+      @context.fillStyle = "rgba(0,0,0,0.8)";
+      @context.fillText string, x + 2, y + 2
+      @context.fillStyle = "rgba(255,255,255,1)";
+      @context.fillText string, x, y
+      y += fontSize
     @context.restore()
 
-
-  getSpriteSheet: (name, done=->) ->
-    @loader.get "/images/#{name}.png", done
+  getSpriteSheet: (name, done) ->
+    if not @_sheets[name]
+      @_sheets[name] = @loader.get "/images/#{name}.png", done
+    return @_sheets[name]
 
   # Scene Camera updates
   # -----------------------------------------------------------------------------

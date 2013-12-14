@@ -32,7 +32,7 @@ class eburp.ImageProcessor
     # No-op
 
   drawIcon : (icon, x=2,y=2) ->
-    coords = Data.sprites[icon];
+    coords = eburp.data.sprites[icon];
     throw new Error "Cannot find sprite sheet for : #{icon}" if not coords
     image = @view.getSpriteSheet(coords.source)
     return if not image or not image.isReady()

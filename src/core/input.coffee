@@ -16,21 +16,28 @@
 #
 # -----------------------------------------------------------------------------
 
-# An object that may exist in a `Scene`, has a unique `id` and receives ticked updates.
-class eburp.SceneObject
-  constructor: (options) ->
-    _.extend @, _.defaults options or {}, {
-      id: _.uniqueId('eburp')
-      name: null
-      world: null
-    }
-    @
+# Inspired By: http://davidthomasbernal.com/blog/2012/07/21/handling-input-in-a-js-game/
+class eburp.Input
+  @Keys:
+    UP: 38
+    DOWN: 40
+    LEFT: 37
+    RIGHT: 39
+    BACKSPACE: 8
+    COMMA: 188
+    DELETE: 46
+    END: 35
+    ENTER: 13
+    ESCAPE: 27
+    HOME: 36
+    SPACE: 32
+    TAB: 9
+  constructor: () ->
+    @_keysDown = {}
+    window.addEventListener 'keydown', (ev) => @_keysDown[ev.which] = true
+    window.addEventListener 'keyup', (ev) => @_keysDown[ev.which] = false
 
-  # Perform any updates to this object's state, after a tick of time has passed.
-  tick: (elapsed) -> @
+  keyDown: (key) -> !!@_keysDown[key]
 
-
-  interpolateTick: (elapsed) -> @
-
-
-  destroy: () -> @scene.removeObject @ if @scene
+  keysDown: () ->_.compact _.map @_keysDown, (v,k) ->
+    return if !!v then k else false

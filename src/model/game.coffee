@@ -50,10 +50,10 @@ class Game
 
   constructor : ->
     @players = new Array()
-    @map = Data.start[0].map
-    @x = Data.start[0].x
-    @y = Data.start[0].y
-    @gold = Data.start[0].gold
+    @map = eburp.data.start[0].map
+    @x = eburp.data.start[0].x
+    @y = eburp.data.start[0].y
+    @gold = eburp.data.start[0].gold
     @ships = {}
     @markers = {}
     @shops = {}
@@ -109,8 +109,8 @@ class Game
     @buildFeatures()
 
   getStart : ->
-    best = Data.start[0]
-    for start in Data.start
+    best = eburp.data.start[0]
+    for start in eburp.data.start
       if (start.after and @hasMarker(start.after))
         best = start
     best
@@ -128,7 +128,7 @@ class Game
       if not @markers[a]
         @markers[a] = true
         newMarkers = true
-      for quest,info of Data.quests
+      for quest,info of eburp.data.quests
         if info.done == a and info.graphId
           eburp.track "Complete Quest",
             Name: quest
@@ -256,7 +256,7 @@ class Game
   getVisitedArray : ->
     array = @visited[@map]
     if (!array)
-      array = Util.create2DArray(Data.maps[@map].width, Data.maps[@map].height,0)
+      array = Util.create2DArray(eburp.data.maps[@map].width, eburp.data.maps[@map].height,0)
       @visited[@map] = array
     array
 
@@ -429,7 +429,7 @@ class Game
     for player in @players
       if (player.isAlive())
         player.experience += xp
-        if (player.experience >= Data.levels[player.level])
+        if (player.experience >= eburp.data.levels[player.level])
           # Level up
           player.level++
           attrBonuses = [0, 0, 0, 0]
@@ -482,16 +482,16 @@ class Game
     if (override)
       override.tile
     else
-      index = y * Data.maps[@map].width + x
-      Data.maps[@map].map.charAt(index)
+      index = y * eburp.data.maps[@map].width + x
+      eburp.data.maps[@map].map.charAt(index)
 
   getTerrainInfo : ->
     tile = @getTile(@x, @y)
-    terrain = Data.maps[@map].terrain?[tile]
+    terrain = eburp.data.maps[@map].terrain?[tile]
     if (terrain)
       terrain
     else
-      map = Data.maps[@map]
+      map = eburp.data.maps[@map]
       {
         level : map.level,
         encounterChance: map.encounterChance,
@@ -552,7 +552,7 @@ class Game
       treasureLevel = creature.template.level
       if (treasureLevel > 10)
         treasureLevel = 10
-      if (Util.randomChance(Data.treasureChance[treasureLevel - 1], 1000))
+      if (Util.randomChance(eburp.data.treasureChance[treasureLevel - 1], 1000))
         item = @getRandomItem(creature.template.level, groups)
         if (item)
           if (item.template.legendary)

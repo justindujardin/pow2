@@ -152,7 +152,7 @@ class eburp.Gurk extends eburp.SceneView
 
     # Play music and show splash view
     @setView new SplashView @
-    @playMusic Data.splashMusic
+    @playMusic eburp.data.splashMusic
 
   # SceneView implementation
   # -----------------------------------------------------------------------------
@@ -293,7 +293,7 @@ class eburp.Gurk extends eburp.SceneView
     @
 
   playCombatMusic : =>
-    @playMusic Data.combatMusic, @getCombatMusicSetting()
+    @playMusic eburp.data.combatMusic, @getCombatMusicSetting()
 
   stopMusic : =>
     if @activeTrack and @activeTrack.isReady()

@@ -16,32 +16,21 @@
 #
 # -----------------------------------------------------------------------------
 
-# The global namespace things should go in.  Working on this bit.
-window.eburp =
-  data: {}
-  # Register data
-  registerData : (key,value) ->
-    eburp.data[key] = value
+class eburp.TileObjectRenderer extends eburp.SceneObjectRenderer
+  render: (object,view) ->
+    return if not object.image
+    point = object.renderPoint or object.point
 
-  getData : (key) -> eburp.data[key]
-
-  # Register a map
-  registerMap : (name,data) ->
-    eburp.data.maps[name] = data;
-
-  # Register a sprite sheet
-  registerSprites : (name,data) ->
-    for property of data
-      if (data.hasOwnProperty(property))
-        eburp.data.sprites[property] = data[property]
-
-  # Map Accessors
-  getMap : (name) -> eburp.data.maps[name]
-  getMaps : () -> eburp.data.maps
-
-  # Analytics tracking
-  track: (name, properties) ->
-    return if not window.mixpanel
-    mixpanel.track name, properties
-
-window.Data = eburp.data;
+    if object.icon and object.iconCoords
+      c = object.iconCoords
+      width = view.unitSize * view.cameraScale
+      height = view.unitSize * view.cameraScale
+      x = point.x * width
+      y = point.y * height
+      view.context.drawImage(object.image, c.x, c.y,view.unitSize,view.unitSize,x,y,width,height)
+    else
+      width = object.image.width * view.cameraScale
+      height = object.image.height * view.cameraScale
+      x = point.x * width
+      y = point.y * height
+      view.context.drawImage(object.image,x,y,width,height)

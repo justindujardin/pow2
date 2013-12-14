@@ -44,7 +44,7 @@ class CombatantView extends FlowView
         for effect, value of @combatant.effects
           if (value)
             flow.addParagraph(effect, "#FFF")
-            flow.addParagraph(Data.effects[effect], "#A0A0A0")
+            flow.addParagraph(eburp.data.effects[effect], "#A0A0A0")
             flow.addGap()
         @gurk.pushView(flow)
       else

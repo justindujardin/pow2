@@ -27,7 +27,7 @@ class PartyView extends SelectView
 
   doLayout : =>
     @clear()
-    for marker, key of Data.keys
+    for marker, key of eburp.data.keys
       if (@gurk.game.hasMarker(marker) and !@gurk.game.hasMarker(key.until))
         @addIcon(key.icon, 110, 10)
     y = 2;

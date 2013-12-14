@@ -35,7 +35,7 @@ class Test
     Test.assert(shortSword.getArmorClass() == 0, "Short Sword should have 0 AC.")
     leatherArmor = new Item(Library.getItemTemplateByName("Leather Armor"), 101, -1)
     Test.assert(leatherArmor.getArmorClass() == 1, "Leather Armor -1 should have 1 AC")
-    rugnar = new Player(Data.characters[0])
+    rugnar = new Player(eburp.data.characters[0])
     Test.assert(rugnar.strength >= rugnar.accuracy, "Strength is not greatest attribute.")
     Test.assert(rugnar.strength >= rugnar.awareness, "Strength is not greatest attribute.")
     Test.assert(rugnar.strength >= rugnar.constitution, "Strength is not greatest attribute.")
