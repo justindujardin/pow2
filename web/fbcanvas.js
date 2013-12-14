@@ -60,6 +60,7 @@ demoGame.app.directive('eightBitPanel', function ($compile) {
             appId: window._context.fbAppId,
             cookie: true
          });
+         FB.Canvas.setAutoGrow();
 
          function parseUserStatus(response) {
             if (response.status === 'connected') {
