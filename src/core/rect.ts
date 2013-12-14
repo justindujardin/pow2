@@ -57,6 +57,9 @@ module eburp{
                 this.point.set(rectOrPointOrX);
                 this.extent.set(extentOrY);
             }
+            else {
+                throw new Error("Unsupported arguments to Rect.set");
+            }
             return this;
         }
 
@@ -104,8 +107,8 @@ module eburp{
         }
 
         getCenter():Point {
-            var x = (this.point.x + this.extent.x * 0.5).toFixed(2);
-            var y = (this.point.y + this.extent.y * 0.5).toFixed(2);
+            var x = parseFloat((this.point.x + this.extent.x * 0.5).toFixed(2));
+            var y = parseFloat((this.point.y + this.extent.y * 0.5).toFixed(2));
             return new Point(x,y);
         }
 
@@ -138,9 +141,9 @@ module eburp{
         }
 
         getLeft():number { return this.point.x; }
-        getRight():number { return this.point.y; }
-        getTop():number { return this.extent.x; }
-        getBottom():number { return this.extent.y; }
+        getTop():number { return this.point.y; }
+        getRight():number { return this.point.x + this.extent.x; }
+        getBottom():number { return this.point.y + this.extent.y; }
 
         inflate(x:number=1,y:number=1):Rect {
             this.point.x -= x;

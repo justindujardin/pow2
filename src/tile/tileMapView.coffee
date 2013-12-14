@@ -60,11 +60,11 @@ class eburp.TileMapView extends eburp.SceneView
     return if not @camera or not @context or not @tileMap
     # Adjust render position for camera.
     worldTilePos = @worldToScreen @tileMap.bounds.point
-    worldTilePos.x = worldTilePos.x.toFixed(2)
-    worldTilePos.y = worldTilePos.y.toFixed(2)
+    worldTilePos.x = parseFloat worldTilePos.x.toFixed(2)
+    worldTilePos.y = parseFloat worldTilePos.y.toFixed(2)
     worldCameraPos = @worldToScreen @camera.point
-    worldCameraPos.x = worldCameraPos.x.toFixed(2)
-    worldCameraPos.y = worldCameraPos.y.toFixed(2)
+    worldCameraPos.x = parseFloat worldCameraPos.x.toFixed(2)
+    worldCameraPos.y = parseFloat worldCameraPos.y.toFixed(2)
     @context.translate worldTilePos.x - worldCameraPos.x,worldTilePos.y - worldCameraPos.y
 
   renderFrame: (elapsed) ->
@@ -136,7 +136,12 @@ class eburp.TileMapView extends eburp.SceneView
 
   debugRender: (debugStrings=[]) ->
     debugStrings.push "Camera: (#{@camera.point.x},#{@camera.point.y})"
+
+    player = @scene.objectsByType eburp.MovableTileObject
+    debugStrings.push "Player: (#{player[0].point.x},#{player[0].point.y})" if player.length > 0
+
     clipRect = @getCameraClip()
+    debugStrings.push "Clip: (#{clipRect.point.x},#{clipRect.point.y}) (#{clipRect.extent.x},#{clipRect.extent.y})"
     @context.strokeStyle = "#FF2222"
     screenClip = @worldToScreen(clipRect)
     @context.strokeRect(screenClip.point.x,screenClip.point.y,screenClip.extent.x,screenClip.extent.y)
