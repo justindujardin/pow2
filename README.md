@@ -1,12 +1,12 @@
-E.B.U.R.P Engine
+Powers of Two
 ================
 [![Build Status](https://secure.travis-ci.org/justindujardin/pow2.png)](http://travis-ci.org/justindujardin/pow2)
 
-This is a fork of the "[Eight-Bit Universal Role Playing](https://github.com/pents90/eburp)" repository, to add support for a Grunt.JS based developer/designer workflow and easy deployment to heroku.
+This is originally based on the "[Eight-Bit Universal Role Playing](https://github.com/pents90/eburp)".  All of the tooling and core game classes are under construction.  It is built using Node.JS and a mix of CoffeeScript/TypeScript, with the latter being the eventual target language.  The developer tools require only Node.JS and a text editor, and the game deploys with little effort to Heroku and integrates with Facebook.
 
 ## Build Instructions
 
-To build EBURP you need to have Node.JS and Grunt.JS installed, and a basic familiarity with executing commands in your system terminal.
+You need to have Node.JS and Grunt.JS installed, and a basic familiarity with executing commands in your system terminal.
 
 ### Node.JS
 
