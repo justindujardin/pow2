@@ -95,6 +95,7 @@ server.get('/8', function (req, res) {
 
 server.use(express.static(path.resolve(__dirname + "/../web")));
 server.use('/data', express.static(path.resolve(__dirname + "/../data")));
+server.use('/src', express.static(path.resolve(__dirname + "/../src")));
 server.use('/images', express.static(path.resolve(__dirname + "/../images")));
 
 fb.routes(server);
@@ -180,6 +181,22 @@ server.post("/c/quest/:id/:token",function(req, res){
    });
 });
 
+/**
+ * Enumerate js files produced by grunt that a page should include.
+ */
+function getPageScripts(){
+   var grunt = require("grunt");
+   require("../Gruntfile")(grunt);
+   var _ = require('underscore');
+   var sourceFiles = grunt.file.expand([
+      "web/game/core/api.js",
+      "web/game/**/*.js"
+   ]);
+   sourceFiles = _.map(sourceFiles,function(f){
+      return f.replace('web/','');
+   });
+   return sourceFiles;
+}
 
 function twoFiftySixHandler(req,res){
    function noOp(){
@@ -192,7 +209,8 @@ function twoFiftySixHandler(req,res){
    var data = {
       user:null,
       shared:null,
-      mixpanelToken:server.getProp("MIXPANEL_256")
+      mixpanelToken:server.getProp("MIXPANEL_256"),
+      scripts:getPageScripts()
    };
    function render(){
       if(req.session && req.session.fbToken){

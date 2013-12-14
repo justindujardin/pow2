@@ -120,7 +120,10 @@
 </div>
 
 <!-- Compiled Game Files -->
-<script type="text/javascript" src="/eburp.typescript.js"></script>
+<% for(var i=0; i<scripts.length; i++) {%>
+    <script type="text/javascript" src="/<%= scripts[i] %>"></script>
+<% } %>
+
 <script type="text/javascript" src="/eburp.core.js"></script>
 <script type="text/javascript" src="/eburp.js"></script>
 <script type="text/javascript" src="/eburp.data.js"></script>

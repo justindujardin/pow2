@@ -24,8 +24,8 @@ module eburp{
         constructor(point:Point,extent:Point);
         constructor(rectOrPointOrX:any,extentOrY?:any,width?:number,height?:number) {
             if(rectOrPointOrX instanceof Rect){
-                this.point.set(rectOrPointOrX.point);
-                this.extent.set(rectOrPointOrX.extent);
+                this.point = new Point(rectOrPointOrX.point);
+                this.extent = new Point(rectOrPointOrX.extent);
             }
             else if(width && height){
                 this.point = new Point(rectOrPointOrX,extentOrY);
