@@ -60,6 +60,10 @@ module eburp{
             return this;
         }
 
+        clone():Rect {
+            return new Rect(this.point.clone(),this.extent.clone());
+        }
+
         clip(clipRect:Rect):Rect{
             var right:number = this.point.x + this.extent.x;
             var bottom:number = this.point.y + this.extent.y;
