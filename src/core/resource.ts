@@ -16,6 +16,17 @@
 
 /// <reference path="../typedef/backbone/backbone.d.ts"/>
 module eburp {
+
+    export interface IResource {
+        url:string;
+        data:any;
+        extension:string;
+        load();
+        isReady():boolean;
+        ready();
+        failed(error:any);
+    }
+
     /**
      * Basic asynchronous resource class.
      *
@@ -24,9 +35,10 @@ module eburp {
      *
      * eburp.Resource objects trigger 'ready' and 'failed' events during their initial loading.
      */
-    export class Resource extends Backbone.Model {
+    export class Resource extends Backbone.Model implements IResource{
         url:string = null;
         data:any = null;
+        extension:string = null;
         private _ready:boolean = false;
         constructor(url:string,data:any=null){
             super();

@@ -77,7 +77,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          self.scene.addObject(self.tileMap);
          self.scene.addObject(self.sprite);
 
-         this.loader.loadAll(this.files,function(){
+         this.loader.load(this.files,function(){
             self.state = 'Loaded';
             return done();
          });

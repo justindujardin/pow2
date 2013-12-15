@@ -93,7 +93,7 @@ class eburp.SceneView
 
   getSpriteSheet: (name, done) ->
     if not @_sheets[name]
-      @_sheets[name] = @loader.get "/images/#{name}.png", done
+      @_sheets[name] = @loader.load "/images/#{name}.png", done
     return @_sheets[name]
 
   # Scene Camera updates

@@ -30,7 +30,7 @@ twoFiftySix.app.service('sourceSprites',function($http,$q,game,$rootScope,$compi
          if(scale === 1){
             return _done(absFiles);
          }
-         var images = game.loader.loadAll(absFiles,function(){
+         var images = game.loader.load(absFiles,function(){
             var scaled = _.map(images,function(img){
                context.clearRect(0,0,extent,extent);
                context.drawImage(img.data,0,0,extent,extent);

@@ -27,7 +27,7 @@ class eburp.SpriteRender
     @context.mozImageSmoothingEnabled = false
 
   getSpriteSheet: (name, done=->) ->
-    @world?.loader.get "/images/#{name}.png", done
+    @world.loader.load "/images/#{name}.png", done if @world
 
   # Pick a single sprite out of a sheet, and return an image that contains only that sprite.
   getSingleSprite: (spriteName, done) ->

@@ -61,7 +61,7 @@ class eburp.Gurk extends eburp.SceneView
     #Screen.SCALE = 4
     console.log "Preloading Images at scale: #{Screen.SCALE}"
     @loader = eburp.resources = new eburp.ResourceLoader()
-    eburp.resources.loadAll eburp.Gurk.requires, => @start()
+    eburp.resources.load eburp.Gurk.requires, => @start()
 
 
   makeResponsive: ()->
