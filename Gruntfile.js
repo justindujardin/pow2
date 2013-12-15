@@ -83,10 +83,21 @@ module.exports = function(grunt) {
                "src/resources/*.ts",
                "src/scene/*.ts"
             ],
-            dest: 'web/game'
+            dest: 'build'
          }
       },
 
+      /**
+       * Copy typescript typedefs to build/ to satisfy compiler.
+       */
+      copy: {
+         core: {
+          expand: true,
+          cwd: 'src/',
+          src: 'typedef/**/*.d.ts',
+          dest: 'build/'
+         }
+      },
 
       /**
        * Compile CoffeeScript
@@ -226,6 +237,12 @@ module.exports = function(grunt) {
             ],
             tasks: ['typescript', 'notify:code']
          },
+         typedefs: {
+            files: [
+               'src/typedef/**'
+            ],
+            tasks: ['copy']
+         },
          data: {
             files: [
                '<%= concat.data.src %>'
@@ -308,15 +325,16 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-contrib-uglify');
    grunt.loadNpmTasks('grunt-typescript');
    grunt.loadNpmTasks('grunt-recess');
+   grunt.loadNpmTasks('grunt-contrib-copy');
    // Support system notifications in non-production environments
-   if(process.env.NODE_ENV !== 'production'){
+   if(process && process.env && process.env.NODE_ENV !== 'production'){
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-notify');
-      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'typescript', 'recess']);
+      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'typescript', 'copy','recess']);
    }
    else {
-      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'typescript', 'recess']);
-      grunt.registerTask('heroku:production', ['sprites','concat','coffee', 'typescript', 'uglify', 'recess']);
+      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'typescript', 'copy','recess']);
+      grunt.registerTask('heroku:production', ['sprites','concat','coffee', 'typescript', 'copy','uglify', 'recess']);
    }
 };
