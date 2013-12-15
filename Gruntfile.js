@@ -83,7 +83,7 @@ module.exports = function(grunt) {
                "src/resources/*.ts",
                "src/scene/*.ts"
             ],
-            dest: 'build'
+            dest: 'web/game'
          }
       },
 
@@ -95,7 +95,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/',
           src: 'typedef/**/*.d.ts',
-          dest: 'build/'
+          dest: 'web/game'
          }
       },
 

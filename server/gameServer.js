@@ -5,9 +5,6 @@ var _ = require('underscore');
 var path = require('path');
 var Q = require('q');
 
-var grunt = require("grunt");
-require("../Gruntfile")(grunt);
-
 var carrot = new require("./Carrot");
 var fb = require('./facebook');
 var db = require('./database');
@@ -99,7 +96,7 @@ server.get('/8', function (req, res) {
 server.use(express.static(path.resolve(__dirname + "/../web")));
 server.use('/data', express.static(path.resolve(__dirname + "/../data")));
 server.use('/src', express.static(path.resolve(__dirname + "/../src")));
-server.use('/game', express.static(path.resolve(__dirname + "/../build")));
+server.use('/game', express.static(path.resolve(__dirname + "/../game")));
 
 server.use('/images', express.static(path.resolve(__dirname + "/../images")));
 
@@ -190,12 +187,15 @@ server.post("/c/quest/:id/:token",function(req, res){
  * Enumerate js files produced by grunt that a page should include.
  */
 function getPageScripts(){
+   var grunt = require("grunt");
+   require("../Gruntfile")(grunt);
+   var _ = require('underscore');
    var sourceFiles = grunt.file.expand([
-      "build/core/api.js",
-      "build/**/*.js"
+      "web/game/core/api.js",
+      "web/game/**/*.js"
    ]);
    sourceFiles = _.map(sourceFiles,function(f){
-      return f.replace('build/','game/');
+      return f.replace('web/','');
    });
    return sourceFiles;
 }
