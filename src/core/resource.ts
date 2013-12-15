@@ -25,10 +25,10 @@ module eburp {
      * eburp.Resource objects trigger 'ready' and 'failed' events during their initial loading.
      */
     export class Resource extends Backbone.Model {
-        url:String = null;
+        url:string = null;
         data:any = null;
         private _ready:boolean = false;
-        constructor(url:String,data:any=null){
+        constructor(url:string,data:any=null){
             super();
             this.url = url;
             this._ready = data !== null

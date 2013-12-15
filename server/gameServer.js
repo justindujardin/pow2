@@ -192,7 +192,8 @@ function getPageScripts(){
    var _ = require('underscore');
    var sourceFiles = grunt.file.expand([
       "web/game/core/api.js",
-      "web/game/**/*.js"
+      "web/game/**/*.js",
+      "web/game/resources/*.js"
    ]);
    sourceFiles = _.map(sourceFiles,function(f){
       return f.replace('web/','');
