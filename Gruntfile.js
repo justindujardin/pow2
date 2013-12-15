@@ -80,7 +80,8 @@ module.exports = function(grunt) {
             src: [
                "src/core/api.ts",
                "src/core/*.ts",
-               "src/resources/*.ts"
+               "src/resources/*.ts",
+               "src/scene/*.ts"
             ],
             dest: 'web/game'
          }
