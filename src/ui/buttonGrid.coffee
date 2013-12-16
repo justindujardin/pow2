@@ -64,9 +64,9 @@ class ButtonGrid extends eburp.SceneView
   constructor: (@canvas, @gurk) ->
     super(@canvas)
     ButtonGrid.FONT = new Font(ButtonGrid.GURKOID_GLYPHS, "/images/font_gurkoid.png")
-    ButtonGrid.onImage = eburp.resources.get("/images/button" + Screen.SCALE + ".png").data
-    ButtonGrid.offImage = eburp.resources.get("/images/buttonoff" + Screen.SCALE + ".png").data
-    ButtonGrid.topImage = eburp.resources.get("/images/buttontop" + Screen.SCALE + ".png").data
+    ButtonGrid.onImage = eburp.resources.load("/images/button" + Screen.SCALE + ".png").data
+    ButtonGrid.offImage = eburp.resources.load("/images/buttonoff" + Screen.SCALE + ".png").data
+    ButtonGrid.topImage = eburp.resources.load("/images/buttontop" + Screen.SCALE + ".png").data
     @buttons = new Array(3)
     @camera = new eburp.Rect(0,0,9,4)
     for y in [0..2]

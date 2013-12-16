@@ -277,7 +277,7 @@ class eburp.Gurk extends eburp.SceneView
   playSound : (sound) =>
     return if not @getSoundSetting()
     sound = "/data/sounds/#{sound}"
-    eburp.resources.get sound, (resource) =>
+    eburp.resources.load sound, (resource) =>
       resource.data.volume = 0.25
       resource.data.play()
 
@@ -285,7 +285,7 @@ class eburp.Gurk extends eburp.SceneView
     @music = track
     return if not musicOn
     track = "/data/music/#{track}"
-    reference = eburp.resources.get track, (resource) =>
+    reference = eburp.resources.load track, (resource) =>
       @stopMusic()
       @activeTrack = reference
       console.log "Play track '#{track}'."

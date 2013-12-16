@@ -36,7 +36,8 @@ server.use(express.session({
 server.get('/', function (req, res) {
    var data = {
       user:null,
-      mixpanelToken:server.getProp("MIXPANEL_POW2")
+      mixpanelToken:server.getProp("MIXPANEL_POW2"),
+      scripts:getPageScripts()
    };
    if(req.session && req.session.fbToken){
       fb.graph.setAccessToken(req.session.fbToken);

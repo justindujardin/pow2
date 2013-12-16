@@ -97,7 +97,7 @@ class MapView extends TileView
     @posX = @game.x
     @posY = @game.y
     @mapMode = false
-    @shadowOverlay = eburp.resources.get("/images/shadow.png").data
+    @shadowOverlay = eburp.resources.load("/images/shadow.png").data
     @setButton(1, "HEROES")
     @setButton(9, "MAP")
     @setButton(3, "SAVE")

@@ -50,7 +50,10 @@
 
 <div><canvas id="controlID" width="640" height="400" onclick="phoneClick(event, 0, 0)"></canvas></div>
 <canvas id="workID" width="60px" height="60px"></canvas>
-
+<!-- Compiled Game Files -->
+<% for(var i=0; i<scripts.length; i++) {%>
+    <script type="text/javascript" src="/<%= scripts[i] %>"></script>
+<% } %>
 <!-- Compiled Game Files -->
 <script type="text/javascript" src="eburp.core.js"></script>
 <script type="text/javascript" src="eburp.js"></script>

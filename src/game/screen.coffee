@@ -139,7 +139,7 @@ class Screen
     if not coords
       throw new Error("Missing image from map " + icon)
 
-    image = eburp.resources.get("/images/#{coords.source}.png")
+    image = eburp.resources.load("/images/#{coords.source}.png")
     return if not image or not image.isReady()
     k = Screen.UNIT * scale
     @ctx.drawImage(image.data,coords.x, coords.y, Screen.UNIT, Screen.UNIT, x * scale, y * scale, k, k)

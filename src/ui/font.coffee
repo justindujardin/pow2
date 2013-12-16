@@ -22,7 +22,7 @@ class Font
   fontHeight: 0
 
   constructor: (@glyphMap, imageSrc) ->
-    @image = eburp.resources.get(imageSrc)
+    @image = eburp.resources.load(imageSrc)
     @fontHeight = @glyphMap['A'].height
 
   drawChar: (ctx, c, x, y,scale=Screen.SCALE) ->

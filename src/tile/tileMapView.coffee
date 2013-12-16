@@ -126,7 +126,10 @@ class eburp.TileMapView extends eburp.SceneView
     @fillTiles(overlay, @overlayPattern, @getCameraClip())
 
   renderFeatures:(clipRect) ->
-    if false and @tileMap.map.features
+    # Use window.App check to determine if this is the old game running.
+    # if so, render the features, otherwise they'll be rendered by their
+    # TileFeatureObject renderer.
+    if window.App and @tileMap.map.features
       for feature in @tileMap.map.features
         continue if not clipRect.pointInRect feature.x, feature.y
         continue if not @featureVisible(feature)
