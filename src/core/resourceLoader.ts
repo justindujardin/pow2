@@ -93,6 +93,10 @@ module eburp {
                 if(!resource){
                     resource = this._resources[src] = new resourceType(src);
                 }
+                else if(resource.isReady()){
+                    results.push(resource);
+                    continue;
+                }
                 resource.extension = extension;
                 loadQueue++;
 
