@@ -29,6 +29,7 @@ module eburp {
         animations: any[];
         id: string;
         $el: JQuery;
+        canvas:HTMLCanvasElement;
         context: CanvasRenderingContext2D;
         camera: eburp.Rect;
         cameraScale: number;
@@ -40,6 +41,7 @@ module eburp {
         constructor(canvas: HTMLCanvasElement, loader: any) {
             this.animations = [];
             this.id = _.uniqueId('view');
+            this.canvas = canvas;
             if (!canvas) {
                 throw new Error("A Canvas is required");
             }
@@ -55,11 +57,6 @@ module eburp {
             this.cameraScale = 1.0;
             this.unitSize = SceneView.UNIT;
             this._sheets = {};
-            this.scene = {
-                options: {},
-                mspf: 0,
-                fps: 0
-            };
             this.loader = loader;
         }
 
@@ -127,11 +124,11 @@ module eburp {
             var i:number;
             for (i = 0; i < debugStrings.length; ++i) {
                 this.context.fillStyle = "rgba(0,0,0,0.8)";
-                this.context.fillText(debugStrings[i], x + 2, y + 2);
+                this.context.fillText(<string>debugStrings[i], x + 2, y + 2);
                 this.context.fillStyle = "rgba(255,255,255,1)";
-                this.context.fillText(debugStrings[i], x, y);
+                this.context.fillText(<string>debugStrings[i], x, y);
                 y += fontSize;
-            };
+            }
             this.context.restore();
 
             return true;
