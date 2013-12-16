@@ -22,6 +22,7 @@ module eburp{
         extent: Point;
         constructor(rect:Rect);
         constructor(point:Point,extent:Point);
+        constructor(x:number,y:number,width:number,height:number);
         constructor(rectOrPointOrX:any,extentOrY?:any,width?:number,height?:number) {
             if(rectOrPointOrX instanceof Rect){
                 this.point = new Point(rectOrPointOrX.point);
@@ -44,6 +45,7 @@ module eburp{
 
         set(rect:Rect):Rect;
         set(point:Point,extent:Point):Rect;
+        set(x:number,y:number,width:number,height:number);
         set(rectOrPointOrX:any,extentOrY?:any,width?:number,height?:number):Rect {
             if(rectOrPointOrX instanceof Rect){
                 this.point.set(rectOrPointOrX.point);
