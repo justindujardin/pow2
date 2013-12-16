@@ -93,14 +93,14 @@ class eburp.Gurk extends eburp.SceneView
 
   # Game initialization/loading
   # -----------------------------------------------------------------------------
-  startSavedGame: =>
+  startSavedGame: ->
     @game = new Game()
     @game.loadGame(Device.loadGame())
     eburp.track 'Load Game'
     mapView = new MapView(this)
     @setView(mapView)
 
-  startNewGame : (game) =>
+  startNewGame : (game) ->
     eburp.track 'New Game', Progress: 'Finished'
     @game = game
     club = @game.createItem(Library.getItemTemplateByName("Crude Club"))
@@ -118,7 +118,7 @@ class eburp.Gurk extends eburp.SceneView
     @setView(mapView)
 
 
-  start: =>
+  start: ->
     @screenCanvas = document.getElementById("screenID");
     ctx = @screenCanvas.getContext("2d")
     ctx.webkitImageSmoothingEnabled = false
@@ -163,7 +163,7 @@ class eburp.Gurk extends eburp.SceneView
 
   # View utilities
   # -----------------------------------------------------------------------------
-  setView: (view) =>
+  setView: (view) ->
     @scene.removeView(@view) if @view
     console.log("Set View: " + view)
     @stack = new Array()
@@ -171,19 +171,19 @@ class eburp.Gurk extends eburp.SceneView
     @showView()
 
 
-  showView: () =>
+  showView: () ->
     #console.log("View: #{@view.name}")
     @view.doLayout()
     @view.setButtons(@buttonGrid)
     @view.draw()
     $('.game-container .eight-bit-panel').toggle(@view instanceof SplashView);
 
-  pushView: (view) =>
+  pushView: (view) ->
     @stack.unshift(@view)
     @view = view
     @showView()
 
-  popView: (result) =>
+  popView: (result) ->
     @scene.removeView @view
     parent = @stack.shift()
     if (parent != null)
@@ -192,13 +192,13 @@ class eburp.Gurk extends eburp.SceneView
         @view.processResult(result)
       @showView()
 
-  swapView: (result) =>
+  swapView: (result) ->
     @view = view
     if (result != null)
       @view.processResult(result)
     @showView()
 
-  popToTopView: (result) =>
+  popToTopView: (result) ->
     if (@stack.length > 0)
       @view = @stack.shift()
       while (@stack.length > 0)
@@ -207,10 +207,10 @@ class eburp.Gurk extends eburp.SceneView
         @view.processResult(result)
       @showView()
 
-  isCurrentView: (view) =>
+  isCurrentView: (view) ->
     return @view == view
 
-  getScreen: () =>
+  getScreen: () ->
     @screen
 
   windowKeyPress: (event) =>
@@ -246,42 +246,42 @@ class eburp.Gurk extends eburp.SceneView
     event.stopImmediatePropagation()
     return false
 
-  getSoundSetting : =>
+  getSoundSetting : ->
     Device.getSetting("sound", true)
 
-  setSoundSetting : (value) =>
+  setSoundSetting : (value) ->
     Device.setSetting("sound", value)
 
-  getMusicSetting : =>
+  getMusicSetting : ->
     Device.getSetting("music", true)
 
-  setMusicSetting : (value) =>
+  setMusicSetting : (value) ->
     Device.setSetting("music", value)
     if (value)
       @resumeMusic()
     else
       @stopMusic()
 
-  getCombatMusicSetting : =>
+  getCombatMusicSetting : ->
     Device.getSetting("combatMusic", true)
 
-  setCombatMusicSetting : (value) =>
+  setCombatMusicSetting : (value) ->
     Device.setSetting("combatMusic", value)
 
-  getFastSetting : =>
+  getFastSetting : ->
     Device.getSetting("fast", false)
 
-  setFastSetting : (value) =>
+  setFastSetting : (value) ->
     Device.setSetting("fast", value)
 
-  playSound : (sound) =>
+  playSound : (sound) ->
     return if not @getSoundSetting()
     sound = "/data/sounds/#{sound}"
-    eburp.resources.load sound, (resource) =>
+    eburp.resources.load sound, (resource) ->
       resource.data.volume = 0.25
       resource.data.play()
 
-  playMusic : (track,musicOn=@getMusicSetting()) =>
+  playMusic : (track,musicOn=@getMusicSetting()) ->
     @music = track
     return if not musicOn
     track = "/data/music/#{track}"
@@ -292,21 +292,21 @@ class eburp.Gurk extends eburp.SceneView
       resource.data.play()
     @
 
-  playCombatMusic : =>
+  playCombatMusic : ->
     @playMusic eburp.data.combatMusic, @getCombatMusicSetting()
 
-  stopMusic : =>
+  stopMusic : ->
     if @activeTrack and @activeTrack.isReady()
       @activeTrack.data.pause()
       @activeTrack.data.currentTime = 0
 
-  resumeMusic : =>
+  resumeMusic : ->
     if @activeTrack and @activeTrack.isReady()
       @activeTrack.data.play()
     else if @music
       @playMusic @music
 
-  phoneClick: (e, offsetX = 0, offsetY = 0) =>
+  phoneClick: (e, offsetX = 0, offsetY = 0) ->
     relMouse = (event) ->
       canoffset = $(event.currentTarget).offset();
       x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
@@ -317,17 +317,17 @@ class eburp.Gurk extends eburp.SceneView
     point.y -= offsetY
     @buttonGrid.clicked(point)
 
-  showSettings : () =>
+  showSettings : () ->
     @pushView(new SettingsView(this))
 
-  buttonPressed: (text) =>
+  buttonPressed: (text) ->
     @view?.command(text)
 
-  showAlert: (icon, title, text, result) =>
+  showAlert: (icon, title, text, result) ->
     alert = new AlertView(this, icon, title, text, result)
     @pushView(alert)
 
-  showConfirm: (icon, title, text, yesResult, noResult) =>
+  showConfirm: (icon, title, text, yesResult, noResult) ->
     confirm = new ConfirmView(this, icon, title, text, yesResult, noResult)
     @pushView(confirm)
 
