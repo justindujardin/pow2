@@ -15,22 +15,20 @@
  */
 
 ///<reference path="../typedef/underscore/underscore.d.ts"/>
-///<reference path="../core/api.ts"/>
+///<reference path="./api.ts"/>
 ///<reference path="../resources/image.ts"/>
-///<reference path="../core/resourceLoader.ts"/>
+///<reference path="./resourceLoader.ts"/>
+///<reference path="./world.ts"/>
 module eburp {
-
-    export interface IWorld {
-        loader:ResourceLoader;
-    }
-    export interface IWorldObject {
-        world:IWorld;
-    }
-
     export class SpriteRender implements IWorldObject {
         canvas:HTMLCanvasElement = null;
         context:CanvasRenderingContext2D = null;
+
+        // IWorldObject implementation.
         world:IWorld = null;
+        onAddToWorld(world:IWorld){}
+        onRemoveFromWorld(world:IWorld){}
+
         constructor() {
             this.canvas = document.createElement('canvas');
             this.canvas.width = this.canvas.height = 16;

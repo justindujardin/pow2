@@ -22,7 +22,7 @@ module eburp {
      * Use jQuery to load an Audio resource.
      */
     export class AudioResource extends Resource {
-        static types:_.Dictionary<string> = {
+        static types = {
             'mp3' : 'audio/mpeg',
             'ogg' : 'audio/ogg',
             'wav' : 'audio/wav'
