@@ -43,8 +43,12 @@ module eburp {
 
         // IWorldObject implementation
         world:IWorld = null;
-        onAddToWorld(world){ world.time.addObject(this); }
-        onRemoveFromWorld(world){ world.time.removeObject(this); }
+        onAddToWorld(world){
+            world.time.addObject(this);
+        }
+        onRemoveFromWorld(world){
+            world.time.removeObject(this);
+        }
 
         // IProcessObject implementation
         tick(elapsed:number){}

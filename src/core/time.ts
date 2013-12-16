@@ -57,6 +57,7 @@ module eburp {
                 this.mspf = new Date().getMilliseconds() - now;
                 window.requestAnimationFrame(_frameCallback);
             };
+            _frameCallback(0);
         }
 
         stop() {
