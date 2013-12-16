@@ -108,9 +108,6 @@ module.exports = function(grunt) {
          },
          core: {
             src: [
-               "src/core/api.coffee",
-               "src/core/*.coffee",
-               "src/resources/*.coffee",
                "src/scene/*.coffee",
                "src/scene/objects/*.coffee",
                "src/scene/views/*.coffee",

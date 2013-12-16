@@ -14,22 +14,23 @@
  limitations under the License.
  */
 
-/// <reference path="../core/resource.ts"/>
+/// <reference path="../resource.ts"/>
 
 module eburp {
     /**
-     * Use jQuery to load a JSON file from a URL.
+     * Use html image element to load an image resource.
      */
-    export class JSONResource extends Resource {
+    export class ImageResource extends Resource {
         load() {
-            var request:JQueryXHR = $.getJSON(this.url);
-            request.done((object:JSON) => {
-                this.data = object;
+            var reference:HTMLImageElement = document.createElement('img');
+            reference.onload = () => {
+                this.data = reference;
                 this.ready();
-            });
-            request.fail((jqxhr,settings,exception) => {
-                this.failed(exception);
-            });
+            };
+            reference.onerror = (err:any) => {
+                this.failed(err);
+            };
+            reference.src = this.url;
         }
     }
 }

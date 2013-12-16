@@ -16,7 +16,7 @@
 
 ///<reference path="../typedef/underscore/underscore.d.ts"/>
 ///<reference path="./api.ts"/>
-///<reference path="../resources/image.ts"/>
+///<reference path="./resources/image.ts"/>
 ///<reference path="./resourceLoader.ts"/>
 ///<reference path="./world.ts"/>
 module eburp {

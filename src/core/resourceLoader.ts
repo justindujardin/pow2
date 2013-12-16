@@ -13,10 +13,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-/// <reference path="../resources/audio.ts"/>
-/// <reference path="../resources/image.ts"/>
-/// <reference path="../resources/json.ts"/>
-/// <reference path="../resources/script.ts"/>
+/// <reference path="./resources/audio.ts"/>
+/// <reference path="./resources/image.ts"/>
+/// <reference path="./resources/json.ts"/>
+/// <reference path="./resources/script.ts"/>
+/// <reference path="./world.ts"/>
+/// <reference path="./time.ts"/>
 
 module eburp {
     /**
@@ -24,7 +26,7 @@ module eburp {
      * resources by file name, and uses registered types and file extension
      * matching to create and load a resource.
      */
-    export class ResourceLoader {
+    export class ResourceLoader implements IWorldObject, IProcessObject {
         private _resources:Object = {};
         private _types:Object = {
             'png':ImageResource,
@@ -33,12 +35,20 @@ module eburp {
             '':AudioResource
         };
         private _doneQueue = [];
+        id:string;
 
-        world:any = null;
+        constructor(){
+            this.id = _.uniqueId('resource-loader');
+        }
+
+        // IWorldObject implementation
+        world:IWorld = null;
         onAddToWorld(world){ world.time.addObject(this); }
         onRemoveFromWorld(world){ world.time.removeObject(this); }
 
-        processFrame() {
+        // IProcessObject implementation
+        tick(elapsed:number){}
+        processFrame(elapsed:number) {
             _.each(this._doneQueue,function(done){
                 done.cb(done.result);
             });

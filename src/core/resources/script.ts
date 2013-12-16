@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../core/resource.ts"/>
+/// <reference path="../resource.ts"/>
 
 module eburp {
     /**

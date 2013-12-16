@@ -14,15 +14,15 @@
  limitations under the License.
  */
 
-/// <reference path="../core/resource.ts"/>
-/// <reference path="../typedef/underscore/underscore.d.ts"/>
+/// <reference path="../resource.ts"/>
+/// <reference path="../../typedef/underscore/underscore.d.ts"/>
 
 module eburp {
     /**
      * Use jQuery to load an Audio resource.
      */
     export class AudioResource extends Resource {
-        static types = {
+        static types:_.Dictionary<string> = {
             'mp3' : 'audio/mpeg',
             'ogg' : 'audio/ogg',
             'wav' : 'audio/wav'
