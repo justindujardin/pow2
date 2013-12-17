@@ -18,12 +18,15 @@
 /// <reference path="../typedef/jquery/jquery.d.ts" />
 /// <reference path="../core/rect.ts" />
 /// <reference path="../core/point.ts" />
+/// <reference path="../core/world.ts" />
+/// <reference path="../core/resourceLoader.ts" />
+/// <reference path="./scene.ts" />
 
 // A view that renders a `Scene`.
 //
 // You should probably only have one of these per Canvas that you render to.
 module eburp {
-    export class SceneView {
+    export class SceneView implements IWorldObject {
         static UNIT: number = 16;
 
         animations: any[];
@@ -35,8 +38,9 @@ module eburp {
         cameraScale: number;
         unitSize: number;
         _sheets: any;
-        scene: any; // TODO: typedef
-        loader: any; // TODO: typedef
+        scene: Scene = null;
+        loader: ResourceLoader = null;
+        world:IWorld;
 
         constructor(canvas: HTMLCanvasElement, loader: any) {
             this.animations = [];
@@ -59,6 +63,11 @@ module eburp {
             this._sheets = {};
             this.loader = loader;
         }
+
+        // IWorldObject
+        // -----------------------------------------------------------------------------
+        onAddToWorld(world:IWorld){}
+        onRemoveFromWorld(world:IWorld){}
 
         // Scene rendering interfaces
         // -----------------------------------------------------------------------------
@@ -113,7 +122,7 @@ module eburp {
                 return false;
             }
             var fontSize = 16;
-            debugStrings.push("MSPF: " + this.scene.mspf);
+            debugStrings.push("MSPF: " + this.world.time.mspf);
             debugStrings.push("FPS:  " + this.scene.fps.toFixed(0));
             // MSPF/FPS Counter debug
             this.context.save();

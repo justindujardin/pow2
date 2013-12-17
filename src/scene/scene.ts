@@ -24,11 +24,12 @@
 module eburp {
     export class Scene implements IProcessObject, IWorldObject {
         db:SceneSpatialDatabase = new SceneSpatialDatabase;
-        options:{} = {};
+        options:any = {};
         private _objects = [];
         private _views:SceneView[] = [];
         world:IWorld = null;
         fps:number = 0;
+        time:number = 0;
 
         constructor(options){
             this.options = _.defaults(options || {},{
@@ -55,6 +56,7 @@ module eburp {
             }
         }
         processFrame(elapsed:number) {
+            this.time = this.world.time.time;
             // Interpolate objects.
             for(var i = 0; i < this._objects.length; i++){
                 var o = this._objects[i];
