@@ -122,8 +122,8 @@ class MapView extends TileView
 
   tileVisible: (x,y) ->
     return true if not @map.dark
-    x -= Math.min Math.floor(@camera.point.x), 0
-    y -= Math.floor(@camera.point.y)
+    x -= Math.max Math.floor(@camera.point.x), 0
+    y -= Math.max Math.floor(@camera.point.y), 0
     return false if y >= @shadows.length or @shadows[y][x] == true
     true
 
@@ -147,8 +147,8 @@ class MapView extends TileView
   renderFeatures:(clipRect) ->
     for x in [clipRect.point.x ... clipRect.getRight()]
       for y in [clipRect.point.y ... clipRect.getBottom()]
-        xx = x - Math.min Math.floor(@camera.point.x), 0
-        yy = y - Math.floor(@camera.point.y)
+        xx = x - Math.max Math.floor(@camera.point.x), 0
+        yy = y - Math.max Math.floor(@camera.point.y), 0
         continue if @map.dark and @shadows[yy][xx]
         continue if not @game.getFeatures(x,y)
         feature = @getTopFeature(x, y)
@@ -226,8 +226,8 @@ class MapView extends TileView
         @processFeature(text)
 
   checkVisibility: (x, y) ->
-    dx = x - Screen.CENTER_OFFSET
-    dy = y - Screen.CENTER_OFFSET
+    dx = x - Math.ceil(@camera.extent.x * 0.5)
+    dy = y - Math.ceil(@camera.extent.y * 0.5)
     mapY = dy + @posY
     mapX = dx + @posX
     if (mapY >= 0 and mapY < @height and mapX >= 0 and mapX < @width)
