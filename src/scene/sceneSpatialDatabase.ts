@@ -15,44 +15,60 @@
  */
 
 /// <reference path="../typedef/underscore/underscore.d.ts" />
+/// <reference path="../core/point.ts" />
 /// <reference path="../core/rect.ts" />
-/// <reference path="./sceneObject.ts" />
+/// <reference path="SceneObject.ts" />
 
+// Very, very simple spatial database.  Because all the game objects have
+// an extent of 1 unit, we can just do a point in rect to determine object hits.
 module eburp {
     export class SceneSpatialDatabase {
-        _objects:SceneObject[] = [];
-        addSpatialObject(object:any){
-            if(object.point instanceof Point){
-                this._objects.push(object);
+        private _objects: eburp.SceneObject[];
+
+        constructor() {
+            this._objects = [];
+        }
+        addObject(obj: any) { // TODO: should be eburp.SceneObject, but it doesn't have .point
+            if (obj && obj.point instanceof eburp.Point) {
+                this._objects.push(obj);
             }
         }
-        removeSpatialObject(object:SceneObject){
-            this._objects = _.filter(this._objects, (o) => {
-                return o.id !== object.id;
+
+        removeObject(obj: eburp.SceneObject) {
+            this._objects = _.filter(this._objects, function(o) {
+                return o.id !== obj.id;
             });
         }
-        queryRect(rect:Rect,type,results:SceneObject[]){
-            if(!results){
+
+        queryRect(rect:eburp.Rect, type, results:any[]):boolean {// TODO: typedef SceneObject
+            var foundAny:boolean;
+            if (!results) {
                 throw new Error("Results array must be provided to query scene spatial database");
             }
-            var foundAny:boolean = false;
-            _.each(this._objects,function(object){
-                var o:any = object; //TODO: point on SceneObject?
-                if(!(o instanceof type)){
-                    return;
+            foundAny = false;
+            var list = this._objects;
+            var i:number,len:number,o;
+            for (i = 0, len = list.length; i < len; i++) {
+                o = list[i];
+                if (type && !(o instanceof type)) {
+                    continue;
                 }
-                // Point in rect check
-                if(o.point.x < rect.point.x || o.point.y < rect.point.y){
-                    return;
+                if (o.point && this.pointInRect(rect, o.point)) {
+                    results.push(o);
+                    foundAny = true;
                 }
-                if(o.point.x >= rect.point.x + rect.extent.x || o.point.y >= rect.point.y + rect.extent.y){
-                    return;
-                }
-                results.push(o);
-                foundAny = true;
-            });
+            }
             return foundAny;
         }
-    }
 
+        pointInRect(rect: eburp.Rect, point: eburp.Point):boolean {
+            if (point.x < rect.point.x || point.y < rect.point.y) {
+                return false;
+            }
+            if (point.x >= rect.point.x + rect.extent.x || point.y >= rect.point.y + rect.extent.y) {
+                return false;
+            }
+            return true;
+        }
+    }
 }
