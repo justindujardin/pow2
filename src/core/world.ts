@@ -29,6 +29,8 @@ module eburp {
         scene:any;
         input:Input;
         sprites:SpriteRender;
+        mark(object:IWorldObject);
+        erase(object:IWorldObject);
     }
     export interface IWorldObject {
         world:IWorld;
@@ -58,24 +60,22 @@ module eburp {
             });
         }
 
-        mark(object:IWorldObject):World{
+        mark(object:IWorldObject){
             if(object){
                 object.world = this;
                 if(object.onAddToWorld){
                     object.onAddToWorld(this);
                 }
             }
-            return this;
         }
 
-        erase(object:IWorldObject):World{
+        erase(object:IWorldObject){
             if(object){
                 delete object.world;
                 if(object.onRemoveFromWorld){
                     object.onRemoveFromWorld(this);
                 }
             }
-            return this;
         }
     }
 }

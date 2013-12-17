@@ -15,15 +15,15 @@
  */
 
 /// <reference path="../typedef/underscore/underscore.d.ts" />
+/// <reference path="./scene.ts" />
 
 // An object that may exist in a `Scene`, has a unique `id` and receives ticked updates.
 module eburp {
    export class SceneObject {
       id: string;
       name: string;
-      scene: any; // TODO use real type when it exists
-      world: any;
-
+      scene: Scene = null;
+      world: IWorld = null;
       constructor(options?: any) {
          _.extend(this, _.defaults(options) || {}, {
             id: _.uniqueId('eburp'),

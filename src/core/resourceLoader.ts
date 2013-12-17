@@ -36,13 +36,13 @@ module eburp {
         };
         private _doneQueue = [];
         id:string;
+        world:IWorld = null;
 
         constructor(){
             this.id = _.uniqueId('resource-loader');
         }
 
         // IWorldObject implementation
-        world:IWorld = null;
         onAddToWorld(world){
             world.time.addObject(this);
         }

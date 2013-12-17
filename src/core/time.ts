@@ -104,10 +104,8 @@ module eburp {
                     var id:number = window.setTimeout(tickListener,timeToCall);
                     lastTime = currTime + timeToCall;
                     return id;
-
                 };
             }
-
         }
     }
 }

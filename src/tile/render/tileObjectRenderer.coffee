@@ -16,7 +16,7 @@
 #
 # -----------------------------------------------------------------------------
 
-class eburp.TileObjectRenderer extends eburp.SceneObjectRenderer
+class eburp.TileObjectRenderer
   render: (object,view) ->
     return if not object.image
     point = object.renderPoint or object.point

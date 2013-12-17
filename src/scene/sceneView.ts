@@ -95,7 +95,7 @@ module eburp {
         }
 
         // Render the scene
-        private _render(elapsed: number) {
+        _render(elapsed: number) {
             this.processCamera();
             this.setRenderState();
             this.renderFrame(elapsed);

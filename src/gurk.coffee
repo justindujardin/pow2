@@ -129,12 +129,11 @@ class eburp.Gurk extends eburp.SceneView
 
     #
     # Create a scene, and add this view to it.
-    @scene = new eburp.Scene {
-      game: @game
-      debugRender: false
-      autoStart:true
-    }
+    @world = new eburp.World
+      scene:new eburp.Scene
+    @scene = @world.scene
     @scene.addView @
+
 
     # Construct the Gurk UI and view stack.
     $(window).keydown(@windowKeyPress)
