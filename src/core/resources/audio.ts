@@ -22,7 +22,7 @@ module eburp {
      * Use jQuery to load an Audio resource.
      */
     export class AudioResource extends Resource {
-        static types:_.Dictionary<string> = {
+        static types:Object = {
             'mp3' : 'audio/mpeg',
             'ogg' : 'audio/ogg',
             'wav' : 'audio/wav'
@@ -41,7 +41,7 @@ module eburp {
             var reference:HTMLAudioElement = document.createElement('audio');
 
             // Try all supported types, and accept the first valid one.
-            _.each(AudioResource.types,(mime:string,extension:string) => {
+            _.each(<any>AudioResource.types,(mime:string,extension:string) => {
                 if(!reference.canPlayType(mime + ";")){
                     return;
                 }
