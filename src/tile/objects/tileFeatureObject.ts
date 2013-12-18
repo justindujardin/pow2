@@ -19,6 +19,7 @@
 /// <reference path="../../core/rect.ts" />
 /// <reference path="../../scene/sceneObject.ts" />
 /// <reference path="../tileObject.ts" />
+/// <reference path="../tileMap.ts" />
 
 // Not sure how to tie this in yet, maybe a state machine for dealing with
 // different feature types?
@@ -31,6 +32,7 @@ module eburp {
         iconCoords: any; //TODO: typedef
         type: string; // TODO: enum?
         passable: boolean;
+        tileMap:TileMap
 
         constructor(options?) {
             super(options);

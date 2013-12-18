@@ -81,12 +81,11 @@ module eburp {
         }
 
         // Set the render state for this scene view.
-        setRenderState(): boolean {
+        setRenderState() {
             if (!this.context) {
-                return false;
+                return;
             }
             this.context.save();
-            return true;
         }
 
         // Restore the render state to what it was before a call to setRenderState.
@@ -117,9 +116,9 @@ module eburp {
         }
 
         // Do any debug rendering for this view.
-        debugRender(debugStrings: string[] = []): boolean {
+        debugRender(debugStrings: string[] = []) {
             if (!this.context) {
-                return false;
+                return;
             }
             var fontSize = 16;
             debugStrings.push("MSPF: " + this.world.time.mspf);
@@ -139,11 +138,9 @@ module eburp {
                 y += fontSize;
             }
             this.context.restore();
-
-            return true;
         }
 
-        getSpriteSheet(name: string, done) { // TODO: typedef (callback)
+        getSpriteSheet(name: string, done?) { // TODO: typedef (callback)
             if (!this._sheets[name]) {
                 this._sheets[name] = this.loader.load("/images/" + name + ".png", done);
             }

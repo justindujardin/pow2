@@ -196,6 +196,9 @@ function getPageScripts(){
       "web/game/core/**/*.js",
       "web/game/scene/**/*.js",
       "web/game/tile/*.js",
+      "web/game/tile/objects/*.js",
+      "web/game/tile/features/*.js",
+      "web/game/tile/render/*.js",
       "web/game/**/*.js",
       "web/game/core/resources/*.js"
    ]);
