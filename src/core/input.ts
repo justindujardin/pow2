@@ -15,22 +15,40 @@
  */
 
 module eburp {
+    export enum KeyCode {
+        UP = 38,
+        DOWN = 40,
+        LEFT = 37,
+        RIGHT = 39,
+        BACKSPACE = 8,
+        COMMA = 188,
+        DELETE = 46,
+        END = 35,
+        ENTER = 13,
+        ESCAPE = 27,
+        HOME = 36,
+        SPACE = 32,
+        TAB = 9
+    }
+
     export class Input {
-        static Keys:Object = {
-            UP: 38,
-            DOWN: 40,
-            LEFT: 37,
-            RIGHT: 39,
-            BACKSPACE: 8,
-            COMMA: 188,
-            DELETE: 46,
-            END: 35,
-            ENTER: 13,
-            ESCAPE: 27,
-            HOME: 36,
-            SPACE: 32,
-            TAB: 9
-        };
+//        static Keys:KeyCode
+
+//        static Keys:Object = {
+//            UP: 38,
+//            DOWN: 40,
+//            LEFT: 37,
+//            RIGHT: 39,
+//            BACKSPACE: 8,
+//            COMMA: 188,
+//            DELETE: 46,
+//            END: 35,
+//            ENTER: 13,
+//            ESCAPE: 27,
+//            HOME: 36,
+//            SPACE: 32,
+//            TAB: 9
+//        };
 
         _keysDown:Object = {};
         constructor() {
@@ -42,7 +60,7 @@ module eburp {
             });
         }
 
-        keyDown(key:string):boolean {
+        keyDown(key:number):boolean {
             return !!this._keysDown[key];
         }
     }

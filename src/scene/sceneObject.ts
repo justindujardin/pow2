@@ -33,9 +33,9 @@ module eburp {
       }
 
       // Perform any updates to this object's state, after a tick of time has passed.
-      tick(elapsed: number) { return this; }
+      tick(elapsed: number) {  }
 
-      interpolateTick(elapsed: number) { return this; }
+      interpolateTick(elapsed: number) {  }
 
       destroy() {
          if (this.scene) {
