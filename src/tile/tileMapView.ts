@@ -265,6 +265,9 @@ module eburp{
          * Get the screen overlay texture that is desired.
          */
         getScreenOverlay():HTMLImageElement {
+            if(!this.world){
+                return null;
+            }
             var i, _i;
             if (this.world.sprites && this.screenOverlays.length === 0) {
                 for (i = _i = 1; _i <= 5; i = ++_i) {
