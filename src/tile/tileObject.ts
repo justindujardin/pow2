@@ -17,20 +17,39 @@
 /// <reference path="../typedef/underscore/underscore.d.ts" />
 /// <reference path="../core/point.ts" />
 /// <reference path="../scene/sceneObject.ts" />
+/// <reference path="./tileMap.ts" />
 
 module eburp {
    export class TileObject extends eburp.SceneObject {
       point: eburp.Point;
       renderPoint:eburp.Point;
       image: HTMLImageElement;
+      visible:boolean;
+      tileMap:TileMap;
+      spatialDirty:boolean = true;
 
       constructor(options?: any) {
          super(options);
          _.extend(this, _.defaults(options || {}, {
             point: new eburp.Point(0, 0),
-            image: null
+            visible:true,
+            image: null,
+            tileMap: null
          }));
          return this;
+      }
+
+      tick(elapsed:number){
+         super.tick(elapsed);
+         this.spatialDirty = false;
+      }
+
+      setPoint(point) {
+         if(this.renderPoint){
+            this.renderPoint = point.clone();
+         }
+         this.point = point.clone();
+         this.spatialDirty = true;
       }
    }
 }

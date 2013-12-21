@@ -23,27 +23,28 @@
 /// <reference path="../tileMap.ts" />
 
 module eburp {
-    export class TileObjectRenderer extends eburp.SceneObjectRenderer {
-        render(object:any, view:eburp.SceneView) { // TODO: typedef
-            var c, height, point, width, x, y;
-            if (!object.image) {
-                return;
-            }
-            point = object.renderPoint || object.point;
-            if (object.icon && object.iconCoords) {
-                c = object.iconCoords;
-                width = view.unitSize * view.cameraScale;
-                height = view.unitSize * view.cameraScale;
-                x = point.x * width;
-                y = point.y * height;
-                return view.context.drawImage(object.image, c.x, c.y, view.unitSize, view.unitSize, x, y, width, height);
-            } else {
-                width = object.image.width * view.cameraScale;
-                height = object.image.height * view.cameraScale;
-                x = point.x * width;
-                y = point.y * height;
-                return view.context.drawImage(object.image, x, y, width, height);
-            }
-        }
-    }
+   export class TileObjectRenderer extends eburp.SceneObjectRenderer {
+      render(object:any, view:eburp.SceneView) { // TODO: typedef
+
+         if (!object.image || !object.visible) {
+            return;
+         }
+         var point = object.renderPoint || object.point;
+         var c, height, width, x, y;
+         if (object.icon && object.iconCoords) {
+            c = object.iconCoords;
+            width = view.unitSize * view.cameraScale;
+            height = view.unitSize * view.cameraScale;
+            x = point.x * width;
+            y = point.y * height;
+            return view.context.drawImage(object.image, c.x, c.y, view.unitSize, view.unitSize, x, y, width, height);
+         } else {
+            width = object.image.width * view.cameraScale;
+            height = object.image.height * view.cameraScale;
+            x = point.x * width;
+            y = point.y * height;
+            return view.context.drawImage(object.image, x, y, width, height);
+         }
+      }
+   }
 }

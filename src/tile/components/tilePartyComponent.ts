@@ -14,13 +14,13 @@
  limitations under the License.
  */
 
-/// <reference path="../../typedef/underscore/underscore.d.ts" />
 /// <reference path="../../core/point.ts" />
 /// <reference path="../../core/rect.ts" />
 /// <reference path="../../scene/sceneObject.ts" />
 /// <reference path="../../scene/components/tickedComponent.ts" />
 /// <reference path="../tileObject.ts" />
 /// <reference path="../tileMap.ts" />
+/// <reference path="./tilePortalComponent.ts" />
 
 module eburp {
    export class TilePartyComponent extends eburp.TickedComponent {
@@ -38,8 +38,7 @@ module eburp {
          return true;
       }
 
-      collideMove(x:number, y:number) {
-         var results = [];
+      collideMove(x:number, y:number,results=[]) {
          this.collideBox.point.x = x;
          this.collideBox.point.y = y;
          if (this.host.scene.db.queryRect(this.collideBox, eburp.TileFeatureObject, results)) {
@@ -61,45 +60,10 @@ module eburp {
          return false;
       }
 
-      setPoint(point) {
-         this.targetPoint = point.clone();
-         return this.host.point = point.clone();
-      }
-
-      interpolateTick(elapsed:number) {
-         // Interpolate position based on tickrate and elapsed time
-         var factor;
-         factor = this._elapsed / this.tickRateMS;
-         this.host.renderPoint.set(this.host.point.x, this.host.point.y);
-         if (this.velocity.isZero()) {
+      updateVelocity(){
+         if(!this.host.world || !this.host.world.input){
             return;
          }
-         this.host.renderPoint.interpolate(this.host.point, this.targetPoint, factor);
-         this.host.renderPoint.x = parseFloat(this.host.renderPoint.x.toFixed(2));
-         this.host.renderPoint.y = parseFloat(this.host.renderPoint.y.toFixed(2));
-         // console.log("INTERP Vel(#{@velocity.x},#{@velocity.y}) factor(#{factor})")
-         // console.log("INTERP From(#{@point.x},#{@point.y}) to (#{@renderPoint.x},#{@renderPoint.y})")
-
-      }
-
-      tick(elapsed:number) {
-         this._elapsed += elapsed;
-         if (this._elapsed < this.tickRateMS) {
-            return;
-         }
-         // Don't subtract elapsed here, but take the modulus so that
-         // if for some reason we get a HUGE elapsed, it just does one
-         // tick and keeps the remainder toward the next.
-         this._elapsed = this._elapsed % this.tickRateMS;
-
-         // Advance the object if it can be advanced.
-         //
-         // Check that targetPoint != point first, because or else
-         // the collision check will see be against the current position.
-         if (!this.targetPoint.equal(this.host.point) && !this.collideMove(this.targetPoint.x, this.targetPoint.y)) {
-            this.host.point.set(this.targetPoint);
-         }
-
          // Touch movement
          var hasCreateTouch = (<any>document).createTouch;
          var worldInput = <any>this.host.world.input;
@@ -134,6 +98,52 @@ module eburp {
             }
          }
 
+      }
+
+      interpolateTick(elapsed:number) {
+         if(this.host.spatialDirty){
+            this.host.renderPoint.set(this.host.point);
+            this.targetPoint.set(this.host.point);
+            this.velocity.zero();
+            return;
+         }
+         // Interpolate position based on tickrate and elapsed time
+         var factor;
+         factor = this._elapsed / this.tickRateMS;
+         this.host.renderPoint.set(this.host.point.x, this.host.point.y);
+         if (this.velocity.isZero()) {
+            return;
+         }
+         this.host.renderPoint.interpolate(this.host.point, this.targetPoint, factor);
+         this.host.renderPoint.x = parseFloat(this.host.renderPoint.x.toFixed(2));
+         this.host.renderPoint.y = parseFloat(this.host.renderPoint.y.toFixed(2));
+         // console.log("INTERP Vel(#{@velocity.x},#{@velocity.y}) factor(#{factor})")
+         // console.log("INTERP From(#{@point.x},#{@point.y}) to (#{@renderPoint.x},#{@renderPoint.y})")
+
+      }
+
+      tick(elapsed:number) {
+         this._elapsed += elapsed;
+         if (this._elapsed < this.tickRateMS) {
+            return;
+         }
+         // Don't subtract elapsed here, but take the modulus so that
+         // if for some reason we get a HUGE elapsed, it just does one
+         // tick and keeps the remainder toward the next.
+         this._elapsed = this._elapsed % this.tickRateMS;
+
+         // Advance the object if it can be advanced.
+         //
+         // Check that targetPoint != point first, because or else
+         // the collision check will see be against the current position.
+         if (!this.targetPoint.equal(this.host.point) && !this.collideMove(this.targetPoint.x, this.targetPoint.y)) {
+            this.host.point.set(this.targetPoint);
+         }
+
+
+         // Update Velocity Inputs
+         this.updateVelocity();
+
          // If the next point won't collide then set the new target.
          this.targetPoint.set(this.host.point);
          if (this.velocity.isZero()) {
@@ -143,26 +153,31 @@ module eburp {
          // target point.
          this.targetPoint.add(this.velocity);
          if (!this.collideMove(this.targetPoint.x, this.targetPoint.y)) {
-            return;
          }
          // If not, can we move only along the y axis?
-         if (!this.collideMove(this.host.point.x, this.targetPoint.y)) {
+         else if (!this.collideMove(this.host.point.x, this.targetPoint.y)) {
             this.targetPoint.x = this.host.point.x;
-            return;
          }
          // How about the X axis?  We'll take any axis we can get.
-         if (!this.collideMove(this.targetPoint.x, this.host.point.y)) {
+         else if (!this.collideMove(this.targetPoint.x, this.host.point.y)) {
             this.targetPoint.y = this.host.point.y;
+         }
+         else {
+            // Nope, collisions in all directions, just reset the target point
+            this.targetPoint.set(this.host.point);
             return;
          }
-         // Nope, collisions in all directions, just reset the target point
-         this.targetPoint.set(this.host.point);
 
-         //
-         //
-         //     if @collideMove @targetPoint.x, @targetPoint.y
-         //        @targetPoint.set(@point)
-
+         // Successful move, collide against target point and check any new tile
+         // actions.
+         var results = [];
+         if (this.host.scene.db.queryRect(this.collideBox, eburp.TileFeatureObject, results)) {
+            var obj:TileFeatureObject = results[0];
+            var comp = <TilePortalComponent>obj.findComponent(TilePortalComponent);
+            if(comp){
+               comp.enter(this.host);
+            }
+         }
       }
    }
 }
