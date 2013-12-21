@@ -56,7 +56,7 @@ module eburp {
     */
    export class SceneComponent implements ISceneComponent {
       id:number = _.uniqueId();
-      name:string = "";
+      name:string = _.uniqueId('comp');
       scene: Scene;
       host:SceneObject;
 
@@ -67,5 +67,13 @@ module eburp {
          return true;
       }
       syncComponent() {}
+   }
+
+   /**
+    * A component that supports tick/interpolateTick
+    */
+   export class TickedComponent extends SceneComponent {
+      tick(elapsed:number) {}
+      interpolateTick(elapsed:number){}
    }
 }

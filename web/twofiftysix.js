@@ -75,6 +75,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          self.sprite = new eburp.TileObject({
             point: self.tileMap.bounds.getCenter()
          });
+         self.sprite.addComponent(new eburp.CollisionComponent());
          self.sprite.addComponent(new eburp.TilePartyComponent());
 
 //         self.sprite = new eburp.MovableTileObject({

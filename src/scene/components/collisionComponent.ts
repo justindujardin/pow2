@@ -14,13 +14,18 @@
  limitations under the License.
  */
 
-/// <reference path="../scene.ts" />
-/// <reference path="../sceneComponent.ts" />
-/// <reference path="../../core/time.ts" />
+/// <reference path="../../core/point.ts" />
+/// <reference path="../../core/rect.ts" />
+/// <reference path="../../scene/sceneObject.ts" />
+/// <reference path="../../scene/sceneComponent.ts" />
 
 module eburp {
-   export class TickedComponent extends SceneComponent {
-      tick(elapsed:number) {}
-      interpolateTick(elapsed:number){}
-   }
+   export class CollisionComponent extends SceneComponent {
+      collideBox: eburp.Rect = new eburp.Rect(0, 0, 0, 0);
+      collide(x:number, y:number,results=[]) {
+         this.collideBox.point.x = x;
+         this.collideBox.point.y = y;
+         return this.host.scene.db.queryRect(this.collideBox, SceneObject, results);
+      }
+  }
 }

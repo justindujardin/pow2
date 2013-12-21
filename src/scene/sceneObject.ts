@@ -42,13 +42,19 @@ module eburp {
 
    export class SceneObject implements ISceneComponentHost {
       id:number = _.uniqueId();
-      name:string = "";
-      scene: Scene = null;
-      world: IWorld = null;
+      name:string;
+      scene: Scene;
+      world: IWorld;
+      // The object point
+      point:Point;
+      // The render point that is interpolated between ticks.
+      renderPoint:Point;
       _components:ISceneComponent[] = [];
       constructor(options?: any) {
          if(options){
-            _.extend(this, _.defaults(options) || {});
+            _.extend(this, _.defaults(options || {}), {
+               point: new Point(0,0)
+            });
          }
       }
 
@@ -109,7 +115,7 @@ module eburp {
             return false;
          }
          this._components.push(component);
-         if(silent !== false){
+         if(silent !== true){
             this.syncComponents();
          }
          return true;
@@ -128,7 +134,7 @@ module eburp {
             return true;
          });
          var change:boolean = this._components.length === previousCount;
-         if(change && silent !== false){
+         if(change && silent !== true){
             this.syncComponents();
          }
          return change;
