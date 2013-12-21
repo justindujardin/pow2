@@ -15,21 +15,21 @@
  */
 
 /// <reference path="../../core/point.ts" />
-/// <reference path="../objects/tileFeatureObject.ts" />
+/// <reference path="../../scene/sceneComponent.ts" />
+/// <reference path="../tileObject.ts" />
+/// <reference path="../tileMap.ts" />
 
 module eburp {
-    export class TileTransitionFeature extends TileFeatureObject {
-        target:string;
-        targetX: number;
-        targetY: number;
-        enter(object:TileObject):boolean {
-            if(!this.target || !this.tileMap){
-                return false;
-            }
-            console.log("Transition to: " + this.target);
-            object.point.set(this.targetX,this.targetY);
-            this.tileMap.setMap(this.target);
-            return true;
-        }
-    }
+   export class TileShipComponent extends SceneComponent {
+      tileMap:TileMap;
+      host:TileObject;
+      constructor(){
+         super();
+      }
+      registerComponent():boolean{
+         this.tileMap = this.host.tileMap;
+         return !!this.tileMap;
+      }
+   }
+
 }
