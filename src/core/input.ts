@@ -32,24 +32,6 @@ module eburp {
     }
 
     export class Input {
-//        static Keys:KeyCode
-
-//        static Keys:Object = {
-//            UP: 38,
-//            DOWN: 40,
-//            LEFT: 37,
-//            RIGHT: 39,
-//            BACKSPACE: 8,
-//            COMMA: 188,
-//            DELETE: 46,
-//            END: 35,
-//            ENTER: 13,
-//            ESCAPE: 27,
-//            HOME: 36,
-//            SPACE: 32,
-//            TAB: 9
-//        };
-
         _keysDown:Object = {};
         constructor() {
             window.addEventListener(<string>"keydown", (ev:KeyboardEvent) => {

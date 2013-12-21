@@ -194,8 +194,10 @@ function getPageScripts(){
    var sourceFiles = grunt.file.expand([
       "web/game/core/api.js",
       "web/game/core/**/*.js",
-      "web/game/scene/**/*.js",
+      "web/game/scene/*.js",
+      "web/game/scene/components/*.js",
       "web/game/tile/*.js",
+      "web/game/tile/components/*.js",
       "web/game/tile/objects/*.js",
       "web/game/tile/features/*.js",
       "web/game/tile/render/*.js",

@@ -22,7 +22,7 @@ module eburp {
         target:string;
         targetX: number;
         targetY: number;
-        enter(object):boolean {
+        enter(object:TileObject):boolean {
             if(!this.target || !this.tileMap){
                 return false;
             }

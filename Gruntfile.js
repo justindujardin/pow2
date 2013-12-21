@@ -82,7 +82,9 @@ module.exports = function(grunt) {
                "src/core/*.ts",
                "src/resources/*.ts",
                "src/scene/*.ts",
+               "src/scene/components/*.ts",
                "src/tile/*.ts",
+               "src/tile/components/*.ts",
                "src/tile/objects/*.ts",
                "src/tile/features/*.ts",
                "src/tile/render/*.ts"

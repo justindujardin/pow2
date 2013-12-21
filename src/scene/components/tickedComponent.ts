@@ -14,23 +14,13 @@
  limitations under the License.
  */
 
-/// <reference path="../typedef/underscore/underscore.d.ts" />
-/// <reference path="../core/point.ts" />
-/// <reference path="../scene/sceneObject.ts" />
+/// <reference path="../scene.ts" />
+/// <reference path="../sceneComponent.ts" />
+/// <reference path="../../core/time.ts" />
 
 module eburp {
-   export class TileObject extends eburp.SceneObject {
-      point: eburp.Point;
-      renderPoint:eburp.Point;
-      image: HTMLImageElement;
-
-      constructor(options?: any) {
-         super(options);
-         _.extend(this, _.defaults(options || {}, {
-            point: new eburp.Point(0, 0),
-            image: null
-         }));
-         return this;
-      }
+   export class TickedComponent extends SceneComponent {
+      tick(elapsed:number) {}
+      interpolateTick(elapsed:number){}
    }
 }

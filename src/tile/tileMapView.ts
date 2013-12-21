@@ -17,6 +17,7 @@
 /// <reference path="../scene/sceneObject.ts"/>
 /// <reference path="./tileObject.ts"/>
 /// <reference path="./tileMap.ts"/>
+/// <reference path="./components/tilePartyComponent.ts"/>
 
 module eburp{
     export class TileMapView extends SceneView {
@@ -124,15 +125,13 @@ module eburp{
          * Render the TileObjects in the scene.
          */
         renderObjects(clipRect, elapsed) {
-            var objects, player,
-                _this = this;
-            objects = this.scene.objectsByType(eburp.TileFeatureObject);
-            _.each(objects, function(object) {
-                return _this.renderer.render(object, _this);
+            var objects = this.scene.objectsByType(eburp.TileFeatureObject);
+            _.each(objects, (object) => {
+                return this.renderer.render(object,this);
             });
-            player = this.scene.objectsByType(eburp["MovableTileObject"]); // TODO
-            if (player.length > 0) {
-                this.renderer.render(player[0], this);
+            var player = this.scene.objectByComponent(eburp.TilePartyComponent);
+            if (player) {
+                this.renderer.render(player, this);
             }
             return this;
         }
@@ -181,16 +180,15 @@ module eburp{
          * Draw any post-rendering effects.
          */
         renderPost() {
-            var overlay, _ref;
             if (!this.camera || !this.context || !this.tileMap) {
                 return;
             }
             this.renderAnalog();
-            overlay = this.getScreenOverlay();
+            var overlay = this.getScreenOverlay();
             if (!overlay) {
                 return;
             }
-            if ((_ref = this.overlayPattern) == null) {
+            if(!this.overlayPattern) {
                 this.overlayPattern = this.context.createPattern(overlay, 'repeat');
             }
             return this.fillTiles(overlay, this.overlayPattern, this.getCameraClip());
@@ -233,15 +231,16 @@ module eburp{
                 debugStrings = [];
             }
             debugStrings.push("Camera: (" + this.camera.point.x + "," + this.camera.point.y + ")");
-            player = this.scene.objectsByType(eburp["MovableTileObject"]);
-            if (player.length > 0) {
-                debugStrings.push("Player: (" + player[0].point.x + "," + player[0].point.y + ")");
+            player = this.scene.objectByComponent(eburp.TilePartyComponent);
+            if (player) {
+                debugStrings.push("Player: (" + player.point.x + "," + player.point.y + ")");
             }
             clipRect = this.getCameraClip();
             debugStrings.push("Clip: (" + clipRect.point.x + "," + clipRect.point.y + ") (" + clipRect.extent.x + "," + clipRect.extent.y + ")");
             this.context.strokeStyle = "#FF2222";
             screenClip = this.worldToScreen(clipRect);
             this.context.strokeRect(screenClip.point.x, screenClip.point.y, screenClip.extent.x, screenClip.extent.y);
+
             for (x = _i = _ref = clipRect.point.x, _ref1 = clipRect.getRight(); _ref <= _ref1 ? _i < _ref1 : _i > _ref1; x = _ref <= _ref1 ? ++_i : --_i) {
                 for (y = _j = _ref2 = clipRect.point.y, _ref3 = clipRect.getBottom(); _ref2 <= _ref3 ? _j < _ref3 : _j > _ref3; y = _ref2 <= _ref3 ? ++_j : --_j) {
                     tile = this.tileMap.getTerrain(x, y);

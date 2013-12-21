@@ -16,31 +16,109 @@
 
 /// <reference path="../typedef/underscore/underscore.d.ts" />
 /// <reference path="./scene.ts" />
+/// <reference path="./sceneComponent.ts" />
 
 // An object that may exist in a `Scene`, has a unique `id` and receives ticked updates.
 module eburp {
-   export class SceneObject {
-      id: string;
-      name: string;
+
+   export interface IObject {
+      id:number;
+      name:string;
+   }
+
+   /**
+    * Basic component host object interface.  Exposes methods for adding/removing/searching
+    * components that a host owns.
+    */
+   export interface ISceneComponentHost extends IObject {
+      addComponent(component:ISceneComponent):boolean;
+      removeComponent(component:ISceneComponent):boolean;
+
+      findComponent(type:Function):ISceneComponent;
+      findComponents(type:Function):ISceneComponent[];
+   }
+
+   export class SceneObject implements ISceneComponentHost {
+      id:number = _.uniqueId();
+      name:string = "";
       scene: Scene = null;
       world: IWorld = null;
+      _components:ISceneComponent[] = [];
       constructor(options?: any) {
-         _.extend(this, _.defaults(options) || {}, {
-            id: _.uniqueId('eburp'),
-            name: null,
-            world: null
+         if(options){
+            _.extend(this, _.defaults(options) || {});
+         }
+      }
+
+      // Tick components.
+      tick(elapsed: number) {
+         _.each(this._components,(o:any) => {
+            if(o.tick){
+               o.tick(elapsed);
+            }
          });
       }
 
-      // Perform any updates to this object's state, after a tick of time has passed.
-      tick(elapsed: number) {  }
-
-      interpolateTick(elapsed: number) {  }
+      // Interpolate components.
+      interpolateTick(elapsed: number) {
+         _.each(this._components,(o:any) => {
+            if(o.interpolateTick){
+               o.interpolateTick(elapsed);
+            }
+         });
+      }
 
       destroy() {
          if (this.scene) {
             this.scene.removeObject(this);
          }
       }
+
+      // ISceneComponentHost implementation
+      // -----------------------------------------------------------------------------
+
+      findComponent(type:Function):ISceneComponent {
+         return _.find(this._components,(comp:ISceneComponent) => {
+            return comp instanceof type;
+         });
+      }
+      findComponents(type:Function):ISceneComponent[] {
+         return [];
+      }
+
+      // TODO: These two methods should make use of the component.refreshComponent()
+      // methods, to allow components to maintain references to siblings on the host,
+      // and not blow up horribly when one goes away.
+
+      addComponent(component:ISceneComponent):boolean {
+         if(_.where(this._components,{id: component.id}).length > 0){
+            throw new Error("Component added twice");
+         }
+         component.host = this;
+         if(component.registerComponent() === false){
+            delete component.host;
+            console.log("Component " + component.name + " failed to register.");
+            return false;
+         }
+         this._components.push(component);
+         return false;
+      }
+
+      removeComponent(component:ISceneComponent):boolean{
+         var previousCount:number = this._components.length;
+         this._components = _.filter(this._components, (obj:SceneComponent) => {
+            if(obj.id === component.id){
+               if(obj.unregisterComponent() === false){
+                  return true;
+               }
+               obj.host = null;
+               return false;
+            }
+            return true;
+         });
+         return this._components.length === previousCount;
+      }
+
+
    }
 }

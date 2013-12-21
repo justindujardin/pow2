@@ -37,7 +37,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
       maps: _.keys(eburp.getMaps()),
       state:'Uninitialized',
       listeners:[],
-      currentMap: 23,
+      currentMap: 15,
       loader: new eburp.ResourceLoader(),
       load : function(){
          var deferred = $q.defer();
@@ -71,9 +71,15 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          self.scene = self.world.scene;
          self.input = self.scene.input = self.world.input;
          self.tileMap = new eburp.TileMap(self.maps[self.currentMap]);
-         self.sprite = new eburp.MovableTileObject({
+
+         self.sprite = new eburp.TileObject({
             point: self.tileMap.bounds.getCenter()
          });
+         self.sprite.addComponent(new eburp.TilePartyComponent());
+
+//         self.sprite = new eburp.MovableTileObject({
+//            point: self.tileMap.bounds.getCenter()
+//         });
          self.scene.addObject(self.tileMap);
          self.scene.addObject(self.sprite);
 

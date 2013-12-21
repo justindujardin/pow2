@@ -32,7 +32,7 @@ module eburp {
         iconCoords: any; //TODO: typedef
         type: string; // TODO: enum?
         passable: boolean;
-        tileMap:TileMap
+        tileMap:TileMap;
 
         constructor(options?) {
             super(options);
@@ -58,15 +58,12 @@ module eburp {
         }
 
         // An object will enter this feature if false is not returned
-        enter(object):boolean {
-            if (this.type === 'block' || this.passable === false) {
-                return false;
-            }
-            return true;
+        enter(object:SceneObject):boolean {
+           return this.type !== 'block' && this.passable !== false;
         }
 
         // An object will exit this feature if false is not returned (TODO: false or falsey?  returning falsey now)
-        exit(object) {
+        exit(object:SceneObject) {
         }
     }
 }
