@@ -31,7 +31,7 @@ module eburp {
       velocity: eburp.Point = new eburp.Point(0, 0);
       host:TileObject;
 
-      registerComponent():boolean{
+      connectComponent():boolean{
          this.host.point.round();
          this.targetPoint = this.host.point.clone();
          this.host.renderPoint = this.targetPoint.clone();

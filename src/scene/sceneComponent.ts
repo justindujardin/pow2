@@ -26,10 +26,27 @@ module eburp {
     * hot-swapping components.
     */
    export interface ISceneComponent extends IObject {
+
+      /**
+       * The host object that this component belongs to.
+       */
       host:SceneObject;
-      registerComponent():boolean;
-      unregisterComponent():boolean;
-      refreshComponent();
+
+      /**
+       * Connect this component to its host.  Initialization logic goes here.
+       */
+      connectComponent():boolean;
+      /**
+       * Disconnect this component from its host.  Destruction logic goes here.
+       */
+      disconnectComponent():boolean;
+
+      /**
+       * Components on the host have changed.  If this component depends on other
+       * host object components, the references to them should be looked up and
+       * stored here.
+       */
+      syncComponent();
    }
 
    /**
@@ -43,12 +60,12 @@ module eburp {
       scene: Scene;
       host:SceneObject;
 
-      registerComponent():boolean {
+      connectComponent():boolean {
          return true;
       }
-      unregisterComponent():boolean {
+      disconnectComponent():boolean {
          return true;
       }
-      refreshComponent() {}
+      syncComponent() {}
    }
 }

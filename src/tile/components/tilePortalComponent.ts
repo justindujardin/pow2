@@ -30,7 +30,7 @@ module eburp {
          this.map = map;
          this.target = target;
       }
-      registerComponent():boolean{
+      connectComponent():boolean{
          this.tileMap = this.host.tileMap;
          return !!this.tileMap;
       }

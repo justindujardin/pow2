@@ -31,8 +31,10 @@ module eburp {
     * components that a host owns.
     */
    export interface ISceneComponentHost extends IObject {
-      addComponent(component:ISceneComponent):boolean;
-      removeComponent(component:ISceneComponent):boolean;
+      addComponent(component:ISceneComponent,silent?:boolean):boolean;
+      removeComponent(component:ISceneComponent,silent?:boolean):boolean;
+
+      syncComponents();
 
       findComponent(type:Function):ISceneComponent;
       findComponents(type:Function):ISceneComponent[];
@@ -86,29 +88,38 @@ module eburp {
          return [];
       }
 
-      // TODO: These two methods should make use of the component.refreshComponent()
+      // TODO: These two methods should make use of the component.syncComponent()
       // methods, to allow components to maintain references to siblings on the host,
       // and not blow up horribly when one goes away.
 
-      addComponent(component:ISceneComponent):boolean {
+      syncComponents(){
+         _.each(this._components,(comp:ISceneComponent) => {
+            comp.syncComponent();
+         });
+      }
+
+      addComponent(component:ISceneComponent,silent:boolean=false):boolean {
          if(_.where(this._components,{id: component.id}).length > 0){
             throw new Error("Component added twice");
          }
          component.host = this;
-         if(component.registerComponent() === false){
+         if(component.connectComponent() === false){
             delete component.host;
             console.log("Component " + component.name + " failed to register.");
             return false;
          }
          this._components.push(component);
-         return false;
+         if(silent !== false){
+            this.syncComponents();
+         }
+         return true;
       }
 
-      removeComponent(component:ISceneComponent):boolean{
+      removeComponent(component:ISceneComponent,silent:boolean=false):boolean{
          var previousCount:number = this._components.length;
          this._components = _.filter(this._components, (obj:SceneComponent) => {
             if(obj.id === component.id){
-               if(obj.unregisterComponent() === false){
+               if(obj.disconnectComponent() === false){
                   return true;
                }
                obj.host = null;
@@ -116,7 +127,11 @@ module eburp {
             }
             return true;
          });
-         return this._components.length === previousCount;
+         var change:boolean = this._components.length === previousCount;
+         if(change && silent !== false){
+            this.syncComponents();
+         }
+         return change;
       }
 
 

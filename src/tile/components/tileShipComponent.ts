@@ -26,7 +26,7 @@ module eburp {
       constructor(){
          super();
       }
-      registerComponent():boolean{
+      connectComponent():boolean{
          this.tileMap = this.host.tileMap;
          return !!this.tileMap;
       }
