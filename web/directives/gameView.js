@@ -98,42 +98,13 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
                      break;
                   }
                }
-
             }
-
 
             game.tileView = new eburp.TileMapView(element[0], game.loader);
             game.tileView.camera.extent.set(10, 10);
             game.tileView.tileMap = game.tileMap;
             game.scene.addView(game.tileView);
             game.tileView.trackObject(game.sprite);
-
-            function _done(image){
-               game.sprite.image = image;
-               dropContext.clearRect(0, 0, 96, 96);
-               dropContext.drawImage(image, 0, 0, 96, 96);
-            }
-            var image = $(".user-sprite img")[0];
-            var dropCanvas = $("canvas.image-drop")[0];
-            var dropContext = dropCanvas.getContext("2d");
-            var storedImage = $scope.getImageData();
-            if (!image.src) {
-               if (!storedImage) {
-                  game.world.sprites.getSingleSprite("party.png",function(img){
-                     _done(img);
-                  });
-               }
-               else {
-                  $scope.setImageData(storedImage);
-                  image.src = storedImage;
-               }
-               image.onload = function () {
-                  _done(image);
-               };
-            }
-            else {
-               _done(image);
-            }
             console.log("READY TO GO!");
          });
       }

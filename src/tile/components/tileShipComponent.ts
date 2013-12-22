@@ -15,21 +15,63 @@
  */
 
 /// <reference path="../../core/point.ts" />
-/// <reference path="../../scene/sceneComponent.ts" />
+/// <reference path="../tileComponent.ts" />
 /// <reference path="../tileObject.ts" />
-/// <reference path="../tileMap.ts" />
+/// <reference path="./tilePartyComponent.ts" />
 
 module eburp {
-   export class TileShipComponent extends SceneComponent {
-      tileMap:TileMap;
-      host:TileObject;
-      constructor(){
-         super();
+   export class TileShipComponent extends TileComponent {
+      host:TileFeatureObject;
+      party:TilePartyComponent;
+      partyObject:TileObject;
+      partySprite:string;
+      enter(object:TileFeatureObject):boolean {
+         if(!this.tileMap){
+            return false;
+         }
+         return this.board(object);
       }
-      connectComponent():boolean{
-         this.tileMap = this.host.tileMap;
-         return !!this.tileMap;
+
+      /**
+       * Board an object onto the ship component.  This will modify the
+       * @param object
+       */
+      board(object:TileFeatureObject):boolean{
+         if(this.partyObject || this.party){
+            return false;
+         }
+         // Must have a party component to board a ship.  Don't want buildings
+         // and NPCs boarding ships... or do we?  [maniacal laugh]
+         this.party = <TilePartyComponent>object.findComponent(TilePartyComponent);
+         if(!this.party){
+            return false;
+         }
+         this.partyObject = object;
+         this.partySprite = object.setSprite(this.host.icon);
+         this.party.passableKeys = ['shipPassable','passable'];
+         this.host.visible = false;
+
+         // If we're moving from shipPassable to passable, disembark the ship.
+         this.party.setMoveFilter((from:Point,to:Point) => {
+            var fromTerrain = this.tileMap.getTerrain(from.x,from.y);
+            var toTerrain = this.tileMap.getTerrain(to.x,to.y);
+            if(!fromTerrain || !toTerrain){
+               return;
+            }
+            if(fromTerrain.shipPassable && toTerrain.passable){
+               this.disembark(from);
+            }
+         });
+         return true;
+
+      }
+      disembark(at?:Point){
+         this.partyObject.setSprite(this.partySprite);
+         this.party.clearMoveFilter();
+         this.party.passableKeys = ['passable'];
+         this.host.point.set(at || this.partyObject.point);
+         this.host.visible = true;
+         this.partyObject = null;
       }
    }
-
 }

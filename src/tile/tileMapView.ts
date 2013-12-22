@@ -17,14 +17,15 @@
 /// <reference path="../scene/sceneObject.ts"/>
 /// <reference path="./tileObject.ts"/>
 /// <reference path="./tileMap.ts"/>
+/// <reference path="./render/tileObjectRenderer.ts"/>
 /// <reference path="./components/tilePartyComponent.ts"/>
 
 module eburp{
     export class TileMapView extends SceneView {
         screenOverlays:any[] = [];
-        renderer:any = null;
+        renderer:TileObjectRenderer = null;
         overlayPattern:any = null;
-        tracking:any = null; // TODO: MovableTileObject
+        tracking:TileObject = null;
         tileMap:TileMap = null;
         constructor(canvas, loader){
             super(canvas,loader);

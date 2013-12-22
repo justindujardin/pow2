@@ -18,20 +18,26 @@
 /// <reference path="../../core/rect.ts" />
 /// <reference path="../../scene/sceneObject.ts" />
 /// <reference path="../../scene/components/movableComponent.ts" />
-/// <reference path="../tileObject.ts" />
+/// <reference path="../objects/tileFeatureObject.ts" />
 /// <reference path="../tileMap.ts" />
+/// <reference path="../tileComponent.ts" />
 /// <reference path="./tilePortalComponent.ts" />
 
 module eburp {
    export class TilePartyComponent extends MovableComponent {
       host:TileObject;
+      passableKeys:string[] = ['passable'];
       collideMove(x:number, y:number,results=[]) {
          var collision:boolean = super.collideMove(x,y,results);
          if(collision){
             for (var i = 0; i < results.length; i++) {
                var o:TileFeatureObject = results[i];
+               var comp:TileComponent = <TileComponent>o.findComponent(TileComponent)
+               if(!comp){
+                  continue;
+               }
                console.log("Collide -> " + o.type);
-               if (o.enter && o.enter(this.host) === false) {
+               if (comp.enter && comp.enter(this.host) === false) {
                   return true;
                }
             }
@@ -39,9 +45,15 @@ module eburp {
          var map = this.host.scene.objectByType(eburp.TileMap);
          if (map) {
             var terrain = map.getTerrain(x,y);
-            if (!terrain || !terrain.passable) {
+            if (!terrain) {
                return true;
             }
+            for(var i = 0; i < this.passableKeys.length; i++){
+               if(terrain[this.passableKeys[i]]){
+                  return false;
+               }
+            }
+            return true;
          }
          return false;
       }
@@ -54,7 +66,7 @@ module eburp {
          var results = [];
          if (this.collider.collide(to.x,to.y,results)) {
             var obj:TileFeatureObject = results[0];
-            var comp = <TilePortalComponent>obj.findComponent(TilePortalComponent);
+            var comp = <TileComponent>obj.findComponent(TileComponent);
             if(comp){
                comp.enter(this.host);
             }

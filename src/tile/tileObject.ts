@@ -26,22 +26,25 @@ module eburp {
       image: HTMLImageElement;
       visible:boolean;
       tileMap:TileMap;
-      spatialDirty:boolean = true;
+
+      // Game Sprite support.
+      // ----------------------------------------------------------------------
+      // The sprite name, e.g. "party.png" or "knight.png"
+      icon:string;
+      // The sprite sheet source information
+      iconCoords:any;
 
       constructor(options?: any) {
          super(options);
          _.extend(this, _.defaults(options || {}, {
             point: new eburp.Point(0, 0),
             visible:true,
+            icon: "",
+            iconCoords: null,
             image: null,
             tileMap: null
          }));
          return this;
-      }
-
-      tick(elapsed:number){
-         super.tick(elapsed);
-         this.spatialDirty = false;
       }
 
       setPoint(point) {
@@ -49,7 +52,33 @@ module eburp {
             this.renderPoint = point.clone();
          }
          this.point = point.clone();
-         this.spatialDirty = true;
+      }
+
+      /**
+       * When added to a scene, resolve a feature icon to a renderable sprite.
+       */
+      onAddToScene() {
+         if(this.icon){
+            this.setSprite(this.icon);
+         }
+      }
+
+      /**
+       * Set the current sprite name.  Returns the previous sprite name.
+       */
+      setSprite(name:string):string {
+         var oldSprite:string = this.icon;
+         if (!name) {
+            this.iconCoords = null;
+         }
+         else{
+            this.iconCoords = this.world.sprites.getSpriteCoords(name);
+            this.world.sprites.getSpriteSheet(this.iconCoords.source, (image) => {
+               return this.image = image.data;
+            });
+         }
+         this.icon = name;
+         return oldSprite;
       }
    }
 }

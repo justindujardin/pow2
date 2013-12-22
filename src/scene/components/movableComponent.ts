@@ -28,6 +28,7 @@ module eburp {
       velocity: eburp.Point = new eburp.Point(0, 0);
       host: SceneObject;
       collider:CollisionComponent;
+      moveFilter:(from:Point,to:Point)=>void;
 
       connectComponent():boolean{
          this.host.point.round();
@@ -40,6 +41,11 @@ module eburp {
          this.collider = <CollisionComponent>this.host.findComponent(CollisionComponent);
       }
 
+      /**
+       * Move from one point to another.  Do any custom processing of moves here.
+       */
+      move(from:Point,to:Point){ }
+
       collideMove(x:number,y:number,results:SceneObject[]=[]){
          if(!this.collider){
             return false;
@@ -47,11 +53,20 @@ module eburp {
          return this.collider.collide(x,y,results);
       }
 
-
       /**
-       * Move from one point to another.  Do any custom processing of moves here.
+       * Support for simple movement filtering by other sources.  For example a sibling
+       * component may have a different set of actions that should be evaluated when a
+       * move happens.  It can use set/clearMoveFilter to accomplish this.
+       *
+       * TODO: Is there a better pattern I'm missing for component communication?
        */
-      move(from:Point,to:Point){ }
+      setMoveFilter(filter:(from:Point,to:Point)=>void){
+         this.moveFilter = filter;
+      }
+      clearMoveFilter(){
+         this.moveFilter = null;
+      }
+
 
       updateVelocity(){
          if(!this.host.world || !this.host.world.input){
@@ -155,7 +170,8 @@ module eburp {
          }
 
          // Successful move, do something.
-         this.move(this.host.point,this.targetPoint);
+         var moveFn:Function = this.moveFilter || this.move;
+         moveFn(this.host.point,this.targetPoint);
       }
    }
 }

@@ -59,13 +59,8 @@ module eburp {
       name:string = _.uniqueId('comp');
       scene: Scene;
       host:SceneObject;
-
-      connectComponent():boolean {
-         return true;
-      }
-      disconnectComponent():boolean {
-         return true;
-      }
+      connectComponent():boolean { return true; }
+      disconnectComponent():boolean { return true; }
       syncComponent() {}
    }
 
@@ -73,7 +68,15 @@ module eburp {
     * A component that supports tick/interpolateTick
     */
    export class TickedComponent extends SceneComponent {
+
+      /**
+       * Update the component at a tick interval.
+       */
       tick(elapsed:number) {}
+
+      /**
+       * Interpolate component state between ticks.
+       */
       interpolateTick(elapsed:number){}
    }
 }

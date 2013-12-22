@@ -21,6 +21,7 @@
 /// <reference path="./tileObject.ts" />
 /// <reference path="./objects/tileFeatureObject.ts" />
 /// <reference path="./components/tilePortalComponent.ts" />
+/// <reference path="./components/tileShipComponent.ts" />
 
 module eburp {
    export class TileMap extends eburp.SceneObject {
@@ -52,10 +53,13 @@ module eburp {
          var options = _.extend({}, feature, {
             tileMap: this
          });
-         var object = new eburp.TileFeatureObject(options);
+         var object = new TileFeatureObject(options);
          switch(feature.type){
             case 'transition':
                object.addComponent(new TilePortalComponent(feature.target,new Point(feature.targetX,feature.targetY)));
+               break;
+            case 'ship':
+               object.addComponent(new TileShipComponent);
                break;
          }
          return object;
@@ -66,16 +70,15 @@ module eburp {
          // This is to prevent the old game from constructing TileFeatureObjects
          // and adding them to the scene.  It doesn't interact with them, so don't
          // bother.
-         var f, k, v, _ref;
+         var f, k, v;
          if (!this.world) {
             return;
          }
          if (!this.scene) {
             return;
          }
-         _ref = this.features;
-         for (k in _ref) {
-            v = _ref[k];
+         for (k in this.features) {
+            v = this.features[k];
             for (k in v) {
                f = v[k];
                f.object = this.getObjectForFeature(f);
@@ -86,10 +89,9 @@ module eburp {
       }
 
       removeFeaturesFromScene() {
-         var f, k, v, _ref;
-         _ref = this.features;
-         for (k in _ref) {
-            v = _ref[k];
+         var f, k, v;
+         for (k in this.features) {
+            v = this.features[k];
             for (k in v) {
                f = v[k];
                if (!f.object) {
@@ -139,21 +141,20 @@ module eburp {
       }
 
       buildFeatures():boolean {
-         var feature, key, list, object, x, y, _i, _len;
          this.removeFeaturesFromScene();
          if (!this.map) {
             return false;
          }
-         list = this.map.features;
+         var list = this.map.features;
          if (!list) {
             return false;
          }
-         for (_i = 0, _len = list.length; _i < _len; _i++) {
-            feature = list[_i];
-            x = feature.x;
-            y = feature.y;
-            key = this.featureKey(x, y);
-            object = this.features[key];
+         for (var i = 0, len = list.length; i < len; i++) {
+            var feature = list[i];
+            var x = feature.x;
+            var y = feature.y;
+            var key = this.featureKey(x, y);
+            var object = this.features[key];
             if (!object) {
                object = {};
                this.features[key] = object;

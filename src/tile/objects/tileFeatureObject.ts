@@ -25,48 +25,15 @@
 // different feature types?
 module eburp {
    export class TileFeatureObject extends eburp.TileObject {
-      point: eburp.Point;
-      x: number; // TODO: redundant with point?
-      y: number;
-      icon: any; // TODO: typedef
-      iconCoords: any; //TODO: typedef
       type: string; // TODO: enum?
-      passable: boolean;
-      tileMap:TileMap;
-
-      constructor(options?) {
+      passable:boolean;
+      data: {}; // A copy of the original feature object data.
+      constructor(options:any) {
          super(options);
-         _.extend(this, _.defaults(options || {}, {
-            type: "",
-            x: 0,
-            y: 0,
-            icon: ""
-            //passable: false; // TODO: is this correct default?
-         }));
-         this.point.x = this.x;
-         this.point.y = this.y;
-      }
-
-      /**
-       * When added to a scene, resolve a feature icon to a renderable sprite.
-       */
-      onAddToScene() {
-         if (!this.icon) {
-            return;
-         }
-         this.iconCoords = this.world.sprites.getSpriteCoords(this.icon);
-         return this.world.sprites.getSpriteSheet(this.iconCoords.source, (image) => {
-            return this.image = image.data;
-         });
-      }
-
-      // An object will enter this feature if false is not returned
-      enter(object:SceneObject):boolean {
-         return this.type !== 'block' && this.passable !== false;
-      }
-
-      // An object will exit this feature if false is not returned (TODO: false or falsey?  returning falsey now)
-      exit(object:SceneObject) {
+         this.point.x = options.x;
+         this.point.y = options.y;
+         this.type = options.type;
+         this.data = options;
       }
    }
 }

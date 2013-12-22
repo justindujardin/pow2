@@ -14,28 +14,29 @@
  limitations under the License.
  */
 
-/// <reference path="../../core/point.ts" />
-/// <reference path="../tileComponent.ts" />
+/// <reference path="../core/point.ts" />
+/// <reference path="../scene/sceneComponent.ts" />
+/// <reference path="./tileObject.ts" />
+/// <reference path="./tileMap.ts" />
 
 module eburp {
-   export class TilePortalComponent extends TileComponent {
-      map:string;
-      target:Point;
-      constructor(map:string,target:Point){
-         super();
-         this.map = map;
-         this.target = target;
+   export class TileComponent extends SceneComponent {
+      tileMap:TileMap;
+      host:TileObject;
+      connectComponent():boolean{
+         this.tileMap = this.host.tileMap;
+         return !!this.tileMap;
       }
-      enter(object:TileObject):boolean {
-         if(!this.target || !this.tileMap){
-            return false;
-         }
-         console.log("Transition to: " + this.map);
-         object.setPoint(this.target);
-         this.tileMap.setMap(this.map);
+      disconnectComponent():boolean{
+         this.tileMap = null;
          return true;
       }
 
+      enter(object:TileObject):boolean {
+         return true;
+      }
+      exit(object:TileObject) {
+         return true;
+      }
    }
-
 }
