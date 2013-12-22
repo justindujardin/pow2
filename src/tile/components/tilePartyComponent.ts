@@ -46,10 +46,13 @@ module eburp {
          return false;
       }
       move(from:Point,to:Point) {
+         if(!this.collider){
+            return;
+         }
          // Successful move, collide against target point and check any new tile
          // actions.
          var results = [];
-         if (this.collideMove(to.x,to.y,results)) {
+         if (this.collider.collide(to.x,to.y,results)) {
             var obj:TileFeatureObject = results[0];
             var comp = <TilePortalComponent>obj.findComponent(TilePortalComponent);
             if(comp){
