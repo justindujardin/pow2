@@ -71,17 +71,15 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          self.scene = self.world.scene;
          self.input = self.scene.input = self.world.input;
          self.tileMap = new eburp.TileMap(self.maps[self.currentMap]);
+         self.scene.addObject(self.tileMap);
 
+         // Create a movable character with basic components.
          self.sprite = new eburp.TileObject({
-            point: self.tileMap.bounds.getCenter()
+            point: self.tileMap.bounds.getCenter(),
+            icon:"party.png"
          });
          self.sprite.addComponent(new eburp.CollisionComponent());
          self.sprite.addComponent(new eburp.TilePartyComponent());
-
-//         self.sprite = new eburp.MovableTileObject({
-//            point: self.tileMap.bounds.getCenter()
-//         });
-         self.scene.addObject(self.tileMap);
          self.scene.addObject(self.sprite);
 
          this.loader.load(this.files,function(){
@@ -150,81 +148,17 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
    }
 });
 
-twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,game,sourceSprites){
-   $scope.hasImage = false;
-   $scope.sprites = [];
-   $scope.spriteCategories = {};
-   $scope.spriteCatalog = false;
-   if(window._user){
-      mixpanel.identify(window._user.id);
-      mixpanel.people.set({
-         "Last name": window._user.first,
-         "First name": window._user.last,
-         "Gender": window._user.gender,
-         "$email": window._user.email
-      });
-   }
-   mixpanel.track("Art: PageView",{
-      LoggedIn:(typeof window._user !== 'undefined')
-   });
-
-   $scope.showSpriteCatalog = function() {
-      mixpanel.track("Art: SpriteCatalog");
-      $scope.spriteCatalog = true;
-      if($scope.spriteCategories.length > 0){
-         return;
-      }
-      setTimeout(function() {
-         $scope.$apply(function() {
-            var cats = sourceSprites.getCategories();
-            _.each(cats,function(cat){
-               sourceSprites.getSprites(cat,2).then(function(sources){
-                  $scope.spriteCategories[cat] = sources;
-               });
-            });
-         });
-      }, 100);
+twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,game){
+   var stateKey = "_testPow2State";
+   $scope.saveState = function(data){
+      localStorage.setItem(stateKey,data);
    };
-   $scope.hideSpriteCatalog = function(){
-      $scope.spriteCatalog = false;
+   $scope.clearState = function() {
+      localStorage.removeItem(stateKey);
    };
-   $scope.shareImage = function(){
-      mixpanel.track("Art: Share");
-      $http.post('/share', {data:game.imageData}).success(function(data){
-         $scope.sharedUrl = data.url;
-         $scope.clearImageData();
-      });
+   $scope.getState = function(){
+      return localStorage.getItem(stateKey);
    };
-   $scope.clearImageData = function() {
-      $scope.hasImage = false;
-      game.imageData = null;
-      localStorage.removeItem("sharedImage");
-   };
-   $scope.setImageData = function(data){
-      if(!data){
-         return $scope.clearImageData();
-      }
-      localStorage.setItem("sharedImage",data);
-      game.imageData = data;
-      $scope.hasImage = true;
-   };
-   $scope.getImageData = function(){
-
-      return localStorage.getItem("sharedImage");
-   };
-   $scope.syncImageData = function(){
-      $scope.setImageData($scope.getImageData());
-   };
-
-   $scope.login = function() {
-      mixpanel.track("Art: Login");
-      window.location.href = "/auth/facebook";
-   };
-   $scope.logout = function() {
-      mixpanel.track("Art: Logout");
-      window.location.href = "/auth/logout";
-   };
-
    $scope.nextMap = function(){
       game.nextMap();
       $scope.mapName = game.getCurrentMapName();

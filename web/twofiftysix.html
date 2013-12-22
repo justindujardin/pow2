@@ -15,78 +15,8 @@
     <script type="text/javascript" src="/js/underscore-min.js"></script>
     <script type="text/javascript" src="/js/backbone-min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
-    <!-- start Mixpanel -->
-    <script type="text/javascript">
-        (function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f);b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==
-        typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");for(g=0;g<i.length;g++)f(c,i[g]);
-        b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
-        mixpanel.init("<%=mixpanelToken%>");
-    </script>
-    <!-- end Mixpanel -->
-
-    <% if(user){ %>
-    <script type="text/javascript">
-        window._user=<%- JSON.stringify(user) %>;
-    </script>
-    <% } %>
 </head>
 <body ng-controller="twoFiftySixApp">
-
-<div class="container">
-    <div class="row">
-        <div class="toolbar col-sm-9">
-            <div class="title" eight-bit-panel>
-                <span class="head">256px challenge</span>
-            </div>
-            <div class="greetings" eight-bit-panel>
-                <span class="col-sm-11">
-                    <span ng-show="sharedUrl">Great, your sprite URL is <a class="shared-url" href="{{sharedUrl}}">{{sharedUrl}}</a></span>
-                    <span ng-hide="sharedUrl">
-                        Create a 16x16 replacement sprite, drop it on the page, and share with your friends.<br/>
-                        <a ng-hide="spriteCatalog" ng-click="showSpriteCatalog()">View Sprite Catalog</a>
-                        <a ng-show="spriteCatalog" ng-click="hideSpriteCatalog()">Hide Sprite Catalog</a>
-                    </span>
-                </span>
-                <span class="col-sm-1 pointer">></span>
-            </div>
-            <div class="greetings-sm" eight-bit-panel>
-                <span class="col-sm-12">
-                    <span>The game view doesn't look so hot in mobile resolutions at the moment.  You can still view the sprite catalog though.</span>
-                </span>
-                <div>
-                    <a ng-hide="spriteCatalog" ng-click="showSpriteCatalog()">View Sprite Catalog</a>
-                    <a ng-show="spriteCatalog" ng-click="hideSpriteCatalog()">Hide Sprite Catalog</a>
-                </div>
-            </div>
-        </div>
-        <div class="user-sprite col-sm-3">
-            <div eight-bit-panel>
-                <div class="file-source">
-                    <div>
-                        <% if(shared){ %>
-                        <img src="<%= shared %>">
-                        <% } else { %>
-                        <img>
-                        <% } %>
-                        <span class="filename"<% if(user){ %> ng-hide="hasImage"<% } %>>Sprite</span>
-                        <span ng-show="hasImage">
-                        <% if(user){ %>
-                            <a href="javascript:void(0);" ng-click="shareImage()">Share</a>
-                        <% } %>
-                            <a href="javascript:void(0);" ng-click="clearImageData()">&times;</a>
-                        </span>
-                    </div>
-                </div>
-                <canvas width="96" height="96" image-drop></canvas>
-                <% if(user){ %>
-                <div class="username"><%= user.first %></div> <a ng-click="logout()">Log out</a>
-                <% } else { %>
-                <a ng-click="login()">Login</a>
-                <% } %>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="game-content container" ng-hide="spriteCatalog">
     <div class="row">
@@ -102,17 +32,6 @@
         <div class="col-xs-1"><button class="arrow" type='button' eight-bit-panel ng-click="nextMap()">></button></div>
     </div>
 </div>
-
-<div class="sprites-view container" ng-show="spriteCatalog">
-    <div class="row" ng-repeat="(key,value) in spriteCategories">
-        <div eight-bit-panel>
-            <p>{{key}} - <a href="/images/{{key}}.png" target="_blank">download</a></p>
-            <img class="thumbnail" ng-repeat="sprite in value" src="{{sprite}}">
-        </div>
-    </div>
-</div>
-
-
 <div class="container external-links">
     <div eight-bit-panel>
         <a href="/">Game</a> / <a href="https://github.com/justindujardin/pow2">Github</a>
@@ -124,28 +43,10 @@
     <script type="text/javascript" src="/<%= scripts[i] %>"></script>
 <% } %>
 
-<script type="text/javascript" src="/eburp.core.js"></script>
 <script type="text/javascript" src="/eburp.data.js"></script>
 <script type="text/javascript" src="/eburp.sprites.js"></script>
 <script type="text/javascript" src="/eburp.maps.js"></script>
 <script type="text/javascript" src="/twofiftysix.js"></script>
-<script type="text/javascript" src="/services/sourceSprites.js"></script>
 <script type="text/javascript" src="/directives/gameView.js"></script>
-<script type="text/javascript" src="/directives/imageDrop.js"></script>
-
-<!-- Image drop screen overlay -->
-<div class="drop-overlay">
-    <div eight-bit-panel>Drop your image anywhere.</div>
-</div>
-
-<script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-8701293-5', 'pow2.herokuapp.com');
-    ga('send', 'pageview');
-</script>
 </body>
 </html>
