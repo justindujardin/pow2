@@ -1,7 +1,6 @@
 "use strict";
 var express = require('express');
 var graph = require('fbgraph');
-var db = require('./database');
 
 module.exports = {
 
@@ -45,7 +44,7 @@ module.exports = {
 
 
       server.get('/auth/facebook', function (req, res) {
-         var redirectTo = req.query.r || req.session.authCallback || '/256';
+         var redirectTo = req.query.r || req.session.authCallback || '/';
          var redirect = "http://" + req.headers.host + "/auth/facebook";
          // The Facebook app is configured to send a code= parameter in its callback
          // to this function, so if it doesn't exist, show the OAuth dialog.
@@ -80,28 +79,14 @@ module.exports = {
                   if(err){
                      return res.send("failed to query FB user with access token");
                   }
-                  db.findUser(fbUser.id).then(function(user){
-                     if(user){
-                        req.session.userId = user._id.toString();
-                        return res.redirect(redirectTo);
-                     }
-                     user = {
-                        facebookId: fbUser.id,
-                        name: fbUser.name,
-                        email: fbUser.email
-                     };
-                     db.createUser(user).then(function(result){
-                        req.session.userId = result._id.toString();
-                        res.redirect(redirectTo);
-                     });
-                  });
+                  res.redirect(redirectTo);
                });
             }
          });
       });
 
       server.get("/auth/logout",function(req,res){
-         var redirectTo = req.query.r || '/256';
+         var redirectTo = req.query.r || '/';
          req.session.destroy();
          res.redirect(redirectTo);
       });

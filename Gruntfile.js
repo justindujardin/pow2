@@ -213,8 +213,7 @@ module.exports = function(grunt) {
          game: {
             files: [
                {src: 'web/index.less', dest: 'web/css/index.css'},
-               {src: 'web/twofiftysix.less', dest: 'web/css/twofiftysix.css'},
-               {src: 'web/fbcanvas.less', dest: 'web/css/fbcanvas.css'}
+               {src: 'web/facebook.less', dest: 'web/css/facebook.css'}
             ]
          }
       },
