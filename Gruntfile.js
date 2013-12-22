@@ -106,43 +106,6 @@ module.exports = function(grunt) {
       },
 
       /**
-       * Compile CoffeeScript
-       */
-      coffee: {
-         options:{
-            join:true
-         },
-         core: {
-            src: [
-               "src/scene/*.coffee",
-               "src/scene/objects/*.coffee",
-               "src/scene/views/*.coffee",
-               "src/tile/*.coffee",
-               "src/tile/objects/*.coffee",
-               "src/tile/features/*.coffee",
-               "src/tile/render/*.coffee"
-            ],
-            dest: 'web/<%= pkg.name %>.core.js',
-            ext: '.js'
-         },
-         game: {
-            src: [
-               "src/game/util.coffee",
-               "src/device.coffee",
-               "src/ui/view.coffee",
-               "src/ui/*.coffee",
-               "src/model/*.coffee",
-               "src/adventure/*.coffee",
-               "src/combat/*.coffee",
-               "src/game/*.coffee",
-               "src/gurk.coffee"
-            ],
-            dest: 'web/<%= pkg.name %>.js',
-            ext: '.js'
-         }
-      },
-
-      /**
        * Uglify the output javascript files in production builds.  This task is only
        * ever invoked with `heroku:production`, and simply obfuscates/minifies the existing
        * files.
@@ -157,8 +120,7 @@ module.exports = function(grunt) {
                'web/<%= pkg.name %>.typescript.js'    : ['web/<%= pkg.name %>.typescript.js'],
                'web/<%= pkg.name %>.data.js'    : ['web/<%= pkg.name %>.data.js'],
                'web/<%= pkg.name %>.maps.js'    : ['web/<%= pkg.name %>.maps.js'],
-               'web/<%= pkg.name %>.sprites.js' : ['web/<%= pkg.name %>.sprites.js'],
-               'web/<%= pkg.name %>.js'         : ['web/<%= pkg.name %>.js']
+               'web/<%= pkg.name %>.sprites.js' : ['web/<%= pkg.name %>.sprites.js']
             }
          }
       },
@@ -225,13 +187,6 @@ module.exports = function(grunt) {
          options:{
             atBegin:true,
             spawn: false
-         },
-         code: {
-            files: [
-               '<%= coffee.core.src %>',
-               '<%= coffee.game.src %>'
-            ],
-            tasks: ['coffee', 'notify:code']
          },
          typescript: {
             files: [

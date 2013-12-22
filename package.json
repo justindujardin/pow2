@@ -1,23 +1,22 @@
 {
-  "name": "eburp",
-  "version": "0.0.0",
-  "description": "E.B.U.R.P Engine ================",
+  "name": "pow2",
+  "version": "0.0.1",
+  "description": "Powers of Two - TypeScript RPG game.",
   "main": "Gruntfile.js",
   "directories": {
     "example": "examples"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/pents90/eburp.git"
+    "url": "git://github.com/justindujardin/pow2.git"
   },
-  "author": "",
-  "license": "MIT",
+  "author": "Justin DuJardin",
+  "license": "Apache2",
   "readmeFilename": "README.md",
   "dependencies": {
     "express": "3.1.x",
     "grunt": "~0.4.0",
     "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-coffee": "~0.7.0",
     "q": "~0.9.7",
     "pngjs": "~0.4.0",
     "underscore": "~1.5.2",
@@ -26,9 +25,7 @@
     "graceful-fs": "~2.0.1",
     "grunt-recess": "~0.4.0",
     "fbgraph": "~0.2.8",
-    "ejs": "~0.8.4",
-    "mongodb": "~1.3.19",
-    "request": "~2.27.0"
+    "ejs": "~0.8.4"
   },
   "scripts": {
     "test": "npm install && ./node_modules/.bin/grunt"
