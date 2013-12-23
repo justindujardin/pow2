@@ -26,6 +26,7 @@ module eburp {
       targetPoint: eburp.Point;
       tickRateMS: number = 350;
       velocity: eburp.Point = new eburp.Point(0, 0);
+      workPoint: Point = new Point(0,0);
       host: SceneObject;
       collider:CollisionComponent;
       moveFilter:(from:Point,to:Point)=>void;
@@ -140,9 +141,9 @@ module eburp {
          // Check that targetPoint != point first, because or else
          // the collision check will see be against the current position.
          if (!this.targetPoint.equal(this.host.point) && !this.collideMove(this.targetPoint.x, this.targetPoint.y)) {
+            this.workPoint.set(this.host.point);
             this.host.point.set(this.targetPoint);
-            this.endMove(this.host.point,this.targetPoint);
-
+            this.endMove(this.workPoint,this.targetPoint);
          }
 
          // Update Velocity Inputs

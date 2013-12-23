@@ -18,11 +18,20 @@
 </head>
 <body ng-controller="twoFiftySixApp">
 
-<canvas width="576" height="576" game-view>Your browser doesn't support this.</canvas>
+<div class="game-container">
+    <canvas width="576" height="576" game-view>
+        Your browser doesn't support this.
+    </canvas>
+    <div class="dialog" eight-bit-panel ng-show="dialogTitle">
+        <p>{{dialogTitle}}</p>
+        <span>{{dialogText}}</span>
+    </div>
+</div>
+
 
 <!-- Compiled Game Files -->
 <% for(var i=0; i<scripts.length; i++) {%>
-    <script type="text/javascript" src="/<%= scripts[i] %>"></script>
+<script type="text/javascript" src="/<%= scripts[i] %>"></script>
 <% } %>
 
 <script type="text/javascript" src="/pow2.data.js"></script>

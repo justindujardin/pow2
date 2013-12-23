@@ -22,7 +22,7 @@
 /// <reference path="./sceneSpatialDatabase.ts"/>
 
 module eburp {
-   export class Scene implements IProcessObject, IWorldObject {
+   export class Scene extends Backbone.Model implements IProcessObject, IWorldObject {
       id:number = _.uniqueId();
       name:string = _.uniqueId('scene');
       db:SceneSpatialDatabase = new SceneSpatialDatabase;
@@ -34,6 +34,7 @@ module eburp {
       time:number = 0;
 
       constructor(options){
+         super();
          this.options = _.defaults(options || {},{
             debugRender:false
          });

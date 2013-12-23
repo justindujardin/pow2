@@ -38,5 +38,11 @@ module eburp {
       entered(object:TileObject) {
          return true;
       }
+      exit(object:TileObject):boolean {
+         return true;
+      }
+      exited(object:TileObject) {
+         return true;
+      }
    }
 }

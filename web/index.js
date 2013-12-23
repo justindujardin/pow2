@@ -167,8 +167,21 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
       game.previousMap();
       $scope.mapName = game.getCurrentMapName();
    };
+
    game.load().then(function(){
       $scope.mapName = game.getCurrentMapName();
+      game.scene.on('dialog:entered',function(feature){
+         $scope.$apply(function(){
+            $scope.dialogText = feature.text;
+            $scope.dialogTitle = feature.title;
+         });
+      });
+      game.scene.on('dialog:exited',function(){
+         $scope.$apply(function(){
+            $scope.dialogText = null;
+            $scope.dialogTitle = null;
+         });
+      });
    });
 
 });

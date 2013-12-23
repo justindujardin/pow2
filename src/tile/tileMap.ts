@@ -20,6 +20,7 @@
 /// <reference path="../scene/sceneObject.ts" />
 /// <reference path="./tileObject.ts" />
 /// <reference path="./objects/tileFeatureObject.ts" />
+/// <reference path="./components/tileDialogComponent.ts" />
 /// <reference path="./components/tilePortalComponent.ts" />
 /// <reference path="./components/tileShipComponent.ts" />
 
@@ -60,6 +61,11 @@ module eburp {
                break;
             case 'ship':
                object.addComponent(new TileShipComponent);
+               break;
+            case 'sign':
+               if(feature.action === 'TALK'){
+                  object.addComponent(new TileDialogComponent(feature.title,feature.text));
+               }
                break;
          }
          return object;

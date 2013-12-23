@@ -61,11 +61,20 @@ module eburp {
          if(!this.collider){
             return;
          }
+
          // Successful move, collide against target point and check any new tile actions.
-         var results = [];
-         if (this.collider.collide(to.x,to.y,TileFeatureObject,results)) {
-            var obj:TileFeatureObject = results[0];
-            var comp = <TileComponent>obj.findComponent(TileComponent);
+         var fromFeature:TileFeatureObject = <TileFeatureObject>this.collider.collideFirst(from.x,from.y,TileFeatureObject);
+         if (fromFeature) {
+            var comp = <TileComponent>fromFeature.findComponent(TileComponent);
+            if(comp){
+               comp.exited(this.host);
+            }
+         }
+
+         // Successful move, collide against target point and check any new tile actions.
+         var toFeature:TileFeatureObject = <TileFeatureObject>this.collider.collideFirst(to.x,to.y,TileFeatureObject);
+         if (toFeature) {
+            var comp = <TileComponent>toFeature.findComponent(TileComponent);
             if(comp){
                comp.entered(this.host);
             }
