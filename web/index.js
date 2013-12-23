@@ -178,18 +178,17 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
    return {
       restrict: 'A',
       link: function ($scope, element, attrs) {
-         var renderCanvas = $compile('<canvas style="position:absolute;left:-9000px;top:-9000px;" width="256" height="256"></canvas>')($scope);
-         var context = renderCanvas[0].getContext("2d");
          $scope.canvas = element[0];
+         var context = $scope.canvas.getContext("2d");
          context.webkitImageSmoothingEnabled = false;
          context.mozImageSmoothingEnabled = false;
-         element.append(renderCanvas);
          game.load().then(function () {
 
             // Inspired by : http://seb.ly/2011/04/multi-touch-game-controller-in-javascripthtml5-for-ipad/
             $scope.canvas.addEventListener('touchstart', onTouchStart, false);
             $scope.canvas.addEventListener('touchmove', onTouchMove, false);
             $scope.canvas.addEventListener('touchend', onTouchEnd, false);
+            window.addEventListener('resize',onResize,false);
 
             /**
              * Game analog input
@@ -208,6 +207,13 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
                return touch;
             }
 
+            var $window = $(window);
+            function onResize(){
+               context.canvas.width = $window.width();
+               context.canvas.height = $window.height();
+               context.webkitImageSmoothingEnabled = false;
+               context.mozImageSmoothingEnabled = false;
+            }
 
             /*
              *	Touch event (e) properties :
@@ -281,6 +287,7 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
             game.tileView.tileMap = game.tileMap;
             game.scene.addView(game.tileView);
             game.tileView.trackObject(game.sprite);
+            onResize();
             console.log("READY TO GO!");
          });
       }
