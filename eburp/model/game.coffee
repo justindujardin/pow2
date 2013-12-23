@@ -188,7 +188,7 @@ class Game
             object = {}
             @features[key] = object
           object[feature.type] = feature
-          if (feature.type == "shop")
+          if (feature.type == "store")
             @populateShopItems(key, feature)
 
   populateShopItems : (key, shop) ->

@@ -196,7 +196,7 @@ XXXXXXXXXXXXXXTT:TTXXXXXXXXXXXXXX\
          action : "TALK"
       },
       {
-         type : "shop",
+         type : "store",
          name : "Suvian Armors",
          x : 30,
          y : 4,
@@ -207,7 +207,7 @@ XXXXXXXXXXXXXXTT:TTXXXXXXXXXXXXXX\
          sellRate : 30
       },
       {
-         type : "shop",
+         type : "store",
          name : "Suvian Arms",
          x : 26,
          y : 4,
@@ -218,7 +218,7 @@ XXXXXXXXXXXXXXTT:TTXXXXXXXXXXXXXX\
          sellRate : 30
       },
       {
-         type : "shop",
+         type : "store",
          name : "Suvian Artifacts",
          x : 28,
          y : 2,
@@ -229,7 +229,7 @@ XXXXXXXXXXXXXXTT:TTXXXXXXXXXXXXXX\
          sellRate : 20
       },
       {
-         type : "shop",
+         type : "store",
          name : "Ashvari Apothecary",
          x : 4,
          y : 8,

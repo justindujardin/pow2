@@ -70,7 +70,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          });
          self.scene = self.world.scene;
          self.input = self.scene.input = self.world.input;
-         self.tileMap = new eburp.TileMap(self.maps[self.currentMap]);
+         self.tileMap = new eburp.TileMap("castle");
          self.scene.addObject(self.tileMap);
 
          // Create a movable character with basic components.
@@ -170,16 +170,30 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
 
    game.load().then(function(){
       $scope.mapName = game.getCurrentMapName();
+
+      // TODO: A better system for game event handling.
+
+      // Dialog bubbles
       game.scene.on('dialog:entered',function(feature){
          $scope.$apply(function(){
-            $scope.dialogText = feature.text;
-            $scope.dialogTitle = feature.title;
+            $scope.dialog = feature;
          });
       });
       game.scene.on('dialog:exited',function(){
          $scope.$apply(function(){
-            $scope.dialogText = null;
-            $scope.dialogTitle = null;
+            $scope.dialog = null;
+         });
+      });
+
+      // Stores
+      game.scene.on('store:entered',function(feature){
+         $scope.$apply(function(){
+            $scope.store = feature;
+         });
+      });
+      game.scene.on('store:exited',function(){
+         $scope.$apply(function(){
+            $scope.store = null;
          });
       });
    });
@@ -307,3 +321,52 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
    };
 });
 
+// IconRender directive
+// ----------------------------------------------------------------------------
+twoFiftySix.app.directive('iconRender', function ($compile, game) {
+   return {
+      restrict: 'A',
+      link: function ($scope, element, attrs) {
+         // A rendering canvas
+         $scope.renderCanvas = $compile('<canvas style="position:absolute;left:-9000px;top:-9000px;" width="64" height="64"></canvas>')($scope);
+         element.append($scope.renderCanvas);
+
+         // Get the context for drawing
+         $scope.renderContext = $scope.renderCanvas[0].getContext("2d");
+         $scope.renderContext.webkitImageSmoothingEnabled = false;
+         $scope.renderContext.mozImageSmoothingEnabled = false;
+
+         $scope.$watch(attrs.feature, function(feature) {
+            if(!feature || !feature.icon){
+               return;
+            }
+            game.load().then(function () {
+               game.world.sprites.getSingleSprite(feature.icon,function(sprite){
+                  $scope.renderContext.clearRect(0, 0, 64, 64);
+                  $scope.renderContext.drawImage(sprite, 0, 0, 64, 64);
+                  $scope.$apply(function(){
+                     feature.image = $scope.renderCanvas[0].toDataURL();
+                  });
+
+               });
+            });
+         });
+      }
+   };
+});
+// DialogBubble directive
+// ----------------------------------------------------------------------------
+twoFiftySix.app.directive('dialogBubble', function () {
+   return {
+      restrict: 'E',
+      templateUrl: '/templates/dialogBubble.html'
+   };
+});
+// StoreBubble directive
+// ----------------------------------------------------------------------------
+twoFiftySix.app.directive('storeBubble', function () {
+   return {
+      restrict: 'E',
+      templateUrl: '/templates/storeBubble.html'
+   };
+});

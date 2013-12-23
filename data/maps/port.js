@@ -77,7 +77,7 @@ eburp.registerMap("port",{
          text : "We once sailed dozens of boats from this port. We traded with our kin, the Merfolk. But they have since become distrustful and aggressive, attacking all vessels that sail the Wandering Sea."
       },
       {
-         type : "shop",
+         type : "store",
          name : "Nothian Wares",
          x : 9,
          y : 9,

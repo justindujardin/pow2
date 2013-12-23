@@ -45,6 +45,7 @@ module eburp {
       name:string;
       scene: Scene;
       world: IWorld;
+      enabled:boolean;
       // The object point
       point:Point;
       // The render point that is interpolated between ticks.
@@ -53,13 +54,17 @@ module eburp {
       constructor(options?: any) {
          if(options){
             _.extend(this, _.defaults(options || {}), {
-               point: new Point(0,0)
+               point: new Point(0,0),
+               enabled:true
             });
          }
       }
 
       // Tick components.
       tick(elapsed: number) {
+         if(!this.enabled){
+            return;
+         }
          _.each(this._components,(o:any) => {
             if(o.tick){
                o.tick(elapsed);
@@ -69,6 +74,9 @@ module eburp {
 
       // Interpolate components.
       interpolateTick(elapsed: number) {
+         if(!this.enabled){
+            return;
+         }
          _.each(this._components,(o:any) => {
             if(o.interpolateTick){
                o.interpolateTick(elapsed);
@@ -91,12 +99,10 @@ module eburp {
          });
       }
       findComponents(type:Function):ISceneComponent[] {
-         return [];
+         return _.filter(this._components,(comp:ISceneComponent) => {
+            return comp instanceof type;
+         });
       }
-
-      // TODO: These two methods should make use of the component.syncComponent()
-      // methods, to allow components to maintain references to siblings on the host,
-      // and not blow up horribly when one goes away.
 
       syncComponents(){
          _.each(this._components,(comp:ISceneComponent) => {

@@ -23,6 +23,7 @@
 /// <reference path="./components/tileDialogComponent.ts" />
 /// <reference path="./components/tilePortalComponent.ts" />
 /// <reference path="./components/tileShipComponent.ts" />
+/// <reference path="./components/tileStoreComponent.ts" />
 
 module eburp {
    export class TileMap extends eburp.SceneObject {
@@ -50,6 +51,8 @@ module eburp {
          return this.removeFeaturesFromScene();
       }
 
+      // TODO jd:  Composition for this is weird.  Seems like creating specific objects for this might be better.
+      // Yes?
       getObjectForFeature(feature):TileObject {
          var options = _.extend({}, feature, {
             tileMap: this
@@ -64,8 +67,11 @@ module eburp {
                break;
             case 'sign':
                if(feature.action === 'TALK'){
-                  object.addComponent(new TileDialogComponent(feature.title,feature.text));
+                  object.addComponent(new TileDialogComponent(feature));
                }
+               break;
+            case 'store':
+               object.addComponent(new TileStoreComponent(feature.name));
                break;
          }
          return object;

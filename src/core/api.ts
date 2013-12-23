@@ -18,44 +18,45 @@
 declare var mixpanel: any;
 
 module eburp {
-    export var data = {
-        maps: {},
-        sprites: {}
-    };
+   export var data = {
+      maps: {},
+      sprites: {},
+      items:{}
+   };
 
-    /**
-     * Register data on the eburp module.
-     * @param {String} key The key to store the value under
-     * @param {*} value The value
-     */
-    export function registerData(key:string,value:any){
-        data[key] = value;
-    }
+   /**
+    * Register data on the eburp module.
+    * @param {String} key The key to store the value under
+    * @param {*} value The value
+    */
+   export function registerData(key:string,value:any){
+      data[key] = value;
+   }
 
-    export function getData(key:string):any{
-        return data[key];
-    }
+   export function getData(key:string):any{
+      return data[key];
+   }
 
-    export function registerMap(name:string,value:Object){
-        data.maps[name] = value;
-    }
-    export function registerSprites(name:string,value:Object){
-        for(var prop in value){
-            if(value.hasOwnProperty(prop)){
-                data.sprites[prop] = value[prop];
-            }
-        }
+   export function registerMap(name:string,value:Object){
+      data.maps[name] = value;
+   }
+   export function registerSprites(name:string,value:Object){
+      for(var prop in value){
+         if(value.hasOwnProperty(prop)){
+            data.sprites[prop] = value[prop];
+         }
+      }
 
-    }
-    export function getMap(name:string){
-        return data.maps[name];
-    }
-    export function getMaps(){
-        return data.maps;
-    }
-    export function track(name:string,properties:Object){
-        if(typeof mixpanel !== 'undefined'){
-            mixpanel.track(name,properties);
-        }
-    }
+   }
+   export function getMap(name:string){
+      return data.maps[name];
+   }
+   export function getMaps(){
+      return data.maps;
+   }
+   export function track(name:string,properties:Object){
+      if(typeof mixpanel !== 'undefined'){
+         mixpanel.track(name,properties);
+      }
+   }
 }

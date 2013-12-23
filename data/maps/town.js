@@ -84,7 +84,7 @@ eburp.registerMap("town",{
          cost : 15
       },
       {
-         type : "shop",
+         type : "store",
          name : "Bryarlake Market",
          x : 6,
          y : 9,

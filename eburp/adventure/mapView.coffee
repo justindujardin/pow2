@@ -19,7 +19,7 @@
 class MapView extends TileView
 
   @MAP_ICONS = {
-    "shop" : [
+    "store" : [
       ['#764F00', '#FFFF48', '#764F00'],
       ['#764F00', '#000000', '#764F00'],
       ['#764F00', '#000000', '#764F00']
@@ -72,7 +72,7 @@ class MapView extends TileView
     "alert",
     "dispatch",
     "transition",
-    "shop",
+    "store",
     "temple",
     "ship",
     "sign",
@@ -180,7 +180,7 @@ class MapView extends TileView
           continue if not feature
           icon = null
           switch (feature.type)
-            when "shop", "ship", "temple"
+            when "store", "ship", "temple"
               icon = MapView.MAP_ICONS[feature.type]
             when "transition"
               icon = MapView.TRANSITION_ICONS[feature.transitionType]
@@ -417,7 +417,7 @@ class MapView extends TileView
           name = eburp.getMap(feature.target).name
           @setBanner(name)
         @setButton(5, "GO")
-      when "shop"
+      when "store"
         @setBanner(feature.name)
         @setButton(5, "SHOP")
       when "temple"
@@ -433,7 +433,7 @@ class MapView extends TileView
         @gurk.pushView(new AlertView(@gurk, feature.icon, feature.title ? "Sign", feature.text, "sign", feature.altIcon))
       when "transition"
         @gurk.pushView(new ConfirmView(@gurk, feature.icon, "Go", feature.text, "transition", null))
-      when "shop"
+      when "store"
         @gurk.pushView(new ItemView(@gurk, null, ItemView.ACTION_BUY, feature))
       when "temple"
         if (feature.cost > @game.gold)

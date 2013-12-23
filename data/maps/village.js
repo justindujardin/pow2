@@ -53,7 +53,7 @@ MM~~~~~~~~~~~~\
          text : "Legends tell of Vezu, a powerful ancient dragon that terrorized the Three Kingdoms. It was finally defeated in the North, then entombed in a mountain that bears his name. Could the volcanic eruption have awoken the dragon within?"
       },
       {
-         type : "shop",
+         type : "store",
          name : "Trading Post",
          x : 6,
          y : 8,

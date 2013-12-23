@@ -15,24 +15,20 @@
  */
 
 /// <reference path="../tileComponent.ts" />
-
 module eburp {
-   export class TileDialogComponent extends TileComponent {
-      title:string;
-      text:string;
-      icon:string;
-      constructor(feature:any){
+   export class TileStoreComponent extends TileComponent {
+      name:string;
+      constructor(name:string){
          super();
-         this.title = feature.title;
-         this.text = feature.text;
-         this.icon = feature.icon;
+         this.name = name;
       }
       entered(object:TileObject):boolean {
-         this.host.scene.trigger('dialog:entered',this);
+         var items = _.where(eburp.data.items,{level:1,type:"weapon"});
+         this.host.scene.trigger('store:entered',this);
          return true;
       }
       exited(object:TileObject):boolean {
-         this.host.scene.trigger('dialog:exited',this);
+         this.host.scene.trigger('store:exited',this);
          return true;
       }
 

@@ -171,7 +171,7 @@ iiiiiiiiiiiiiiiiiiiiiii\
          ]
       },
       {
-         type : "shop",
+         type : "store",
          name : "Dwarven Armors",
          x : 7,
          y : 6,
@@ -182,7 +182,7 @@ iiiiiiiiiiiiiiiiiiiiiii\
          sellRate : 28
       },
       {
-         type : "shop",
+         type : "store",
          name : "Dwarven Arms",
          x : 15,
          y : 6,
@@ -193,7 +193,7 @@ iiiiiiiiiiiiiiiiiiiiiii\
          sellRate : 28
       },
       {
-         type : "shop",
+         type : "store",
          name : "Warvian Antiquities",
          x : 7,
          y : 10,
@@ -204,7 +204,7 @@ iiiiiiiiiiiiiiiiiiiiiii\
          sellRate : 25
       },
       {
-         type : "shop",
+         type : "store",
          name : "Potions and Elixirs",
          x : 15,
          y : 10,

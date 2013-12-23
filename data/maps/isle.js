@@ -60,7 +60,7 @@ AAAA::A:::::A:::T::TT~~~~\
          text : "Aye, we be stockin' none but the finest goods here on the Wanderin' Isle. Yet the trade be diminishin' in recent years."
       },
       {
-         type : "shop",
+         type : "store",
          name : "Buccaneer's Bazaar",
          x : 8,
          y : 7,
