@@ -150,7 +150,7 @@ module eburp {
         // Scene Camera updates
         // -----------------------------------------------------------------------------
         processCamera() {
-            this.cameraScale = this.screenToWorld(this.context.canvas.width) / this.camera.extent.x;
+            this.cameraScale = Math.min(4,this.screenToWorld(this.context.canvas.width) / this.camera.extent.x);
             return this;
         }
 
