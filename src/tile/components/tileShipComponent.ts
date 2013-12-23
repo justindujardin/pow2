@@ -50,6 +50,7 @@ module eburp {
          this.partySprite = object.setSprite(this.host.icon);
          this.party.passableKeys = ['shipPassable','passable'];
          this.host.visible = false;
+         this.host.enabled = false;
 
          // If we're moving from shipPassable to passable, disembark the ship.
          this.party.setMoveFilter((from:Point,to:Point) => {
@@ -71,7 +72,9 @@ module eburp {
          this.party.passableKeys = ['passable'];
          this.host.point.set(at || this.partyObject.point);
          this.host.visible = true;
+         this.host.enabled = true;
          this.partyObject = null;
+         this.party = null;
       }
    }
 }
