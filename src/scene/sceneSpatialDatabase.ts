@@ -22,53 +22,56 @@
 // Very, very simple spatial database.  Because all the game objects have
 // an extent of 1 unit, we can just do a point in rect to determine object hits.
 module eburp {
-    export class SceneSpatialDatabase {
-        private _objects: SceneObject[];
+   export class SceneSpatialDatabase {
+      private _objects: SceneObject[];
 
-        constructor() {
-            this._objects = [];
-        }
-        addSpatialObject(obj: any) { // TODO: should be eburp.SceneObject, but it doesn't have .point
-            if (obj && obj.point instanceof eburp.Point) {
-                this._objects.push(obj);
-            }
-        }
+      constructor() {
+         this._objects = [];
+      }
+      addSpatialObject(obj: any) { // TODO: should be eburp.SceneObject, but it doesn't have .point
+         if (obj && obj.point instanceof eburp.Point) {
+            this._objects.push(obj);
+         }
+      }
 
-        removeSpatialObject(obj: eburp.SceneObject) {
-            this._objects = _.filter(this._objects, function(o) {
-                return o.id !== obj.id;
-            });
-        }
+      removeSpatialObject(obj: eburp.SceneObject) {
+         this._objects = _.filter(this._objects, function(o) {
+            return o.id !== obj.id;
+         });
+      }
 
-        queryRect(rect:eburp.Rect, type, results:SceneObject[]):boolean {
-            var foundAny:boolean;
-            if (!results) {
-                throw new Error("Results array must be provided to query scene spatial database");
+      queryRect(rect:eburp.Rect, type, results:SceneObject[]):boolean {
+         var foundAny:boolean;
+         if (!results) {
+            throw new Error("Results array must be provided to query scene spatial database");
+         }
+         foundAny = false;
+         var list = this._objects;
+         var i:number,len:number,o;
+         for (i = 0, len = list.length; i < len; i++) {
+            o = list[i];
+            if (type && !(o instanceof type)) {
+               continue;
             }
-            foundAny = false;
-            var list = this._objects;
-            var i:number,len:number,o;
-            for (i = 0, len = list.length; i < len; i++) {
-                o = list[i];
-                if (type && !(o instanceof type)) {
-                    continue;
-                }
-                if (o.point && this.pointInRect(rect, o.point)) {
-                    results.push(o);
-                    foundAny = true;
-                }
+            if(o.enabled === false){
+               continue;
             }
-            return foundAny;
-        }
+            if (o.point && this.pointInRect(rect, o.point)) {
+               results.push(o);
+               foundAny = true;
+            }
+         }
+         return foundAny;
+      }
 
-        pointInRect(rect: eburp.Rect, point: eburp.Point):boolean {
-            if (point.x < rect.point.x || point.y < rect.point.y) {
-                return false;
-            }
-            if (point.x >= rect.point.x + rect.extent.x || point.y >= rect.point.y + rect.extent.y) {
-                return false;
-            }
-            return true;
-        }
-    }
+      pointInRect(rect: eburp.Rect, point: eburp.Point):boolean {
+         if (point.x < rect.point.x || point.y < rect.point.y) {
+            return false;
+         }
+         if (point.x >= rect.point.x + rect.extent.x || point.y >= rect.point.y + rect.extent.y) {
+            return false;
+         }
+         return true;
+      }
+   }
 }

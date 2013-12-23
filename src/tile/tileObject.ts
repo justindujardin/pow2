@@ -25,6 +25,7 @@ module eburp {
       renderPoint:eburp.Point;
       image: HTMLImageElement;
       visible:boolean;
+      enabled:boolean;
       tileMap:TileMap;
 
       // Game Sprite support.
@@ -39,6 +40,7 @@ module eburp {
          _.extend(this, _.defaults(options || {}, {
             point: new eburp.Point(0, 0),
             visible:true,
+            enabled:true,
             icon: "",
             iconCoords: null,
             image: null,
