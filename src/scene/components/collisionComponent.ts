@@ -22,10 +22,10 @@
 module eburp {
    export class CollisionComponent extends SceneComponent {
       collideBox: eburp.Rect = new eburp.Rect(0, 0, 0, 0);
-      collide(x:number, y:number,results=[]) {
+      collide(x:number, y:number,type:Function=SceneObject,results=[]) {
          this.collideBox.point.x = x;
          this.collideBox.point.y = y;
-         return this.host.scene.db.queryRect(this.collideBox, SceneObject, results);
+         return this.host.scene.db.queryRect(this.collideBox, type, results);
       }
   }
 }

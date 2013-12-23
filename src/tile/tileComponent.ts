@@ -35,7 +35,7 @@ module eburp {
       enter(object:TileObject):boolean {
          return true;
       }
-      exit(object:TileObject) {
+      entered(object:TileObject) {
          return true;
       }
    }

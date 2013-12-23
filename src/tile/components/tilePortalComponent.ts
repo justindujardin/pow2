@@ -26,7 +26,7 @@ module eburp {
          this.map = map;
          this.target = target;
       }
-      enter(object:TileObject):boolean {
+      entered(object:TileObject):boolean {
          if(!this.target || !this.tileMap){
             return false;
          }

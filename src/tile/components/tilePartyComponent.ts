@@ -32,7 +32,7 @@ module eburp {
          if(collision){
             for (var i = 0; i < results.length; i++) {
                var o:TileFeatureObject = results[i];
-               var comp:TileComponent = <TileComponent>o.findComponent(TileComponent)
+               var comp:TileComponent = <TileComponent>o.findComponent(TileComponent);
                if(!comp){
                   continue;
                }
@@ -57,18 +57,17 @@ module eburp {
          }
          return false;
       }
-      move(from:Point,to:Point) {
+      endMove(from:Point,to:Point) {
          if(!this.collider){
             return;
          }
-         // Successful move, collide against target point and check any new tile
-         // actions.
+         // Successful move, collide against target point and check any new tile actions.
          var results = [];
-         if (this.collider.collide(to.x,to.y,results)) {
+         if (this.collider.collide(to.x,to.y,TileFeatureObject,results)) {
             var obj:TileFeatureObject = results[0];
             var comp = <TileComponent>obj.findComponent(TileComponent);
             if(comp){
-               comp.enter(this.host);
+               comp.entered(this.host);
             }
          }
 

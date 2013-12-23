@@ -44,13 +44,14 @@ module eburp {
       /**
        * Move from one point to another.  Do any custom processing of moves here.
        */
-      move(from:Point,to:Point){ }
+      beginMove(from:Point,to:Point){ }
+      endMove(from:Point,to:Point){ }
 
       collideMove(x:number,y:number,results:SceneObject[]=[]){
          if(!this.collider){
             return false;
          }
-         return this.collider.collide(x,y,results);
+         return this.collider.collide(x,y,SceneObject,results);
       }
 
       /**
@@ -140,16 +141,19 @@ module eburp {
          // the collision check will see be against the current position.
          if (!this.targetPoint.equal(this.host.point) && !this.collideMove(this.targetPoint.x, this.targetPoint.y)) {
             this.host.point.set(this.targetPoint);
+            this.endMove(this.host.point,this.targetPoint);
+
          }
 
          // Update Velocity Inputs
          this.updateVelocity();
 
-         // If the next point won't collide then set the new target.
          this.targetPoint.set(this.host.point);
+
          if (this.velocity.isZero()) {
             return;
          }
+
          // Check to see if both axes can advance by simply going to the
          // target point.
          this.targetPoint.add(this.velocity);
@@ -170,7 +174,8 @@ module eburp {
          }
 
          // Successful move, do something.
-         var moveFn:Function = this.moveFilter || this.move;
+         // BEGIN_MOVE
+         var moveFn:Function = this.moveFilter || this.beginMove;
          moveFn(this.host.point,this.targetPoint);
       }
    }

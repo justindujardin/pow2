@@ -29,6 +29,16 @@ module eburp {
          if(!this.tileMap){
             return false;
          }
+         // Must have a party component to board a ship.  Don't want buildings
+         // and NPCs boarding ships... or do we?  [maniacal laugh]
+         this.party = <TilePartyComponent>object.findComponent(TilePartyComponent);
+         if(!this.party){
+            return false;
+         }
+         this.party.passableKeys = ['shipPassable','passable'];
+         return true;
+      }
+      entered(object:TileFeatureObject):boolean {
          return this.board(object);
       }
 
@@ -37,21 +47,13 @@ module eburp {
        * @param object
        */
       board(object:TileFeatureObject):boolean{
-         if(this.partyObject || this.party){
-            return false;
-         }
-         // Must have a party component to board a ship.  Don't want buildings
-         // and NPCs boarding ships... or do we?  [maniacal laugh]
-         this.party = <TilePartyComponent>object.findComponent(TilePartyComponent);
-         if(!this.party){
+         if(this.partyObject || !this.party){
             return false;
          }
          this.partyObject = object;
          this.partySprite = object.setSprite(this.host.icon);
-         this.party.passableKeys = ['shipPassable','passable'];
          this.host.visible = false;
          this.host.enabled = false;
-
          // If we're moving from shipPassable to passable, disembark the ship.
          this.party.setMoveFilter((from:Point,to:Point) => {
             var fromTerrain = this.tileMap.getTerrain(from.x,from.y);
@@ -64,8 +66,8 @@ module eburp {
             }
          });
          return true;
-
       }
+
       disembark(at?:Point){
          this.partyObject.setSprite(this.partySprite);
          this.party.clearMoveFilter();
