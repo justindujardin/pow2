@@ -48,12 +48,14 @@ module eburp{
          * Update the camera for this frame.
          */
         processCamera() {
-            super.processCamera();
-            this.cameraScale = Math.round(this.cameraScale);
-            if (this.tracking && this.tracking instanceof eburp.TileObject) {
-                this.camera.setCenter(this.tracking.renderPoint || this.tracking.point);
-            }
-            return this;
+           super.processCamera();
+           this.cameraScale = Math.round(this.cameraScale);
+           var canvasSize = this.screenToWorld(new Point(this.context.canvas.width,this.context.canvas.height),this.cameraScale);
+           this.camera.extent.set(canvasSize);
+           if (this.tracking && this.tracking instanceof eburp.TileObject) {
+              this.camera.setCenter(this.tracking.renderPoint || this.tracking.point);
+           }
+           return this;
         }
 
         /**
