@@ -56,6 +56,33 @@ body {
     }
   }
 
+  // Dialog
+  // --------------------------------------------------------------------------
+  .message {
+    line-height:110px;
+    .content {
+      padding-left: 80px;
+      line-height: normal;
+      text-align: center;
+      display: table;
+      width: 100%;
+    }
+    .character {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      margin-top:10px;
+    }
+    .text {
+      height: 110px;
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+      line-height: normal;
+      font-size: 14px;
+    }
+  }
+
   // Stores
   // --------------------------------------------------------------------------
   .store {
@@ -75,16 +102,12 @@ body {
         cursor: pointer;
         border:1px solid transparent;
         padding:5px;
-        font-size: 20px;
-
+        font-size: 16px;
         .item-name {
           display: inline-block;
-          min-width: 250px;
-          font-size:24px;
+          min-width: 150px;
         }
-
         .item-price {
-          font-size: 20px;
           color: #E8C627;
           min-width: 50px;
           display: inline-block;
@@ -99,25 +122,71 @@ body {
 }
 
 
-.drop-overlay {
-  padding: 0;
-  top: 0;
-  left: 0;
-  width: 100%;
-  min-height: 100%;
-  position: fixed;
-  background-color: #222222;
-  background-color: rgba(34,34,34,0.9);
-  display: none;
-  z-index: 50;
-  .ebp {
-    top: 38%;
-    left: 20px;
-    right:20px;
-    margin:auto;
-    position: absolute;
-    padding:25px;
-    font-size: 32px;
 
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+  .game-container{
+    .message {
+      .text {
+        font-size: 18px;
+      }
+    }
+  }
+
+
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+  .game-container{
+    .message {
+      .text {
+        font-size: 20px;
+      }
+    }
+    .store {
+      ul {
+        li {
+          font-size: 18px;
+          .item-name {
+            min-width: 200px;
+            font-size:20px;
+          }
+          .item-price {
+            font-size: 18px;
+            min-width: 50px;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) {
+  .game-container{
+    .message {
+      .text {
+        font-size: 24px;
+      }
+    }
+    .store {
+      ul {
+        li {
+          font-size: 20px;
+          .item-name {
+            min-width: 250px;
+            font-size:24px;
+          }
+          .item-price {
+            font-size: 20px;
+            min-width: 50px;
+          }
+        }
+      }
+    }
   }
 }
