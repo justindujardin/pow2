@@ -15,7 +15,7 @@
  */
 
 /// <reference path="../resource.ts"/>
-/// <reference path="../../typedef/underscore/underscore.d.ts"/>
+/// <reference path="../../../types/underscore/underscore.d.ts"/>
 
 module eburp {
     /**

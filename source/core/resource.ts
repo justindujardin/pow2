@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../typedef/backbone/backbone.d.ts"/>
+/// <reference path="../../types/backbone/backbone.d.ts"/>
 module eburp {
 
     export interface IResource {

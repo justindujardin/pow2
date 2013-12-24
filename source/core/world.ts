@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-///<reference path="../typedef/underscore/underscore.d.ts"/>
+///<reference path="../../types/underscore/underscore.d.ts"/>
 ///<reference path="./resourceLoader.ts"/>
 ///<reference path="./time.ts"/>
 ///<reference path="./input.ts"/>

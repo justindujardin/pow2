@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../typedef/underscore/underscore.d.ts" />
+/// <reference path="../../types/underscore/underscore.d.ts" />
 /// <reference path="../core/point.ts" />
 /// <reference path="../core/rect.ts" />
 /// <reference path="../scene/sceneObject.ts" />

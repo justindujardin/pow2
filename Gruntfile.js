@@ -79,7 +79,7 @@ module.exports = function(grunt) {
             options: {
                module: 'amd', //or commonjs
                target: 'es5', //or es3
-               base_path: 'src',
+               base_path: 'source',
                sourcemap: true,
                declaration: false
             },
@@ -95,7 +95,7 @@ module.exports = function(grunt) {
                "source/tile/features/*.ts",
                "source/tile/render/*.ts"
             ],
-            dest: 'web/game'
+            dest: 'build'
          }
       },
 
@@ -105,9 +105,9 @@ module.exports = function(grunt) {
       copy: {
          core: {
           expand: true,
-          cwd: 'source/',
-          src: 'typedef/**/*.d.ts',
-          dest: 'web/game'
+          cwd: '',
+          src: 'types/**/*.d.ts',
+          dest: 'build'
          }
       },
 
@@ -202,7 +202,7 @@ module.exports = function(grunt) {
          },
          typedefs: {
             files: [
-               'source/typedef/**'
+               'types/**'
             ],
             tasks: ['copy']
          },
@@ -283,7 +283,6 @@ module.exports = function(grunt) {
       _next();
    });
 
-   grunt.loadNpmTasks('grunt-contrib-coffee');
    grunt.loadNpmTasks('grunt-contrib-concat');
    grunt.loadNpmTasks('grunt-contrib-uglify');
    grunt.loadNpmTasks('grunt-contrib-clean');
@@ -295,10 +294,10 @@ module.exports = function(grunt) {
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-notify');
-      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'typescript', 'copy','recess']);
+      grunt.registerTask('default', ['sprites', 'concat', 'typescript', 'copy','recess']);
    }
    else {
-      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'typescript', 'copy','recess']);
-      grunt.registerTask('heroku:production', ['sprites','concat','coffee', 'typescript', 'copy','uglify', 'recess']);
+      grunt.registerTask('default', ['sprites', 'concat', 'typescript', 'copy','recess']);
+      grunt.registerTask('heroku:production', ['sprites','concat','typescript', 'copy','uglify', 'recess']);
    }
 };
