@@ -23,6 +23,12 @@ module eburp {
    export class TileComponent extends SceneComponent {
       tileMap:TileMap;
       host:TileObject;
+      data:any;
+
+      constructor(feature:any){
+         super();
+         this.data = feature;
+      }
       connectComponent():boolean{
          this.tileMap = this.host.tileMap;
          return !!this.tileMap;

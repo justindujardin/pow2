@@ -60,10 +60,10 @@ module eburp {
          var object = new TileFeatureObject(options);
          switch(feature.type){
             case 'transition':
-               object.addComponent(new TilePortalComponent(feature.target,new Point(feature.targetX,feature.targetY)));
+               object.addComponent(new TilePortalComponent(feature));
                break;
             case 'ship':
-               object.addComponent(new TileShipComponent);
+               object.addComponent(new TileShipComponent(feature));
                break;
             case 'sign':
                if(feature.action === 'TALK'){
@@ -71,7 +71,7 @@ module eburp {
                }
                break;
             case 'store':
-               object.addComponent(new TileStoreComponent(feature.name));
+               object.addComponent(new TileStoreComponent(feature));
                break;
          }
          return object;

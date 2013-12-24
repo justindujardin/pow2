@@ -21,10 +21,10 @@ module eburp {
    export class TilePortalComponent extends TileComponent {
       map:string;
       target:Point;
-      constructor(map:string,target:Point){
-         super();
-         this.map = map;
-         this.target = target;
+      constructor(feature:any){
+         super(feature);
+         this.map = feature.target;
+         this.target = new Point(feature.targetX,feature.targetY);
       }
       entered(object:TileObject):boolean {
          if(!this.target || !this.tileMap){

@@ -18,12 +18,26 @@
 module eburp {
    export class TileStoreComponent extends TileComponent {
       name:string;
-      constructor(name:string){
-         super();
-         this.name = name;
+      inventory:any[];
+      groups:string[];
+      constructor(feature:any){
+         super(feature);
+         this.name = feature.name;
+         this.groups = feature.groups;
+         this.inventory = _.filter(eburp.data.items,(item:any) => {
+            if(item.level !== feature.level){
+               return false;
+            }
+            var matchGroup:boolean = false;
+            _.each(this.groups,function(group:string){
+               if(_.indexOf(item.groups,group) !== -1){
+                  matchGroup = true;
+               }
+            });
+            return matchGroup;
+         });
       }
       entered(object:TileObject):boolean {
-         var items = _.where(eburp.data.items,{level:1,type:"weapon"});
          this.host.scene.trigger('store:entered',this);
          return true;
       }

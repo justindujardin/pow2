@@ -22,7 +22,7 @@ module eburp {
       text:string;
       icon:string;
       constructor(feature:any){
-         super();
+         super(feature);
          this.title = feature.title;
          this.text = feature.text;
          this.icon = feature.icon;
