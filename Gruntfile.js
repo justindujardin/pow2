@@ -86,7 +86,7 @@ module.exports = function(grunt) {
             src: [
                "source/core/api.ts",
                "source/core/*.ts",
-               "source/resources/*.ts",
+               "source/core/resources/*.ts",
                "source/scene/*.ts",
                "source/scene/components/*.ts",
                "source/tile/*.ts",

@@ -1,6 +1,4 @@
-source/**/*.js
-source/**/*.js.map
-source/**/*.d.ts
+build/
 
 # Generated game files
 web/eburp*.*

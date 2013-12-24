@@ -33,22 +33,12 @@ function getPageScripts(){
    var grunt = require("grunt");
    require("../Gruntfile")(grunt);
    var _ = require('underscore');
-   var app = grunt.config.get('typescript.core.src');
-   var sourceFiles = grunt.file.expand([
-      "web/game/core/api.js",
-      "web/game/core/**/*.js",
-      "web/game/scene/*.js",
-      "web/game/scene/components/*.js",
-      "web/game/tile/*.js",
-      "web/game/tile/components/*.js",
-      "web/game/tile/objects/*.js",
-      "web/game/tile/features/*.js",
-      "web/game/tile/render/*.js",
-      "web/game/**/*.js",
-      "web/game/core/resources/*.js"
-   ]);
+   var app = grunt.config.get('typescript.core');
+   var src = app.options.base_path;
+   var dst = app.dest;
+   var sourceFiles = grunt.file.expand(app.src);
    sourceFiles = _.map(sourceFiles,function(f){
-      return f.replace('web/','');
+      return f.replace(src + '/',dst + '/').replace('.ts','.js');
    });
    return sourceFiles;
 }
@@ -85,6 +75,7 @@ server.all('/fbcanvas/', function (req, res) {
 server.use(express.static(path.resolve(__dirname + "/../web")));
 server.use('/data', express.static(path.resolve(__dirname + "/../data")));
 server.use('/source', express.static(path.resolve(__dirname + "/../source")));
+server.use('/build', express.static(path.resolve(__dirname + "/../build")));
 server.use('/game', express.static(path.resolve(__dirname + "/../game")));
 server.use('/images', express.static(path.resolve(__dirname + "/../images")));
 fb.routes(server);
