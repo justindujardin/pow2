@@ -33,6 +33,7 @@ function getPageScripts(){
    var grunt = require("grunt");
    require("../Gruntfile")(grunt);
    var _ = require('underscore');
+   var app = grunt.config.get('typescript.core.src');
    var sourceFiles = grunt.file.expand([
       "web/game/core/api.js",
       "web/game/core/**/*.js",
@@ -83,7 +84,7 @@ server.all('/fbcanvas/', function (req, res) {
 
 server.use(express.static(path.resolve(__dirname + "/../web")));
 server.use('/data', express.static(path.resolve(__dirname + "/../data")));
-server.use('/src', express.static(path.resolve(__dirname + "/../src")));
+server.use('/source', express.static(path.resolve(__dirname + "/../source")));
 server.use('/game', express.static(path.resolve(__dirname + "/../game")));
 server.use('/images', express.static(path.resolve(__dirname + "/../images")));
 fb.routes(server);

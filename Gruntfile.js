@@ -65,6 +65,12 @@ module.exports = function(grunt) {
          }
       },
 
+      clean: [
+         "source/**/*.d.ts",
+         "source/**/*.js",
+         "source/**/*.js.map"
+      ],
+
       /**
        * Compile TypeScript library
        */
@@ -75,19 +81,19 @@ module.exports = function(grunt) {
                target: 'es5', //or es3
                base_path: 'src',
                sourcemap: true,
-               declaration: true
+               declaration: false
             },
             src: [
-               "src/core/api.ts",
-               "src/core/*.ts",
-               "src/resources/*.ts",
-               "src/scene/*.ts",
-               "src/scene/components/*.ts",
-               "src/tile/*.ts",
-               "src/tile/components/*.ts",
-               "src/tile/objects/*.ts",
-               "src/tile/features/*.ts",
-               "src/tile/render/*.ts"
+               "source/core/api.ts",
+               "source/core/*.ts",
+               "source/resources/*.ts",
+               "source/scene/*.ts",
+               "source/scene/components/*.ts",
+               "source/tile/*.ts",
+               "source/tile/components/*.ts",
+               "source/tile/objects/*.ts",
+               "source/tile/features/*.ts",
+               "source/tile/render/*.ts"
             ],
             dest: 'web/game'
          }
@@ -99,7 +105,7 @@ module.exports = function(grunt) {
       copy: {
          core: {
           expand: true,
-          cwd: 'src/',
+          cwd: 'source/',
           src: 'typedef/**/*.d.ts',
           dest: 'web/game'
          }
@@ -196,7 +202,7 @@ module.exports = function(grunt) {
          },
          typedefs: {
             files: [
-               'src/typedef/**'
+               'source/typedef/**'
             ],
             tasks: ['copy']
          },
@@ -280,6 +286,7 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-contrib-coffee');
    grunt.loadNpmTasks('grunt-contrib-concat');
    grunt.loadNpmTasks('grunt-contrib-uglify');
+   grunt.loadNpmTasks('grunt-contrib-clean');
    grunt.loadNpmTasks('grunt-typescript');
    grunt.loadNpmTasks('grunt-recess');
    grunt.loadNpmTasks('grunt-contrib-copy');
