@@ -64,19 +64,35 @@ body {
         margin:10px;
       }
     }
+    .inventory {
+      padding:0;
+    }
     ul {
       padding:0;
       text-align: left;
       list-style-type: none;
       li {
+        cursor: pointer;
         border:1px solid transparent;
         padding:5px;
         font-size: 20px;
-        &:hover {
-          border: 1px dashed rgba(0,0,0,0.5);
 
+        .item-name {
+          display: inline-block;
+          min-width: 250px;
+          font-size:24px;
         }
 
+        .item-price {
+          font-size: 20px;
+          color: #E8C627;
+          min-width: 50px;
+          display: inline-block;
+          text-align: center;
+        }
+        &:hover {
+          color: #0FF;
+        }
       }
     }
   }

@@ -4,10 +4,11 @@
     </div>
     <div class="inventory dialog left" eight-bit-panel ng-show="store">
         <ul>
-            <li ng-repeat="item in store.inventory">
-                <div class="character" icon-render feature="item" ng-show="item.image">
+            <li class="item" ng-repeat="item in store.inventory">
+                <div class="icon" icon-render feature="item" ng-show="item.image">
                     <img src="{{item.image}}">
-                    <span>{{item.name}}</span>
+                    <span class="item-name">{{item.name}}</span>
+                    <strong class="item-price">{{item.baseValue}}</strong>
                 </div>
             </li>
         </ul>
