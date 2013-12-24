@@ -70,7 +70,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          });
          self.scene = self.world.scene;
          self.input = self.scene.input = self.world.input;
-         self.tileMap = new eburp.TileMap("castle");
+         self.tileMap = new eburp.TileMap("town");
          self.scene.addObject(self.tileMap);
 
          // Create a movable character with basic components.

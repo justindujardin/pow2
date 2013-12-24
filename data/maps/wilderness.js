@@ -306,6 +306,13 @@ M////~~~~!=!!!=!!!~M!==~!=!!!=MM~~~~/~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~i~iiiiiS
          after : "castleStart" // This ship only appears after this variable has been set
       },
       {
+         type : "ship",
+         x : 10,
+         y : 50,
+         icon : "ship.png",
+         id : "gameStart"
+      },
+      {
          type : "encounter", // This is a fixed combat encounter
          id : "snakes", // Every encounter must have a unique ID.
          x : 13,

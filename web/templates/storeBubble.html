@@ -1,3 +1,15 @@
-<div class="dialog" eight-bit-panel ng-show="store">
-    <p>{{store.name}}</p>
+<div class="store">
+    <div class="name dialog top" eight-bit-panel ng-show="store">
+        <h1>{{store.name}}</h1>
+    </div>
+    <div class="inventory dialog left" eight-bit-panel ng-show="store">
+        <ul>
+            <li ng-repeat="item in store.inventory">
+                <div class="character" icon-render feature="item" ng-show="item.image">
+                    <img src="{{item.image}}">
+                    <span>{{item.name}}</span>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>

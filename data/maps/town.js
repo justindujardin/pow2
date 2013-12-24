@@ -83,16 +83,41 @@ eburp.registerMap("town",{
          icon : "temple.png",
          cost : 15
       },
+
+      // Stores
+      // ----------------------------------------------------------------------
       {
          type : "store",
-         name : "Bryarlake Market",
+         name : "Weapons",
+         x : 7,
+         y : 8,
+         icon : "shop.png",
+         level : 1,
+         groups : ["weapon"],
+         buyRate : 100,
+         sellRate : 35
+      },
+      {
+         type : "store",
+         name : "Armors",
+         x : 7,
+         y : 10,
+         icon : "shop.png",
+         level : 1,
+         groups : ["armor"],
+         buyRate : 100,
+         sellRate : 35
+      },
+      {
+         type : "store",
+         name : "Potions",
          x : 6,
          y : 9,
          icon : "shop.png",
-         level : 1, // This is not strict, items at neighboring levels can appear
-         groups : ["default"], // Only items with this group will appear
-         buyRate : 100, // The buy price of items will be item.baseValue * buyRate / 100
-         sellRate : 35 // The sell price of items will be item.baseValue * sellRate / 100
+         level : 1,
+         groups : ["potion","misc"],
+         buyRate : 100,
+         sellRate : 35
       },
       {
          type : "dispatch", // This dispatches the party on a quest, if they respond "YES
