@@ -66,9 +66,9 @@ module.exports = function(grunt) {
       },
 
       clean: [
-         "source/**/*.d.ts",
-         "source/**/*.js",
-         "source/**/*.js.map"
+         "server/*.d.ts",
+         "server/*.js",
+         "server/*.js.map"
       ],
 
       /**
@@ -96,6 +96,17 @@ module.exports = function(grunt) {
                "source/tile/render/*.ts"
             ],
             dest: 'build'
+         },
+         server: {
+            options: {
+               module: 'commonjs', //or commonjs
+               target: 'es5', //or es3
+               sourcemap: true,
+               declaration: false
+            },
+            src: [
+               "server/*.ts"
+            ]
          }
       },
 
@@ -237,6 +248,13 @@ module.exports = function(grunt) {
             tasks:  [ 'express', 'notify:server' ],
             options: {
                nospawn: true //Without this option specified express won't be reloaded
+            }
+         },
+         expressts: {
+            files:  [ 'server/*.ts' ],
+            tasks:  [ 'typescript:server', 'express', 'notify:server' ],
+            options: {
+               nospawn: true
             }
          }
       }
