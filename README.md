@@ -1,4 +1,4 @@
-Powers of Two
+Pow2
 ================
 [![Build Status](https://secure.travis-ci.org/justindujardin/pow2.png)](http://travis-ci.org/justindujardin/pow2)
 
