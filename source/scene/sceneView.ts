@@ -157,23 +157,6 @@ module eburp {
         // Scene rendering utilities
         // -----------------------------------------------------------------------------
 
-        // Clear the canvas context with a color
-        fillColor(color: string = "rgb(0,0,0)"): boolean {
-            if (!this.context || !this.context.canvas) {
-                return false;
-            }
-            this.context.fillStyle = color;
-            var x, y, renderPos;
-            x = y = 0;
-            if (this.camera) {
-                renderPos = this.worldToScreen(this.camera.point);
-                x = renderPos.x;
-                y = renderPos.y;
-            }
-            this.context.fillRect(x, y, this.context.canvas.width, this.context.canvas.height);
-            return true;
-        }
-
         clearRect() {
             var renderPos, x, y;
             x = y = 0;
