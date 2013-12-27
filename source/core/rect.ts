@@ -76,11 +76,11 @@ module eburp{
          if(this.point.y < rect.point.y){
             this.point.y += rect.point.y - this.point.y;
          }
-         if(this.extent.x < rect.extent.x){
-            this.extent.x = rect.extent.x;
+         if(this.point.x + this.extent.x > rect.point.x + rect.extent.x){
+            this.point.x -= ((this.point.x + this.extent.x) - (rect.point.x + rect.extent.x));
          }
-         if(this.extent.y < rect.extent.y){
-            this.extent.y = rect.extent.y;
+         if(this.point.y + this.extent.y > rect.point.y + rect.extent.y){
+            this.point.y -= ((this.point.y + this.extent.y) - (rect.point.y + rect.extent.y));
          }
 
          return this;

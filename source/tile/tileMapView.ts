@@ -68,8 +68,7 @@ module eburp{
                 return this.camera;
             }
             clipGrow = this.camera.clone().round();
-            clipRect = clipGrow.clamp(this.tileMap.bounds);
-            clipRect.round();
+            clipRect = clipGrow.clamp(this.tileMap.bounds).inflate(1).round();
             return clipRect;
         }
 
@@ -199,19 +198,19 @@ module eburp{
             screenClip = this.worldToScreen(clipRect);
             this.context.strokeRect(screenClip.point.x, screenClip.point.y, screenClip.extent.x, screenClip.extent.y);
 
-            for (x = _i = _ref = clipRect.point.x, _ref1 = clipRect.getRight(); _ref <= _ref1 ? _i < _ref1 : _i > _ref1; x = _ref <= _ref1 ? ++_i : --_i) {
-                for (y = _j = _ref2 = clipRect.point.y, _ref3 = clipRect.getBottom(); _ref2 <= _ref3 ? _j < _ref3 : _j > _ref3; y = _ref2 <= _ref3 ? ++_j : --_j) {
-                    tile = this.tileMap.getTerrain(x, y);
-                    if (tile && !tile.passable) {
-                        this.context.strokeStyle = "#FF2222";
+           this.context.strokeStyle = "#FF2222";
+           for (x = _i = _ref = clipRect.point.x, _ref1 = clipRect.getRight(); _ref <= _ref1 ? _i < _ref1 : _i > _ref1; x = _ref <= _ref1 ? ++_i : --_i) {
+               for (y = _j = _ref2 = clipRect.point.y, _ref3 = clipRect.getBottom(); _ref2 <= _ref3 ? _j < _ref3 : _j > _ref3; y = _ref2 <= _ref3 ? ++_j : --_j) {
+                   tile = this.tileMap.getTerrain(x, y);
+                   if (tile && !tile.passable) {
                         this.context.strokeRect(x * this.unitSize * this.cameraScale, y * this.unitSize * this.cameraScale, this.cameraScale * this.unitSize, this.cameraScale * this.unitSize);
                     }
                 }
             }
-            tiles = this.scene.objectsByType(eburp.TileObject);
-            _.each(tiles, function(object:any) {
-                var point;
-                _this.context.strokeStyle = "#2222FF";
+           _this.context.strokeStyle = "#2222FF";
+           tiles = this.scene.objectsByType(eburp.TileObject);
+           _.each(tiles, function(object:any) {
+               var point;
                 point = object.renderPoint || object.point;
                 return _this.context.strokeRect(point.x * _this.unitSize * _this.cameraScale, point.y * _this.unitSize * _this.cameraScale, _this.cameraScale * _this.unitSize, _this.cameraScale * _this.unitSize);
             });

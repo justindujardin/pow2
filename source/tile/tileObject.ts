@@ -17,6 +17,7 @@
 /// <reference path="../../types/underscore/underscore.d.ts" />
 /// <reference path="../core/point.ts" />
 /// <reference path="../scene/sceneObject.ts" />
+/// <reference path="../scene/components/movableComponent.ts" />
 /// <reference path="./tileMap.ts" />
 
 module eburp {
@@ -54,6 +55,10 @@ module eburp {
             this.renderPoint = point.clone();
          }
          this.point = point.clone();
+         var moveComponent = <MovableComponent>this.findComponent(MovableComponent);
+         if(moveComponent){
+            moveComponent.targetPoint.set(point);
+         }
       }
 
       /**

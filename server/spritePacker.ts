@@ -82,7 +82,7 @@ function clearFillPng(png) {
  * and a JSON file that describes where the sprites are in the sheet.
  */
 function writePackedImage(name,cells,width,height,spriteSize,scale){
-   var deferred = Q.defer<any>();
+   var deferred = <any>Q.defer<any>();
    var stream = new PNG({
       width:width,
       height:height
@@ -100,9 +100,11 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
       var metaData = {};
       _.each(cells,function(cell:any){
          var fileName = cell.file.substr(cell.file.lastIndexOf("/") + 1);
+         var index = (cell.x / (spriteSize * scale)) + (cell.y / (spriteSize * scale)) * (width / spriteSize);
          metaData[fileName] = {
             frames: cell.png.width / (spriteSize * scale),
             source: baseName,
+            index: index,
             x: cell.x,
             y: cell.y
          };

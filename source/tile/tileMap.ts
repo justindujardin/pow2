@@ -17,8 +17,10 @@
 /// <reference path="../../types/underscore/underscore.d.ts" />
 /// <reference path="../core/point.ts" />
 /// <reference path="../core/rect.ts" />
+/// <reference path="../core/resources/json.ts" />
 /// <reference path="../scene/sceneObject.ts" />
 /// <reference path="./tileObject.ts" />
+/// <reference path="./tiledMap.ts" />
 /// <reference path="./objects/tileFeatureObject.ts" />
 /// <reference path="./components/tileDialogComponent.ts" />
 /// <reference path="./components/tilePortalComponent.ts" />
@@ -27,28 +29,40 @@
 
 module eburp {
    export class TileMap extends eburp.SceneObject {
-      tiles: any; // TODO typedef
-      features: any; // TODO typedef
-      map: any;
+      resource: JSONResource;
+      map: tiled.TiledMap;
+      tileSet:any; // TODO: Tileset
+      tiles:any; // TODO: TilesetProperties
+      terrain:tiled.TileLayer;
+      features:tiled.FeaturesLayer;
+      featureHash:any = {};
       mapName: string;
       bounds: eburp.Rect;
 
 
+
       constructor(mapName: string) {
          super();
-         this.tiles = eburp.getData("tiles");
-         this.setMap(mapName);
+         this.bounds = new eburp.Rect(0, 0, 10,10);
+         this.mapName = mapName;
       }
 
       //
       // Scene Object Lifetime
       //
       onAddToScene(scene) {
-         return this.addFeaturesToScene();
+         this.load();
       }
 
       onRemoveFromScene(scene) {
          return this.removeFeaturesFromScene();
+      }
+
+      load(mapName:string=this.mapName){
+         this.world.loader.load("/maps/" + mapName + ".json", (mapResource:JSONResource) => {
+            this.mapName = mapName;
+            this.setMap(mapResource);
+         });
       }
 
       // TODO jd:  Composition for this is weird.  Seems like creating specific objects for this might be better.
@@ -60,18 +74,18 @@ module eburp {
          var object = new TileFeatureObject(options);
          switch(feature.type){
             case 'transition':
-               object.addComponent(new TilePortalComponent(feature));
+               object.addComponent(new TilePortalComponent(object));
                break;
             case 'ship':
-               object.addComponent(new TileShipComponent(feature));
+               object.addComponent(new TileShipComponent(object));
                break;
             case 'sign':
                if(feature.action === 'TALK'){
-                  object.addComponent(new TileDialogComponent(feature));
+                  object.addComponent(new TileDialogComponent(object));
                }
                break;
             case 'store':
-               object.addComponent(new TileStoreComponent(feature));
+               object.addComponent(new TileStoreComponent(object));
                break;
          }
          return object;
@@ -79,68 +93,82 @@ module eburp {
 
       // Construct
       addFeaturesToScene() {
-         // This is to prevent the old game from constructing TileFeatureObjects
-         // and adding them to the scene.  It doesn't interact with them, so don't
-         // bother.
-         var f, k, v;
-         if (!this.world) {
-            return;
-         }
-         if (!this.scene) {
-            return;
-         }
-         for (k in this.features) {
-            v = this.features[k];
-            for (k in v) {
-               f = v[k];
-               f.object = this.getObjectForFeature(f);
-               this.scene.addObject(f.object);
-            }
-         }
-         return this;
+         _.each(this.features.objects,(obj) => {
+            obj._object = this.getObjectForFeature(obj.properties);
+            this.scene.addObject(obj._object);
+         });
       }
 
       removeFeaturesFromScene() {
-         var f, k, v;
-         for (k in this.features) {
-            v = this.features[k];
-            for (k in v) {
-               f = v[k];
-               if (!f.object) {
-                  continue;
-               }
-               f.object.destroy();
-               delete f.object;
+         _.each(this.features.objects,(obj) => {
+            var featureObject:SceneObject = <SceneObject>obj._object;
+            if(featureObject){
+               featureObject.destroy();
+               delete obj._object;
             }
-         }
-         return this.features = {};
+         });
       }
 
-      setMap(mapName) {
-         var newMap;
-         newMap = eburp.getMap(mapName);
-         if (!newMap) {
+
+      buildFeatures():boolean {
+         this.removeFeaturesFromScene();
+         _.each(this.features.objects,(obj) => {
+            var key = this.featureKey(obj.x, obj.y);
+            var object = this.featureHash[key];
+            if (!object) {
+               object = this.featureHash[key] = {};
+            }
+            object[obj.type] = obj.properties;
+         });
+         if (this.scene) {
+            this.addFeaturesToScene();
+         }
+         return true;
+      }
+
+      setMap(map:JSONResource) {
+         if (!map || !map.isReady()) {
             return false;
          }
-         this.map = newMap;
-         this.mapName = mapName;
+         if(this.map){
+            this.scene.trigger("map:unloaded",this);
+            this.removeFeaturesFromScene();
+         }
+         this.resource = map;
+         this.map = new tiled.TiledMap(map.data);
          this.bounds = new eburp.Rect(0, 0, this.map.width, this.map.height);
-         return this.buildFeatures();
+         this.terrain = _.where(this.map.layers,{name:"Terrain"})[0];
+         if(!this.terrain){
+            throw new Error("Terrain layer must be present");
+         }
+         this.features = _.where(this.map.layers,{name:"Features"})[0];
+         if(!this.features){
+            throw new Error("Features object group must be present");
+         }
+         this.tileSet = _.where(this.map.tilesets,{name:"Environment"})[0];
+         if(!this.tileSet){
+            throw new Error("Environment tile set must be present");
+         }
+         this.tiles = this.tileSet.tileproperties;
+         if(!this.tiles){
+            throw new Error("Environment tileset must have properties for tile types");
+         }
+         this.buildFeatures();
+         this.scene.trigger("map:loaded",this);
+         return true;
       }
 
       getTerrain(x, y) {
-         var c, index;
-         if (!this.bounds.pointInRect(x, y)) {
+         if (!this.map || !this.tiles || !this.bounds.pointInRect(x, y)) {
             return null;
          }
-         index = y * this.map.width + x;
-         c = this.map.map.charAt(index);
-         return this.tiles[c];
+         var terrainIndex = y * this.map.width + x;
+         var tileIndex = this.terrain.data[terrainIndex];
+         return this.tiles[tileIndex];
       }
 
       getTerrainIcon(x, y) {
-         var terrain;
-         terrain = this.getTerrain(x, y);
+         var terrain = this.getTerrain(x, y);
          if (terrain) {
             return terrain.icon;
          } else {
@@ -152,42 +180,16 @@ module eburp {
          return "" + x + "_" + y;
       }
 
-      buildFeatures():boolean {
-         this.removeFeaturesFromScene();
-         if (!this.map) {
-            return false;
-         }
-         var list = this.map.features;
-         if (!list) {
-            return false;
-         }
-         for (var i = 0, len = list.length; i < len; i++) {
-            var feature = list[i];
-            var x = feature.x;
-            var y = feature.y;
-            var key = this.featureKey(x, y);
-            var object = this.features[key];
-            if (!object) {
-               object = {};
-               this.features[key] = object;
-            }
-            object[feature.type] = feature;
-         }
-         if (this.scene) {
-            this.addFeaturesToScene();
-         }
-         return true;
-      }
 
       getFeature(x, y) {
-         if (!this.features) {
+         if (!this.featureHash) {
             return {};
          }
-         return this.features[this.featureKey(x, y)];
+         return this.featureHash[this.featureKey(x, y)];
       }
 
       getFeatures() {
-         return this.features;
+         return this.featureHash;
       }
    }
 }

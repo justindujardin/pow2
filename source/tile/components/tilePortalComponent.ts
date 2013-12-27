@@ -30,9 +30,11 @@ module eburp {
          if(!this.target || !this.tileMap){
             return false;
          }
-         console.log("Transition to: " + this.map);
-         object.setPoint(this.target);
-         this.tileMap.setMap(this.map);
+         this.host.scene.once("map:loaded",(map) => {
+            console.log("Transition to: " + this.map);
+            object.setPoint(this.target);
+         });
+         this.tileMap.load(this.map);
          return true;
       }
 

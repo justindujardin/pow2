@@ -32,7 +32,8 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          "/images/environment.png",
          "/images/equipment.png",
          "/images/items.png",
-         "/images/ui.png"
+         "/images/ui.png",
+         "/maps/town.json"
       ],
       maps: _.keys(eburp.getMaps()),
       state:'Uninitialized',
@@ -68,22 +69,26 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                debugRender:false
             })
          });
-         self.scene = self.world.scene;
-         self.input = self.scene.input = self.world.input;
-         self.tileMap = new eburp.TileMap("town");
-         self.scene.addObject(self.tileMap);
-
-         // Create a movable character with basic components.
-         self.sprite = new eburp.TileObject({
-            point: self.tileMap.bounds.getCenter(),
-            icon:"party.png"
-         });
-         self.sprite.addComponent(new eburp.CollisionComponent());
-         self.sprite.addComponent(new eburp.TilePartyComponent());
-         self.scene.addObject(self.sprite);
-
          this.loader.load(this.files,function(){
             self.state = 'Loaded';
+            self.scene = self.world.scene;
+            self.input = self.scene.input = self.world.input;
+            self.scene.once('map:loaded',function(){
+               // Create a movable character with basic components.
+               self.sprite = new eburp.TileObject({
+                  point: self.tileMap.bounds.getCenter(),
+                  icon:"party.png"
+               });
+               self.sprite.addComponent(new eburp.CollisionComponent());
+               self.sprite.addComponent(new eburp.TilePartyComponent());
+               self.scene.addObject(self.sprite);
+               if(self.tileView){
+                  self.tileView.trackObject(self.sprite);
+               }
+            });
+            self.tileMap = new eburp.TileMap("town");
+            self.scene.addObject(self.tileMap);
+
             return done();
          });
          return deferred.promise;
@@ -313,7 +318,7 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
             game.tileView.camera.extent.set(10, 10);
             game.tileView.tileMap = game.tileMap;
             game.scene.addView(game.tileView);
-            game.tileView.trackObject(game.sprite);
+
             onResize();
             console.log("READY TO GO!");
          });

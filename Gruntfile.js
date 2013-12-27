@@ -65,11 +65,18 @@ module.exports = function(grunt) {
          }
       },
 
-      clean: [
-         "server/*.d.ts",
-         "server/*.js",
-         "server/*.js.map"
-      ],
+      clean: {
+         core: {
+            src: ["build/"]
+         },
+         server: {
+            src: [
+               "server/*.d.ts",
+               "server/*.js",
+               "server/*.js.map"
+            ]
+         }
+      },
 
       /**
        * Compile TypeScript library
@@ -115,10 +122,10 @@ module.exports = function(grunt) {
        */
       copy: {
          core: {
-          expand: true,
-          cwd: '',
-          src: 'types/**/*.d.ts',
-          dest: 'build'
+            expand: true,
+            cwd: '',
+            src: 'types/**/*.d.ts',
+            dest: 'build'
          }
       },
 
@@ -157,8 +164,7 @@ module.exports = function(grunt) {
                {src: 'data/textures/creatures/*.png', dest: 'web/images/creatures'},
                {src: 'data/textures/environment/*.png', dest: 'web/images/environment'},
                {src: 'data/textures/equipment/*.png', dest: 'web/images/equipment'},
-               {src: 'data/textures/items/*.png', dest: 'web/images/items'},
-               {src: 'data/textures/ui/*.png', dest: 'web/images/ui'}
+               {src: 'data/textures/items/*.png', dest: 'web/images/items'}
             ]
          }
       },
@@ -209,7 +215,7 @@ module.exports = function(grunt) {
             files: [
                '<%= typescript.core.src %>'
             ],
-            tasks: ['typescript', 'notify:code']
+            tasks: ['clean:core', 'typescript:core', 'notify:code']
          },
          typedefs: {
             files: [

@@ -49,7 +49,7 @@ module eburp {
                return true;
             }
             for(var i = 0; i < this.passableKeys.length; i++){
-               if(terrain[this.passableKeys[i]]){
+               if(terrain[this.passableKeys[i]] === true){
                   return false;
                }
             }

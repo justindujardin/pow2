@@ -20,11 +20,13 @@ module eburp {
    export class TileFeatureObject extends eburp.TileObject {
       type: string; // TODO: enum?
       passable:boolean;
+      groups:any;
       constructor(options:any) {
          super(_.omit(options || {},["x","y","type"]));
          this.point.x = options.x;
          this.point.y = options.y;
          this.type = options.type;
+         this.groups = typeof options.groups === 'string' ? JSON.parse(options.groups) : options.groups;
       }
    }
 }
