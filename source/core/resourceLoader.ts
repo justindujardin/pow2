@@ -53,10 +53,14 @@ module eburp {
       // IProcessObject implementation
       tick(elapsed:number){}
       processFrame(elapsed:number) {
-         _.each(this._doneQueue,function(done){
+         // It is important that we create a secondary reference to doneQueue here
+         // in case any of the done callbacks request resources that end up in the
+         // queue.
+         var doneQueue = this._doneQueue;
+         this._doneQueue = [];
+         _.each(doneQueue,function(done){
             done.cb(done.result);
          });
-         this._doneQueue = [];
       }
 
       registerResourceType(extension:string,type:Resource){
