@@ -16,7 +16,7 @@
 
 /// <reference path="../../tile/tileComponent.ts" />
 module pow2 {
-   export class TileStoreComponent extends TileComponent {
+   export class GameStoreComponent extends TileComponent {
       name:string;
       inventory:any[];
       groups:string[];

@@ -15,23 +15,14 @@
  */
 
 /// <reference path="../tile/tileMap.ts" />
-/// <reference path="./components/tileDialogComponent.ts" />
-/// <reference path="./components/tilePortalComponent.ts" />
-/// <reference path="./components/tileShipComponent.ts" />
-/// <reference path="./components/tileStoreComponent.ts" />
+/// <reference path="./components/gameDialogComponent.ts" />
+/// <reference path="./components/gamePortalComponent.ts" />
+/// <reference path="./components/gameShipComponent.ts" />
+/// <reference path="./components/gameStoreComponent.ts" />
 
 module pow2 {
    export class GameTileMap extends TileMap {
-      resource: JSONResource;
-      map: tiled.TiledMap;
-      tileSet:any; // TODO: Tileset
-      tiles:any; // TODO: TilesetProperties
-      terrain:tiled.TileLayer;
-      features:tiled.FeaturesLayer;
       featureHash:any = {};
-      mapName: string;
-      bounds: pow2.Rect;
-
       loaded(){
          super.loaded();
          this.buildFeatures();
@@ -40,31 +31,17 @@ module pow2 {
          this.removeFeaturesFromScene();
          super.unloaded();
       }
-
-      // TODO jd:  Composition for this is weird.  Seems like creating specific objects for this might be better.
-      // Yes?
-      getObjectForFeature(feature):TileObject {
-         var options = _.extend({}, feature, {
-            tileMap: this
-         });
-         var object = new TileFeatureObject(options);
-         switch(feature.type){
-            case 'transition':
-               object.addComponent(new TilePortalComponent(object));
-               break;
-            case 'ship':
-               object.addComponent(new TileShipComponent(object));
-               break;
-            case 'sign':
-               if(feature.action === 'TALK'){
-                  object.addComponent(new TileDialogComponent(object));
-               }
-               break;
-            case 'store':
-               object.addComponent(new TileStoreComponent(object));
-               break;
+      featureKey(x, y) {
+         return "" + x + "_" + y;
+      }
+      getFeature(x, y) {
+         if (!this.featureHash) {
+            return {};
          }
-         return object;
+         return this.featureHash[this.featureKey(x, y)];
+      }
+      getFeatures() {
+         return this.featureHash;
       }
 
       // Construct
@@ -102,19 +79,31 @@ module pow2 {
          return true;
       }
 
-      featureKey(x, y) {
-         return "" + x + "_" + y;
-      }
-
-      getFeature(x, y) {
-         if (!this.featureHash) {
-            return {};
+      // TODO jd:  Composition for this is weird.  Seems like creating specific objects for this might be better.
+      // Yes?
+      getObjectForFeature(feature):TileObject {
+         var options = _.extend({}, feature, {
+            tileMap: this
+         });
+         var object = new TileFeatureObject(options);
+         switch(feature.type){
+            case 'transition':
+               object.addComponent(new GamePortalComponent(object));
+               break;
+            case 'ship':
+               object.addComponent(new GameShipComponent(object));
+               break;
+            case 'sign':
+               if(feature.action === 'TALK'){
+                  object.addComponent(new GameDialogComponent(object));
+               }
+               break;
+            case 'store':
+               object.addComponent(new GameStoreComponent(object));
+               break;
          }
-         return this.featureHash[this.featureKey(x, y)];
+         return object;
       }
 
-      getFeatures() {
-         return this.featureHash;
-      }
    }
 }

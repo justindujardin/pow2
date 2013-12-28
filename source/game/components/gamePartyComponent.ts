@@ -14,17 +14,12 @@
  limitations under the License.
  */
 
-/// <reference path="../../core/point.ts" />
-/// <reference path="../../core/rect.ts" />
-/// <reference path="../../scene/sceneObject.ts" />
 /// <reference path="../../scene/components/movableComponent.ts" />
-/// <reference path="../objects/tileFeatureObject.ts" />
-/// <reference path="../../tile/tileMap.ts" />
+/// <reference path="../objects/gameFeatureObject.ts" />
 /// <reference path="../../tile/tileComponent.ts" />
-/// <reference path="./tilePortalComponent.ts" />
 
 module pow2 {
-   export class TilePartyComponent extends MovableComponent {
+   export class GamePartyComponent extends MovableComponent {
       host:TileObject;
       passableKeys:string[] = ['passable'];
       collideMove(x:number, y:number,results=[]) {

@@ -14,25 +14,27 @@
  limitations under the License.
  */
 
+/// <reference path="../../core/point.ts" />
 /// <reference path="../../tile/tileComponent.ts" />
 
 module pow2 {
-   export class TileDialogComponent extends TileComponent {
-      title:string;
-      text:string;
-      icon:string;
+   export class GamePortalComponent extends TileComponent {
+      map:string;
+      target:Point;
       constructor(feature:any){
          super(feature);
-         this.title = feature.title;
-         this.text = feature.text;
-         this.icon = feature.icon;
+         this.map = feature.target;
+         this.target = new Point(feature.targetX,feature.targetY);
       }
       entered(object:TileObject):boolean {
-         this.host.scene.trigger('dialog:entered',this);
-         return true;
-      }
-      exited(object:TileObject):boolean {
-         this.host.scene.trigger('dialog:exited',this);
+         if(!this.target || !this.tileMap){
+            return false;
+         }
+         this.host.scene.once("map:loaded",(map) => {
+            console.log("Transition to: " + this.map);
+            object.setPoint(this.target);
+         });
+         this.tileMap.load(this.map);
          return true;
       }
 

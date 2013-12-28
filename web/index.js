@@ -80,7 +80,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                   icon:"party.png"
                });
                self.sprite.addComponent(new pow2.CollisionComponent());
-               self.sprite.addComponent(new pow2.TilePartyComponent());
+               self.sprite.addComponent(new pow2.GamePartyComponent());
                self.scene.addObject(self.sprite);
                if(self.tileView){
                   self.tileView.trackObject(self.sprite);
