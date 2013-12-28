@@ -57,5 +57,13 @@ module pow2{
          }
          return this;
       }
+
+      debugRender(debugStrings: string[] = []) {
+         var party = this.scene.objectByComponent(pow2.GamePartyComponent);
+         if (party) {
+            debugStrings.push("Party: (" + party.point.x + "," + party.point.y + ")");
+         }
+         super.debugRender(debugStrings);
+      }
    }
 }

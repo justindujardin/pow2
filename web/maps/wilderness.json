@@ -7579,22 +7579,23 @@
                "x": 112,
                "y": 368
             },
-            {
-               "height": 16,
-               "name": "ship.png",
-               "properties": {
-                  "type": "ship",
-                  "x": 10,
-                  "y": 50,
-                  "icon": "ship.png",
-                  "id": "gameStart"
-               },
-               "type": "ship",
-               "visible": true,
-               "width": 16,
-               "x": 160,
-               "y": 800
-            },
+             {
+              "height":16,
+              "name":"ship.png",
+              "properties":
+                 {
+                  "icon":"ship.png",
+                  "id":"gameStart",
+                  "type":"ship",
+                  "x":"84",
+                  "y":"49"
+                 },
+              "type":"ship",
+              "visible":true,
+              "width":16,
+              "x":1344,
+              "y":784
+             },
             {
                "height": 16,
                "name": "snake.png",

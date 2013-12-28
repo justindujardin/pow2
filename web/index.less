@@ -89,10 +89,13 @@ body {
     .name {
       h1 {
         margin:10px;
+        font-size: 24px;
       }
     }
     .inventory {
       padding:0;
+      left:10px;
+      right:10px;
     }
     ul {
       padding:0;
@@ -103,18 +106,31 @@ body {
         border:1px solid transparent;
         padding:5px;
         font-size: 16px;
-        .item-name {
-          display: inline-block;
-          min-width: 150px;
-        }
-        .item-price {
-          color: #E8C627;
-          min-width: 50px;
-          display: inline-block;
-          text-align: center;
+        .icon {
+          line-height: 28px;
+          img {
+            width:32px;
+          }
+          .item-name {
+            display: inline-block;
+            min-width: 150px;
+            max-width: 160px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .item-price {
+            display: inline-block;
+            float: right;
+            min-width: 50px;
+            color: #E8C627;
+            text-align: right;
+            margin-right: 5px;
+          }
         }
         &:hover {
-          color: #0FF;
+          * {
+            color:#0FF !important;
+          }
         }
       }
     }
@@ -129,14 +145,29 @@ body {
 /* Small devices (tablets, 768px and up) */
 @media (min-width: @screen-sm-min) {
   .game-container{
+    .store {
+      .name {
+        h1 {
+          font-size: 32px;
+        }
+      }
+      .inventory{
+        right:auto;
+        width:50%;
+        .item-name {
+          max-width: 160px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+        }
+      }
+    }
     .message {
       .text {
         font-size: 18px;
       }
     }
   }
-
-
 }
 
 /* Medium devices (desktops, 992px and up) */

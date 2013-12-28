@@ -33,7 +33,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          "/images/equipment.png",
          "/images/items.png",
          "/images/ui.png",
-         "/maps/town.json"
+         "/maps/isle.json"
       ],
       maps: _.keys(pow2.getMaps()),
       state:'Uninitialized',
@@ -86,7 +86,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                   self.tileView.trackObject(self.sprite);
                }
             });
-            self.tileMap = new pow2.GameTileMap("town");
+            self.tileMap = new pow2.GameTileMap("isle");
             self.scene.addObject(self.tileMap);
 
             return done();
@@ -274,7 +274,6 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
                   var touch = e.changedTouches[i];
                   if (game.world.input.touchId < 0) {
                      game.world.input.touchId = touch.identifier;
-                     console.log(touch.gameX);
                      game.world.input.touchStart.set(touch.gameX, touch.gameY);
                      game.world.input.touchCurrent.copy(game.world.input.touchStart);
                      game.world.input.analogVector.zero();
@@ -318,6 +317,9 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
             game.tileView.camera.extent.set(10, 10);
             game.tileView.tileMap = game.tileMap;
             game.scene.addView(game.tileView);
+            if(game.sprite){
+               game.tileView.trackObject(game.sprite);
+            }
 
             onResize();
             console.log("READY TO GO!");
