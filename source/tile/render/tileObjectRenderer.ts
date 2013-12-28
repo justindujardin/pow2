@@ -22,9 +22,9 @@
 /// <reference path="../tileObject.ts" />
 /// <reference path="../tileMap.ts" />
 
-module eburp {
-   export class TileObjectRenderer extends eburp.SceneObjectRenderer {
-      render(object:any, view:eburp.SceneView) { // TODO: typedef
+module pow2 {
+   export class TileObjectRenderer extends pow2.SceneObjectRenderer {
+      render(object:any, view:pow2.SceneView) { // TODO: typedef
 
          if (!object.image || !object.visible) {
             return;

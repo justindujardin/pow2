@@ -25,7 +25,7 @@
 // A view that renders a `Scene`.
 //
 // You should probably only have one of these per Canvas that you render to.
-module eburp {
+module pow2 {
     export class SceneView implements IWorldObject {
         static UNIT: number = 16;
 
@@ -34,7 +34,7 @@ module eburp {
         $el: JQuery;
         canvas:HTMLCanvasElement;
         context: CanvasRenderingContext2D;
-        camera: eburp.Rect;
+        camera: Rect;
         cameraScale: number;
         unitSize: number;
         _sheets: any;
@@ -57,7 +57,7 @@ module eburp {
             var contextAny: any = this.context;
             contextAny.webkitImageSmoothingEnabled = false;
             contextAny.mozImageSmoothingEnabled = false;
-            this.camera = new eburp.Rect(0, 0, 9, 9);
+            this.camera = new Rect(0, 0, 9, 9);
             this.cameraScale = 1.0;
             this.unitSize = SceneView.UNIT;
             this._sheets = {};
@@ -173,46 +173,46 @@ module eburp {
 
         // Convert a Rect/Point/Number from world coordinates (game units) to
         // screen coordinates (pixels)
-        worldToScreen(value: eburp.Point, scale?): eburp.Point;
+        worldToScreen(value: Point, scale?): Point;
 
-        worldToScreen(value: eburp.Rect, scale?): eburp.Rect;
+        worldToScreen(value: Rect, scale?): Rect;
 
         worldToScreen(value: number, scale?): number;
 
         worldToScreen(value: any, scale = this.cameraScale): any {
-            if (value instanceof eburp.Rect) {
-                return new eburp.Rect(value).scale(this.unitSize * scale);
-            } else if (value instanceof eburp.Point) {
-                return new eburp.Point(value).multiply(this.unitSize * scale);
+            if (value instanceof Rect) {
+                return new Rect(value).scale(this.unitSize * scale);
+            } else if (value instanceof Point) {
+                return new Point(value).multiply(this.unitSize * scale);
             }
             return value * (this.unitSize * scale);
         }
 
         // Convert a Rect/Point/Number from screen coordinates (pixels) to
         // game world coordinates (game unit sizes)
-        screenToWorld(value: eburp.Point, scale?): eburp.Point;
+        screenToWorld(value: Point, scale?): Point;
 
-        screenToWorld(value: eburp.Rect, scale?): eburp.Rect;
+        screenToWorld(value: Rect, scale?): Rect;
 
         screenToWorld(value: number, scale?): number;
 
         screenToWorld(value: any, scale = 1): any {
-            if (value instanceof eburp.Rect) {
-                return new eburp.Rect(value).scale(1 / (this.unitSize * scale));
-            } else if (value instanceof eburp.Point) {
-                return new eburp.Point(value).multiply(1 / (this.unitSize * scale));
+            if (value instanceof Rect) {
+                return new Rect(value).scale(1 / (this.unitSize * scale));
+            } else if (value instanceof Point) {
+                return new Point(value).multiply(1 / (this.unitSize * scale));
             }
             return value * (1 / (this.unitSize * scale));
         }
 
         // Convert a mouse event on the canvas into coordinates that are relative
         // to it, rather than to the DOM.
-        canvasMousePosition(event: MouseEvent): eburp.Point {
+        canvasMousePosition(event: MouseEvent): Point {
             var canoffset, x, y;
             canoffset = $(event.currentTarget).offset();
             x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
             y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
-            return new eburp.Point(x, y);
+            return new Point(x, y);
         }
 
         // Animations

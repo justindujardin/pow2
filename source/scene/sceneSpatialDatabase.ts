@@ -21,26 +21,26 @@
 
 // Very, very simple spatial database.  Because all the game objects have
 // an extent of 1 unit, we can just do a point in rect to determine object hits.
-module eburp {
+module pow2 {
    export class SceneSpatialDatabase {
       private _objects: SceneObject[];
 
       constructor() {
          this._objects = [];
       }
-      addSpatialObject(obj: any) { // TODO: should be eburp.SceneObject, but it doesn't have .point
-         if (obj && obj.point instanceof eburp.Point) {
+      addSpatialObject(obj: any) { // TODO: should be pow2.SceneObject, but it doesn't have .point
+         if (obj && obj.point instanceof pow2.Point) {
             this._objects.push(obj);
          }
       }
 
-      removeSpatialObject(obj: eburp.SceneObject) {
+      removeSpatialObject(obj: pow2.SceneObject) {
          this._objects = _.filter(this._objects, function(o) {
             return o.id !== obj.id;
          });
       }
 
-      queryRect(rect:eburp.Rect, type, results:SceneObject[]):boolean {
+      queryRect(rect:pow2.Rect, type, results:SceneObject[]):boolean {
          var foundAny:boolean;
          if (!results) {
             throw new Error("Results array must be provided to query scene spatial database");
@@ -64,7 +64,7 @@ module eburp {
          return foundAny;
       }
 
-      pointInRect(rect: eburp.Rect, point: eburp.Point):boolean {
+      pointInRect(rect: pow2.Rect, point: pow2.Point):boolean {
          if (point.x < rect.point.x || point.y < rect.point.y) {
             return false;
          }

@@ -19,7 +19,7 @@
 /// <reference path="./tileObject.ts" />
 /// <reference path="./tileMap.ts" />
 
-module eburp {
+module pow2 {
    export class TileComponent extends SceneComponent {
       tileMap:TileMap;
       host:TileObject;

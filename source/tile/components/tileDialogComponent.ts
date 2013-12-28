@@ -16,7 +16,7 @@
 
 /// <reference path="../tileComponent.ts" />
 
-module eburp {
+module pow2 {
    export class TileDialogComponent extends TileComponent {
       title:string;
       text:string;

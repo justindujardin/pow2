@@ -20,12 +20,12 @@
 /// <reference path="../sceneComponent.ts" />
 /// <reference path="./collisionComponent.ts" />
 
-module eburp {
+module pow2 {
    export class MovableComponent extends TickedComponent {
       _elapsed: number = 0;
-      targetPoint: eburp.Point;
+      targetPoint: pow2.Point;
       tickRateMS: number = 350;
-      velocity: eburp.Point = new eburp.Point(0, 0);
+      velocity: pow2.Point = new pow2.Point(0, 0);
       workPoint: Point = new Point(0,0);
       host: SceneObject;
       collider:CollisionComponent;
@@ -77,7 +77,7 @@ module eburp {
          // Touch movement
          var hasCreateTouch = (<any>document).createTouch;
          var worldInput = <any>this.host.world.input;
-         if (hasCreateTouch && worldInput.analogVector instanceof eburp.Point) {
+         if (hasCreateTouch && worldInput.analogVector instanceof pow2.Point) {
             this.velocity.x = 0;
             if (worldInput.analogVector.x < -20) {
                this.velocity.x -= 1;
@@ -93,17 +93,17 @@ module eburp {
          } else {
             // Keyboard input
             this.velocity.x = 0;
-            if (worldInput.keyDown(eburp.KeyCode.LEFT)) {
+            if (worldInput.keyDown(pow2.KeyCode.LEFT)) {
                this.velocity.x -= 1;
             }
-            if (worldInput.keyDown(eburp.KeyCode.RIGHT)) {
+            if (worldInput.keyDown(pow2.KeyCode.RIGHT)) {
                this.velocity.x += 1;
             }
             this.velocity.y = 0;
-            if (worldInput.keyDown(eburp.KeyCode.UP)) {
+            if (worldInput.keyDown(pow2.KeyCode.UP)) {
                this.velocity.y -= 1;
             }
-            if (worldInput.keyDown(eburp.KeyCode.DOWN)) {
+            if (worldInput.keyDown(pow2.KeyCode.DOWN)) {
                this.velocity.y += 1;
             }
          }

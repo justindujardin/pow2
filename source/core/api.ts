@@ -17,7 +17,7 @@
 // Tell the typescript compiler that mixpanel is defined elsewhere.
 declare var mixpanel: any;
 
-module eburp {
+module pow2 {
    export var data = {
       maps: {},
       sprites: {},
@@ -25,7 +25,7 @@ module eburp {
    };
 
    /**
-    * Register data on the eburp module.
+    * Register data on the pow2 module.
     * @param {String} key The key to store the value under
     * @param {*} value The value
     */

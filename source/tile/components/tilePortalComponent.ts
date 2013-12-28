@@ -17,7 +17,7 @@
 /// <reference path="../../core/point.ts" />
 /// <reference path="../tileComponent.ts" />
 
-module eburp {
+module pow2 {
    export class TilePortalComponent extends TileComponent {
       map:string;
       target:Point;

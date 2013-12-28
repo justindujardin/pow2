@@ -287,7 +287,7 @@ module.exports = function(grunt) {
                      grunt.file.write(index, JSON.stringify(exec.src,null,3));
                      grunt.log.writeln('File "' + index + '" created.');
                   }
-                  jsChunks.push("eburp.registerSprites('" + result.name + "'," + JSON.stringify(result.meta,null,3)+");");
+                  jsChunks.push("pow2.registerSprites('" + result.name + "'," + JSON.stringify(result.meta,null,3)+");");
                   return _next();
                },function(error){
                   grunt.log.error('Failed to create spritesheet: ' + error);
@@ -318,10 +318,10 @@ module.exports = function(grunt) {
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-notify');
-      grunt.registerTask('default', ['sprites', 'concat', 'typescript', 'copy','recess']);
+      grunt.registerTask('default', ['concat', 'typescript', 'copy','recess','sprites']);
    }
    else {
-      grunt.registerTask('default', ['sprites', 'concat', 'typescript', 'copy','recess']);
-      grunt.registerTask('heroku:production', ['sprites','concat','typescript', 'copy','uglify', 'recess']);
+      grunt.registerTask('default', ['concat', 'typescript', 'copy','recess','sprites']);
+      grunt.registerTask('heroku:production', ['concat','typescript', 'copy','uglify', 'recess','sprites']);
    }
 };

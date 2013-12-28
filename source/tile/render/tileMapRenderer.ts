@@ -18,9 +18,9 @@
 /// <reference path="../tileObject.ts" />
 /// <reference path="../tileMap.ts" />
 
-module eburp {
-   export class TileMapRenderer extends eburp.SceneObjectRenderer {
-      render(object:TileMap, view:eburp.SceneView) {
+module pow2 {
+   export class TileMapRenderer extends pow2.SceneObjectRenderer {
+      render(object:TileMap, view:pow2.SceneView) {
          var x, y, _i, _j, _ref, _ref1, _ref2, _ref3;
          var clipRect:Rect = (<any>view).getCameraClip();
          for (x = _i = _ref = clipRect.point.x, _ref1 = clipRect.getRight(); _ref <= _ref1 ? _i < _ref1 : _i > _ref1; x = _ref <= _ref1 ? ++_i : --_i) {
@@ -38,7 +38,7 @@ module eburp {
        */
       _validateImage(view:SceneView,name) {
          var desc, image;
-         desc = eburp.data.sprites[name];
+         desc = pow2.data.sprites[name];
          if (!desc) {
             throw new Error("Missing sprite data for: " + name);
          }
@@ -54,7 +54,7 @@ module eburp {
          if (!this._validateImage(view,icon)) {
             return;
          }
-         desc = eburp.data.sprites[icon];
+         desc = pow2.data.sprites[icon];
          image = view.getSpriteSheet(desc.source);
          if (!image || !image.isReady()) {
             return;

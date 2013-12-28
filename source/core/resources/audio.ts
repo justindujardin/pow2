@@ -17,7 +17,7 @@
 /// <reference path="../resource.ts"/>
 /// <reference path="../../../types/underscore/underscore.d.ts"/>
 
-module eburp {
+module pow2 {
     /**
      * Use jQuery to load an Audio resource.
      */

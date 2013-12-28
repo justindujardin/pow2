@@ -19,7 +19,7 @@
 ///<reference path="./resources/image.ts"/>
 ///<reference path="./resourceLoader.ts"/>
 ///<reference path="./world.ts"/>
-module eburp {
+module pow2 {
     export class SpriteRender implements IWorldObject {
         canvas:HTMLCanvasElement = null;
         context:CanvasRenderingContext2D = null;
@@ -46,7 +46,7 @@ module eburp {
         }
 
         getSingleSprite(spriteName:string,done:Function=(result:any)=>{}):ImageResource{
-            var coords:any = eburp.data.sprites[spriteName];
+            var coords:any = pow2.data.sprites[spriteName];
             return this.getSpriteSheet(coords.source,(image:ImageResource)=>{
                 this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
                 this.context.drawImage(image.data,coords.x,coords.y,this.canvas.width,this.canvas.height,0,0,this.canvas.width,this.canvas.height);
@@ -63,7 +63,7 @@ module eburp {
         }
 
         getSpriteCoords(name:string) {
-            var desc = eburp.data.sprites[name];
+            var desc = pow2.data.sprites[name];
             if(!desc){
                 throw new Error("Missing sprite data for: " + name);
             }

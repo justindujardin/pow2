@@ -16,7 +16,7 @@
 
 ///<reference path="../../types/underscore/underscore.d.ts"/>
 
-module eburp {
+module pow2 {
    export interface IProcessObject {
       id:number;
       tick(elapsed:number);

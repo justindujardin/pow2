@@ -16,7 +16,7 @@
 
 /// <reference path="../resource.ts"/>
 
-module eburp {
+module pow2 {
     /**
      * Use html image element to load an image resource.
      */

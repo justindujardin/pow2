@@ -1,5 +1,5 @@
 //// Creatures
-eburp.registerData("creatures",[
+pow2.registerData("creatures",[
    //// LEVEL 1
    {
       "name" : "Goblin Scout",

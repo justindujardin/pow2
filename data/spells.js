@@ -1,7 +1,7 @@
 //// Spells
 
 // Hero spells (just mage spells in this demo game)
-eburp.registerData("spells",[
+pow2.registerData("spells",[
    {
       "name" : "Life Touch",
       "who" : "mage", // Can either be a general class like 'mage' or a specific class like 'Wizard'

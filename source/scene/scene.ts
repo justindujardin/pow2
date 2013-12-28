@@ -21,7 +21,7 @@
 /// <reference path="./sceneView.ts"/>
 /// <reference path="./sceneSpatialDatabase.ts"/>
 
-module eburp {
+module pow2 {
    export class Scene extends Backbone.Model implements IProcessObject, IWorldObject {
       id:number = _.uniqueId();
       name:string = _.uniqueId('scene');

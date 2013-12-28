@@ -35,11 +35,11 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          "/images/ui.png",
          "/maps/town.json"
       ],
-      maps: _.keys(eburp.getMaps()),
+      maps: _.keys(pow2.getMaps()),
       state:'Uninitialized',
       listeners:[],
       currentMap: 15,
-      loader: new eburp.ResourceLoader(),
+      loader: new pow2.ResourceLoader(),
       load : function(){
          var deferred = $q.defer();
          var self = this;
@@ -63,8 +63,8 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             return deferred.promise;
          }
          this.state = 'Loading';
-         self.world = new eburp.World({
-            scene:new eburp.Scene({
+         self.world = new pow2.World({
+            scene:new pow2.Scene({
                autoStart: true,
                debugRender:false
             })
@@ -75,18 +75,18 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             self.input = self.scene.input = self.world.input;
             self.scene.once('map:loaded',function(){
                // Create a movable character with basic components.
-               self.sprite = new eburp.TileObject({
+               self.sprite = new pow2.TileObject({
                   point: self.tileMap.bounds.getCenter(),
                   icon:"party.png"
                });
-               self.sprite.addComponent(new eburp.CollisionComponent());
-               self.sprite.addComponent(new eburp.TilePartyComponent());
+               self.sprite.addComponent(new pow2.CollisionComponent());
+               self.sprite.addComponent(new pow2.TilePartyComponent());
                self.scene.addObject(self.sprite);
                if(self.tileView){
                   self.tileView.trackObject(self.sprite);
                }
             });
-            self.tileMap = new eburp.TileMap("town");
+            self.tileMap = new pow2.TileMap("town");
             self.scene.addObject(self.tileMap);
 
             return done();
@@ -108,14 +108,14 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
       setMapSpawn: function(mapName) {
          this.tileMap.setMap(mapName);
          var map = this.tileMap.map;
-         var point = new eburp.Point(0,0);
+         var point = new pow2.Point(0,0);
          if(map){
             point = this.tileMap.bounds.getCenter();
             if(map.features){
                // Pick the first transition feature we find.
                var feature = _.where(this.tileMap.map.features,{type : "transition"})[0];
                if(feature){
-                  point = new eburp.Point(feature.x,feature.y);
+                  point = new pow2.Point(feature.x,feature.y);
                }
             }
             this.sprite.setPoint(point);
@@ -227,9 +227,9 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
              */
             var halfWidth = $scope.canvas.width / 2;
             game.world.input.touchId = -1;
-            game.world.input.touchCurrent = new eburp.Point(0, 0);
-            game.world.input.touchStart = new eburp.Point(0, 0);
-            game.world.input.analogVector = new eburp.Point(0, 0);
+            game.world.input.touchCurrent = new pow2.Point(0, 0);
+            game.world.input.touchStart = new pow2.Point(0, 0);
+            game.world.input.analogVector = new pow2.Point(0, 0);
 
 
             function relTouch(touch){
@@ -314,7 +314,7 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
                }
             }
 
-            game.tileView = new eburp.TileMapView(element[0], game.loader);
+            game.tileView = new pow2.TileMapView(element[0], game.loader);
             game.tileView.camera.extent.set(10, 10);
             game.tileView.tileMap = game.tileMap;
             game.scene.addView(game.tileView);

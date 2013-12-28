@@ -1,9 +1,9 @@
 /// <reference path="SceneObject.ts" />
 /// <reference path="SceneView.ts" />
 
-module eburp {
+module pow2 {
     export class SceneObjectRenderer {
-        render(object:eburp.SceneObject, view:eburp.SceneView) {
+        render(object:pow2.SceneObject, view:pow2.SceneView) {
 
         }
     }

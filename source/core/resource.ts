@@ -15,7 +15,7 @@
  */
 
 /// <reference path="../../types/backbone/backbone.d.ts"/>
-module eburp {
+module pow2 {
 
     export interface IResource {
         url:string;
@@ -33,7 +33,7 @@ module eburp {
      * Supports loading and success/error handling. A resource is immediately
      * available, and you can get at its internal data when `isReady` returns true.
      *
-     * eburp.Resource objects trigger 'ready' and 'failed' events during their initial loading.
+     * pow2.Resource objects trigger 'ready' and 'failed' events during their initial loading.
      */
     export class Resource extends Backbone.Model implements IResource{
         url:string = null;

@@ -1,5 +1,5 @@
 //// Descriptions of afflictions/enhancements
-eburp.registerData("effects",{
+pow2.registerData("effects",{
    "Berserk" : "While berserk, combatant will get an extra attack (or spell cast) each turn.",
    "Blessed" : "A blessed combatant suffers less damage from physical and magical attacks.",
    "Blinded" : "When blinded, combatant's chance to hit when attack will be reduced considerably.",

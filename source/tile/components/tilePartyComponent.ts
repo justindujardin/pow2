@@ -23,7 +23,7 @@
 /// <reference path="../tileComponent.ts" />
 /// <reference path="./tilePortalComponent.ts" />
 
-module eburp {
+module pow2 {
    export class TilePartyComponent extends MovableComponent {
       host:TileObject;
       passableKeys:string[] = ['passable'];
@@ -42,7 +42,7 @@ module eburp {
                }
             }
          }
-         var map = this.host.scene.objectByType(eburp.TileMap);
+         var map = this.host.scene.objectByType(pow2.TileMap);
          if (map) {
             var terrain = map.getTerrain(x,y);
             if (!terrain) {

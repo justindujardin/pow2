@@ -16,7 +16,7 @@
 
 ///<reference path='./point.ts' />
 
-module eburp{
+module pow2{
    export class Rect {
       point: Point;
       extent: Point;

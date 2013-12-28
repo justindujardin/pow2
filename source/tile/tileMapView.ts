@@ -21,7 +21,7 @@
 /// <reference path="./render/tileMapRenderer.ts"/>
 /// <reference path="./components/tilePartyComponent.ts"/>
 
-module eburp{
+module pow2{
    export class TileMapView extends SceneView {
       objectRenderer:TileObjectRenderer = new TileObjectRenderer;
       mapRenderer:TileMapRenderer = new TileMapRenderer;
@@ -43,7 +43,7 @@ module eburp{
          this.cameraScale = Math.round(this.cameraScale);
          var canvasSize = this.screenToWorld(new Point(this.context.canvas.width,this.context.canvas.height),this.cameraScale);
          this.camera.extent.set(canvasSize);
-         if (this.tracking && this.tracking instanceof eburp.TileObject) {
+         if (this.tracking && this.tracking instanceof pow2.TileObject) {
             this.camera.setCenter(this.tracking.renderPoint || this.tracking.point);
          }
          return this;
@@ -51,7 +51,7 @@ module eburp{
 
       /*
        * Get the camera clip rectangle.
-       * @returns {eburp.Rect}
+       * @returns {pow2.Rect}
        */
       getCameraClip() {
          var clipGrow, clipRect;
@@ -99,11 +99,11 @@ module eburp{
        * Render the TileObjects in the scene.
        */
       renderObjects(clipRect, elapsed) {
-         var objects = this.scene.objectsByType(eburp.TileFeatureObject);
+         var objects = this.scene.objectsByType(pow2.TileFeatureObject);
          _.each(objects, (object) => {
             return this.objectRenderer.render(object,this);
          });
-         var player = this.scene.objectByComponent(eburp.TilePartyComponent);
+         var player = this.scene.objectByComponent(pow2.TilePartyComponent);
          if (player) {
             this.objectRenderer.render(player, this);
          }
@@ -165,13 +165,12 @@ module eburp{
        * Render Tile debug information. TODO: This is horrendous.
        */
       debugRender(debugStrings: string[] = []) {
-         var clipRect, player, screenClip, tile, tiles, x, y, _i, _j, _ref, _ref1, _ref2, _ref3,
-            _this = this;
+         var clipRect, player, screenClip, tile, tiles, x, y, _i, _j, _ref, _ref1, _ref2, _ref3;
          if (debugStrings == null) {
             debugStrings = [];
          }
          debugStrings.push("Camera: (" + this.camera.point.x + "," + this.camera.point.y + ")");
-         player = this.scene.objectByComponent(eburp.TilePartyComponent);
+         player = this.scene.objectByComponent(pow2.TilePartyComponent);
          if (player) {
             debugStrings.push("Player: (" + player.point.x + "," + player.point.y + ")");
          }
@@ -190,12 +189,12 @@ module eburp{
                }
             }
          }
-         _this.context.strokeStyle = "#2222FF";
-         tiles = this.scene.objectsByType(eburp.TileObject);
-         _.each(tiles, function(object:any) {
+         this.context.strokeStyle = "#2222FF";
+         tiles = this.scene.objectsByType(pow2.TileObject);
+         _.each(tiles, (object:any) => {
             var point;
             point = object.renderPoint || object.point;
-            return _this.context.strokeRect(point.x * _this.unitSize * _this.cameraScale, point.y * _this.unitSize * _this.cameraScale, _this.cameraScale * _this.unitSize, _this.cameraScale * _this.unitSize);
+            return this.context.strokeRect(point.x * this.unitSize * this.cameraScale, point.y * this.unitSize * this.cameraScale, this.cameraScale * this.unitSize, this.cameraScale * this.unitSize);
          });
          return super.debugRender(debugStrings);
       }

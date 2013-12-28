@@ -1,5 +1,5 @@
 //// Character Classes
-eburp.registerData("characters",[
+pow2.registerData("characters",[
    {
       "name" : "Sir Rugnar",
       "job" : "Knight",

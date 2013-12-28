@@ -19,9 +19,9 @@
 /// <reference path="../../scene/sceneObject.ts" />
 /// <reference path="../../scene/sceneComponent.ts" />
 
-module eburp {
+module pow2 {
    export class CollisionComponent extends SceneComponent {
-      collideBox: eburp.Rect = new eburp.Rect(0, 0, 0, 0);
+      collideBox: pow2.Rect = new pow2.Rect(0, 0, 0, 0);
       resultsArray: any[] = [];
       collide(x:number, y:number,type:Function=SceneObject,results=[]) {
          this.collideBox.point.x = x;

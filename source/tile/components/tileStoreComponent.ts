@@ -15,7 +15,7 @@
  */
 
 /// <reference path="../tileComponent.ts" />
-module eburp {
+module pow2 {
    export class TileStoreComponent extends TileComponent {
       name:string;
       inventory:any[];
@@ -24,7 +24,7 @@ module eburp {
          super(feature);
          this.name = feature.name;
          this.groups = feature.groups;
-         this.inventory = _.filter(eburp.data.items,(item:any) => {
+         this.inventory = _.filter(pow2.data.items,(item:any) => {
             if(item.level !== feature.level){
                return false;
             }

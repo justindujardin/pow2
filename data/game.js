@@ -1,15 +1,15 @@
 // Music played during splash screen and character creation
-eburp.registerData('splashMusic', "gurkdemo7");
+pow2.registerData('splashMusic', "gurkdemo7");
 // Music played when in combat
-eburp.registerData('combatMusic', "gurkdemo8");
+pow2.registerData('combatMusic', "gurkdemo8");
 // Music played while on a ship
-eburp.registerData('boatMusic', "gurkdemo7");
+pow2.registerData('boatMusic', "gurkdemo7");
 // Registered dynamically.
-eburp.registerData('maps', {});
-eburp.registerData('sprites', {});
+pow2.registerData('maps', {});
+pow2.registerData('sprites', {});
 
 //// Experience Levels, the amount of experience required to be at a certain level.
-eburp.registerData('levels',[
+pow2.registerData('levels',[
    0,      // 1
    60,     // 2
    200,    // 3
@@ -25,7 +25,7 @@ eburp.registerData('levels',[
 
 
 //// Level transformations, each row adds to 10,000, maps level -> level for encounters, treasure, etc.
-eburp.registerData('levelTransformations',[
+pow2.registerData('levelTransformations',[
    [9300, 500, 199, 1, 0, 0, 0, 0, 0, 0, 0, 0],           // 1
    [4650, 4650, 500, 199, 1, 0, 0, 0, 0, 0, 0, 0],        // 2
    [3100, 3100, 3100, 500, 199, 1, 0, 0, 0, 0, 0, 0],     // 3
@@ -40,7 +40,7 @@ eburp.registerData('levelTransformations',[
    [0, 0, 0, 0, 0, 0, 80, 364, 956, 2850, 2850, 2900]     // 12
 ]);
 //// Chance out of 1000 of a creature having treasure, by level. Anything over level 10 is the same as level 10.
-eburp.registerData('treasureChance',[
+pow2.registerData('treasureChance',[
    150,
    160,
    180,
@@ -54,7 +54,7 @@ eburp.registerData('treasureChance',[
 ]);
 
 //// Game Start Data
-eburp.registerData('start', [ // This is where you start after making a new game
+pow2.registerData('start', [ // This is where you start after making a new game
    {
       map : "town",
       x : 12,

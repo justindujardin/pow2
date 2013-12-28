@@ -20,7 +20,7 @@
 /// <reference path="./world.ts"/>
 /// <reference path="./time.ts"/>
 
-module eburp {
+module pow2 {
    /**
     * A basic resource loading manager.  Supports a basic api for requesting
     * resources by file name, and uses registered types and file extension

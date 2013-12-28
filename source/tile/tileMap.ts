@@ -27,8 +27,8 @@
 /// <reference path="./components/tileShipComponent.ts" />
 /// <reference path="./components/tileStoreComponent.ts" />
 
-module eburp {
-   export class TileMap extends eburp.SceneObject {
+module pow2 {
+   export class TileMap extends pow2.SceneObject {
       resource: JSONResource;
       map: tiled.TiledMap;
       tileSet:any; // TODO: Tileset
@@ -37,13 +37,13 @@ module eburp {
       features:tiled.FeaturesLayer;
       featureHash:any = {};
       mapName: string;
-      bounds: eburp.Rect;
+      bounds: pow2.Rect;
 
 
 
       constructor(mapName: string) {
          super();
-         this.bounds = new eburp.Rect(0, 0, 10,10);
+         this.bounds = new pow2.Rect(0, 0, 10,10);
          this.mapName = mapName;
       }
 
@@ -136,7 +136,7 @@ module eburp {
          }
          this.resource = map;
          this.map = new tiled.TiledMap(map.data);
-         this.bounds = new eburp.Rect(0, 0, this.map.width, this.map.height);
+         this.bounds = new pow2.Rect(0, 0, this.map.width, this.map.height);
          this.terrain = _.where(this.map.layers,{name:"Terrain"})[0];
          if(!this.terrain){
             throw new Error("Terrain layer must be present");

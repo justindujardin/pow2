@@ -16,7 +16,7 @@
 
 /// <reference path="../resource.ts"/>
 
-module eburp {
+module pow2 {
     /**
      * Use jQuery to load a JSON file from a URL.
      */

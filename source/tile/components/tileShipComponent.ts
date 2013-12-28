@@ -19,7 +19,7 @@
 /// <reference path="../tileObject.ts" />
 /// <reference path="./tilePartyComponent.ts" />
 
-module eburp {
+module pow2 {
    export class TileShipComponent extends TileComponent {
       host:TileFeatureObject;
       party:TilePartyComponent;

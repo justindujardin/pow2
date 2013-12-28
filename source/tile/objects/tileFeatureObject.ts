@@ -16,8 +16,8 @@
 
 /// <reference path="../tileObject.ts" />
 
-module eburp {
-   export class TileFeatureObject extends eburp.TileObject {
+module pow2 {
+   export class TileFeatureObject extends pow2.TileObject {
       type: string; // TODO: enum?
       passable:boolean;
       groups:any;

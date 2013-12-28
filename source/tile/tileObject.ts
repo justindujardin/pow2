@@ -20,10 +20,10 @@
 /// <reference path="../scene/components/movableComponent.ts" />
 /// <reference path="./tileMap.ts" />
 
-module eburp {
-   export class TileObject extends eburp.SceneObject {
-      point: eburp.Point;
-      renderPoint:eburp.Point;
+module pow2 {
+   export class TileObject extends pow2.SceneObject {
+      point: pow2.Point;
+      renderPoint:pow2.Point;
       image: HTMLImageElement;
       visible:boolean;
       enabled:boolean;
@@ -39,7 +39,7 @@ module eburp {
       constructor(options?: any) {
          super(options);
          _.extend(this, _.defaults(options || {}, {
-            point: new eburp.Point(0, 0),
+            point: new pow2.Point(0, 0),
             visible:true,
             enabled:true,
             icon: "",

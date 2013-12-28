@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-module eburp {
+module pow2 {
     export enum KeyCode {
         UP = 38,
         DOWN = 40,

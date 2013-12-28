@@ -21,7 +21,7 @@
 ///<reference path="./spriteRender.ts"/>
 
 
-module eburp {
+module pow2 {
 
     export interface IWorld {
         loader:ResourceLoader;

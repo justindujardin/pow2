@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-module eburp{
+module pow2{
     export class Point {
         x:number=0;
         y:number=0;

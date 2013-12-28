@@ -2,7 +2,7 @@ $(document).ready(function () {
    _.delay(function () {
       // Arg, why!?
       window.App = {
-         gurk: new eburp.Gurk($("#screenID")[0])
+         gurk: new pow2.Gurk($("#screenID")[0])
       };
       App.gurk.notResponsive = true;
    }, 500);
