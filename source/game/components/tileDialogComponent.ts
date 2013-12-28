@@ -14,19 +14,28 @@
  limitations under the License.
  */
 
-/// <reference path="../tileObject.ts" />
+/// <reference path="../../tile/tileComponent.ts" />
 
 module pow2 {
-   export class TileFeatureObject extends pow2.TileObject {
-      type: string; // TODO: enum?
-      passable:boolean;
-      groups:any;
-      constructor(options:any) {
-         super(_.omit(options || {},["x","y","type"]));
-         this.point.x = options.x;
-         this.point.y = options.y;
-         this.type = options.type;
-         this.groups = typeof options.groups === 'string' ? JSON.parse(options.groups) : options.groups;
+   export class TileDialogComponent extends TileComponent {
+      title:string;
+      text:string;
+      icon:string;
+      constructor(feature:any){
+         super(feature);
+         this.title = feature.title;
+         this.text = feature.text;
+         this.icon = feature.icon;
       }
+      entered(object:TileObject):boolean {
+         this.host.scene.trigger('dialog:entered',this);
+         return true;
+      }
+      exited(object:TileObject):boolean {
+         this.host.scene.trigger('dialog:exited',this);
+         return true;
+      }
+
    }
+
 }

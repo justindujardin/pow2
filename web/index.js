@@ -86,7 +86,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                   self.tileView.trackObject(self.sprite);
                }
             });
-            self.tileMap = new pow2.TileMap("town");
+            self.tileMap = new pow2.GameTileMap("town");
             self.scene.addObject(self.tileMap);
 
             return done();
@@ -314,7 +314,7 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
                }
             }
 
-            game.tileView = new pow2.TileMapView(element[0], game.loader);
+            game.tileView = new pow2.GameMapView(element[0], game.loader);
             game.tileView.camera.extent.set(10, 10);
             game.tileView.tileMap = game.tileMap;
             game.scene.addView(game.tileView);

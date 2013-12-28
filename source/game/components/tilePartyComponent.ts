@@ -19,8 +19,8 @@
 /// <reference path="../../scene/sceneObject.ts" />
 /// <reference path="../../scene/components/movableComponent.ts" />
 /// <reference path="../objects/tileFeatureObject.ts" />
-/// <reference path="../tileMap.ts" />
-/// <reference path="../tileComponent.ts" />
+/// <reference path="../../tile/tileMap.ts" />
+/// <reference path="../../tile/tileComponent.ts" />
 /// <reference path="./tilePortalComponent.ts" />
 
 module pow2 {

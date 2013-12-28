@@ -19,7 +19,6 @@
 /// <reference path="./tileMap.ts"/>
 /// <reference path="./render/tileObjectRenderer.ts"/>
 /// <reference path="./render/tileMapRenderer.ts"/>
-/// <reference path="./components/tilePartyComponent.ts"/>
 
 module pow2{
    export class TileMapView extends SceneView {
@@ -91,22 +90,6 @@ module pow2{
          }
          var clipRect:Rect = this.getCameraClip();
          this.mapRenderer.render(this.tileMap,this);
-         this.renderObjects(clipRect, elapsed);
-         return this;
-      }
-
-      /*
-       * Render the TileObjects in the scene.
-       */
-      renderObjects(clipRect, elapsed) {
-         var objects = this.scene.objectsByType(pow2.TileFeatureObject);
-         _.each(objects, (object) => {
-            return this.objectRenderer.render(object,this);
-         });
-         var player = this.scene.objectByComponent(pow2.TilePartyComponent);
-         if (player) {
-            this.objectRenderer.render(player, this);
-         }
          return this;
       }
 
@@ -170,10 +153,6 @@ module pow2{
             debugStrings = [];
          }
          debugStrings.push("Camera: (" + this.camera.point.x + "," + this.camera.point.y + ")");
-         player = this.scene.objectByComponent(pow2.TilePartyComponent);
-         if (player) {
-            debugStrings.push("Player: (" + player.point.x + "," + player.point.y + ")");
-         }
          clipRect = this.getCameraClip();
          debugStrings.push("Clip: (" + clipRect.point.x + "," + clipRect.point.y + ") (" + clipRect.extent.x + "," + clipRect.extent.y + ")");
          this.context.strokeStyle = "#FF2222";

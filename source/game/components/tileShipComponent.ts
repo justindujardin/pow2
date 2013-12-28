@@ -15,8 +15,8 @@
  */
 
 /// <reference path="../../core/point.ts" />
-/// <reference path="../tileComponent.ts" />
-/// <reference path="../tileObject.ts" />
+/// <reference path="../../tile/tileComponent.ts" />
+/// <reference path="../../tile/tileObject.ts" />
 /// <reference path="./tilePartyComponent.ts" />
 
 module pow2 {

@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../tileComponent.ts" />
+/// <reference path="../../tile/tileComponent.ts" />
 module pow2 {
    export class TileStoreComponent extends TileComponent {
       name:string;

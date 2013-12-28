@@ -21,25 +21,17 @@
 /// <reference path="../scene/sceneObject.ts" />
 /// <reference path="./tileObject.ts" />
 /// <reference path="./tiledMap.ts" />
-/// <reference path="./objects/tileFeatureObject.ts" />
-/// <reference path="./components/tileDialogComponent.ts" />
-/// <reference path="./components/tilePortalComponent.ts" />
-/// <reference path="./components/tileShipComponent.ts" />
-/// <reference path="./components/tileStoreComponent.ts" />
 
 module pow2 {
-   export class TileMap extends pow2.SceneObject {
+   export class TileMap extends SceneObject {
       resource: JSONResource;
       map: tiled.TiledMap;
       tileSet:any; // TODO: Tileset
       tiles:any; // TODO: TilesetProperties
       terrain:tiled.TileLayer;
       features:tiled.FeaturesLayer;
-      featureHash:any = {};
       mapName: string;
       bounds: pow2.Rect;
-
-
 
       constructor(mapName: string) {
          super();
@@ -54,10 +46,6 @@ module pow2 {
          this.load();
       }
 
-      onRemoveFromScene(scene) {
-         return this.removeFeaturesFromScene();
-      }
-
       load(mapName:string=this.mapName){
          this.world.loader.load("/maps/" + mapName + ".json", (mapResource:JSONResource) => {
             this.mapName = mapName;
@@ -65,65 +53,12 @@ module pow2 {
          });
       }
 
-      // TODO jd:  Composition for this is weird.  Seems like creating specific objects for this might be better.
-      // Yes?
-      getObjectForFeature(feature):TileObject {
-         var options = _.extend({}, feature, {
-            tileMap: this
-         });
-         var object = new TileFeatureObject(options);
-         switch(feature.type){
-            case 'transition':
-               object.addComponent(new TilePortalComponent(object));
-               break;
-            case 'ship':
-               object.addComponent(new TileShipComponent(object));
-               break;
-            case 'sign':
-               if(feature.action === 'TALK'){
-                  object.addComponent(new TileDialogComponent(object));
-               }
-               break;
-            case 'store':
-               object.addComponent(new TileStoreComponent(object));
-               break;
-         }
-         return object;
+      loaded(){
+         this.scene.trigger("map:loaded",this);
       }
 
-      // Construct
-      addFeaturesToScene() {
-         _.each(this.features.objects,(obj) => {
-            obj._object = this.getObjectForFeature(obj.properties);
-            this.scene.addObject(obj._object);
-         });
-      }
-
-      removeFeaturesFromScene() {
-         _.each(this.features.objects,(obj) => {
-            var featureObject:SceneObject = <SceneObject>obj._object;
-            if(featureObject){
-               featureObject.destroy();
-               delete obj._object;
-            }
-         });
-      }
-
-
-      buildFeatures():boolean {
-         this.removeFeaturesFromScene();
-         _.each(this.features.objects,(obj) => {
-            var key = this.featureKey(obj.x, obj.y);
-            var object = this.featureHash[key];
-            if (!object) {
-               object = this.featureHash[key] = {};
-            }
-            object[obj.type] = obj.properties;
-         });
-         if (this.scene) {
-            this.addFeaturesToScene();
-         }
-         return true;
+      unloaded(){
+         this.scene.trigger("map:unloaded",this);
       }
 
       setMap(map:JSONResource) {
@@ -131,8 +66,7 @@ module pow2 {
             return false;
          }
          if(this.map){
-            this.scene.trigger("map:unloaded",this);
-            this.removeFeaturesFromScene();
+            this.unloaded();
          }
          this.resource = map;
          this.map = new tiled.TiledMap(map.data);
@@ -153,8 +87,7 @@ module pow2 {
          if(!this.tiles){
             throw new Error("Environment tileset must have properties for tile types");
          }
-         this.buildFeatures();
-         this.scene.trigger("map:loaded",this);
+         this.loaded();
          return true;
       }
 
@@ -174,22 +107,6 @@ module pow2 {
          } else {
             return null;
          }
-      }
-
-      featureKey(x, y) {
-         return "" + x + "_" + y;
-      }
-
-
-      getFeature(x, y) {
-         if (!this.featureHash) {
-            return {};
-         }
-         return this.featureHash[this.featureKey(x, y)];
-      }
-
-      getFeatures() {
-         return this.featureHash;
       }
    }
 }
