@@ -100,7 +100,8 @@ module pow2 {
          return this.tiles[tileIndex];
       }
 
-      getTerrainIcon(x, y) {
+      // TODO: Calculate texture with two array index lookups like in getTerrain.  No need for FN call here.
+      getTerrainTexture(x, y) {
          var terrain = this.getTerrain(x, y);
          if (terrain) {
             return terrain.icon;

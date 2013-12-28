@@ -148,28 +148,30 @@ module pow2{
        * Render Tile debug information. TODO: This is horrendous.
        */
       debugRender(debugStrings: string[] = []) {
-         var clipRect, player, screenClip, tile, tiles, x, y, _i, _j, _ref, _ref1, _ref2, _ref3;
+         var clipRect:Rect = this.getCameraClip();
+         var screenClip:Rect = this.worldToScreen(clipRect);
          if (debugStrings == null) {
             debugStrings = [];
          }
          debugStrings.push("Camera: (" + this.camera.point.x + "," + this.camera.point.y + ")");
-         clipRect = this.getCameraClip();
          debugStrings.push("Clip: (" + clipRect.point.x + "," + clipRect.point.y + ") (" + clipRect.extent.x + "," + clipRect.extent.y + ")");
          this.context.strokeStyle = "#FF2222";
-         screenClip = this.worldToScreen(clipRect);
          this.context.strokeRect(screenClip.point.x, screenClip.point.y, screenClip.extent.x, screenClip.extent.y);
-
+         var xEnd = clipRect.getRight();
+         var yEnd = clipRect.getBottom();
          this.context.strokeStyle = "#FF2222";
-         for (x = _i = _ref = clipRect.point.x, _ref1 = clipRect.getRight(); _ref <= _ref1 ? _i < _ref1 : _i > _ref1; x = _ref <= _ref1 ? ++_i : --_i) {
-            for (y = _j = _ref2 = clipRect.point.y, _ref3 = clipRect.getBottom(); _ref2 <= _ref3 ? _j < _ref3 : _j > _ref3; y = _ref2 <= _ref3 ? ++_j : --_j) {
-               tile = this.tileMap.getTerrain(x, y);
+         for(var x = clipRect.point.x; x < xEnd; x++){
+            for(var y = clipRect.point.y; y < yEnd; y++){
+               var tile = this.tileMap.getTerrain(x, y);
                if (tile && !tile.passable) {
-                  this.context.strokeRect(x * this.unitSize * this.cameraScale, y * this.unitSize * this.cameraScale, this.cameraScale * this.unitSize, this.cameraScale * this.unitSize);
+                  continue;
                }
+               this.context.strokeRect(x * this.unitSize * this.cameraScale, y * this.unitSize * this.cameraScale, this.cameraScale * this.unitSize, this.cameraScale * this.unitSize);
             }
          }
+
          this.context.strokeStyle = "#2222FF";
-         tiles = this.scene.objectsByType(pow2.TileObject);
+         var tiles:TileObject[] = this.scene.objectsByType(pow2.TileObject);
          _.each(tiles, (object:any) => {
             var point;
             point = object.renderPoint || object.point;

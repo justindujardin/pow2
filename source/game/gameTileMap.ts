@@ -85,7 +85,7 @@ module pow2 {
          var options = _.extend({}, feature, {
             tileMap: this
          });
-         var object = new TileFeatureObject(options);
+         var object = new GameFeatureObject(options);
          switch(feature.type){
             case 'transition':
                object.addComponent(new GamePortalComponent(object));

@@ -47,7 +47,7 @@ module pow2{
        */
       renderFrame(elapsed) {
          super.renderFrame(elapsed);
-         var objects = this.scene.objectsByType(pow2.TileFeatureObject);
+         var objects = this.scene.objectsByType(pow2.GameFeatureObject);
          _.each(objects, (object) => {
             return this.objectRenderer.render(object,this);
          });

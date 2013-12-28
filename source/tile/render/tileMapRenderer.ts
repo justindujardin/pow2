@@ -16,61 +16,37 @@
 
 /// <reference path="../../scene/sceneObjectRenderer.ts" />
 /// <reference path="../tileObject.ts" />
+/// <reference path="../tileMapView.ts" />
 /// <reference path="../tileMap.ts" />
 
 module pow2 {
    export class TileMapRenderer extends pow2.SceneObjectRenderer {
-      render(object:TileMap, view:pow2.SceneView) {
-         var x, y, _i, _j, _ref, _ref1, _ref2, _ref3;
-         var clipRect:Rect = (<any>view).getCameraClip();
-         for (x = _i = _ref = clipRect.point.x, _ref1 = clipRect.getRight(); _ref <= _ref1 ? _i < _ref1 : _i > _ref1; x = _ref <= _ref1 ? ++_i : --_i) {
-            for (y = _j = _ref2 = clipRect.point.y, _ref3 = clipRect.getBottom(); _ref2 <= _ref3 ? _j < _ref3 : _j > _ref3; y = _ref2 <= _ref3 ? ++_j : --_j) {
-               var tile = object.getTerrainIcon(x, y);
-               if (tile) {
-                  this.drawTile(view,tile, x, y);
+      render(object:TileMap, view:TileMapView) {
+         var sheets = {};
+         var clipRect:Rect = view.getCameraClip();
+         var xEnd = clipRect.getRight();
+         var yEnd = clipRect.getBottom();
+         for(var x = clipRect.point.x; x < xEnd; x++){
+            for(var y = clipRect.point.y; y < yEnd; y++){
+               var texture = object.getTerrainTexture(x, y);
+               if (texture) {
+                  // Keep this inline to avoid more function calls.
+                  var desc, dstH, dstW, dstX, dstY, image, srcH, srcW, srcX, srcY;
+                  desc = pow2.data.sprites[texture];
+                  image = sheets[desc.source] = sheets[desc.source] || view.getSpriteSheet(desc.source);
+                  if (!image || !image.isReady()) {
+                     continue;
+                  }
+                  srcX = desc.x;
+                  srcY = desc.y;
+                  srcW = srcH = view.unitSize;
+                  dstX = x * view.unitSize * view.cameraScale;
+                  dstY = y * view.unitSize * view.cameraScale;
+                  dstW = dstH = view.unitSize * view.cameraScale;
+                  view.context.drawImage(image.data, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
                }
             }
          }
       }
-
-      /*
-       * Asynchronous sprite resource validation.
-       */
-      _validateImage(view:SceneView,name) {
-         var desc, image;
-         desc = pow2.data.sprites[name];
-         if (!desc) {
-            throw new Error("Missing sprite data for: " + name);
-         }
-         image = view.getSpriteSheet(desc.source);
-         if (!image) {
-            throw new Error("Missing image from source: " + desc.source);
-         }
-         return image.isReady();
-      }
-
-      drawTile(view:SceneView,icon:string, x:number, y:number, scale:number=1) {
-         var desc, dstH, dstW, dstX, dstY, image, srcH, srcW, srcX, srcY;
-         if (!this._validateImage(view,icon)) {
-            return;
-         }
-         desc = pow2.data.sprites[icon];
-         image = view.getSpriteSheet(desc.source);
-         if (!image || !image.isReady()) {
-            return;
-         }
-         srcX = desc.x;
-         srcY = desc.y;
-         srcW = srcH = view.unitSize;
-         dstX = x * view.unitSize * view.cameraScale * scale;
-         dstY = y * view.unitSize * view.cameraScale * scale;
-         dstW = dstH = view.unitSize * view.cameraScale * scale;
-         if (scale !== 1.0) {
-            dstX += (dstW * scale) / 4;
-            dstY += (dstH * scale) / 4;
-         }
-         view.context.drawImage(image.data, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
-      }
-
    }
 }

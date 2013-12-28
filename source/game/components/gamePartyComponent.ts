@@ -26,7 +26,7 @@ module pow2 {
          var collision:boolean = super.collideMove(x,y,results);
          if(collision){
             for (var i = 0; i < results.length; i++) {
-               var o:TileFeatureObject = results[i];
+               var o:GameFeatureObject = results[i];
                var comp:TileComponent = <TileComponent>o.findComponent(TileComponent);
                if(!comp){
                   continue;
@@ -58,7 +58,7 @@ module pow2 {
          }
 
          // Successful move, collide against target point and check any new tile actions.
-         var fromFeature:TileFeatureObject = <TileFeatureObject>this.collider.collideFirst(from.x,from.y,TileFeatureObject);
+         var fromFeature:GameFeatureObject = <GameFeatureObject>this.collider.collideFirst(from.x,from.y,GameFeatureObject);
          if (fromFeature) {
             var comp = <TileComponent>fromFeature.findComponent(TileComponent);
             if(comp){
@@ -67,7 +67,7 @@ module pow2 {
          }
 
          // Successful move, collide against target point and check any new tile actions.
-         var toFeature:TileFeatureObject = <TileFeatureObject>this.collider.collideFirst(to.x,to.y,TileFeatureObject);
+         var toFeature:GameFeatureObject = <GameFeatureObject>this.collider.collideFirst(to.x,to.y,GameFeatureObject);
          if (toFeature) {
             var comp = <TileComponent>toFeature.findComponent(TileComponent);
             if(comp){

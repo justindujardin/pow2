@@ -17,7 +17,7 @@
 /// <reference path="../../tile/tileObject.ts" />
 
 module pow2 {
-   export class TileFeatureObject extends pow2.TileObject {
+   export class GameFeatureObject extends pow2.TileObject {
       type: string; // TODO: enum?
       passable:boolean;
       groups:any;

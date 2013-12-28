@@ -21,11 +21,11 @@
 
 module pow2 {
    export class GameShipComponent extends TileComponent {
-      host:TileFeatureObject;
+      host:GameFeatureObject;
       party:GamePartyComponent;
       partyObject:TileObject;
       partySprite:string;
-      enter(object:TileFeatureObject):boolean {
+      enter(object:GameFeatureObject):boolean {
          if(!this.tileMap){
             return false;
          }
@@ -38,7 +38,7 @@ module pow2 {
          this.party.passableKeys = ['shipPassable','passable'];
          return true;
       }
-      entered(object:TileFeatureObject):boolean {
+      entered(object:GameFeatureObject):boolean {
          return this.board(object);
       }
 
@@ -46,7 +46,7 @@ module pow2 {
        * Board an object onto the ship component.  This will modify the
        * @param object
        */
-      board(object:TileFeatureObject):boolean{
+      board(object:GameFeatureObject):boolean{
          if(this.partyObject || !this.party){
             return false;
          }
