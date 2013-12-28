@@ -65,41 +65,70 @@ module.exports = function(grunt) {
          }
       },
 
-      /**
-       * Compile CoffeeScript
-       */
-      coffee: {
-         options:{
-            join:true
-         },
+      clean: {
          core: {
-            src: [
-               "src/core/api.coffee",
-               "src/core/*.coffee",
-               "src/resources/*.coffee",
-               "src/scene/*.coffee",
-               "src/scene/objects/*.coffee",
-               "src/scene/views/*.coffee",
-               "src/tile/*.coffee",
-               "src/tile/objects/*.coffee"
-            ],
-            dest: 'web/<%= pkg.name %>.core.js',
-            ext: '.js'
+            src: ["build/"]
          },
-         game: {
+         server: {
             src: [
-               "src/game/util.coffee",
-               "src/device.coffee",
-               "src/ui/view.coffee",
-               "src/ui/*.coffee",
-               "src/model/*.coffee",
-               "src/adventure/*.coffee",
-               "src/combat/*.coffee",
-               "src/game/*.coffee",
-               "src/gurk.coffee"
+               "server/*.d.ts",
+               "server/*.js",
+               "server/*.js.map"
+            ]
+         }
+      },
+
+      /**
+       * Compile TypeScript library
+       */
+      typescript: {
+         core: {
+            options: {
+               module: 'amd', //or commonjs
+               target: 'es5', //or es3
+               base_path: 'source',
+               sourcemap: true,
+               declaration: false
+            },
+            src: [
+               "source/core/api.ts",
+               "source/core/*.ts",
+               "source/core/resources/*.ts",
+               "source/scene/*.ts",
+               "source/scene/components/*.ts",
+               "source/tile/*.ts",
+               "source/tile/components/*.ts",
+               "source/tile/objects/*.ts",
+               "source/tile/features/*.ts",
+               "source/tile/render/*.ts",
+               "source/game/*.ts",
+               "source/game/objects/*.ts",
+               "source/game/components/*.ts"
             ],
-            dest: 'web/<%= pkg.name %>.js',
-            ext: '.js'
+            dest: 'build'
+         },
+         server: {
+            options: {
+               module: 'commonjs', //or commonjs
+               target: 'es5', //or es3
+               sourcemap: true,
+               declaration: false
+            },
+            src: [
+               "server/*.ts"
+            ]
+         }
+      },
+
+      /**
+       * Copy typescript typedefs to build/ to satisfy compiler.
+       */
+      copy: {
+         core: {
+            expand: true,
+            cwd: '',
+            src: 'types/**/*.d.ts',
+            dest: 'build'
          }
       },
 
@@ -115,10 +144,10 @@ module.exports = function(grunt) {
          game: {
             files: {
                'web/<%= pkg.name %>.core.js'    : ['web/<%= pkg.name %>.core.js'],
+               'web/<%= pkg.name %>.typescript.js'    : ['web/<%= pkg.name %>.typescript.js'],
                'web/<%= pkg.name %>.data.js'    : ['web/<%= pkg.name %>.data.js'],
                'web/<%= pkg.name %>.maps.js'    : ['web/<%= pkg.name %>.maps.js'],
-               'web/<%= pkg.name %>.sprites.js' : ['web/<%= pkg.name %>.sprites.js'],
-               'web/<%= pkg.name %>.js'         : ['web/<%= pkg.name %>.js']
+               'web/<%= pkg.name %>.sprites.js' : ['web/<%= pkg.name %>.sprites.js']
             }
          }
       },
@@ -138,8 +167,7 @@ module.exports = function(grunt) {
                {src: 'data/textures/creatures/*.png', dest: 'web/images/creatures'},
                {src: 'data/textures/environment/*.png', dest: 'web/images/environment'},
                {src: 'data/textures/equipment/*.png', dest: 'web/images/equipment'},
-               {src: 'data/textures/items/*.png', dest: 'web/images/items'},
-               {src: 'data/textures/ui/*.png', dest: 'web/images/ui'}
+               {src: 'data/textures/items/*.png', dest: 'web/images/items'}
             ]
          }
       },
@@ -173,8 +201,7 @@ module.exports = function(grunt) {
          game: {
             files: [
                {src: 'web/index.less', dest: 'web/css/index.css'},
-               {src: 'web/twofiftysix.less', dest: 'web/css/twofiftysix.css'},
-               {src: 'web/fbcanvas.less', dest: 'web/css/fbcanvas.css'}
+               {src: 'web/facebook.less', dest: 'web/css/facebook.css'}
             ]
          }
       },
@@ -187,12 +214,17 @@ module.exports = function(grunt) {
             atBegin:true,
             spawn: false
          },
-         code: {
+         typescript: {
             files: [
-               '<%= coffee.game.src %>',
-               '<%= coffee.core.src %>'
+               '<%= typescript.core.src %>'
             ],
-            tasks: ['coffee', 'notify:code']
+            tasks: ['clean:core', 'typescript:core', 'notify:code']
+         },
+         typedefs: {
+            files: [
+               'types/**'
+            ],
+            tasks: ['copy']
          },
          data: {
             files: [
@@ -226,16 +258,21 @@ module.exports = function(grunt) {
             options: {
                nospawn: true //Without this option specified express won't be reloaded
             }
+         },
+         expressts: {
+            files:  [ 'server/*.ts' ],
+            tasks:  [ 'typescript:server', 'express', 'notify:server' ],
+            options: {
+               nospawn: true
+            }
          }
       }
    });
 
    grunt.registerMultiTask('sprites', 'Pack sprites into output sheets', function()
    {
-      var Q = require('q');
       var done = this.async();
       var spritePacker = require('./server/spritePacker');
-      var queue = [];
       var options = this.options({
          metaFile: null,
          indexFiles:false
@@ -253,7 +290,7 @@ module.exports = function(grunt) {
                      grunt.file.write(index, JSON.stringify(exec.src,null,3));
                      grunt.log.writeln('File "' + index + '" created.');
                   }
-                  jsChunks.push("eburp.registerSprites('" + result.name + "'," + JSON.stringify(result.meta,null,3)+");");
+                  jsChunks.push("pow2.registerSprites('" + result.name + "'," + JSON.stringify(result.meta,null,3)+");");
                   return _next();
                },function(error){
                   grunt.log.error('Failed to create spritesheet: ' + error);
@@ -273,19 +310,21 @@ module.exports = function(grunt) {
       _next();
    });
 
-   grunt.loadNpmTasks('grunt-contrib-coffee');
    grunt.loadNpmTasks('grunt-contrib-concat');
    grunt.loadNpmTasks('grunt-contrib-uglify');
+   grunt.loadNpmTasks('grunt-contrib-clean');
+   grunt.loadNpmTasks('grunt-typescript');
    grunt.loadNpmTasks('grunt-recess');
+   grunt.loadNpmTasks('grunt-contrib-copy');
    // Support system notifications in non-production environments
-   if(process.env.NODE_ENV !== 'production'){
+   if(process && process.env && process.env.NODE_ENV !== 'production'){
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-notify');
-      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'recess']);
+      grunt.registerTask('default', ['concat', 'typescript', 'copy','recess','sprites']);
    }
    else {
-      grunt.registerTask('default', ['sprites', 'concat', 'coffee', 'recess']);
-      grunt.registerTask('heroku:production', ['sprites','concat','coffee', 'uglify', 'recess']);
+      grunt.registerTask('default', ['concat', 'typescript', 'copy','recess','sprites']);
+      grunt.registerTask('heroku:production', ['concat','typescript', 'copy','uglify', 'recess','sprites']);
    }
 };

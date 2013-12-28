@@ -1,5 +1,5 @@
 //// Keys
-eburp.registerData("keys",{
+pow2.registerData("keys",{
    // Keys appear on the right side of the PARTY view, are also based on variables being set in the map features.
    "ruinsStart" :
    {

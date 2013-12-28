@@ -1,4 +1,4 @@
-eburp.registerData("quests",{ // This populates the QUESTS view. Quests are triggered by variables been set based on the map features below
+pow2.registerData("quests",{ // This populates the QUESTS view. Quests are triggered by variables been set based on the map features below
    "The Chosen Path" :
    {
       graphId:"the_chosen_path",

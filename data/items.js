@@ -1,6 +1,6 @@
 
 //// Items
-eburp.registerData("items",[
+pow2.registerData("items",[
    //// Level 1
    {
       "name" : "Short Sword",

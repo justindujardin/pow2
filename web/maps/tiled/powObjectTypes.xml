@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objecttypes>
+ <objecttype name="transition" color="#a40093"/>
+ <objecttype name="encounter" color="#a40009"/>
+ <objecttype name="store" color="#e5d400"/>
+ <objecttype name="ship" color="#0ea400"/>
+ <objecttype name="temple" color="#00a4a2"/>
+ <objecttype name="barrier" color="#000000"/>
+</objecttypes>

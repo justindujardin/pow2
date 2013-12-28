@@ -1,5 +1,5 @@
 //// Miscellaneous icons referred to by the game directly.
-eburp.registerData("icons", { // You can change these, but don't get rid of any of them.
+pow2.registerData("icons", { // You can change these, but don't get rid of any of them.
    "party": "party.png",
    "ship": "ship.png",
    "gold": "gold.png",
