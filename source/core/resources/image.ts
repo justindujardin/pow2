@@ -17,20 +17,20 @@
 /// <reference path="../resource.ts"/>
 
 module pow2 {
-    /**
-     * Use html image element to load an image resource.
-     */
-    export class ImageResource extends Resource {
-        load() {
-            var reference:HTMLImageElement = document.createElement('img');
-            reference.onload = () => {
-                this.data = reference;
-                this.ready();
-            };
-            reference.onerror = (err:any) => {
-                this.failed(err);
-            };
-            reference.src = this.url;
-        }
-    }
+   /**
+    * Use html image element to load an image resource.
+    */
+   export class ImageResource extends Resource {
+      load() {
+         var reference:HTMLImageElement = document.createElement('img');
+         reference.onload = () => {
+            this.data = reference;
+            this.ready();
+         };
+         reference.onerror = (err:any) => {
+            this.failed(err);
+         };
+         reference.src = this.url;
+      }
+   }
 }

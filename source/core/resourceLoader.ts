@@ -17,6 +17,7 @@
 /// <reference path="./resources/image.ts"/>
 /// <reference path="./resources/json.ts"/>
 /// <reference path="./resources/script.ts"/>
+/// <reference path="./resources/xml.ts"/>
 /// <reference path="./world.ts"/>
 /// <reference path="./time.ts"/>
 
@@ -32,6 +33,8 @@ module pow2 {
          'png':ImageResource,
          'js':ScriptResource,
          'json':JSONResource,
+         'tmx':XMLResource,
+         'xml':XMLResource,
          '':AudioResource
       };
       private _doneQueue = [];

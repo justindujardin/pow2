@@ -17,19 +17,19 @@
 /// <reference path="../resource.ts"/>
 
 module pow2 {
-    /**
-     * Use jQuery to load a JSON file from a URL.
-     */
-    export class JSONResource extends Resource {
-        load() {
-            var request:JQueryXHR = $.getJSON(this.url);
-            request.done((object:JSON) => {
-                this.data = object;
-                this.ready();
-            });
-            request.fail((jqxhr,settings,exception) => {
-                this.failed(exception);
-            });
-        }
-    }
+   /**
+    * Use jQuery to load a JSON file from a URL.
+    */
+   export class JSONResource extends Resource {
+      load() {
+         var request:JQueryXHR = $.getJSON(this.url);
+         request.done((object:JSON) => {
+            this.data = object;
+            this.ready();
+         });
+         request.fail((jqxhr,settings,exception) => {
+            this.failed(exception);
+         });
+      }
+   }
 }

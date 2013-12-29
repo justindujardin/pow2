@@ -18,48 +18,48 @@
 /// <reference path="../../../types/underscore/underscore.d.ts"/>
 
 module pow2 {
-    /**
-     * Use jQuery to load an Audio resource.
-     */
-    export class AudioResource extends Resource {
-        static types:Object = {
-            'mp3' : 'audio/mpeg',
-            'ogg' : 'audio/ogg',
-            'wav' : 'audio/wav'
-        };
-        load() {
-            var sources:number = _.keys(AudioResource.types).length;
-            var invalid:Array<string> = [];
-            var incrementFailure:Function = (path:string) => {
-                sources--;
-                invalid.push(path);
-                if(sources <= 0){
-                    this.failed("No valid sources at the following URLs\n   " + invalid.join('\n   '));
-                }
-            };
+   /**
+    * Use jQuery to load an Audio resource.
+    */
+   export class AudioResource extends Resource {
+      static types:Object = {
+         'mp3' : 'audio/mpeg',
+         'ogg' : 'audio/ogg',
+         'wav' : 'audio/wav'
+      };
+      load() {
+         var sources:number = _.keys(AudioResource.types).length;
+         var invalid:Array<string> = [];
+         var incrementFailure:Function = (path:string) => {
+            sources--;
+            invalid.push(path);
+            if(sources <= 0){
+               this.failed("No valid sources at the following URLs\n   " + invalid.join('\n   '));
+            }
+         };
 
-            var reference:HTMLAudioElement = document.createElement('audio');
+         var reference:HTMLAudioElement = document.createElement('audio');
 
-            // Try all supported types, and accept the first valid one.
-            _.each(<any>AudioResource.types,(mime:string,extension:string) => {
-                if(!reference.canPlayType(mime + ";")){
-                    return;
-                }
-                var source:HTMLSourceElement = document.createElement('source');
-                source.type = mime;
-                source.src = this.url + '.' + extension;
-                source.addEventListener('error',function(e:Event){
-                    incrementFailure(source.src);
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-                    return false;
-                });
-                reference.appendChild(source);
+         // Try all supported types, and accept the first valid one.
+         _.each(<any>AudioResource.types,(mime:string,extension:string) => {
+            if(!reference.canPlayType(mime + ";")){
+               return;
+            }
+            var source:HTMLSourceElement = document.createElement('source');
+            source.type = mime;
+            source.src = this.url + '.' + extension;
+            source.addEventListener('error',function(e:Event){
+               incrementFailure(source.src);
+               e.preventDefault();
+               e.stopImmediatePropagation();
+               return false;
             });
-            reference.addEventListener('canplaythrough',() => {
-                this.data = reference;
-                this.ready();
-            });
-        }
-    }
+            reference.appendChild(source);
+         });
+         reference.addEventListener('canplaythrough',() => {
+            this.data = reference;
+            this.ready();
+         });
+      }
+   }
 }
