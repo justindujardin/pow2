@@ -325,6 +325,6 @@ module.exports = function(grunt) {
    }
    else {
       grunt.registerTask('default', ['concat', 'typescript', 'copy','recess','sprites']);
-      grunt.registerTask('heroku:production', ['concat','typescript', 'copy','uglify', 'recess','sprites']);
+      grunt.registerTask('heroku:production', ['concat','typescript', 'copy','recess','sprites','uglify']);
    }
 };
