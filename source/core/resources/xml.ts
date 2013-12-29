@@ -18,13 +18,14 @@
 
 module pow2 {
    /**
-    * Use jQuery to load a Javascript file from a URL.
+    * Use jQuery to load an XML file from a URL.
     */
-   export class ScriptResource extends Resource {
+   export class XMLResource extends Resource {
+      data:XMLDocument;
       load() {
-         var request:JQueryXHR = $.getScript(this.url);
-         request.done((script:HTMLScriptElement) => {
-            this.data = script;
+         var request:JQueryXHR = $.get(this.url);
+         request.done((object:XMLDocument) => {
+            this.data = object;
             this.ready();
          });
          request.fail((jqxhr,settings,exception) => {

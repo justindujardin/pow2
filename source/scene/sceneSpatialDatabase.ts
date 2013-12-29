@@ -17,7 +17,7 @@
 /// <reference path="../../types/underscore/underscore.d.ts" />
 /// <reference path="../core/point.ts" />
 /// <reference path="../core/rect.ts" />
-/// <reference path="SceneObject.ts" />
+/// <reference path="./sceneObject.ts" />
 
 // Very, very simple spatial database.  Because all the game objects have
 // an extent of 1 unit, we can just do a point in rect to determine object hits.
