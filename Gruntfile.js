@@ -99,6 +99,7 @@ module.exports = function(grunt) {
                "source/tile/*.ts",
                "source/tile/components/*.ts",
                "source/tile/objects/*.ts",
+               "source/tile/resources/*.ts",
                "source/tile/features/*.ts",
                "source/tile/render/*.ts",
                "source/game/*.ts",

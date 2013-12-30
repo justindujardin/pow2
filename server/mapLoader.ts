@@ -63,7 +63,6 @@ module powServer {
             };
             featuresLayer.objects.push(feature);
          });
-
       }
    }
 }

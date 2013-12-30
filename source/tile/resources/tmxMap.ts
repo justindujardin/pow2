@@ -14,23 +14,41 @@
  limitations under the License.
  */
 
-/// <reference path="../resource.ts"/>
+/// <reference path="../../core/resource.ts"/>
+/// <reference path="./deflate.ts"/>
 
 module pow2 {
+
+   declare var JSInflate: any;
    /**
-    * Use jQuery to load an XML file from a URL.
+    * Use jQuery to load a TMX map file from a URL.
     */
-   export class XMLResource extends Resource {
+   export class TMXMapResource extends Resource {
       data:JQuery;
       load() {
          var request:JQueryXHR = $.get(this.url);
          request.done((object:XMLDocument) => {
             this.data = $(object);
+            this.prepare();
             this.ready();
          });
          request.fail((jqxhr,settings,exception) => {
             this.failed(exception);
          });
+      }
+
+      prepare() {
+         _.each(this.data,(m:any) => {
+            if(m.tagName && m.tagName.toLowerCase() === 'map'){
+               m = $(m);
+               var layerData = m.find('layer > data');
+               // Take CSV and convert it to JSON array, then parse.
+               var tiles = '[' + $.trim(layerData.text()) + ']';
+               tiles = JSON.parse(tiles);
+               console.log(tiles);
+            }
+         });
+
       }
    }
 }

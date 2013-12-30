@@ -33,7 +33,6 @@ module pow2 {
          'png':ImageResource,
          'js':ScriptResource,
          'json':JSONResource,
-         'tmx':XMLResource,
          'xml':XMLResource,
          '':AudioResource
       };
@@ -66,7 +65,7 @@ module pow2 {
          });
       }
 
-      registerResourceType(extension:string,type:Resource){
+      ensureType(extension:string,type:Function){
          this._types[extension] = type;
       }
 
