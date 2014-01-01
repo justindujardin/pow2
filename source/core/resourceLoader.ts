@@ -28,7 +28,7 @@ module pow2 {
     * matching to create and load a resource.
     */
    export class ResourceLoader implements IWorldObject, IProcessObject {
-      private _resources:Object = {};
+      private _cache:Object = {};
       private _types:Object = {
          'png':ImageResource,
          'js':ScriptResource,
@@ -77,6 +77,12 @@ module pow2 {
          return url.substr(index+1);
       }
 
+      create(typeConstructor:any,data:any):IResource {
+         var type:Resource = <Resource>new typeConstructor(null,data);
+         type.setLoader(this);
+         return type;
+      }
+
       load(sources:Array<string>,done:Function):Array<Resource>;
       load(source:string,done:Function):Resource;
       load(sources:any,done:any):any{
@@ -99,9 +105,10 @@ module pow2 {
                console.error("Unknown resource type: " + src);
                return;
             }
-            var resource:Resource = this._resources[src];
+            var resource:Resource = this._cache[src];
             if(!resource){
-               resource = this._resources[src] = new resourceType(src);
+               resource = this._cache[src] = new resourceType(src,this);
+               resource.setLoader(this);
             }
             else if(resource.isReady()){
                results.push(resource);

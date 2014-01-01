@@ -26,11 +26,58 @@ module pow2 {
          var request:JQueryXHR = $.get(this.url);
          request.done((object:XMLDocument) => {
             this.data = $(object);
-            this.ready();
+            this.prepare(this.data);
          });
          request.fail((jqxhr,settings,exception) => {
             this.failed(exception);
          });
+      }
+      /*
+         Do any data modification here, or just fall-through to ready.
+       */
+      prepare(data){
+         this.ready();
+      }
+
+      getElTag(el:JQuery){
+         if(el){
+            var name:string = el.prop('tagName');
+            if(name){
+               return name.toLowerCase();
+            }
+         }
+         return null;
+      }
+
+      getRootNode(tag:string){
+         if(!this.data){
+            return null;
+         }
+         return $(_.find(this.data,function(d:any){
+            return d.tagName && d.tagName.toLowerCase() === tag;
+         }));
+      }
+
+      getChildren(el:JQuery,tag:string):JQuery[] {
+         var list = el.find(tag);
+         return _.compact(_.map(list,function(c){
+            var child:JQuery = $(c);
+            return child.parent()[0] !== el[0] ? null : child;
+         }));
+      }
+
+      getChild(el:JQuery,tag:string):JQuery {
+         return this.getChildren(el,tag)[0];
+      }
+
+      getElAttribute(el:JQuery, name:string){
+         if(el){
+            var attr = el.attr(name);
+            if(attr){
+               return attr;
+            }
+         }
+         return null;
       }
    }
 }

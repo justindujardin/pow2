@@ -20,7 +20,8 @@
 /// <reference path="../core/resources/json.ts" />
 /// <reference path="../scene/sceneObject.ts" />
 /// <reference path="./tileObject.ts" />
-/// <reference path="./resources/tmxMap.ts" />
+/// <reference path="./resources/tiledTmx.ts" />
+/// <reference path="./resources/tiledTsx.ts" />
 /// <reference path="./tiledMap.ts" />
 
 module pow2 {
@@ -44,12 +45,13 @@ module pow2 {
       // Scene Object Lifetime
       //
       onAddToScene(scene) {
-         this.world.loader.ensureType('tmx',TMXMapResource);
+         this.world.loader.ensureType('tmx',TiledTMXResource);
+         this.world.loader.ensureType('tsx',TiledTSXResource);
          this.load();
       }
 
       load(mapName:string=this.mapName){
-         this.world.loader.load("/maps/" + mapName + ".tmx", (mapResource:TMXMapResource) => {
+         this.world.loader.load("/maps/" + mapName + ".tmx", (mapResource:TiledTMXResource) => {
             this.mapName = mapName;
             this.setMap(mapResource);
          });
@@ -63,7 +65,7 @@ module pow2 {
          this.scene.trigger("map:unloaded",this);
       }
 
-      setMap(map:TMXMapResource) {
+      setMap(map:TiledTMXResource) {
          if (!map || !map.isReady()) {
             return false;
          }
