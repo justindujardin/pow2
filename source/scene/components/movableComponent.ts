@@ -24,7 +24,7 @@ module pow2 {
    export class MovableComponent extends TickedComponent {
       _elapsed: number = 0;
       targetPoint: pow2.Point;
-      tickRateMS: number = 350;
+      tickRateMS: number = 300;
       velocity: pow2.Point = new pow2.Point(0, 0);
       workPoint: Point = new Point(0,0);
       host: SceneObject;
