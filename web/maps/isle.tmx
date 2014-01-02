@@ -34,8 +34,6 @@
     <property name="text" value="Will you weigh anchor and set sail again upon the Wandering Sea?"/>
     <property name="transitionType" value="outdoor"/>
     <property name="type" value="transition"/>
-    <property name="x" value="17"/>
-    <property name="y" value="10"/>
    </properties>
   </object>
   <object name="Pirate" type="sign" x="224" y="160" width="16" height="16">
@@ -45,8 +43,6 @@
     <property name="text" value="'Tis a foul wind a blownin' since that volcano blew its top. Me mates 'n I can barely sail, and there be nary finer sailors in the Kingdoms Three than me mates 'n me."/>
     <property name="title" value="Pirate"/>
     <property name="type" value="sign"/>
-    <property name="x" value="14"/>
-    <property name="y" value="10"/>
    </properties>
   </object>
   <object name="Pirate" type="sign" x="112" y="208" width="16" height="16">
@@ -56,8 +52,6 @@
     <property name="text" value="Aye, we be stockin' none but the finest goods here on the Wanderin' Isle. Yet the trade be diminishin' in recent years."/>
     <property name="title" value="Pirate"/>
     <property name="type" value="sign"/>
-    <property name="x" value="7"/>
-    <property name="y" value="13"/>
    </properties>
   </object>
   <object name="Buccaneer's Bazaar" type="store" x="128" y="112" width="16" height="16">
@@ -69,15 +63,12 @@
     <property name="name" value="Buccaneer's Bazaar"/>
     <property name="sellRate" value="25"/>
     <property name="type" value="store"/>
-    <property name="x" value="8"/>
-    <property name="y" value="7"/>
    </properties>
   </object>
   <object name="ship.png" type="sign" x="272" y="176" width="16" height="16">
    <properties>
     <property name="icon" value="ship.png"/>
     <property name="type" value="sign"/>
-    <property name="x" value="17"/>
     <property name="y" value="11"/>
    </properties>
   </object>

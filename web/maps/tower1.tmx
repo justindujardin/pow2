@@ -34,15 +34,11 @@
     <property name="text" value="Will you exit Vygurn Tower?"/>
     <property name="transitionType" value="outdoor"/>
     <property name="type" value="transition"/>
-    <property name="x" value="4"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
   <object type="block" x="48" y="144" width="16" height="16" visible="0">
    <properties>
     <property name="type" value="block"/>
-    <property name="x" value="3"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
   <object name="drowElf.png" type="encounter" x="128" y="256" width="16" height="16">
@@ -54,8 +50,6 @@
     <property name="items" value=""/>
     <property name="text" value="Drow Elves and Snow Ogres approach you. &quot;You will regret setting foot in this tower!&quot;"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="8"/>
-    <property name="y" value="16"/>
    </properties>
   </object>
   <object name="tower2" type="transition" x="112" y="256" width="16" height="16">
@@ -67,8 +61,6 @@
     <property name="text" value="Ascend to the second level of the tower?"/>
     <property name="transitionType" value="up"/>
     <property name="type" value="transition"/>
-    <property name="x" value="7"/>
-    <property name="y" value="16"/>
    </properties>
   </object>
  </objectgroup>

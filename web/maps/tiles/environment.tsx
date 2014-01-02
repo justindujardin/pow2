@@ -330,7 +330,7 @@
    <property name="color" value="#008c00"/>
    <property name="icon" value="treeAlt.png"/>
    <property name="opaque" value="true"/>
-   <property name="passable" value="false"/>
+   <property name="passable" value="true"/>
    <property name="shipPassable" value="false"/>
   </properties>
  </tile>

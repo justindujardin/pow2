@@ -37,15 +37,11 @@
     <property name="text" value="Will you exit the safety of Bryarlake and explore the great Wildernesse?"/>
     <property name="transitionType" value="outdoor"/>
     <property name="type" value="transition"/>
-    <property name="x" value="12"/>
-    <property name="y" value="4"/>
    </properties>
   </object>
   <object type="block" x="192" y="48" width="16" height="16" visible="0">
    <properties>
     <property name="type" value="block"/>
-    <property name="x" value="12"/>
-    <property name="y" value="3"/>
    </properties>
   </object>
   <object name="Guard" type="sign" x="176" y="96" width="16" height="16">
@@ -55,8 +51,6 @@
     <property name="text" value="May you find glory on your noble quest!"/>
     <property name="title" value="Guard"/>
     <property name="type" value="sign"/>
-    <property name="x" value="11"/>
-    <property name="y" value="6"/>
    </properties>
   </object>
   <object name="Guard" type="sign" x="208" y="96" width="16" height="16">
@@ -66,8 +60,6 @@
     <property name="text" value="Be sure to avoid the forests at first, there are some really dangerous creatures lurking amongst the trees."/>
     <property name="title" value="Guard"/>
     <property name="type" value="sign"/>
-    <property name="x" value="13"/>
-    <property name="y" value="6"/>
    </properties>
   </object>
   <object name="Citizen" type="sign" x="128" y="256" width="16" height="16">
@@ -77,8 +69,6 @@
     <property name="text" value="Ever since the volcano erupted up North, things have taken an awful turn. Monsters lurk everywhere, preventing regular folk from travelling or trading."/>
     <property name="title" value="Citizen"/>
     <property name="type" value="sign"/>
-    <property name="x" value="8"/>
-    <property name="y" value="16"/>
    </properties>
   </object>
   <object name="temple.png" type="temple" x="240" y="240" width="16" height="16">
@@ -86,8 +76,6 @@
     <property name="cost" value="15"/>
     <property name="icon" value="temple.png"/>
     <property name="type" value="temple"/>
-    <property name="x" value="15"/>
-    <property name="y" value="15"/>
    </properties>
   </object>
   <object name="Weapons" type="store" x="112" y="128" width="16" height="16">
@@ -99,8 +87,6 @@
     <property name="name" value="Weapons"/>
     <property name="sellRate" value="35"/>
     <property name="type" value="store"/>
-    <property name="x" value="7"/>
-    <property name="y" value="8"/>
    </properties>
   </object>
   <object name="Armors" type="store" x="112" y="160" width="16" height="16">
@@ -112,8 +98,6 @@
     <property name="name" value="Armors"/>
     <property name="sellRate" value="35"/>
     <property name="type" value="store"/>
-    <property name="x" value="7"/>
-    <property name="y" value="10"/>
    </properties>
   </object>
   <object name="Potions" type="store" x="96" y="144" width="16" height="16">
@@ -125,8 +109,6 @@
     <property name="name" value="Potions"/>
     <property name="sellRate" value="35"/>
     <property name="type" value="store"/>
-    <property name="x" value="6"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
   <object name="Lord of Bryarlake" type="dispatch" x="288" y="144" width="16" height="16">
@@ -139,8 +121,6 @@
     <property name="title" value="Lord of Bryarlake"/>
     <property name="type" value="dispatch"/>
     <property name="until" value="ruinsStart"/>
-    <property name="x" value="18"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
   <object name="Lord of Bryarlake" type="sign" x="288" y="144" width="16" height="16">
@@ -152,8 +132,6 @@
     <property name="title" value="Lord of Bryarlake"/>
     <property name="type" value="sign"/>
     <property name="until" value="ruinsDone"/>
-    <property name="x" value="18"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
   <object name="Lord of Bryarlake" type="dispatch" x="288" y="144" width="16" height="16">
@@ -166,8 +144,6 @@
     <property name="title" value="Lord of Bryarlake"/>
     <property name="type" value="dispatch"/>
     <property name="until" value="portStart"/>
-    <property name="x" value="18"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
   <object name="Lord of Bryarlake" type="sign" x="288" y="144" width="16" height="16">
@@ -179,8 +155,6 @@
     <property name="title" value="Lord of Bryarlake"/>
     <property name="type" value="sign"/>
     <property name="until" value="portDone"/>
-    <property name="x" value="18"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
   <object name="Lord of Bryarlake" type="sign" x="288" y="144" width="16" height="16">
@@ -191,8 +165,6 @@
     <property name="text" value="As long as the town of Bryarlake still stands, your bravery will never be forgotten!"/>
     <property name="title" value="Lord of Bryarlake"/>
     <property name="type" value="sign"/>
-    <property name="x" value="18"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
   <object name="chest.png" type="encounter" x="272" y="144" width="16" height="16">
@@ -205,8 +177,6 @@
     <property name="items" value=""/>
     <property name="text" value="The town has presented you with a reward for liberating Kinstown Harbor!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="17"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
  </objectgroup>

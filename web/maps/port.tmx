@@ -37,15 +37,11 @@
     <property name="text" value="Exit Port Artha and return to the Nothian Forest?"/>
     <property name="transitionType" value="outdoor"/>
     <property name="type" value="transition"/>
-    <property name="x" value="20"/>
-    <property name="y" value="4"/>
    </properties>
   </object>
   <object type="block" x="320" y="48" width="16" height="16" visible="0">
    <properties>
     <property name="type" value="block"/>
-    <property name="x" value="20"/>
-    <property name="y" value="3"/>
    </properties>
   </object>
   <object name="Elvish Guard" type="sign" x="304" y="96" width="16" height="16">
@@ -55,8 +51,6 @@
     <property name="text" value="Welcome, travellers from the South."/>
     <property name="title" value="Elvish Guard"/>
     <property name="type" value="sign"/>
-    <property name="x" value="19"/>
-    <property name="y" value="6"/>
    </properties>
   </object>
   <object name="Elvish Guard" type="sign" x="336" y="96" width="16" height="16">
@@ -66,8 +60,6 @@
     <property name="text" value="May your stay in Port Artha be peaceful and restful, despite the difficulty of these times."/>
     <property name="title" value="Elvish Guard"/>
     <property name="type" value="sign"/>
-    <property name="x" value="21"/>
-    <property name="y" value="6"/>
    </properties>
   </object>
   <object name="Elf" type="sign" x="112" y="224" width="16" height="16">
@@ -77,8 +69,6 @@
     <property name="text" value="We once sailed dozens of boats from this port. We traded with our kin, the Merfolk. But they have since become distrustful and aggressive, attacking all vessels that sail the Wandering Sea."/>
     <property name="title" value="Elf"/>
     <property name="type" value="sign"/>
-    <property name="x" value="7"/>
-    <property name="y" value="14"/>
    </properties>
   </object>
   <object name="Nothian Wares" type="store" x="144" y="144" width="16" height="16">
@@ -90,8 +80,6 @@
     <property name="name" value="Nothian Wares"/>
     <property name="sellRate" value="25"/>
     <property name="type" value="store"/>
-    <property name="x" value="9"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
   <object name="Elvish Elder" type="sign" x="256" y="272" width="16" height="16">
@@ -102,8 +90,6 @@
     <property name="title" value="Elvish Elder"/>
     <property name="type" value="sign"/>
     <property name="until" value="goblinDone"/>
-    <property name="x" value="16"/>
-    <property name="y" value="17"/>
    </properties>
   </object>
   <object name="Elvish Elder" type="sign" x="256" y="272" width="16" height="16">
@@ -114,8 +100,6 @@
     <property name="text" value="Tales of your heroism will be sung by the Elvish people for all of eternity! Now sail the Wandering Sea and discover if even greater deeds await you."/>
     <property name="title" value="Elvish Elder"/>
     <property name="type" value="sign"/>
-    <property name="x" value="16"/>
-    <property name="y" value="17"/>
    </properties>
   </object>
   <object name="Elvish Councillor" type="dispatch" x="240" y="272" width="16" height="16">
@@ -128,8 +112,6 @@
     <property name="title" value="Elvish Councillor"/>
     <property name="type" value="dispatch"/>
     <property name="until" value="goblinStart"/>
-    <property name="x" value="15"/>
-    <property name="y" value="17"/>
    </properties>
   </object>
   <object name="Elvish Councillor" type="sign" x="240" y="272" width="16" height="16">
@@ -141,8 +123,6 @@
     <property name="title" value="Elvish Councillor"/>
     <property name="type" value="sign"/>
     <property name="until" value="goblinDone"/>
-    <property name="x" value="15"/>
-    <property name="y" value="17"/>
    </properties>
   </object>
   <object name="Elvish Councillor" type="dispatch" x="240" y="272" width="16" height="16">
@@ -156,8 +136,6 @@
     <property name="title" value="Elvish Councillor"/>
     <property name="type" value="dispatch"/>
     <property name="until" value="castleStart"/>
-    <property name="x" value="15"/>
-    <property name="y" value="17"/>
    </properties>
   </object>
   <object name="Elvish Councillor" type="sign" x="240" y="272" width="16" height="16">
@@ -169,8 +147,6 @@
     <property name="title" value="Elvish Councillor"/>
     <property name="type" value="sign"/>
     <property name="until" value="castleDone"/>
-    <property name="x" value="15"/>
-    <property name="y" value="17"/>
    </properties>
   </object>
   <object name="Elvish Councillor" type="sign" x="240" y="272" width="16" height="16">
@@ -181,8 +157,6 @@
     <property name="text" value="You are and always will remain a friend of the Elvish peoples."/>
     <property name="title" value="Elvish Councillor"/>
     <property name="type" value="sign"/>
-    <property name="x" value="15"/>
-    <property name="y" value="17"/>
    </properties>
   </object>
   <object name="chest.png" type="encounter" x="240" y="256" width="16" height="16">
@@ -195,8 +169,6 @@
     <property name="items" value=""/>
     <property name="text" value="The elves reward you for your defeat of the Goblin King!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="15"/>
-    <property name="y" value="16"/>
    </properties>
   </object>
   <object name="temple.png" type="temple" x="320" y="272" width="16" height="16">
@@ -204,7 +176,6 @@
     <property name="cost" value="20"/>
     <property name="icon" value="temple.png"/>
     <property name="type" value="temple"/>
-    <property name="x" value="20"/>
     <property name="y" value="17"/>
    </properties>
   </object>

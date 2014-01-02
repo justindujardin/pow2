@@ -31,9 +31,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          "/images/creatures.png",
          "/images/environment.png",
          "/images/equipment.png",
-         "/images/items.png",
-         "/images/ui.png",
-         "/maps/isle.json"
+         "/images/items.png"
       ],
       maps: _.keys(pow2.getMaps()),
       state:'Uninitialized',

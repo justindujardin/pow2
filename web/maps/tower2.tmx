@@ -34,8 +34,6 @@
     <property name="text" value="Return to the first level of the tower?"/>
     <property name="transitionType" value="down"/>
     <property name="type" value="transition"/>
-    <property name="x" value="3"/>
-    <property name="y" value="15"/>
    </properties>
   </object>
   <object name="iceGolem.png" type="encounter" x="144" y="144" width="16" height="16">
@@ -47,8 +45,6 @@
     <property name="items" value=""/>
     <property name="text" value="Two handlers release the bonds on a hulking monstrosity made entirely of ice! It lurches towards you!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="9"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
   <object name="iceTroll.png" type="encounter" x="80" y="48" width="16" height="16">
@@ -61,8 +57,6 @@
     <property name="items" value=""/>
     <property name="text" value="You are set upon by a group of trolls!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="5"/>
-    <property name="y" value="3"/>
    </properties>
   </object>
   <object name="Bag of Holding" type="alert" x="144" y="48" width="16" height="16">
@@ -73,8 +67,6 @@
     <property name="title" value="Bag of Holding"/>
     <property name="type" value="alert"/>
     <property name="until" value="bagOfHolding"/>
-    <property name="x" value="9"/>
-    <property name="y" value="3"/>
    </properties>
   </object>
   <object name="tower3" type="transition" x="16" y="80" width="16" height="16">
@@ -86,8 +78,6 @@
     <property name="text" value="Climb to the top level of the tower?"/>
     <property name="transitionType" value="up"/>
     <property name="type" value="transition"/>
-    <property name="x" value="1"/>
-    <property name="y" value="5"/>
    </properties>
   </object>
  </objectgroup>

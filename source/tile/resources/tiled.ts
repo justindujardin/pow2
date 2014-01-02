@@ -81,6 +81,8 @@ module pow2.tiled {
          _.each(props,(p) => {
             var key = getElAttribute(p,'name');
             var value:any = getElAttribute(p,'value');
+
+            // Do some horrible type guessing.
             if(typeof value === 'string'){
                var checkValue:any = value.toLowerCase();
                if(checkValue === 'true' || checkValue === 'false'){

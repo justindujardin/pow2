@@ -32,15 +32,11 @@
     <property name="text" value="Pass through the gates of Castle Bashgar and return to the Great Suvian Desert?"/>
     <property name="transitionType" value="outdoor"/>
     <property name="type" value="transition"/>
-    <property name="x" value="16"/>
-    <property name="y" value="11"/>
    </properties>
   </object>
   <object type="block" x="256" y="192" width="16" height="16" visible="0">
    <properties>
     <property name="type" value="block"/>
-    <property name="x" value="16"/>
-    <property name="y" value="12"/>
    </properties>
   </object>
   <object name="Guard" type="barrier" x="256" y="144" width="16" height="16">
@@ -50,8 +46,6 @@
     <property name="title" value="Guard"/>
     <property name="type" value="barrier"/>
     <property name="until" value="goblinDone"/>
-    <property name="x" value="16"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
   <object name="Guard" type="sign" x="240" y="80" width="16" height="16">
@@ -61,8 +55,6 @@
     <property name="text" value="Welcome to the royal court of the King in the South!"/>
     <property name="title" value="Guard"/>
     <property name="type" value="sign"/>
-    <property name="x" value="15"/>
-    <property name="y" value="5"/>
    </properties>
   </object>
   <object name="Guard" type="sign" x="272" y="80" width="16" height="16">
@@ -72,8 +64,6 @@
     <property name="text" value="Welcome, Westerners! Be sure to visit our great shops to purchase equipment and supplies for your travels."/>
     <property name="title" value="Guard"/>
     <property name="type" value="sign"/>
-    <property name="x" value="17"/>
-    <property name="y" value="5"/>
    </properties>
   </object>
   <object name="King" type="sign" x="256" y="16" width="16" height="16">
@@ -86,8 +76,6 @@
     <property name="title" value="King"/>
     <property name="type" value="sign"/>
     <property name="until" value="cryptsStart"/>
-    <property name="x" value="16"/>
-    <property name="y" value="1"/>
    </properties>
   </object>
   <object name="King" type="sign" x="256" y="16" width="16" height="16">
@@ -99,8 +87,6 @@
     <property name="title" value="King"/>
     <property name="type" value="sign"/>
     <property name="until" value="cryptsDone"/>
-    <property name="x" value="16"/>
-    <property name="y" value="1"/>
    </properties>
   </object>
   <object name="King" type="dispatch" x="256" y="16" width="16" height="16">
@@ -114,8 +100,6 @@
     <property name="title" value="King"/>
     <property name="type" value="dispatch"/>
     <property name="until" value="keepStart"/>
-    <property name="x" value="16"/>
-    <property name="y" value="1"/>
    </properties>
   </object>
   <object name="King" type="sign" x="256" y="16" width="16" height="16">
@@ -127,8 +111,6 @@
     <property name="title" value="King"/>
     <property name="type" value="sign"/>
     <property name="until" value="keepDone"/>
-    <property name="x" value="16"/>
-    <property name="y" value="1"/>
    </properties>
   </object>
   <object name="King" type="sign" x="256" y="16" width="16" height="16">
@@ -139,8 +121,6 @@
     <property name="text" value="May your travels be blessed and fruitful, heroes of the realm."/>
     <property name="title" value="King"/>
     <property name="type" value="sign"/>
-    <property name="x" value="16"/>
-    <property name="y" value="1"/>
    </properties>
   </object>
   <object name="Suvian Viceroy" type="sign" x="240" y="16" width="16" height="16">
@@ -151,8 +131,6 @@
     <property name="title" value="Suvian Viceroy"/>
     <property name="type" value="sign"/>
     <property name="until" value="castleDone"/>
-    <property name="x" value="15"/>
-    <property name="y" value="1"/>
    </properties>
   </object>
   <object name="Suvian Viceroy" type="dispatch" x="240" y="16" width="16" height="16">
@@ -166,8 +144,6 @@
     <property name="title" value="Suvian Viceroy"/>
     <property name="type" value="dispatch"/>
     <property name="until" value="cryptsStart"/>
-    <property name="x" value="15"/>
-    <property name="y" value="1"/>
    </properties>
   </object>
   <object name="Suvian Viceory" type="sign" x="240" y="16" width="16" height="16">
@@ -179,8 +155,6 @@
     <property name="title" value="Suvian Viceory"/>
     <property name="type" value="sign"/>
     <property name="until" value="cryptsDone"/>
-    <property name="x" value="15"/>
-    <property name="y" value="1"/>
    </properties>
   </object>
   <object name="Suvian Viceory" type="sign" x="240" y="16" width="16" height="16">
@@ -191,8 +165,6 @@
     <property name="text" value="The Desert Peoples bestow upon you one thousand and one thanks for your bravery in the Crypts!"/>
     <property name="title" value="Suvian Viceory"/>
     <property name="type" value="sign"/>
-    <property name="x" value="15"/>
-    <property name="y" value="1"/>
    </properties>
   </object>
   <object name="chest.png" type="encounter" x="256" y="32" width="16" height="16">
@@ -205,8 +177,6 @@
     <property name="items" value=""/>
     <property name="text" value="The King has rewarded you for your victory in the Crypts!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="16"/>
-    <property name="y" value="2"/>
    </properties>
   </object>
   <object name="Citizen" type="sign" x="48" y="144" width="16" height="16">
@@ -216,8 +186,6 @@
     <property name="text" value="Since the volcano erupted in the North, the world has become increasingly evil and dangerous. Only the most stalwart adventurers can safely travel beyond the castle walls."/>
     <property name="title" value="Citizen"/>
     <property name="type" value="sign"/>
-    <property name="x" value="3"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
   <object name="Suvian Armors" type="store" x="480" y="64" width="16" height="16">
@@ -229,8 +197,6 @@
     <property name="name" value="Suvian Armors"/>
     <property name="sellRate" value="30"/>
     <property name="type" value="store"/>
-    <property name="x" value="30"/>
-    <property name="y" value="4"/>
    </properties>
   </object>
   <object name="Suvian Arms" type="store" x="416" y="64" width="16" height="16">
@@ -242,8 +208,6 @@
     <property name="name" value="Suvian Arms"/>
     <property name="sellRate" value="30"/>
     <property name="type" value="store"/>
-    <property name="x" value="26"/>
-    <property name="y" value="4"/>
    </properties>
   </object>
   <object name="Suvian Artifacts" type="store" x="448" y="32" width="16" height="16">
@@ -255,8 +219,6 @@
     <property name="name" value="Suvian Artifacts"/>
     <property name="sellRate" value="20"/>
     <property name="type" value="store"/>
-    <property name="x" value="28"/>
-    <property name="y" value="2"/>
    </properties>
   </object>
   <object name="Ashvari Apothecary" type="store" x="64" y="128" width="16" height="16">
@@ -268,8 +230,6 @@
     <property name="name" value="Ashvari Apothecary"/>
     <property name="sellRate" value="22"/>
     <property name="type" value="store"/>
-    <property name="x" value="4"/>
-    <property name="y" value="8"/>
    </properties>
   </object>
   <object name="temple.png" type="temple" x="64" y="32" width="16" height="16">
@@ -277,24 +237,18 @@
     <property name="cost" value="40"/>
     <property name="icon" value="temple.png"/>
     <property name="type" value="temple"/>
-    <property name="x" value="4"/>
-    <property name="y" value="2"/>
    </properties>
   </object>
   <object name="well.png" type="sign" x="448" y="128" width="16" height="16">
    <properties>
     <property name="icon" value="well.png"/>
     <property name="type" value="sign"/>
-    <property name="x" value="28"/>
-    <property name="y" value="8"/>
    </properties>
   </object>
   <object name="blueBannerDoor.png" type="sign" x="256" y="96" width="16" height="16">
    <properties>
     <property name="icon" value="blueBannerDoor.png"/>
     <property name="type" value="sign"/>
-    <property name="x" value="16"/>
-    <property name="y" value="6"/>
    </properties>
   </object>
  </objectgroup>

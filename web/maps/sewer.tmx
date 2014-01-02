@@ -56,8 +56,6 @@
     <property name="text" value="Escape the sewers and return to the ruins above?"/>
     <property name="transitionType" value="town"/>
     <property name="type" value="transition"/>
-    <property name="x" value="21"/>
-    <property name="y" value="1"/>
    </properties>
   </object>
   <object name="wererat.png" type="encounter" x="320" y="64" width="16" height="16">
@@ -70,8 +68,6 @@
     <property name="items" value=""/>
     <property name="text" value="The sewers are inhabited by Wererats! They attack!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="20"/>
-    <property name="y" value="4"/>
    </properties>
   </object>
   <object name="koboldSwordsman.png" type="encounter" x="288" y="528" width="16" height="16">
@@ -83,8 +79,6 @@
     <property name="items" value=""/>
     <property name="text" value="You are confronted by a pack of Kobolds!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="18"/>
-    <property name="y" value="33"/>
    </properties>
   </object>
   <object name="greenSpider.png" type="encounter" x="112" y="400" width="16" height="16">
@@ -97,8 +91,6 @@
     <property name="items" value=""/>
     <property name="text" value="Enormous spiders drop from the ceiling and attack!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="7"/>
-    <property name="y" value="25"/>
    </properties>
   </object>
   <object name="impTalisman.png" type="encounter" x="112" y="32" width="16" height="16">
@@ -110,8 +102,6 @@
     <property name="items" value=""/>
     <property name="text" value="You discover here an unusual little statue."/>
     <property name="type" value="encounter"/>
-    <property name="x" value="7"/>
-    <property name="y" value="2"/>
    </properties>
   </object>
   <object name="koboldShaman.png" type="encounter" x="64" y="544" width="16" height="16">
@@ -124,8 +114,6 @@
     <property name="sets" value="ruinsDone"/>
     <property name="text" value="At long last, you find the source of the evil in Kinstown. Surrounded by roiling sewage water, you see a make-shift Kobold throne room! A shamanistic Kobold points at you and howls!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="4"/>
-    <property name="y" value="34"/>
    </properties>
   </object>
  </objectgroup>

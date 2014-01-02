@@ -47,7 +47,7 @@ module pow2 {
       // Construct
       addFeaturesToScene() {
          _.each(this.features.objects,(obj:any) => {
-            obj._object = this.getObjectForFeature(obj.properties);
+            obj._object = this.getObjectForFeature(obj);
             this.scene.addObject(obj._object);
          });
       }
@@ -81,9 +81,12 @@ module pow2 {
 
       // TODO jd:  Composition for this is weird.  Seems like creating specific objects for this might be better.
       // Yes?
-      getObjectForFeature(feature):TileObject {
+      getObjectForFeature(tiledObject):TileObject {
+         var feature = tiledObject.properties;
          var options = _.extend({}, feature, {
-            tileMap: this
+            tileMap: this,
+            x: Math.round(tiledObject.x / this.map.tilewidth),
+            y: Math.round(tiledObject.y / this.map.tileheight)
          });
          var object = new GameFeatureObject(options);
          switch(feature.type){

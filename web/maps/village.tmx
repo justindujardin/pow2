@@ -36,8 +36,6 @@
     <property name="text" value="Climb down the steep path back to the Wildernesse?"/>
     <property name="transitionType" value="outdoor"/>
     <property name="type" value="transition"/>
-    <property name="x" value="4"/>
-    <property name="y" value="10"/>
    </properties>
   </object>
   <object name="Elder" type="sign" x="128" y="112" width="16" height="16">
@@ -47,8 +45,6 @@
     <property name="text" value="Legends tell of Vezu, a powerful ancient dragon that terrorized the Three Kingdoms. It was finally defeated in the North, then entombed in a mountain that bears his name. Could the volcanic eruption have awoken the dragon within?"/>
     <property name="title" value="Elder"/>
     <property name="type" value="sign"/>
-    <property name="x" value="8"/>
-    <property name="y" value="7"/>
    </properties>
   </object>
   <object name="Trading Post" type="store" x="96" y="128" width="16" height="16">
@@ -60,8 +56,6 @@
     <property name="name" value="Trading Post"/>
     <property name="sellRate" value="45"/>
     <property name="type" value="store"/>
-    <property name="x" value="6"/>
-    <property name="y" value="8"/>
    </properties>
   </object>
   <object name="temple.png" type="temple" x="96" y="224" width="16" height="16">
@@ -69,8 +63,6 @@
     <property name="cost" value="10"/>
     <property name="icon" value="temple.png"/>
     <property name="type" value="temple"/>
-    <property name="x" value="6"/>
-    <property name="y" value="14"/>
    </properties>
   </object>
  </objectgroup>

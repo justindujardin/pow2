@@ -66,15 +66,11 @@
     <property name="text" value="Will you escape from Vezu's foul lair?"/>
     <property name="transitionType" value="outdoor"/>
     <property name="type" value="transition"/>
-    <property name="x" value="14"/>
-    <property name="y" value="46"/>
    </properties>
   </object>
   <object type="block" x="224" y="752" width="16" height="16" visible="0">
    <properties>
     <property name="type" value="block"/>
-    <property name="x" value="14"/>
-    <property name="y" value="47"/>
    </properties>
   </object>
   <object name="spectre.png" type="encounter" x="224" y="672" width="16" height="16">
@@ -87,8 +83,6 @@
     <property name="items" value=""/>
     <property name="text" value="The lair is guarded by foul undead denizens. They attack!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="14"/>
-    <property name="y" value="42"/>
    </properties>
   </object>
   <object name="cyclops.png" type="encounter" x="80" y="544" width="16" height="16">
@@ -101,8 +95,6 @@
     <property name="items" value=""/>
     <property name="text" value="Enormous one-eyed humanoids lunge at you!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="5"/>
-    <property name="y" value="34"/>
    </properties>
   </object>
   <object name="wraith2.png" type="encounter" x="128" y="304" width="16" height="16">
@@ -114,8 +106,6 @@
     <property name="items" value=""/>
     <property name="text" value="A powerful undead form stands before you. &quot;Those who do not bow before Vezu shall be destroyed!&quot; it shrieks!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="8"/>
-    <property name="y" value="19"/>
    </properties>
   </object>
   <object name="rockGolem.png" type="encounter" x="384" y="80" width="16" height="16">
@@ -127,8 +117,6 @@
     <property name="items" value=""/>
     <property name="text" value="Mounds of clay and rock form into rudimentary bodies and start to shamble toward you, with murderous intent!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="24"/>
-    <property name="y" value="5"/>
    </properties>
   </object>
   <object name="vezu.png" type="encounter" x="48" y="48" width="16" height="16">
@@ -141,8 +129,6 @@
     <property name="sets" value="gameOver"/>
     <property name="text" value="You face Vezu, the mighty and ancient Red Dragon! &quot;So these are the heroes that defeated my minions at Vygurn Tower? I am disappointed, I expected better!&quot; He snorts, then attacks!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="3"/>
-    <property name="y" value="3"/>
    </properties>
   </object>
   <object name="chest.png" type="encounter" x="48" y="16" width="16" height="16">
@@ -154,8 +140,6 @@
     <property name="items" value=""/>
     <property name="text" value="Congratulations, you have saved the Three Kingdoms from the evil Vezu! In celebration of your victory, you raid Vezu's loot!"/>
     <property name="type" value="encounter"/>
-    <property name="x" value="3"/>
-    <property name="y" value="1"/>
    </properties>
   </object>
  </objectgroup>

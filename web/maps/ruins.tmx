@@ -44,15 +44,11 @@
     <property name="text" value="Exit the ruins and return to the Wildernesse?"/>
     <property name="transitionType" value="outdoor"/>
     <property name="type" value="transition"/>
-    <property name="x" value="14"/>
-    <property name="y" value="21"/>
    </properties>
   </object>
   <object type="block" x="240" y="336" width="16" height="16" visible="0">
    <properties>
     <property name="type" value="block"/>
-    <property name="x" value="15"/>
-    <property name="y" value="21"/>
    </properties>
   </object>
   <object name="Locked" type="barrier" x="192" y="336" width="16" height="16">
@@ -62,8 +58,6 @@
     <property name="title" value="Locked"/>
     <property name="type" value="barrier"/>
     <property name="until" value="ruinsStart"/>
-    <property name="x" value="12"/>
-    <property name="y" value="21"/>
    </properties>
   </object>
   <object name="Unlocked" type="alert" x="192" y="336" width="16" height="16">
@@ -76,8 +70,6 @@
     <property name="title" value="Unlocked"/>
     <property name="type" value="alert"/>
     <property name="until" value="alertRuinsKey"/>
-    <property name="x" value="12"/>
-    <property name="y" value="21"/>
    </properties>
   </object>
   <object name="sewer" type="transition" x="224" y="144" width="16" height="16">
@@ -89,8 +81,6 @@
     <property name="text" value="You see a doorway here leading down into the sewers below the town. Dare you explore them?"/>
     <property name="transitionType" value="dungeon"/>
     <property name="type" value="transition"/>
-    <property name="x" value="14"/>
-    <property name="y" value="9"/>
    </properties>
   </object>
  </objectgroup>
