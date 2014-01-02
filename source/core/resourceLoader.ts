@@ -28,12 +28,11 @@ module pow2 {
     * matching to create and load a resource.
     */
    export class ResourceLoader implements IWorldObject, IProcessObject {
-      private _resources:Object = {};
+      private _cache:Object = {};
       private _types:Object = {
          'png':ImageResource,
          'js':ScriptResource,
          'json':JSONResource,
-         'tmx':XMLResource,
          'xml':XMLResource,
          '':AudioResource
       };
@@ -66,7 +65,7 @@ module pow2 {
          });
       }
 
-      registerResourceType(extension:string,type:Resource){
+      ensureType(extension:string,type:Function){
          this._types[extension] = type;
       }
 
@@ -76,6 +75,12 @@ module pow2 {
             return '';
          }
          return url.substr(index+1);
+      }
+
+      create(typeConstructor:any,data:any):IResource {
+         var type:Resource = <Resource>new typeConstructor(null,data);
+         type.setLoader(this);
+         return type;
       }
 
       load(sources:Array<string>,done:Function):Array<Resource>;
@@ -100,9 +105,10 @@ module pow2 {
                console.error("Unknown resource type: " + src);
                return;
             }
-            var resource:Resource = this._resources[src];
+            var resource:Resource = this._cache[src];
             if(!resource){
-               resource = this._resources[src] = new resourceType(src);
+               resource = this._cache[src] = new resourceType(src,this);
+               resource.setLoader(this);
             }
             else if(resource.isReady()){
                results.push(resource);

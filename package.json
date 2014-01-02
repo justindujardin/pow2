@@ -27,7 +27,8 @@
     "graceful-fs": "~2.0.1",
     "grunt-recess": "~0.4.0",
     "fbgraph": "~0.2.8",
-    "ejs": "~0.8.4"
+    "ejs": "~0.8.4",
+    "xml2js": "~0.4.0"
   },
   "scripts": {
     "test": "npm install && ./node_modules/.bin/grunt"

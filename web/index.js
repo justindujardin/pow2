@@ -86,7 +86,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                   self.tileView.trackObject(self.sprite);
                }
             });
-            self.tileMap = new pow2.GameTileMap("isle");
+            self.tileMap = new pow2.GameTileMap("town");
             self.scene.addObject(self.tileMap);
 
             return done();
@@ -98,58 +98,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             return null;
          }
          return this.tileMap.map.name;
-      },
-      /**
-       * Guess a good starting point for a player in a new map.
-       *
-       * Try to get a transition feature (door or exit), then
-       * fall back to the map center.
-       */
-      setMapSpawn: function(mapName) {
-         this.tileMap.setMap(mapName);
-         var map = this.tileMap.map;
-         var point = new pow2.Point(0,0);
-         if(map){
-            point = this.tileMap.bounds.getCenter();
-            if(map.features){
-               // Pick the first transition feature we find.
-               var feature = _.where(this.tileMap.map.features,{type : "transition"})[0];
-               if(feature){
-                  point = new pow2.Point(feature.x,feature.y);
-               }
-            }
-            this.sprite.setPoint(point);
-            if(this.tileView && map.width < 10 && map.height < 10){
-               this.tileView.camera.point.zero();
-               this.tileView.trackObject(null);
-            }
-            else if(this.tileView && this.sprite) {
-               this.tileView.trackObject(this.sprite);
-            }
-            return;
-         }
-         this.sprite.setPoint(point);
-         //self.tileMap.bounds.getCenter()
-      },
-      nextMap: function(){
-         var curr = this.currentMap;
-         var next = curr + 1;
-         if(next >= this.maps.length){
-            next = 0;
-         }
-         this.currentMap = next;
-         this.setMapSpawn(this.maps[next]);
-      },
-      previousMap : function(){
-         var curr = this.currentMap;
-         var next = curr - 1;
-         if(next < 0){
-            next = this.maps.length - 1;
-         }
-         this.currentMap = next;
-         this.setMapSpawn(this.maps[next]);
       }
-
    }
 });
 
@@ -164,15 +113,6 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
    $scope.getState = function(){
       return localStorage.getItem(stateKey);
    };
-   $scope.nextMap = function(){
-      game.nextMap();
-      $scope.mapName = game.getCurrentMapName();
-   };
-   $scope.previousMap = function(){
-      game.previousMap();
-      $scope.mapName = game.getCurrentMapName();
-   };
-
    game.load().then(function(){
       $scope.mapName = game.getCurrentMapName();
 
@@ -214,6 +154,20 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
          var context = $scope.canvas.getContext("2d");
          context.webkitImageSmoothingEnabled = false;
          context.mozImageSmoothingEnabled = false;
+//         game.loader.load("maps/wilderness.tmx",function(xmlRes){
+//            var $map = xmlRes.data;
+//            _.each($map,function(m){
+//               if(m.tagName && m.tagName.toLowerCase() === '$map'){
+//                  m = $(m);
+//                  console.log(m);
+//                  window.jq = m;
+//                  var tiles = m.children('tileset');
+//                  var $map = new pow2.TiledMap()
+//                  console.log(tiles.attr('source'));
+//               }
+//            });
+//         });
+
          game.load().then(function () {
 
             // Inspired by : http://seb.ly/2011/04/multi-touch-game-controller-in-javascripthtml5-for-ipad/
