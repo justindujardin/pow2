@@ -46,14 +46,14 @@ module pow2 {
 
       // Construct
       addFeaturesToScene() {
-         _.each(this.features.objects,(obj) => {
+         _.each(this.features.objects,(obj:any) => {
             obj._object = this.getObjectForFeature(obj.properties);
             this.scene.addObject(obj._object);
          });
       }
 
       removeFeaturesFromScene() {
-         _.each(this.features.objects,(obj) => {
+         _.each(this.features.objects,(obj:any) => {
             var featureObject:SceneObject = <SceneObject>obj._object;
             if(featureObject){
                featureObject.destroy();
@@ -65,7 +65,7 @@ module pow2 {
 
       buildFeatures():boolean {
          this.removeFeaturesFromScene();
-         _.each(this.features.objects,(obj) => {
+         _.each(this.features.objects,(obj:any) => {
             var key = this.featureKey(obj.x, obj.y);
             var object = this.featureHash[key];
             if (!object) {

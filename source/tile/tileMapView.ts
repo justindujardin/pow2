@@ -81,7 +81,7 @@ module pow2{
       }
 
       /*
-       * Render the tile map, and any features it has.
+       * Render the tile $map, and any features it has.
        */
       renderFrame(elapsed) {
          this.clearRect();

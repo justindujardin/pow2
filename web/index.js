@@ -86,7 +86,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                   self.tileView.trackObject(self.sprite);
                }
             });
-            self.tileMap = new pow2.GameTileMap("wilderness");
+            self.tileMap = new pow2.GameTileMap("town");
             self.scene.addObject(self.tileMap);
 
             return done();
@@ -155,14 +155,14 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
          context.webkitImageSmoothingEnabled = false;
          context.mozImageSmoothingEnabled = false;
 //         game.loader.load("maps/wilderness.tmx",function(xmlRes){
-//            var map = xmlRes.data;
-//            _.each(map,function(m){
-//               if(m.tagName && m.tagName.toLowerCase() === 'map'){
+//            var $map = xmlRes.data;
+//            _.each($map,function(m){
+//               if(m.tagName && m.tagName.toLowerCase() === '$map'){
 //                  m = $(m);
 //                  console.log(m);
 //                  window.jq = m;
 //                  var tiles = m.children('tileset');
-//                  var map = new pow2.TiledMap()
+//                  var $map = new pow2.TiledMap()
 //                  console.log(tiles.attr('source'));
 //               }
 //            });

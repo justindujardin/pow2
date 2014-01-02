@@ -16,7 +16,7 @@
 
 /// <reference path="../../core/resources/image.ts"/>
 /// <reference path="../../core/resources/xml.ts"/>
-
+/// <reference path="./tiled.ts"/>
 module pow2 {
 
    export class TilesetTile {
@@ -31,10 +31,12 @@ module pow2 {
     */
    export class TiledTSXResource extends XMLResource {
       name:string = null;
-      tilewidth:number = 0;
-      tileheight:number = 0;
+      tilewidth:number = 16;
+      tileheight:number = 16;
+      imageWidth:number = 0;
+      imageHeight:number = 0;
       image:ImageResource = null;
-      tiles:TilesetTile[] = [];
+      tiles:any[] = [];
       prepare(data) {
          var tileSet = this.getRootNode('tileset');
          this.name = this.getElAttribute(tileSet,'name');
@@ -46,23 +48,35 @@ module pow2 {
          _.each(tiles, (ts:any) => {
             var id:number = parseInt(this.getElAttribute(ts,'id'));
             var tile: TilesetTile = new TilesetTile(id);
-            var propsObject:JQuery = this.getChild(ts,'properties');
-            if(propsObject && propsObject.length > 0){
-               var props = this.getChildren(propsObject,'property');
-               _.each(props,(p) => {
-                  var key = this.getElAttribute(p,'name');
-                  var value = this.getElAttribute(p,'value');
-                  tile.properties[key] = value;
-               });
-            }
+            tile.properties = tiled.readTiledProperties(ts);
             this.tiles.push(tile);
          });
 
          var image = this.getChild(tileSet,'img');
          if(image && image.length > 0){
             var source = this.getElAttribute(image,'source');
+            this.imageWidth = parseInt(this.getElAttribute(image,'width') || "0");
+            this.imageHeight = parseInt(this.getElAttribute(image,'height') || "0");
             console.log("Tileset source: " + source);
             this.image = this.loader.load('/maps/' + source,() => {
+               this.imageWidth = this.image.data.width;
+               this.imageHeight = this.image.data.height;
+
+               // Finally, build an expanded tileset from the known image w/h and the
+               // tiles with properties that are specified in the form of <tile> objects.
+               var xUnits = this.imageWidth / this.tilewidth;
+               var yUnits = this.imageHeight / this.tileheight;
+               var tileCount = xUnits * yUnits;
+               var tileLookup = new Array(tileCount);
+               for(var i = 0; i < tileCount; i++){
+                  tileLookup[i] = false;
+               }
+               _.each(this.tiles,(tile) => {
+                  tileLookup[tile.id] = tile.properties;
+               });
+               // TODO: uh-oh overwriting tiles....
+               this.tiles = tileLookup;
+
                this.ready();
                console.log(this);
             });

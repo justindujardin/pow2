@@ -22,16 +22,14 @@
 /// <reference path="./tileObject.ts" />
 /// <reference path="./resources/tiledTmx.ts" />
 /// <reference path="./resources/tiledTsx.ts" />
-/// <reference path="./tiledMap.ts" />
 
 module pow2 {
    export class TileMap extends SceneObject {
-      resource: JSONResource;
-      map: tiled.TiledMap;
+      map: TiledTMXResource;
       tileSet:any; // TODO: Tileset
       tiles:any; // TODO: TilesetProperties
-      terrain:tiled.TileLayer;
-      features:tiled.FeaturesLayer;
+      terrain:any;
+      features:any;
       mapName: string;
       bounds: pow2.Rect;
 
@@ -72,14 +70,13 @@ module pow2 {
          if(this.map){
             this.unloaded();
          }
-         this.resource = map;
-         this.map = new tiled.TiledMap(map.data);
+         this.map = map;
          this.bounds = new pow2.Rect(0, 0, this.map.width, this.map.height);
          this.terrain = _.where(this.map.layers,{name:"Terrain"})[0];
          if(!this.terrain){
             throw new Error("Terrain layer must be present");
          }
-         this.features = _.where(this.map.layers,{name:"Features"})[0];
+         this.features = _.where(this.map.objectGroups,{name:"Features"})[0];
          if(!this.features){
             throw new Error("Features object group must be present");
          }
@@ -87,7 +84,7 @@ module pow2 {
          if(!this.tileSet){
             throw new Error("Environment tile set must be present");
          }
-         this.tiles = this.tileSet.tileproperties;
+         this.tiles = this.tileSet.tiles;
          if(!this.tiles){
             throw new Error("Environment tileset must have properties for tile types");
          }
