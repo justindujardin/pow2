@@ -52,12 +52,10 @@ module pow2 {
       renderPoint:Point;
       _components:ISceneComponent[] = [];
       constructor(options?: any) {
-         if(options){
-            _.extend(this, _.defaults(options || {}), {
-               point: new Point(0,0),
-               enabled:true
-            });
-         }
+         _.extend(this, _.defaults(options || {}), {
+            point: new Point(0,0),
+            enabled:true
+         });
       }
 
       // Tick components.
