@@ -14,36 +14,23 @@
  limitations under the License.
  */
 
-/// <reference path="../core/point.ts" />
-/// <reference path="../scene/sceneComponent.ts" />
-/// <reference path="./tileObject.ts" />
-/// <reference path="./tileMap.ts" />
-
+/// <reference path="./objects/GameFeatureObject.ts" />
+/// <reference path="../tile/tileComponent.ts" />
 module pow2 {
-   export class TileComponent extends SceneComponent {
-      tileMap:TileMap;
-      host:TileObject;
-
+   export class GameComponent extends TileComponent {
+      feature:any = null;
+      host:GameFeatureObject = null;
       connectComponent():boolean{
-         this.tileMap = this.host.tileMap;
-         return !!this.tileMap;
+         if(!super.connectComponent()){
+            return false;
+         }
+         this.feature = this.host.feature;
+         return !!this.feature;
       }
       disconnectComponent():boolean{
-         this.tileMap = null;
-         return true;
-      }
-
-      enter(object:TileObject):boolean {
-         return true;
-      }
-      entered(object:TileObject) {
-         return true;
-      }
-      exit(object:TileObject):boolean {
-         return true;
-      }
-      exited(object:TileObject) {
-         return true;
+         this.feature = null;
+         return super.disconnectComponent();
       }
    }
+
 }

@@ -89,21 +89,27 @@ module pow2 {
             y: Math.round(tiledObject.y / this.map.tileheight)
          });
          var object = new GameFeatureObject(options);
+         var componentType:any = null;
          switch(feature.type){
             case 'transition':
-               object.addComponent(new GamePortalComponent(object));
+               componentType = GamePortalComponent;
                break;
             case 'ship':
-               object.addComponent(new GameShipComponent(object));
-               break;
-            case 'sign':
-               if(feature.action === 'TALK'){
-                  object.addComponent(new GameDialogComponent(object));
-               }
+               componentType = GameShipComponent;
                break;
             case 'store':
-               object.addComponent(new GameStoreComponent(object));
+               componentType = GameStoreComponent;
                break;
+            default:
+               if(feature.action === 'TALK'){
+                  componentType = GameDialogComponent;
+               }
+               break;
+
+         }
+
+         if(componentType !== null){
+            object.addComponent(<ISceneComponent>(new componentType()));
          }
          return object;
       }

@@ -18,11 +18,13 @@
 
 module pow2 {
    export class GameFeatureObject extends pow2.TileObject {
+      feature:any; // TODO: Feature Interface
       type: string; // TODO: enum?
       passable:boolean;
       groups:any;
       constructor(options:any) {
          super(_.omit(options || {},["x","y","type"]));
+         this.feature = options;
          this.point.x = options.x;
          this.point.y = options.y;
          this.type = options.type;

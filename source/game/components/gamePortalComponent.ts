@@ -16,15 +16,19 @@
 
 /// <reference path="../../core/point.ts" />
 /// <reference path="../../tile/tileComponent.ts" />
+/// <reference path="../gameComponent.ts" />
 
 module pow2 {
-   export class GamePortalComponent extends TileComponent {
+   export class GamePortalComponent extends GameComponent {
       map:string;
       target:Point;
-      constructor(feature:any){
-         super(feature);
-         this.map = feature.target;
-         this.target = new Point(feature.targetX,feature.targetY);
+      connectComponent():boolean{
+         if(!super.connectComponent()){
+            return false;
+         }
+         this.map = this.feature.target;
+         this.target = new Point(this.feature.targetX,this.feature.targetY);
+         return !!this.map;
       }
       entered(object:TileObject):boolean {
          if(!this.target || !this.tileMap){

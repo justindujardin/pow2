@@ -14,18 +14,21 @@
  limitations under the License.
  */
 
-/// <reference path="../../tile/tileComponent.ts" />
+/// <reference path="../gameComponent.ts" />
 
 module pow2 {
-   export class GameDialogComponent extends TileComponent {
+   export class GameDialogComponent extends GameComponent {
       title:string;
       text:string;
       icon:string;
-      constructor(feature:any){
-         super(feature);
-         this.title = feature.title;
-         this.text = feature.text;
-         this.icon = feature.icon;
+      connectComponent():boolean{
+         if(!super.connectComponent()){
+            return false;
+         }
+         this.title = this.feature.title;
+         this.text = this.feature.text;
+         this.icon = this.feature.icon;
+         return true;
       }
       entered(object:TileObject):boolean {
          this.host.scene.trigger('dialog:entered',this);

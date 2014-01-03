@@ -15,12 +15,12 @@
  */
 
 /// <reference path="../../core/point.ts" />
-/// <reference path="../../tile/tileComponent.ts" />
 /// <reference path="../../tile/tileObject.ts" />
 /// <reference path="./gamePartyComponent.ts" />
+/// <reference path="../gameComponent.ts" />
 
 module pow2 {
-   export class GameShipComponent extends TileComponent {
+   export class GameShipComponent extends GameComponent {
       host:GameFeatureObject;
       party:GamePartyComponent;
       partyObject:TileObject;

@@ -14,28 +14,33 @@
  limitations under the License.
  */
 
-/// <reference path="../../tile/tileComponent.ts" />
+/// <reference path="../gameComponent.ts" />
 module pow2 {
-   export class GameStoreComponent extends TileComponent {
+   export class GameStoreComponent extends GameComponent {
       name:string;
       inventory:any[];
-      groups:string[];
-      constructor(feature:any){
-         super(feature);
-         this.name = feature.name;
-         this.groups = feature.groups;
+      connectComponent():boolean{
+         if(!super.connectComponent()){
+            return false;
+         }
+         this.name = this.feature.name;
          this.inventory = _.filter(pow2.data.items,(item:any) => {
-            if(item.level !== feature.level){
+            if(item.level !== this.feature.level){
                return false;
             }
             var matchGroup:boolean = false;
-            _.each(this.groups,function(group:string){
+            _.each(this.host.groups,(group:string) => {
                if(_.indexOf(item.groups,group) !== -1){
                   matchGroup = true;
                }
             });
             return matchGroup;
          });
+         return true;
+      }
+      disconnectComponent():boolean{
+         this.inventory = null;
+         return super.disconnectComponent();
       }
       entered(object:TileObject):boolean {
          this.host.scene.trigger('store:entered',this);
