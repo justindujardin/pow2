@@ -15,6 +15,7 @@
  */
 
 /// <reference path="../tile/tileMap.ts" />
+/// <reference path="../tile/resources/tiled.ts" />
 /// <reference path="./components/gameDialogComponent.ts" />
 /// <reference path="./components/gamePortalComponent.ts" />
 /// <reference path="./components/gameShipComponent.ts" />
@@ -34,24 +35,13 @@ module pow2 {
       featureKey(x, y) {
          return "" + x + "_" + y;
       }
-      getFeature(x, y) {
-         if (!this.featureHash) {
-            return {};
-         }
-         return this.featureHash[this.featureKey(x, y)];
-      }
-      getFeatures() {
-         return this.featureHash;
-      }
-
       // Construct
       addFeaturesToScene() {
          _.each(this.features.objects,(obj:any) => {
-            obj._object = this.getObjectForFeature(obj);
+            obj._object = this.createFeatureObject(obj);
             this.scene.addObject(obj._object);
          });
       }
-
       removeFeaturesFromScene() {
          _.each(this.features.objects,(obj:any) => {
             var featureObject:SceneObject = <SceneObject>obj._object;
@@ -61,8 +51,6 @@ module pow2 {
             }
          });
       }
-
-
       buildFeatures():boolean {
          this.removeFeaturesFromScene();
          _.each(this.features.objects,(obj:any) => {
@@ -78,10 +66,7 @@ module pow2 {
          }
          return true;
       }
-
-      // TODO jd:  Composition for this is weird.  Seems like creating specific objects for this might be better.
-      // Yes?
-      getObjectForFeature(tiledObject):TileObject {
+      createFeatureObject(tiledObject:tiled.ITiledObject):TileObject {
          var feature = tiledObject.properties;
          var options = _.extend({}, feature, {
             tileMap: this,
@@ -105,11 +90,12 @@ module pow2 {
                   componentType = GameDialogComponent;
                }
                break;
-
          }
-
          if(componentType !== null){
-            object.addComponent(<ISceneComponent>(new componentType()));
+            var component = <ISceneComponent>(new componentType())
+            if(!object.addComponent(component)){
+               throw new Error("Component " + component.name + " failed to connect to host " + this.name);
+            }
          }
          return object;
       }
