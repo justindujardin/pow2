@@ -22,7 +22,49 @@ module pow2 {
    export class GamePartyComponent extends MovableComponent {
       host:TileObject;
       passableKeys:string[] = ['passable'];
-      collideMove(x:number,y:number,results:SceneObject[]=[]){
+      private _lastFrame:number = 3;
+      private _renderFrame:number = 3;
+
+      interpolateTick(elapsed:number) {
+         super.interpolateTick(elapsed);
+
+         // Choose frame for interpolated position
+         // Hero is
+         // Left, Right, Down, Up, LeftAlt, RightAlt, DownAlt, UpAlt
+         //   1     2      3    4      5        6        7       8
+
+         // Interpolate position based on tickrate and elapsed time
+         var factor = this._elapsed / this.tickRateMS;
+         var altFrame = !!((factor > 0.0 && factor < 0.5));
+         var frame = this._renderFrame;
+         var xChange = this.targetPoint.x !== this.host.renderPoint.x;
+         var yChange = this.targetPoint.y !== this.host.renderPoint.y;
+         if(this.velocity.x < 0 && xChange){
+            frame = altFrame ? 4 : 0;
+         }
+         else if(this.velocity.x > 0 && xChange){
+            frame = altFrame ? 5 : 1;
+         }
+         else if(this.velocity.y > 0 && yChange){
+            frame = altFrame ? 6 : 2;
+         }
+         else if(this.velocity.y < 0 && yChange){
+            frame = altFrame ? 7 : 3;
+         }
+         this.host.iconFrame = this._renderFrame = frame;
+      }
+
+
+      collideMove(x:number,y:number,results:GameFeatureObject[]=[]){
+         var collision:boolean = this.collider.collide(x,y,GameFeatureObject,results);
+         if(collision){
+            for (var i = 0; i < results.length; i++) {
+               var o = <GameFeatureObject>results[i];
+               if(o.passable === true){
+                  return false;
+               }
+            }
+         }
          var map = this.host.scene.objectByType(pow2.TileMap);
          if (map) {
             var terrain = map.getTerrain(x,y);
@@ -59,6 +101,7 @@ module pow2 {
          if(!this.collider){
             return;
          }
+         this._lastFrame = this._renderFrame;
 
          // Successful move, collide against target point and check any new tile actions.
          var fromFeature:GameFeatureObject = <GameFeatureObject>this.collider.collideFirst(from.x,from.y,GameFeatureObject);

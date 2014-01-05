@@ -112,6 +112,7 @@
     <property name="icon" value="ship.png"/>
     <property name="id" value="cryptsShip"/>
     <property name="type" value="ship"/>
+    <property name="passable" value="true"/>
    </properties>
   </object>
   <object name="skeletonWizard.png" type="encounter" x="160" y="32" width="16" height="16">

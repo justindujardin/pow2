@@ -75,7 +75,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                // Create a movable character with basic components.
                self.sprite = new pow2.TileObject({
                   point: self.tileMap.bounds.getCenter(),
-                  icon:"party.png"
+                  icon:"warrior.png"
                });
                self.sprite.addComponent(new pow2.CollisionComponent());
                self.sprite.addComponent(new pow2.GamePartyComponent());

@@ -254,6 +254,7 @@
     <property name="icon" value="ship.png"/>
     <property name="id" value="portShip"/>
     <property name="type" value="ship"/>
+    <property name="passable" value="true"/>
    </properties>
   </object>
   <object name="ship.png" type="ship" x="1344" y="784" width="16" height="16">
@@ -261,6 +262,7 @@
     <property name="icon" value="ship.png"/>
     <property name="id" value="gameStart"/>
     <property name="type" value="ship"/>
+    <property name="passable" value="true"/>
    </properties>
   </object>
   <object name="snake.png" type="encounter" x="208" y="784" width="16" height="16">

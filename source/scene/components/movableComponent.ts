@@ -158,14 +158,12 @@ module pow2 {
          // Check to see if both axes can advance by simply going to the
          // target point.
          this.targetPoint.add(this.velocity);
-         if (!this.collideMove(this.targetPoint.x, this.targetPoint.y)) {
-         }
-         // If not, can we move only along the y axis?
-         else if (!this.collideMove(this.host.point.x, this.targetPoint.y)) {
+         // Determine which axis we can move along
+         if (this.velocity.y !== 0 && !this.collideMove(this.host.point.x, this.targetPoint.y)) {
             this.targetPoint.x = this.host.point.x;
          }
          // How about the X axis?  We'll take any axis we can get.
-         else if (!this.collideMove(this.targetPoint.x, this.host.point.y)) {
+         else if (this.velocity.x !== 0 && !this.collideMove(this.targetPoint.x, this.host.point.y)) {
             this.targetPoint.y = this.host.point.y;
          }
          else {

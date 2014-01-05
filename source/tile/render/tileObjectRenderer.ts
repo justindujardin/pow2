@@ -30,14 +30,23 @@ module pow2 {
             return;
          }
          var point = object.renderPoint || object.point;
-         var c, height, width, x, y;
-         if (object.icon && object.iconCoords) {
-            c = object.iconCoords;
+         var height, width, x, y;
+         if (object.icon && object.iconMeta) {
+            var c = object.iconMeta;
             width = view.unitSize * view.cameraScale;
             height = view.unitSize * view.cameraScale;
+
+            var cx = c.x;
+            var cy = c.y;
+            if(object.iconMeta.frames > 1){
+               var fx = (object.iconFrame % (c.width));
+               var fy = Math.floor((object.iconFrame - fx) / c.width);
+               cx += fx * view.unitSize;
+               cy += fy * view.unitSize;
+            }
             x = point.x * width;
             y = point.y * height;
-            return view.context.drawImage(object.image, c.x, c.y, view.unitSize, view.unitSize, x, y, width, height);
+            return view.context.drawImage(object.image, cx, cy, view.unitSize, view.unitSize, x, y, width, height);
          } else {
             width = object.image.width * view.cameraScale;
             height = object.image.height * view.cameraScale;

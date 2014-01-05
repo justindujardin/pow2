@@ -62,7 +62,7 @@ module pow2 {
             });
         }
 
-        getSpriteCoords(name:string) {
+        getSpriteMeta(name:string) {
             var desc = pow2.data.sprites[name];
             if(!desc){
                 throw new Error("Missing sprite data for: " + name);

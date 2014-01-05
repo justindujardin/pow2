@@ -164,6 +164,7 @@ module.exports = function(grunt) {
                indexFiles: true
             },
             files: [
+               {src: 'data/textures/vehicles/*.png', dest: 'web/images/vehicles'},
                {src: 'data/textures/characters/*.png', dest: 'web/images/characters'},
                {src: 'data/textures/animation/*.png', dest: 'web/images/animation'},
                {src: 'data/textures/creatures/*.png', dest: 'web/images/creatures'},
