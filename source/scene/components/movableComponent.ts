@@ -177,7 +177,7 @@ module pow2 {
          // Successful move, do something.
          // BEGIN_MOVE
          var moveFn:Function = this.moveFilter || this.beginMove;
-         moveFn(this.host.point,this.targetPoint);
+         moveFn.call(this,this.host.point,this.targetPoint);
       }
    }
 }
