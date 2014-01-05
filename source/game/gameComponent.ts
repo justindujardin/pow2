@@ -16,12 +16,14 @@
 
 /// <reference path="./objects/GameFeatureObject.ts" />
 /// <reference path="../tile/tileComponent.ts" />
+/// <reference path="./gameTileMap.ts" />
 module pow2 {
    export class GameComponent extends TileComponent {
       feature:any = null;
       host:GameFeatureObject = null;
+      tileMap:GameTileMap;
       connectComponent():boolean{
-         if(!super.connectComponent()){
+         if(!super.connectComponent() || !(this.tileMap instanceof GameTileMap)){
             return false;
          }
          this.feature = this.host.feature;
