@@ -76,10 +76,7 @@ module pow2 {
          if(!this.terrain){
             throw new Error("Terrain layer must be present");
          }
-         this.features = _.where(this.map.objectGroups,{name:"Features"})[0];
-         if(!this.features){
-            throw new Error("Features object group must be present");
-         }
+         this.features = _.where(this.map.objectGroups,{name:"Features"})[0] || [];
          this.tileSet = _.where(this.map.tilesets,{name:"Environment"})[0];
          if(!this.tileSet){
             throw new Error("Environment tile set must be present");
