@@ -147,6 +147,14 @@ module pow2 {
          return this.findIt('_objects',object);
       }
 
+
+      componentsByType(type) {
+         return _.compact(_.map(this._objects, (o) => {
+            return o.findComponent(type);
+         }));
+      }
+
+
       objectsByType(type) {
          return _.filter(this._objects, (o) => {
             return o instanceof type;
