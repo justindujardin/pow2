@@ -19,14 +19,14 @@
 
 module pow2 {
    export class StateMachineComponent extends TickedComponent {
-      private _fsm: IStateMachine = null;
+      machine: IStateMachine = null;
       paused:boolean = false;
       tick(elapsed:number) {
          if(this.paused){
             return;
          }
-         if(this._fsm){
-            this._fsm.tick();
+         if(this.machine){
+            this.machine.tick(this);
          }
       }
   }

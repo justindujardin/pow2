@@ -21,11 +21,13 @@ module pow2 {
    // State Machine Interfaces
    // -------------------------------------------------------------------------
    export interface IStateMachine {
-      tick();
-      addState(name:string,state:IState);
+      tick(host:any);
+      addState(state:IState);
       getCurrentState():IState;
       getCurrentName():string;
       setCurrentState(name:string):boolean;
+      setCurrentState(state:IState):boolean;
+      setCurrentState(newState:any):boolean;
       getPreviousState():IState;
       getState(name:string):IState;
    }
@@ -33,13 +35,13 @@ module pow2 {
    // Implementation
    // -------------------------------------------------------------------------
    export class StateMachine implements IStateMachine {
-      defaultState:string = null;
-      private _states = {};
+      defaultState:IState = null;
+      states:any = {};
       private _currentState:IState = null;
       private _previousState:IState = null;
       private _newState:boolean = false;
 
-      tick(){
+      tick(host:any){
          this._newState = false;
          if(this._currentState === null){
             this.setCurrentState(this.defaultState);
@@ -52,8 +54,8 @@ module pow2 {
             this._previousState = this._currentState;
          }
       }
-      addState(name:string,state:IState){
-         this._states[name] = state;
+      addState(state:IState){
+         this.states.push(state);
       }
       getCurrentState():IState{
          return this._currentState;
@@ -61,10 +63,17 @@ module pow2 {
       getCurrentName():string{
          return this._currentState !== null ? this._currentState.name : null;
       }
-      setCurrentState(name:string):boolean{
-         var newState:IState = this.getState(name);
+      setCurrentState(state:IState):boolean;
+      setCurrentState(state:string):boolean
+      setCurrentState(newState:any):boolean{
+         if(typeof newState === 'string'){
+            newState = this.getState(newState);
+         }
+         else {
+            newState = <IState>newState;
+         }
          var oldState:IState = this._currentState;
-         if(newState === null){
+         if(!newState){
             return false;
          }
          this._newState = true;
@@ -80,7 +89,7 @@ module pow2 {
          return this._previousState;
       }
       getState(name:string):IState{
-         return typeof this._states[name] !== 'undefined' ? this._states[name] : null;
+         return <IState>_.where(this.states,{name:name})[0];
       }
    }
 }

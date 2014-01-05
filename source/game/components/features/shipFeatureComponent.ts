@@ -14,14 +14,13 @@
  limitations under the License.
  */
 
-/// <reference path="../../core/point.ts" />
-/// <reference path="../../tile/tileObject.ts" />
-/// <reference path="./gamePartyComponent.ts" />
-/// <reference path="../gameComponent.ts" />
+/// <reference path="../../../core/point.ts" />
+/// <reference path="../../../tile/tileObject.ts" />
+/// <reference path=".././gamePartyComponent.ts" />
+/// <reference path="../../gameComponent.ts" />
 
 module pow2 {
-   export class GameShipComponent extends GameComponent {
-      host:GameFeatureObject;
+   export class ShipFeatureComponent extends GameComponent {
       party:GamePartyComponent;
       partyObject:TileObject;
       partySprite:string;

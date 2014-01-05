@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-/// <reference path="../gameComponent.ts" />
+/// <reference path="../../gameComponent.ts" />
 module pow2 {
-   export class GameStoreComponent extends GameComponent {
+   export class StoreFeatureComponent extends GameComponent {
       name:string;
       inventory:any[];
       connectComponent():boolean{

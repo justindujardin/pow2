@@ -14,10 +14,10 @@
  limitations under the License.
  */
 
-/// <reference path="../gameComponent.ts" />
+/// <reference path="../../gameComponent.ts" />
 
 module pow2 {
-   export class GameDialogComponent extends GameComponent {
+   export class DialogFeatureComponent extends GameComponent {
       title:string;
       text:string;
       icon:string;

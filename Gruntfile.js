@@ -104,7 +104,8 @@ module.exports = function(grunt) {
                "source/tile/render/*.ts",
                "source/game/*.ts",
                "source/game/objects/*.ts",
-               "source/game/components/*.ts"
+               "source/game/components/*.ts",
+               "source/game/components/features/*.ts"
             ],
             dest: 'build'
          },

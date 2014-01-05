@@ -16,10 +16,11 @@
 
 /// <reference path="../tile/tileMap.ts" />
 /// <reference path="../tile/resources/tiled.ts" />
-/// <reference path="./components/gameDialogComponent.ts" />
-/// <reference path="./components/gamePortalComponent.ts" />
-/// <reference path="./components/gameShipComponent.ts" />
-/// <reference path="./components/gameStoreComponent.ts" />
+/// <reference path="./components/features/dialogFeatureComponent.ts" />
+/// <reference path="./components/features/combatFeatureComponent.ts" />
+/// <reference path="./components/features/portalFeatureComponent.ts" />
+/// <reference path="./components/features/shipFeatureComponent.ts" />
+/// <reference path="./components/features/storeFeatureComponent.ts" />
 
 module pow2 {
    export class GameTileMap extends TileMap {
@@ -77,22 +78,25 @@ module pow2 {
          var componentType:any = null;
          switch(feature.type){
             case 'transition':
-               componentType = GamePortalComponent;
+               componentType = PortalFeatureComponent;
                break;
             case 'ship':
-               componentType = GameShipComponent;
+               componentType = ShipFeatureComponent;
                break;
             case 'store':
-               componentType = GameStoreComponent;
+               componentType = StoreFeatureComponent;
+               break;
+            case 'encounter':
+               componentType = CombatFeatureComponent;
                break;
             default:
                if(feature.action === 'TALK'){
-                  componentType = GameDialogComponent;
+                  componentType = DialogFeatureComponent;
                }
                break;
          }
          if(componentType !== null){
-            var component = <ISceneComponent>(new componentType())
+            var component = <ISceneComponent>(new componentType());
             if(!object.addComponent(component)){
                throw new Error("Component " + component.name + " failed to connect to host " + this.name);
             }

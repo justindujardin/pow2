@@ -22,21 +22,7 @@ module pow2 {
    export class GamePartyComponent extends MovableComponent {
       host:TileObject;
       passableKeys:string[] = ['passable'];
-      collideMove(x:number, y:number,results=[]) {
-         var collision:boolean = super.collideMove(x,y,results);
-         if(collision){
-            for (var i = 0; i < results.length; i++) {
-               var o:GameFeatureObject = results[i];
-               var comp:TileComponent = <TileComponent>o.findComponent(TileComponent);
-               if(!comp){
-                  continue;
-               }
-               console.log("Collide -> " + o.type);
-               if (comp.enter && comp.enter(this.host) === false) {
-                  return true;
-               }
-            }
-         }
+      collideMove(x:number,y:number,results:SceneObject[]=[]){
          var map = this.host.scene.objectByType(pow2.TileMap);
          if (map) {
             var terrain = map.getTerrain(x,y);
@@ -51,6 +37,23 @@ module pow2 {
             return true;
          }
          return false;
+      }
+      beginMove(from:Point,to:Point) {
+         var results = [];
+         var collision:boolean = this.collider.collide(to.x,to.y,GameFeatureObject,results);
+         if(collision){
+            for (var i = 0; i < results.length; i++) {
+               var o:GameFeatureObject = results[i];
+               var comp:TileComponent = <TileComponent>o.findComponent(TileComponent);
+               if(!comp || !comp.enter){
+                  continue;
+               }
+               console.log("Collide -> " + o.type);
+               if(comp.enter(this.host) === false){
+                  return;
+               }
+            }
+         }
       }
       endMove(from:Point,to:Point) {
          if(!this.collider){

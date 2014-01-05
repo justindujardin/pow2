@@ -14,12 +14,11 @@
  limitations under the License.
  */
 
-/// <reference path="../../core/point.ts" />
-/// <reference path="../../tile/tileComponent.ts" />
-/// <reference path="../gameComponent.ts" />
-
+/// <reference path="../../../core/point.ts" />
+/// <reference path="../../../tile/tileComponent.ts" />
+/// <reference path="../../gameComponent.ts" />
 module pow2 {
-   export class GamePortalComponent extends GameComponent {
+   export class PortalFeatureComponent extends GameComponent {
       map:string;
       target:Point;
       connectComponent():boolean{
