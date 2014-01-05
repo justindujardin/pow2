@@ -83,6 +83,9 @@ module pow2 {
       }
 
       destroy() {
+         _.each(this._components,(o:ISceneComponent) => {
+            o.disconnectComponent();
+         });
          if (this.scene) {
             this.scene.removeObject(this);
          }
