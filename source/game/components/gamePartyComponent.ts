@@ -19,12 +19,30 @@
 /// <reference path="../../tile/tileComponent.ts" />
 
 module pow2 {
+   export enum MoveFrames {
+      LEFT = 0,
+      RIGHT = 1,
+      DOWN = 2,
+      UP = 3,
+      LEFTALT = 4,
+      RIGHTALT = 5,
+      DOWNALT = 6,
+      UPALT = 7
+   }
+
    export class GamePartyComponent extends MovableComponent {
       host:TileObject;
       passableKeys:string[] = ['passable'];
       private _lastFrame:number = 3;
       private _renderFrame:number = 3;
+      heading:Point = new Point(0,-1);
 
+      tick(elapsed:number){
+         // There are four states and two rows.  The second row is all alt states, so mod it out
+         // when a move ends.
+         this._lastFrame = this._renderFrame > 3 ? this._renderFrame - 4 : this._renderFrame;
+         super.tick(elapsed);
+      }
       interpolateTick(elapsed:number) {
          super.interpolateTick(elapsed);
 
@@ -36,20 +54,45 @@ module pow2 {
          // Interpolate position based on tickrate and elapsed time
          var factor = this._elapsed / this.tickRateMS;
          var altFrame = !!((factor > 0.0 && factor < 0.5));
-         var frame = this._renderFrame;
+         var frame = this._lastFrame;
+
          var xChange = this.targetPoint.x !== this.host.renderPoint.x;
          var yChange = this.targetPoint.y !== this.host.renderPoint.y;
          if(this.velocity.x < 0 && xChange){
-            frame = altFrame ? 4 : 0;
+            frame = altFrame ? MoveFrames.LEFT : MoveFrames.LEFTALT;
+            this.heading.set(-1,0);
          }
          else if(this.velocity.x > 0 && xChange){
-            frame = altFrame ? 5 : 1;
+            frame = altFrame ? MoveFrames.RIGHT : MoveFrames.RIGHTALT;
+            this.heading.set(1,0);
          }
          else if(this.velocity.y > 0 && yChange){
-            frame = altFrame ? 6 : 2;
+            frame = altFrame ? MoveFrames.DOWN : MoveFrames.DOWNALT;
+            this.heading.set(0,1);
          }
          else if(this.velocity.y < 0 && yChange){
-            frame = altFrame ? 7 : 3;
+            frame = altFrame ? MoveFrames.UP : MoveFrames.UPALT;
+            this.heading.set(0,-1);
+         }
+         // Can't move anywhere, so just pick up the facing direction based on velocity.
+         else {
+            if(this.velocity.x < 0){
+               frame = MoveFrames.LEFT;
+               this.heading.set(-1,0);
+            }
+            else if(this.velocity.x > 0){
+               frame = MoveFrames.RIGHT;
+               this.heading.set(1,0);
+            }
+            else if(this.velocity.y > 0){
+               frame = MoveFrames.DOWN;
+               this.heading.set(0,1);
+            }
+            else if(this.velocity.y < 0){
+               frame = MoveFrames.UP;
+               this.heading.set(0,-1);
+            }
+
          }
          this.host.iconFrame = this._renderFrame = frame;
       }
@@ -62,6 +105,9 @@ module pow2 {
                var o = <GameFeatureObject>results[i];
                if(o.passable === true){
                   return false;
+               }
+               if(o.type === 'sign'){
+                  return true;
                }
             }
          }
@@ -101,7 +147,6 @@ module pow2 {
          if(!this.collider){
             return;
          }
-         this._lastFrame = this._renderFrame;
 
          // Successful move, collide against target point and check any new tile actions.
          var fromFeature:GameFeatureObject = <GameFeatureObject>this.collider.collideFirst(from.x,from.y,GameFeatureObject);
