@@ -23,6 +23,7 @@ module pow2 {
    export class TileComponent extends SceneComponent {
       tileMap:TileMap;
       host:TileObject;
+      isEntered:boolean;
 
       connectComponent():boolean{
          this.tileMap = this.host.tileMap;
@@ -37,12 +38,14 @@ module pow2 {
          return true;
       }
       entered(object:TileObject) {
+         this.isEntered = true;
          return true;
       }
       exit(object:TileObject):boolean {
          return true;
       }
       exited(object:TileObject) {
+         this.isEntered = false;
          return true;
       }
    }
