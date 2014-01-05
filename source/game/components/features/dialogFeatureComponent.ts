@@ -14,10 +14,10 @@
  limitations under the License.
  */
 
-/// <reference path="../../gameComponent.ts" />
+/// <reference path="../gameFeatureComponent.ts" />
 
 module pow2 {
-   export class DialogFeatureComponent extends GameComponent {
+   export class DialogFeatureComponent extends GameFeatureComponent {
       title:string;
       text:string;
       icon:string;
@@ -30,11 +30,11 @@ module pow2 {
          this.icon = this.feature.icon;
          return true;
       }
-      entered(object:TileObject):boolean {
+      enter(object:TileObject):boolean {
          this.host.scene.trigger('dialog:entered',this);
          return true;
       }
-      exited(object:TileObject):boolean {
+      exit(object:TileObject):boolean {
          this.host.scene.trigger('dialog:exited',this);
          return true;
       }

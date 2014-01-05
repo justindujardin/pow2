@@ -16,12 +16,12 @@
 
 /// <reference path="../../../core/point.ts" />
 /// <reference path="../../../tile/tileObject.ts" />
-/// <reference path=".././gamePartyComponent.ts" />
-/// <reference path="../../gameComponent.ts" />
+/// <reference path="../playerComponent.ts" />
+/// <reference path="../gameFeatureComponent.ts" />
 
 module pow2 {
-   export class ShipFeatureComponent extends GameComponent {
-      party:GamePartyComponent;
+   export class ShipFeatureComponent extends GameFeatureComponent {
+      party:PlayerComponent;
       partyObject:TileObject;
       partySprite:string;
       enter(object:GameFeatureObject):boolean {
@@ -30,7 +30,7 @@ module pow2 {
          }
          // Must have a party component to board a ship.  Don't want buildings
          // and NPCs boarding ships... or do we?  [maniacal laugh]
-         this.party = <GamePartyComponent>object.findComponent(GamePartyComponent);
+         this.party = <PlayerComponent>object.findComponent(PlayerComponent);
          if(!this.party){
             return false;
          }

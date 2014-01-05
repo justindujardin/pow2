@@ -16,7 +16,7 @@
 
 /// <reference path="./../tile/tileMapView.ts"/>
 /// <reference path="./../tile/render/tileObjectRenderer.ts"/>
-/// <reference path="./components/gamePartyComponent.ts"/>
+/// <reference path="./components/playerComponent.ts"/>
 
 module pow2{
    export class GameMapView extends TileMapView {
@@ -51,7 +51,7 @@ module pow2{
          _.each(objects, (object) => {
             return this.objectRenderer.render(object,this);
          });
-         var player = this.scene.objectByComponent(pow2.GamePartyComponent);
+         var player = this.scene.objectByComponent(pow2.PlayerComponent);
          if (player) {
             this.objectRenderer.render(player, this);
          }
@@ -59,7 +59,7 @@ module pow2{
       }
 
       debugRender(debugStrings: string[] = []) {
-         var party = this.scene.objectByComponent(pow2.GamePartyComponent);
+         var party = this.scene.objectByComponent(pow2.PlayerComponent);
          if (party) {
             debugStrings.push("Party: (" + party.point.x + "," + party.point.y + ")");
          }

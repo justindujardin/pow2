@@ -14,20 +14,19 @@
  limitations under the License.
  */
 
-/// <reference path="./../gamePartyComponent.ts" />
-/// <reference path="../../gameComponent.ts" />
+/// <reference path="../playerComponent.ts" />
+/// <reference path="../gameFeatureComponent.ts" />
 
 module pow2 {
-   export class CombatFeatureComponent extends GameComponent {
-      party:GamePartyComponent;
+   export class CombatFeatureComponent extends GameFeatureComponent {
+      party:PlayerComponent;
       enter(object:GameFeatureObject):boolean {
-         this.party = <GamePartyComponent>object.findComponent(GamePartyComponent);
+         this.party = <PlayerComponent>object.findComponent(PlayerComponent);
          return !!this.party;
       }
       reset() {
          if(this.isEntered){
             this.party.host.enabled = true;
-            this.party.host.removeComponent(this);
          }
       }
       entered(object:GameFeatureObject):boolean {

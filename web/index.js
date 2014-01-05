@@ -78,7 +78,8 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                   icon:"warrior.png"
                });
                self.sprite.addComponent(new pow2.CollisionComponent());
-               self.sprite.addComponent(new pow2.GamePartyComponent());
+               self.sprite.addComponent(new pow2.PlayerComponent());
+               self.sprite.addComponent(new pow2.PlayerTouchComponent());
                self.scene.addObject(self.sprite);
                if(self.tileView){
                   self.tileView.trackObject(self.sprite);

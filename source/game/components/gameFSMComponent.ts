@@ -18,7 +18,7 @@
 /// <reference path="../../tile/tileObject.ts" />
 /// <reference path="../objects/gameFeatureObject.ts" />
 /// <reference path="../../core/stateMachine.ts" />
-/// <reference path="./gamePartyComponent.ts" />
+/// <reference path="./playerComponent.ts" />
 
 module pow2 {
    export class GameFSMComponent extends StateMachineComponent {
@@ -32,7 +32,7 @@ module pow2 {
          if(!this.host || !this.host.scene){
             return;
          }
-         this.player = this.host.scene.objectByComponent(GamePartyComponent);
+         this.player = this.host.scene.objectByComponent(PlayerComponent);
       }
       tick(elapsed:number) {
          if(this.paused || !this.machine){
@@ -51,7 +51,7 @@ module pow2 {
          // collision objects.  We do this here so that state components and
          // transitions don't have to.
          if(!this.player){
-            this.player = scene.objectByComponent(GamePartyComponent);
+            this.player = scene.objectByComponent(PlayerComponent);
          }
          if(this.player){
             this.hitBox.point.set(this.player.point);

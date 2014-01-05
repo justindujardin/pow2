@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-/// <reference path="../../gameComponent.ts" />
+/// <reference path="../gameFeatureComponent.ts" />
 module pow2 {
-   export class StoreFeatureComponent extends GameComponent {
+   export class StoreFeatureComponent extends GameFeatureComponent {
       name:string;
       inventory:any[];
       connectComponent():boolean{
@@ -42,11 +42,11 @@ module pow2 {
          this.inventory = null;
          return super.disconnectComponent();
       }
-      entered(object:TileObject):boolean {
+      enter(object:TileObject):boolean {
          this.host.scene.trigger('store:entered',this);
          return true;
       }
-      exited(object:TileObject):boolean {
+      exit(object:TileObject):boolean {
          this.host.scene.trigger('store:exited',this);
          return true;
       }

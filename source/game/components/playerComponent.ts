@@ -30,10 +30,10 @@ module pow2 {
       UPALT = 7
    }
 
-   export class GamePartyComponent extends MovableComponent {
+   export class PlayerComponent extends MovableComponent {
       host:TileObject;
       passableKeys:string[] = ['passable'];
-      collideTypes:string[] = ['block','temple','store','sign'];
+      collideTypes:string[] = ['temple','store','sign'];
       private _lastFrame:number = 3;
       private _renderFrame:number = 3;
       heading:Point = new Point(0,-1);

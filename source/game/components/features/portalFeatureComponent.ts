@@ -16,9 +16,9 @@
 
 /// <reference path="../../../core/point.ts" />
 /// <reference path="../../../tile/tileComponent.ts" />
-/// <reference path="../../gameComponent.ts" />
+/// <reference path="../gameFeatureComponent.ts" />
 module pow2 {
-   export class PortalFeatureComponent extends GameComponent {
+   export class PortalFeatureComponent extends GameFeatureComponent {
       map:string;
       target:Point;
       connectComponent():boolean{
