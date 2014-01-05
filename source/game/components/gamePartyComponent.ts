@@ -33,6 +33,7 @@ module pow2 {
    export class GamePartyComponent extends MovableComponent {
       host:TileObject;
       passableKeys:string[] = ['passable'];
+      collideTypes:string[] = ['block','temple','store','sign'];
       private _lastFrame:number = 3;
       private _renderFrame:number = 3;
       heading:Point = new Point(0,-1);
@@ -47,15 +48,14 @@ module pow2 {
          super.interpolateTick(elapsed);
 
          // Choose frame for interpolated position
-         // Hero is
-         // Left, Right, Down, Up, LeftAlt, RightAlt, DownAlt, UpAlt
-         //   1     2      3    4      5        6        7       8
-
-         // Interpolate position based on tickrate and elapsed time
          var factor = this._elapsed / this.tickRateMS;
          var altFrame = !!((factor > 0.0 && factor < 0.5));
          var frame = this._lastFrame;
 
+
+         // Calculate the sprite to show based on character state.
+         // 1: Moving in a direction (not blocked)
+         //  - Interpolate between direction frame and alt direction frame
          var xChange = this.targetPoint.x !== this.host.renderPoint.x;
          var yChange = this.targetPoint.y !== this.host.renderPoint.y;
          if(this.velocity.x < 0 && xChange){
@@ -74,7 +74,8 @@ module pow2 {
             frame = altFrame ? MoveFrames.UP : MoveFrames.UPALT;
             this.heading.set(0,-1);
          }
-         // Can't move anywhere, so just pick up the facing direction based on velocity.
+         // 2: Movement blocked, turn to face a certain direction.
+         //  - Do not consider alt frame.
          else {
             if(this.velocity.x < 0){
                frame = MoveFrames.LEFT;
@@ -92,7 +93,6 @@ module pow2 {
                frame = MoveFrames.UP;
                this.heading.set(0,-1);
             }
-
          }
          this.host.iconFrame = this._renderFrame = frame;
       }
@@ -103,10 +103,10 @@ module pow2 {
          if(collision){
             for (var i = 0; i < results.length; i++) {
                var o = <GameFeatureObject>results[i];
-               if(o.passable === true){
+               if(o.passable === true || !o.type){
                   return false;
                }
-               if(o.type === 'sign'){
+               if(_.indexOf(this.collideTypes, o.type.toLowerCase()) !== -1){
                   return true;
                }
             }
