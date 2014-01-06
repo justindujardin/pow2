@@ -1,16 +1,27 @@
-<div class="store">
-    <div class="name dialog top" eight-bit-panel ng-show="store">
-        <h1>{{store.name}}</h1>
+<div class="row title" ng-show="store">
+    <div class="col-xs-12">
+        <div class="name" eight-bit-panel>
+            <h1>{{store.name}}</h1>
+        </div>
     </div>
-    <div class="inventory dialog left" eight-bit-panel ng-show="store">
-        <ul>
-            <li class="item" ng-repeat="item in store.inventory">
-                <div class="icon" icon-render feature="item" ng-show="item.image">
-                    <img src="{{item.image}}">
-                    <span class="item-name">{{item.name}}</span>
-                    <strong class="item-price">{{item.baseValue}}</strong>
-                </div>
-            </li>
-        </ul>
+</div>
+
+<div class="row store" ng-show="store">
+    <div class="col-xs-12">
+        <div class="inventory" eight-bit-panel>
+            <ul class="container">
+                <li class="item row" ng-repeat="item in store.inventory">
+                    <div class="col-xs-1 icon" icon-render feature="item" ng-show="item.image">
+                        <img src="{{item.image}}">
+                    </div>
+                    <div class="col-xs-8">
+                        <span class="item-name">{{item.name}}</span>
+                    </div>
+                    <div class="col-xs-3 item-price">
+                        <strong>{{item.baseValue}}</strong>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
