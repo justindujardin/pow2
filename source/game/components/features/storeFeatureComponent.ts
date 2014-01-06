@@ -43,11 +43,11 @@ module pow2 {
          return super.disconnectComponent();
       }
       enter(object:TileObject):boolean {
-         this.host.scene.trigger('store:entered',this);
+         object.scene.trigger('store:entered',this);
          return true;
       }
       exit(object:TileObject):boolean {
-         this.host.scene.trigger('store:exited',this);
+         object.scene.trigger('store:exited',this);
          return true;
       }
 

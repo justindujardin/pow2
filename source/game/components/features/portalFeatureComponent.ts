@@ -33,7 +33,7 @@ module pow2 {
          if(!this.target || !this.tileMap){
             return false;
          }
-         this.host.scene.once("map:loaded",(map) => {
+         object.scene.once("map:loaded",(map) => {
             console.log("Transition to: " + this.map);
             object.setPoint(this.target);
          });

@@ -26,11 +26,8 @@ module pow2 {
       exit(machine:IStateMachine);
       tick(machine:IStateMachine);
    }
-   export interface IThinkState {
-      getNextTickTime(machine:IStateMachine);
-   }
    export interface IStateTransition {
-      getTargetState():string;
+      targetState:string;
       evaluate(machine:IStateMachine):boolean;
    }
 
@@ -44,22 +41,13 @@ module pow2 {
       exit(machine:IStateMachine){}
       tick(machine:IStateMachine){
          _.any(this.transitions,(t:IStateTransition) => {
-            return t.evaluate(machine) && machine.setCurrentState(t.getTargetState());
+            return t.evaluate(machine) && machine.setCurrentState(t.targetState);
          });
       }
    }
 
    export class StateTransition implements IStateTransition {
-      private _targetState:string;
-      constructor(targetState:string){
-         this.setTargetState(targetState);
-      }
-      getTargetState():string {
-         return this._targetState;
-      }
-      setTargetState(state:string) {
-         this._targetState = state;
-      }
+      targetState:string;
       evaluate(machine:IStateMachine):boolean {
          return true;
       }

@@ -65,7 +65,8 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             scene:new pow2.Scene({
                autoStart: true,
                debugRender:false
-            })
+            }),
+            state:new pow2.GameStateMachine()
          });
          this.loader.load(this.files,function(){
             self.state = 'Loaded';
@@ -153,19 +154,6 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
          var context = $scope.canvas.getContext("2d");
          context.webkitImageSmoothingEnabled = false;
          context.mozImageSmoothingEnabled = false;
-//         game.loader.load("maps/wilderness.tmx",function(xmlRes){
-//            var $map = xmlRes.data;
-//            _.each($map,function(m){
-//               if(m.tagName && m.tagName.toLowerCase() === '$map'){
-//                  m = $(m);
-//                  console.log(m);
-//                  window.jq = m;
-//                  var tiles = m.children('tileset');
-//                  var $map = new pow2.TiledMap()
-//                  console.log(tiles.attr('source'));
-//               }
-//            });
-//         });
 
          game.load().then(function () {
 
@@ -267,6 +255,7 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
             }
 
             game.tileView = new pow2.GameMapView(element[0], game.loader);
+            game.world.state.setGameView(game.tileView);
             game.tileView.camera.extent.set(10, 10);
             game.tileView.tileMap = game.tileMap;
             game.scene.addView(game.tileView);
@@ -319,6 +308,7 @@ twoFiftySix.app.directive('iconRender', function ($compile, game) {
 twoFiftySix.app.directive('dialogBubble', function () {
    return {
       restrict: 'E',
+      replace:true,
       templateUrl: '/templates/dialogBubble.html'
    };
 });

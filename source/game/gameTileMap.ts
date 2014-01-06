@@ -36,6 +36,21 @@ module pow2 {
       featureKey(x, y) {
          return "" + x + "_" + y;
       }
+      addFeature(feature:any){
+         feature._object = this.createFeatureObject(feature);
+         this.scene.addObject(feature._object);
+         this.indexFeature(feature._object);
+      }
+
+      indexFeature(obj:GameFeatureObject){
+         var key = this.featureKey(obj.point.x, obj.point.y);
+         var object = this.featureHash[key];
+         if (!object) {
+            object = this.featureHash[key] = {};
+         }
+         object[obj.type] = obj.feature.properties;
+      }
+
       // Construct
       addFeaturesToScene() {
          _.each(this.features.objects,(obj:any) => {
@@ -46,9 +61,9 @@ module pow2 {
       removeFeaturesFromScene() {
          _.each(this.features.objects,(obj:any) => {
             var featureObject:SceneObject = <SceneObject>obj._object;
+            delete obj._object;
             if(featureObject){
                featureObject.destroy();
-               delete obj._object;
             }
          });
       }

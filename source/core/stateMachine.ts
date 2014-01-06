@@ -16,6 +16,7 @@
 
 /// <reference path="../../types/underscore/underscore.d.ts" />
 /// <reference path="./state.ts" />
+/// <reference path="./world.ts" />
 module pow2 {
 
    // State Machine Interfaces
@@ -34,14 +35,23 @@ module pow2 {
 
    // Implementation
    // -------------------------------------------------------------------------
-   export class StateMachine implements IStateMachine {
-      defaultState:IState = null;
+   export class StateMachine implements IStateMachine, IWorldObject {
+      defaultState:string = null;
       states:any = {};
       private _currentState:IState = null;
       private _previousState:IState = null;
       private _newState:boolean = false;
 
-      tick(host:any){
+      // IWorldObject interface
+      world:IWorld;
+      onAddToWorld(world){
+         world.time.addObject(this);
+      }
+      onRemoveFromWorld(world){
+         world.time.removeObject(this);
+      }
+
+      tick(elapsed:number){
          this._newState = false;
          if(this._currentState === null){
             this.setCurrentState(this.defaultState);

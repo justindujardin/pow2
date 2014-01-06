@@ -24,28 +24,9 @@ module pow2 {
          this.party = <PlayerComponent>object.findComponent(PlayerComponent);
          return !!this.party;
       }
-      reset() {
-         if(this.isEntered){
-            this.party.host.enabled = true;
-         }
-      }
-      entered(object:GameFeatureObject):boolean {
-         if(!super.entered(object)){
-            return false;
-         }
-         this.party.host.enabled = false;
-         _.delay(()=>{
-            this.host.destroy();
-         },500);
-         return true;
-      }
       exited(object:GameFeatureObject):boolean {
-         this.reset();
+         this.host.destroy();
          return super.exited(object);
       }
-      disconnectComponent():boolean{
-         this.reset();
-         return super.disconnectComponent();
-      }
-  }
+   }
 }
