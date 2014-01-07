@@ -91,7 +91,8 @@ module pow2 {
          });
          var object = new GameFeatureObject(options);
          var componentType:any = null;
-         switch(feature.type){
+         var type:string = (feature && feature.type) ? feature.type : tiledObject.type;
+         switch(type){
             case 'transition':
                componentType = PortalFeatureComponent;
                break;
@@ -105,7 +106,7 @@ module pow2 {
                componentType = CombatFeatureComponent;
                break;
             default:
-               if(feature.action === 'TALK'){
+               if(feature && feature.action === 'TALK'){
                   componentType = DialogFeatureComponent;
                }
                break;

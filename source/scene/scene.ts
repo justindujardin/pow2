@@ -32,8 +32,9 @@ module pow2 {
       world:IWorld = null;
       fps:number = 0;
       time:number = 0;
+      paused:boolean = false;
 
-      constructor(options){
+      constructor(options:any={}){
          super();
          this.options = _.defaults(options || {},{
             debugRender:false
@@ -53,11 +54,17 @@ module pow2 {
       // -----------------------------------------------------------------------------
       tickRateMS:number = 32;
       tick(elapsed:number) {
+         if(this.paused){
+            return;
+         }
          for(var i = 0; i < this._objects.length; i++){
             this._objects[i].tick(elapsed);
          }
       }
       processFrame(elapsed:number) {
+         if(this.paused){
+            return;
+         }
          this.time = this.world.time.time;
          // Interpolate objects.
          for(var i = 0; i < this._objects.length; i++){

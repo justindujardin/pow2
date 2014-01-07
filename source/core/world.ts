@@ -33,6 +33,7 @@ module pow2 {
       state:IStateMachine;
       mark(object:IWorldObject);
       erase(object:IWorldObject);
+      setService(name:string,value:IWorldObject):IWorldObject;
    }
    export interface IWorldObject {
       world:IWorld;
@@ -54,6 +55,7 @@ module pow2 {
             loader: new ResourceLoader,
             time:   new Time({autoStart: true}),
             scene:  null, // TODO: When scene is ported
+            state:  null,
             input:  new Input,
             sprites:new SpriteRender
          });
@@ -62,6 +64,13 @@ module pow2 {
          _.each(services,(s:IWorldObject,k) => {
             this.mark(s);
          });
+      }
+
+
+      setService(name:string,value:IWorldObject):IWorldObject{
+         this.mark(value);
+         this[name] = value;
+         return value;
       }
 
       mark(object:IWorldObject){

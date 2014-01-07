@@ -40,6 +40,7 @@ module pow2.tiled {
    export interface ITiledObject extends ITiledBase {
       properties?:any;
       rotation?:number;
+      type?:string;
       gid?:number;
    }
 

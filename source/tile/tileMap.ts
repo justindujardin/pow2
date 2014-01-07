@@ -20,6 +20,7 @@
 /// <reference path="../core/resources/json.ts" />
 /// <reference path="../scene/sceneObject.ts" />
 /// <reference path="./tileObject.ts" />
+/// <reference path="./components/tileMapCameraComponent.ts" />
 /// <reference path="./resources/tiledTmx.ts" />
 /// <reference path="./resources/tiledTsx.ts" />
 
@@ -45,6 +46,10 @@ module pow2 {
       onAddToScene(scene) {
          this.world.loader.ensureType('tmx',TiledTMXResource);
          this.world.loader.ensureType('tsx',TiledTSXResource);
+         // If there is no camera, create a basic one.
+         if(!this.findComponent(CameraComponent)){
+            this.addComponent(new TileMapCameraComponent());
+         }
          this.load();
       }
 

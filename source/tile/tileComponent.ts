@@ -27,7 +27,7 @@ module pow2 {
 
       connectComponent():boolean{
          this.tileMap = this.host.tileMap;
-         return !!this.tileMap;
+         return !!this.tileMap && this.tileMap instanceof TileMap;
       }
       disconnectComponent():boolean{
          this.tileMap = null;

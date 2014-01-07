@@ -17,6 +17,7 @@
 /// <reference path="../scene/sceneObject.ts"/>
 /// <reference path="./tileObject.ts"/>
 /// <reference path="./tileMap.ts"/>
+/// <reference path="./components/tileMapCameraComponent.ts"/>
 /// <reference path="./render/tileObjectRenderer.ts"/>
 /// <reference path="./render/tileMapRenderer.ts"/>
 
@@ -34,18 +35,19 @@ module pow2{
          this.tracking = tileObject;
       }
 
-      /*
-       * Update the camera for this frame.
-       */
-      processCamera() {
-         super.processCamera();
-         this.cameraScale = Math.round(this.cameraScale);
-         var canvasSize = this.screenToWorld(new Point(this.context.canvas.width,this.context.canvas.height),this.cameraScale);
-         this.camera.extent.set(canvasSize);
-         if (this.tracking && this.tracking instanceof pow2.TileObject) {
-            this.camera.setCenter(this.tracking.renderPoint || this.tracking.point);
+      setTileMap(tileMap:TileMap){
+         this.tileMap = tileMap;
+         this.cameraComponent = <CameraComponent>tileMap.findComponent(CameraComponent);
+      }
+
+      setScene(scene:Scene){
+         if(scene === this.scene){
+            return;
          }
-         return this;
+         super.setScene(scene);
+         if(this.scene){
+            this.tracking = null;
+         }
       }
 
       /*

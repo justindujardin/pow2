@@ -44,15 +44,6 @@ module pow2 {
          this.mapName = name;
       }
 
-      private _validateState(machine:GameStateMachine){
-         if(!machine.player){
-            throw new Error("Defensive exception: I _think_ this state needs a player.");
-         }
-         if(!machine.player.tileMap){
-            throw new Error("Defensive exception: The player must have a tileMap.");
-         }
-      }
-
       enter(machine:GameStateMachine){
          super.enter(machine);
          if(this.mapName && machine.player){
@@ -66,7 +57,12 @@ module pow2 {
          console.log("MAPPPPPPP");
       }
       exit(machine:GameStateMachine){
-         this._validateState(machine);
+         if(!machine.player){
+            throw new Error("Defensive exception: I _think_ this state needs a player.");
+         }
+         if(!machine.player.tileMap){
+            throw new Error("Defensive exception: The player must have a tileMap.");
+         }
          this.mapName = machine.player.tileMap.mapName;
          this.mapPoint = machine.player.point.clone();
       }
@@ -90,25 +86,36 @@ module pow2 {
       transitions:IStateTransition[] = [
          new GameMapTransition()
       ];
+      saveScene:Scene;
+      scene:Scene;
+      tileMap:GameTileMap;
+      friendly:TileObject; // TODO: Friendly[] ?
+      enemy:TileObject; // TODO: Enemy[] ?
       enter(machine:GameStateMachine){
          super.enter(machine);
-         var opponent:GameFeatureObject = machine.combatant;
-         machine.player.scene.once("map:loaded",(map) => {
-            map.addFeature({
-               properties:{
-                  type:'sign',
-                  icon:opponent.icon
-               },
-               x:2 * 16,
-               y:3 * 16,
-               width:1,
-               height:1
+         this.saveScene = machine.world.scene;
+         this.saveScene.paused = true;
+
+         this.scene = <Scene>machine.world.setService('scene',new Scene());
+         this.scene.once('map:loaded',() => {
+            // Create a movable character with basic components.
+            this.friendly = new pow2.TileObject({
+               point: this.tileMap.bounds.getCenter(),
+               icon:"warrior.png"
             });
-            console.log("Transition to combat");
-            machine.player.setPoint(new Point(4,3));
+            this.friendly.addComponent(new pow2.CollisionComponent());
+            this.friendly.addComponent(new pow2.PlayerComponent());
+            this.friendly.addComponent(new pow2.PlayerTouchComponent());
+            this.scene.addObject(this.friendly);
+            machine.view.setScene(this.scene);
+            machine.view.setTileMap(this.tileMap);
          });
-         machine.player.tileMap.load("combat");
+         this.tileMap = new pow2.GameTileMap("combat");
+         this.scene.addObject(this.tileMap);
          console.log("FIGHT!!!");
+      }
+      exit(machine:GameStateMachine){
+         machine.world.setService('scene',this.saveScene);
       }
    }
    export class GameCombatTransition extends StateTransition {
@@ -156,9 +163,6 @@ module pow2 {
 
       tick(elapsed:number){
          super.tick(elapsed);
-         if(this.player){
-            return;
-         }
          if(this.world && this.world.scene){
             var scene:Scene = this.world.scene;
             this.player = scene.objectByComponent(PlayerComponent);

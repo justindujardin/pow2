@@ -39,7 +39,6 @@ module pow2{
          if (this.tracking && this.tracking instanceof pow2.TileObject) {
             this.camera.setCenter(this.tracking.renderPoint || this.tracking.point);
          }
-         return this;
       }
 
       /*

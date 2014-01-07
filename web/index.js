@@ -257,7 +257,7 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
             game.tileView = new pow2.GameMapView(element[0], game.loader);
             game.world.state.setGameView(game.tileView);
             game.tileView.camera.extent.set(10, 10);
-            game.tileView.tileMap = game.tileMap;
+            game.tileView.setTileMap(game.tileMap);
             game.scene.addView(game.tileView);
             if(game.sprite){
                game.tileView.trackObject(game.sprite);
