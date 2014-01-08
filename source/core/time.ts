@@ -71,6 +71,9 @@ module pow2 {
       }
 
       addObject(object:IProcessObject){
+         if(_.where(this.objects,{id:object.id}).length > 0){
+            return;
+         }
          this.objects.push(object);
       }
 
