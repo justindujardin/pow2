@@ -87,6 +87,7 @@ module pow2 {
          new GameMapTransition()
       ];
       saveScene:Scene;
+      saveTileMap:TileMap;
       scene:Scene;
       tileMap:GameTileMap;
       friendly:TileObject; // TODO: Friendly[] ?
@@ -94,6 +95,7 @@ module pow2 {
       enter(machine:GameStateMachine){
          super.enter(machine);
          this.saveScene = machine.world.scene;
+         this.saveTileMap = machine.player.tileMap;
          this.saveScene.paused = true;
 
          this.scene = <Scene>machine.world.setService('scene',new Scene());
@@ -103,19 +105,25 @@ module pow2 {
                point: this.tileMap.bounds.getCenter(),
                icon:"warrior.png"
             });
-            this.friendly.addComponent(new pow2.CollisionComponent());
-            this.friendly.addComponent(new pow2.PlayerComponent());
-            this.friendly.addComponent(new pow2.PlayerTouchComponent());
+            this.friendly.addComponent(new pow2.CollisionComponent);
+            this.friendly.addComponent(new pow2.PlayerComponent);
+            this.friendly.addComponent(new pow2.PlayerTouchComponent);
             this.scene.addObject(this.friendly);
             machine.view.setScene(this.scene);
             machine.view.setTileMap(this.tileMap);
          });
          this.tileMap = new pow2.GameTileMap("combat");
+         this.tileMap.addComponent(new pow2.TileMapCameraComponent);
          this.scene.addObject(this.tileMap);
          console.log("FIGHT!!!");
       }
       exit(machine:GameStateMachine){
          machine.world.setService('scene',this.saveScene);
+         machine.view.setScene(this.saveScene);
+         machine.view.setTileMap(this.saveTileMap);
+         machine.updatePlayer();
+         this.saveScene.paused = false;
+         this.scene.destroy();
       }
    }
    export class GameCombatTransition extends StateTransition {
@@ -161,12 +169,16 @@ module pow2 {
          this.view = view;
       }
 
-      tick(elapsed:number){
-         super.tick(elapsed);
+      updatePlayer(){
          if(this.world && this.world.scene){
             var scene:Scene = this.world.scene;
             this.player = scene.objectByComponent(PlayerComponent);
          }
+      }
+
+      tick(elapsed:number){
+         super.tick(elapsed);
+         this.updatePlayer();
       }
   }
 }

@@ -80,11 +80,9 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                });
                self.sprite.addComponent(new pow2.CollisionComponent());
                self.sprite.addComponent(new pow2.PlayerComponent());
+               self.sprite.addComponent(new pow2.PlayerCameraComponent());
                self.sprite.addComponent(new pow2.PlayerTouchComponent());
                self.scene.addObject(self.sprite);
-               if(self.tileView){
-                  self.tileView.trackObject(self.sprite);
-               }
             });
             self.tileMap = new pow2.GameTileMap("town");
             self.scene.addObject(self.tileMap);

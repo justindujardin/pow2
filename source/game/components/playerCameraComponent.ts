@@ -16,9 +16,17 @@
 
 /// <reference path="../../tile/tileObject.ts" />
 /// <reference path="../../scene/components/cameraComponent.ts" />
+/// <reference path="./playerComponent.ts" />
 
 module pow2 {
    export class PlayerCameraComponent extends CameraComponent {
       host:TileObject;
+      connectComponent():boolean {
+         return super.connectComponent() && !!this.host.findComponent(PlayerComponent);
+      }
+      process(view:SceneView) {
+         super.process(view);
+         view.camera.setCenter(this.host.renderPoint || this.host.point);
+      }
   }
 }

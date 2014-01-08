@@ -25,29 +25,18 @@ module pow2{
    export class TileMapView extends SceneView {
       objectRenderer:TileObjectRenderer = new TileObjectRenderer;
       mapRenderer:TileMapRenderer = new TileMapRenderer;
-      tracking:TileObject = null;
       tileMap:TileMap = null;
-
-      /*
-       * Set the camera to track a given object.
-       */
-      trackObject(tileObject) {
-         this.tracking = tileObject;
-      }
 
       setTileMap(tileMap:TileMap){
          this.tileMap = tileMap;
-         this.cameraComponent = <CameraComponent>tileMap.findComponent(CameraComponent);
       }
 
       setScene(scene:Scene){
          if(scene === this.scene){
             return;
          }
+         this.cameraComponent = null;
          super.setScene(scene);
-         if(this.scene){
-            this.tracking = null;
-         }
       }
 
       /*
@@ -90,7 +79,6 @@ module pow2{
          if (!this.tileMap) {
             return;
          }
-         var clipRect:Rect = this.getCameraClip();
          this.mapRenderer.render(this.tileMap,this);
          return this;
       }

@@ -41,6 +41,18 @@ module pow2 {
          });
       }
 
+      destroy() {
+         this.world.erase(this);
+         _.each(this._objects,(obj) => {
+            this.removeObject(obj,true);
+         });
+         _.each(this._views,(obj) => {
+            this.removeView(obj);
+         });
+         this.paused = true;
+
+      }
+
       // IWorldObject
       // -----------------------------------------------------------------------------
       onAddToWorld(world:IWorld){
@@ -52,7 +64,6 @@ module pow2 {
 
       // IProcessObject
       // -----------------------------------------------------------------------------
-      tickRateMS:number = 32;
       tick(elapsed:number) {
          if(this.paused){
             return;
@@ -147,8 +158,11 @@ module pow2 {
          }
          this.addIt('_objects',object);
       }
-      removeObject(object){
+      removeObject(object:SceneObject,destroy:boolean=true){
          this.removeIt('_objects',object);
+         if(destroy){
+            object.destroy();
+         }
       }
       findObject(object){
          return this.findIt('_objects',object);

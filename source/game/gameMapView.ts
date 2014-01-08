@@ -17,28 +17,23 @@
 /// <reference path="./../tile/tileMapView.ts"/>
 /// <reference path="./../tile/render/tileObjectRenderer.ts"/>
 /// <reference path="./components/playerComponent.ts"/>
+/// <reference path="./components/playerCameraComponent.ts"/>
 
 module pow2{
    export class GameMapView extends TileMapView {
       objectRenderer:TileObjectRenderer = new TileObjectRenderer;
-      tracking:TileObject = null;
       tileMap:TileMap = null;
-
-      /*
-       * Set the camera to track a given object.
-       */
-      trackObject(tileObject) {
-         this.tracking = tileObject;
-      }
 
       /*
        * Update the camera for this frame.
        */
       processCamera() {
-         super.processCamera();
-         if (this.tracking && this.tracking instanceof pow2.TileObject) {
-            this.camera.setCenter(this.tracking.renderPoint || this.tracking.point);
+         var host = this.scene.objectByComponent(PlayerCameraComponent);
+         host = host ? host : this.scene.objectByComponent(TileMapCameraComponent);
+         if(host){
+            this.cameraComponent = <CameraComponent>host.findComponent(CameraComponent);
          }
+         super.processCamera();
       }
 
       /*
