@@ -84,10 +84,10 @@ module pow2 {
 
       erase(object:IWorldObject){
          if(object){
-            delete object.world;
             if(object.onRemoveFromWorld){
                object.onRemoveFromWorld(this);
             }
+            delete object.world;
          }
       }
    }
