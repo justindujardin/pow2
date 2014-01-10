@@ -17,18 +17,9 @@
 /// <reference path="../../scene/components/movableComponent.ts" />
 /// <reference path="../objects/gameFeatureObject.ts" />
 /// <reference path="../../tile/tileComponent.ts" />
+/// <reference path="./playerRenderComponent.ts" />
 
 module pow2 {
-   export enum MoveFrames {
-      LEFT = 0,
-      RIGHT = 1,
-      DOWN = 2,
-      UP = 3,
-      LEFTALT = 4,
-      RIGHTALT = 5,
-      DOWNALT = 6,
-      UPALT = 7
-   }
 
    export class PlayerComponent extends MovableComponent {
       host:TileObject;
@@ -37,7 +28,12 @@ module pow2 {
       private _lastFrame:number = 3;
       private _renderFrame:number = 3;
       heading:Point = new Point(0,-1);
+      sprite:PlayerRenderComponent = null;
 
+      syncComponent():boolean {
+         this.sprite = <PlayerRenderComponent>this.host.findComponent(PlayerRenderComponent);
+         return super.syncComponent();
+      }
       tick(elapsed:number){
          // There are four states and two rows.  The second row is all alt states, so mod it out
          // when a move ends.
@@ -46,55 +42,30 @@ module pow2 {
       }
       interpolateTick(elapsed:number) {
          super.interpolateTick(elapsed);
-
-         // Choose frame for interpolated position
-         var factor = this._elapsed / this.tickRateMS;
-         var altFrame = !!((factor > 0.0 && factor < 0.5));
-         var frame = this._lastFrame;
-
-
-         // Calculate the sprite to show based on character state.
-         // 1: Moving in a direction (not blocked)
-         //  - Interpolate between direction frame and alt direction frame
-         var xChange = this.targetPoint.x !== this.host.renderPoint.x;
-         var yChange = this.targetPoint.y !== this.host.renderPoint.y;
-         if(this.velocity.x < 0 && xChange){
-            frame = altFrame ? MoveFrames.LEFT : MoveFrames.LEFTALT;
+         if(!this.sprite){
+            return;
+         }
+         var xMove = this.targetPoint.x !== this.host.renderPoint.x;
+         var yMove = this.targetPoint.y !== this.host.renderPoint.y;
+         if(this.velocity.x < 0){
+            this.sprite.setHeading(Headings.WEST,xMove);
             this.heading.set(-1,0);
          }
-         else if(this.velocity.x > 0 && xChange){
-            frame = altFrame ? MoveFrames.RIGHT : MoveFrames.RIGHTALT;
+         else if(this.velocity.x > 0){
+            this.sprite.setHeading(Headings.EAST,xMove);
             this.heading.set(1,0);
          }
-         else if(this.velocity.y > 0 && yChange){
-            frame = altFrame ? MoveFrames.DOWN : MoveFrames.DOWNALT;
+         else if(this.velocity.y > 0){
+            this.sprite.setHeading(Headings.SOUTH,yMove);
             this.heading.set(0,1);
          }
-         else if(this.velocity.y < 0 && yChange){
-            frame = altFrame ? MoveFrames.UP : MoveFrames.UPALT;
+         else if(this.velocity.y < 0){
+            this.sprite.setHeading(Headings.NORTH,yMove);
             this.heading.set(0,-1);
          }
-         // 2: Movement blocked, turn to face a certain direction.
-         //  - Do not consider alt frame.
          else {
-            if(this.velocity.x < 0){
-               frame = MoveFrames.LEFT;
-               this.heading.set(-1,0);
-            }
-            else if(this.velocity.x > 0){
-               frame = MoveFrames.RIGHT;
-               this.heading.set(1,0);
-            }
-            else if(this.velocity.y > 0){
-               frame = MoveFrames.DOWN;
-               this.heading.set(0,1);
-            }
-            else if(this.velocity.y < 0){
-               frame = MoveFrames.UP;
-               this.heading.set(0,-1);
-            }
+            this.sprite.setMoving(false);
          }
-         this.host.iconFrame = this._renderFrame = frame;
       }
 
 

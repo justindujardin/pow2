@@ -27,12 +27,12 @@ module pow2 {
       hits:SceneObject[] = [];
       player:TileObject = null;
 
-      syncComponent(){
-         super.syncComponent();
-         if(!this.host || !this.host.scene){
+      syncComponent():boolean{
+         if(!this.host || !this.host.scene || !super.syncComponent()){
             return;
          }
          this.player = this.host.scene.objectByComponent(PlayerComponent);
+         return !!this.player;
       }
       tick(elapsed:number) {
          if(this.paused || !this.machine){

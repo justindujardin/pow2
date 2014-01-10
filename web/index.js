@@ -80,6 +80,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                });
                self.sprite.addComponent(new pow2.CollisionComponent());
                self.sprite.addComponent(new pow2.PlayerComponent());
+               self.sprite.addComponent(new pow2.PlayerRenderComponent());
                self.sprite.addComponent(new pow2.PlayerCameraComponent());
                self.sprite.addComponent(new pow2.PlayerTouchComponent());
                self.scene.addObject(self.sprite);

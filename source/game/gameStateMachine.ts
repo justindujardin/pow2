@@ -100,14 +100,19 @@ module pow2 {
 
          this.scene = <Scene>machine.world.setService('scene',new Scene());
          this.scene.once('map:loaded',() => {
+            var friendly = this.tileMap.getFeature('friendly');
+            var enemy = this.tileMap.getFeature('enemy');
+
+
+
             // Create a movable character with basic components.
             this.friendly = new pow2.TileObject({
-               point: this.tileMap.bounds.getCenter(),
+               point: new Point(friendly.x / 16, friendly.y / 16),
                icon:"warrior.png"
             });
-            this.friendly.addComponent(new pow2.CollisionComponent);
-            this.friendly.addComponent(new pow2.PlayerComponent);
-            this.friendly.addComponent(new pow2.PlayerTouchComponent);
+//            this.friendly.addComponent(new pow2.CollisionComponent);
+            this.friendly.addComponent(new pow2.PlayerRenderComponent);
+//            this.friendly.addComponent(new pow2.PlayerTouchComponent);
             this.scene.addObject(this.friendly);
             machine.view.setScene(this.scene);
             machine.view.setTileMap(this.tileMap);

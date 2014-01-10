@@ -37,9 +37,9 @@ module pow2 {
          this.host.renderPoint = this.targetPoint.clone();
          return true;
       }
-      syncComponent(){
-         super.syncComponent();
+      syncComponent():boolean{
          this.collider = <CollisionComponent>this.host.findComponent(CollisionComponent);
+         return super.syncComponent();
       }
 
       /**

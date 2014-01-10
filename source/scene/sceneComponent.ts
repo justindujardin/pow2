@@ -46,7 +46,7 @@ module pow2 {
        * host object components, the references to them should be looked up and
        * stored here.
        */
-      syncComponent();
+      syncComponent():boolean;
    }
 
    /**
@@ -61,13 +61,14 @@ module pow2 {
       host:SceneObject;
       connectComponent():boolean { return true; }
       disconnectComponent():boolean { return true; }
-      syncComponent() {}
+      syncComponent():boolean { return true; }
    }
 
    /**
     * A component that supports tick/interpolateTick
     */
    export class TickedComponent extends SceneComponent {
+      tickRateMS:number = 300;
 
       /**
        * Update the component at a tick interval.

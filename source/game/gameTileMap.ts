@@ -36,6 +36,11 @@ module pow2 {
       featureKey(x, y) {
          return "" + x + "_" + y;
       }
+      getFeature(name:string){
+         return _.find(<any>this.features.objects,(feature:any) => {
+            return feature.name === name;
+         });
+      }
       addFeature(feature:any){
          feature._object = this.createFeatureObject(feature);
          this.scene.addObject(feature._object);

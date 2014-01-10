@@ -45,10 +45,10 @@ module pow2{
          _.each(objects, (object) => {
             return this.objectRenderer.render(object,this);
          });
-         var player = this.scene.objectByComponent(pow2.PlayerComponent);
-         if (player) {
+         var players = this.scene.objectsByComponent(pow2.PlayerRenderComponent);
+         _.each(players, (player) => {
             this.objectRenderer.render(player, this);
-         }
+         });
          return this;
       }
 

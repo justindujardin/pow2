@@ -30,10 +30,11 @@ module pow2 {
       player:PlayerComponent = null;
       touch:GameFeatureObject = null;
       touchedComponent:GameFeatureComponent = null;
-      syncComponent(){
+      syncComponent():boolean{
          super.syncComponent();
          this.player = <PlayerComponent>this.host.findComponent(PlayerComponent);
          this.collider = <CollisionComponent>this.host.findComponent(CollisionComponent);
+         return !!(this.player && this.collider);
       }
 
       tick(elapsed:number){
