@@ -33,6 +33,7 @@ module pow2 {
       features:any;
       mapName: string;
       bounds: pow2.Rect;
+      private _loaded:boolean = false;
 
       constructor(mapName: string) {
          super();
@@ -60,12 +61,18 @@ module pow2 {
          });
       }
 
+      isLoaded():boolean {
+         return this._loaded;
+      }
+
       loaded(){
          this.scene.trigger("map:loaded",this);
+         this._loaded = true;
       }
 
       unloaded(){
          this.scene.trigger("map:unloaded",this);
+         this._loaded = false;
       }
 
       setMap(map:TiledTMXResource) {

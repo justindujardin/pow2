@@ -44,12 +44,11 @@ module pow2{
        * @returns {pow2.Rect}
        */
       getCameraClip() {
-         var clipGrow, clipRect;
          if (!this.tileMap) {
             return this.camera;
          }
-         clipGrow = this.camera.clone().round();
-         clipRect = clipGrow.clamp(this.tileMap.bounds).inflate(1).round();
+         var clipGrow = this.camera.clone().round();
+         var clipRect = clipGrow.clamp(this.tileMap.bounds);
          return clipRect;
       }
 

@@ -85,6 +85,18 @@ module pow2 {
       // Scene rendering interfaces
       // -----------------------------------------------------------------------------
 
+      renderToCanvas(width, height, renderFunction) {
+         var buffer = document.createElement('canvas');
+         buffer.width = width;
+         buffer.height = height;
+         var context:any = buffer.getContext('2d');
+         // Disable smoothing for nearest neighbor scaling.
+         context.webkitImageSmoothingEnabled = false;
+         context.mozImageSmoothingEnabled = false;
+         renderFunction(context);
+         return buffer;
+      }
+
       // Render a frame. Subclass this to do your specific rendering.
       renderFrame(elapsed: number) {
       }
