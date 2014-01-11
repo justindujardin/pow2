@@ -85,23 +85,19 @@ module pow2 {
       setCurrentState(state:IState):boolean;
       setCurrentState(state:string):boolean
       setCurrentState(newState:any):boolean{
-         if(typeof newState === 'string'){
-            newState = this.getState(newState);
-         }
-         else {
-            newState = <IState>newState;
-         }
+         var state = typeof newState === 'string' ? this.getState(newState) : <IState>newState;
          var oldState:IState = this._currentState;
-         if(!newState){
+         if(!state){
+            console.error("STATE NOT FOUND: " + newState);
             return false;
          }
          this._newState = true;
          this._previousState = this._currentState;
-         this._currentState = newState;
+         this._currentState = state;
          if(oldState){
             oldState.exit(this);
          }
-         newState.enter(this);
+         state.enter(this);
          return true;
       }
       getPreviousState():IState{
