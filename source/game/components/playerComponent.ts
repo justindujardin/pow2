@@ -47,24 +47,42 @@ module pow2 {
          }
          var xMove = this.targetPoint.x !== this.host.renderPoint.x;
          var yMove = this.targetPoint.y !== this.host.renderPoint.y;
-         if(this.velocity.y > 0){
+         if(this.velocity.y > 0 && yMove){
             this.sprite.setHeading(Headings.SOUTH,yMove);
             this.heading.set(0,1);
          }
-         else if(this.velocity.y < 0){
+         else if(this.velocity.y < 0 && yMove){
             this.sprite.setHeading(Headings.NORTH,yMove);
             this.heading.set(0,-1);
          }
-         else if(this.velocity.x < 0){
+         else if(this.velocity.x < 0 && xMove){
             this.sprite.setHeading(Headings.WEST,xMove);
             this.heading.set(-1,0);
          }
-         else if(this.velocity.x > 0){
+         else if(this.velocity.x > 0 && xMove){
             this.sprite.setHeading(Headings.EAST,xMove);
             this.heading.set(1,0);
          }
          else {
-            this.sprite.setMoving(false);
+            if(this.velocity.y > 0){
+               this.sprite.setHeading(Headings.SOUTH,false);
+               this.heading.set(0,1);
+            }
+            else if(this.velocity.y < 0){
+               this.sprite.setHeading(Headings.NORTH,false);
+               this.heading.set(0,-1);
+            }
+            else if(this.velocity.x < 0){
+               this.sprite.setHeading(Headings.WEST,false);
+               this.heading.set(-1,0);
+            }
+            else if(this.velocity.x > 0){
+               this.sprite.setHeading(Headings.EAST,false);
+               this.heading.set(1,0);
+            }
+            else {
+               this.sprite.setMoving(false);
+            }
          }
       }
 

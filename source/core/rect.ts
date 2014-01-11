@@ -105,13 +105,10 @@ module pow2{
          return this.extent.x > 0 && this.extent.y > 0;
       }
       intersect(clipRect:IRect):boolean {
-         var bottomLX:number = Math.min(this.point.x+this.extent.x,clipRect.point.x+clipRect.extent.x);
-         var bottomLY:number = Math.min(this.point.y+this.extent.y,clipRect.point.y+clipRect.extent.y);
-         this.point.x = Math.max(this.point.x,this.extent.x);
-         this.point.y = Math.max(this.point.y,this.extent.y);
-         this.extent.x = bottomLX - this.point.x;
-         this.extent.y = bottomLY - this.point.y;
-         return this.isValid();
+         return !(clipRect.point.x > this.point.x + this.extent.x ||
+            clipRect.point.x + clipRect.extent.x < this.point.x ||
+            clipRect.point.y > this.point.y + this.extent.y ||
+            clipRect.point.y + clipRect.extent.y < this.point.y);
       }
 
       pointInRect(point:Point):boolean;

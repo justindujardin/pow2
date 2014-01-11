@@ -79,12 +79,16 @@ module pow2 {
          }
          var squareScreen = view.worldToScreen(squareUnits);
 
+         var clipRect = view.worldToScreen(view.getCameraClip());
          var cols:number = this.buffer.length;
          var rows:number = this.buffer[0].length;
          // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
          for(var col:number = 0; col < cols; col++){
             for(var row:number = 0; row < rows; row++){
-               var renderScreen = view.worldToScreen(new Point(col * squareUnits,row * squareUnits));
+               var renderRect:Rect = view.worldToScreen(new Rect(col * squareUnits,row * squareUnits,squareUnits,squareUnits));
+               if(!renderRect.intersect(clipRect)){
+                  continue;
+               }
                view.context.drawImage(this.buffer[col][row],
                   // From source
                   0,
@@ -92,8 +96,8 @@ module pow2 {
                   squareSize,
                   squareSize,
                   // Scaled to camera
-                  renderScreen.x,
-                  renderScreen.y,
+                  renderRect.point.x,
+                  renderRect.point.y,
                   squareScreen,
                   squareScreen);
             }
