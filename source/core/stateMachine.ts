@@ -24,6 +24,7 @@ module pow2 {
    export interface IStateMachine {
       update(data:any);
       addState(state:IState);
+      addStates(states:IState[]);
       getCurrentState():IState;
       getCurrentName():string;
       setCurrentState(name:string):boolean;
@@ -37,7 +38,7 @@ module pow2 {
    // -------------------------------------------------------------------------
    export class StateMachine implements IStateMachine, IWorldObject {
       defaultState:string = null;
-      states:any = {};
+      states:IState[] = [];
       private _currentState:IState = null;
       private _previousState:IState = null;
       private _newState:boolean = false;
@@ -52,7 +53,7 @@ module pow2 {
       }
 
       tick(elapsed:number){
-         this.update(data);
+         this.update(elapsed);
       }
 
       update(data:any){
@@ -71,6 +72,10 @@ module pow2 {
       addState(state:IState){
          this.states.push(state);
       }
+      addStates(states:IState[]){
+         this.states = _.unique(this.states.concat(states));
+      }
+
       getCurrentState():IState{
          return this._currentState;
       }
@@ -103,7 +108,10 @@ module pow2 {
          return this._previousState;
       }
       getState(name:string):IState{
-         return <IState>_.where(this.states,{name:name})[0];
+         var state = _.find(this.states,(s:IState) => {
+            return s.name === name;
+         });
+         return state;
       }
    }
 }

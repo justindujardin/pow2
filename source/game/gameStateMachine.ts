@@ -37,12 +37,13 @@ module pow2 {
       player:TileObject = null;
       combatant:GameFeatureObject = null;
       view:GameMapView = null;
+      tickRateMS:number = 300;
       states:IState[] = [
          new GameDefaultState(),
          new GameMapState("town"),
          new GameCombatState()
       ];
-
+      private _elapsed: number = 0;
       setGameView(view:GameMapView){
          this.view = view;
       }
@@ -55,6 +56,15 @@ module pow2 {
       }
 
       tick(elapsed:number){
+         this._elapsed += elapsed;
+         if (this._elapsed < this.tickRateMS) {
+            return;
+         }
+         // Don't subtract elapsed here, but take the modulus so that
+         // if for some reason we get a HUGE elapsed, it just does one
+         // tick and keeps the remainder toward the next.
+         this._elapsed = this._elapsed % this.tickRateMS;
+
          super.tick(elapsed);
          this.updatePlayer();
       }

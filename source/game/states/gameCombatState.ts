@@ -16,23 +16,29 @@
 
 /// <reference path="../gameStateMachine.ts" />
 /// <reference path="./gameMapState.ts" />
+/// <reference path="./combat/combatStateMachine.ts" />
 
 module pow2 {
 
+   // Combat Lifetime State Machine
+   //--------------------------------------------------------------------------
    export class GameCombatState extends State {
       static NAME:string = "combat";
       name:string = GameCombatState.NAME;
       transitions:IStateTransition[] = [
          new GameMapTransition()
       ];
+      machine:IStateMachine = null;
       saveScene:Scene;
       saveTileMap:TileMap;
       scene:Scene;
       tileMap:GameTileMap;
       friendly:TileObject; // TODO: Friendly[] ?
       enemy:TileObject; // TODO: Enemy[] ?
+      finished:boolean = false; // Trigger state to exit when true.
       enter(machine:GameStateMachine){
          super.enter(machine);
+         this.machine = new CombatStateMachine(machine);
          this.saveScene = machine.world.scene;
          this.saveTileMap = machine.player.tileMap;
          this.saveScene.paused = true;
@@ -62,8 +68,6 @@ module pow2 {
             this.enemy.addComponent(new pow2.PlayerRenderComponent);
             this.scene.addObject(this.enemy);
 
-
-
             machine.view.setScene(this.scene);
             machine.view.setTileMap(this.tileMap);
          });
@@ -79,6 +83,11 @@ module pow2 {
          machine.updatePlayer();
          this.saveScene.paused = false;
          this.scene.destroy();
+         this.finished = false;
+         machine.combatant.destroy();
+      }
+      tick(machine:IStateMachine){
+         this.machine.update(machine);
       }
    }
    export class GameCombatTransition extends StateTransition {
