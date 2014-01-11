@@ -26,7 +26,7 @@ module pow2 {
             return;
          }
          if(this.machine){
-            this.machine.tick(this);
+            this.machine.update(this);
          }
       }
   }

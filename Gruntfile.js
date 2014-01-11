@@ -67,7 +67,16 @@ module.exports = function(grunt) {
 
       clean: {
          core: {
-            src: ["build/"]
+            src: ["build/core"]
+         },
+         scene: {
+            src: ["build/scene"]
+         },
+         tile: {
+            src: ["build/tile"]
+         },
+         game: {
+            src: ["build/game"]
          },
          server: {
             src: [
@@ -82,28 +91,45 @@ module.exports = function(grunt) {
        * Compile TypeScript library
        */
       typescript: {
+         options: {
+            module: 'amd', //or commonjs
+            target: 'es5', //or es3
+            base_path: 'source',
+            sourcemap: true,
+            declaration: false
+         },
+
          core: {
-            options: {
-               module: 'amd', //or commonjs
-               target: 'es5', //or es3
-               base_path: 'source',
-               sourcemap: true,
-               declaration: false
-            },
             src: [
                "source/core/api.ts",
                "source/core/*.ts",
-               "source/core/resources/*.ts",
+               "source/core/resources/*.ts"
+            ],
+            dest: 'build'
+         },
+         scene: {
+            src: [
                "source/scene/*.ts",
-               "source/scene/components/*.ts",
+               "source/scene/components/*.ts"
+            ],
+            dest: 'build'
+         },
+         tile: {
+            src: [
                "source/tile/*.ts",
                "source/tile/components/*.ts",
                "source/tile/objects/*.ts",
                "source/tile/resources/*.ts",
                "source/tile/features/*.ts",
-               "source/tile/render/*.ts",
+               "source/tile/render/*.ts"
+            ],
+            dest: 'build'
+         },
+         game: {
+            src: [
                "source/game/*.ts",
                "source/game/objects/*.ts",
+               "source/game/states/*.ts",
                "source/game/components/*.ts",
                "source/game/components/features/*.ts"
             ],
@@ -208,6 +234,7 @@ module.exports = function(grunt) {
          }
       },
 
+
       /**
        * Trigger a new build when files change
        */
@@ -216,11 +243,32 @@ module.exports = function(grunt) {
             atBegin:true,
             spawn: false
          },
-         typescript: {
+
+         // Game Source outputs
+         //--------------------------------------------------------------------
+         core: {
             files: [
                '<%= typescript.core.src %>'
             ],
             tasks: ['clean:core', 'typescript:core', 'notify:code']
+         },
+         scene: {
+            files: [
+               '<%= typescript.scene.src %>'
+            ],
+            tasks: ['clean:scene', 'typescript:scene', 'notify:code']
+         },
+         tile: {
+            files: [
+               '<%= typescript.tile.src %>'
+            ],
+            tasks: ['clean:tile', 'typescript:tile', 'notify:code']
+         },
+         game: {
+            files: [
+               '<%= typescript.game.src %>'
+            ],
+            tasks: ['clean:game', 'typescript:game', 'notify:code']
          },
          typedefs: {
             files: [
@@ -228,6 +276,10 @@ module.exports = function(grunt) {
             ],
             tasks: ['copy']
          },
+
+
+         // Game Metadata
+         //--------------------------------------------------------------------
          data: {
             files: [
                '<%= concat.data.src %>'

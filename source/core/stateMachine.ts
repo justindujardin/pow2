@@ -22,7 +22,7 @@ module pow2 {
    // State Machine Interfaces
    // -------------------------------------------------------------------------
    export interface IStateMachine {
-      tick(host:any);
+      update(data:any);
       addState(state:IState);
       getCurrentState():IState;
       getCurrentName():string;
@@ -52,6 +52,10 @@ module pow2 {
       }
 
       tick(elapsed:number){
+         this.update(data);
+      }
+
+      update(data:any){
          this._newState = false;
          if(this._currentState === null){
             this.setCurrentState(this.defaultState);
