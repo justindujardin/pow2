@@ -28,45 +28,45 @@ module pow2 {
       transitions:IStateTransition[] = [
          new GameMapTransition()
       ];
-      machine:IStateMachine = null;
+      machine:CombatStateMachine = null;
       saveScene:Scene;
       saveTileMap:TileMap;
       scene:Scene;
       tileMap:GameTileMap;
-      friendly:TileObject; // TODO: Friendly[] ?
-      enemy:TileObject; // TODO: Enemy[] ?
       finished:boolean = false; // Trigger state to exit when true.
       enter(machine:GameStateMachine){
          super.enter(machine);
-         this.machine = new CombatStateMachine(machine);
+         this.machine = null;
          this.saveScene = machine.world.scene;
          this.saveTileMap = machine.player.tileMap;
          this.saveScene.paused = true;
 
          this.scene = <Scene>machine.world.setService('scene',new Scene());
          this.scene.once('map:loaded',() => {
+            this.machine = new CombatStateMachine(machine);
+
             var friendly = this.tileMap.getFeature('friendly');
             var enemy = this.tileMap.getFeature('enemy');
 
             // Create the hero facing his enemy
-            this.friendly = new pow2.TileObject({
+            this.machine.friendly = new pow2.TileObject({
                point: new Point(friendly.x / 16, friendly.y / 16),
                icon:"warrior.png"
             });
-            this.friendly.addComponent(new pow2.PlayerRenderComponent);
-            this.scene.addObject(this.friendly);
+            this.machine.friendly.addComponent(new pow2.PlayerRenderComponent);
+            this.scene.addObject(this.machine.friendly);
 
 
             // Create the enemy
-            this.enemy = new pow2.TileObject({
+            this.machine.enemy = new pow2.TileObject({
                point: new Point(enemy.x / 16, enemy.y / 16),
                icon:machine.combatant.icon,
                components: [
                   new pow2.PlayerRenderComponent
                ]
             });
-            this.enemy.addComponent(new pow2.PlayerRenderComponent);
-            this.scene.addObject(this.enemy);
+            this.machine.enemy.addComponent(new pow2.PlayerRenderComponent);
+            this.scene.addObject(this.machine.enemy);
 
             machine.view.setScene(this.scene);
             machine.view.setTileMap(this.tileMap);
@@ -81,13 +81,16 @@ module pow2 {
          machine.view.setScene(this.saveScene);
          machine.view.setTileMap(this.saveTileMap);
          machine.updatePlayer();
+         this.machine = null;
          this.saveScene.paused = false;
          this.scene.destroy();
          this.finished = false;
          machine.combatant.destroy();
       }
       tick(machine:IStateMachine){
-         this.machine.update(machine);
+         if(this.machine){
+            this.machine.update(machine);
+         }
       }
    }
    export class GameCombatTransition extends StateTransition {
