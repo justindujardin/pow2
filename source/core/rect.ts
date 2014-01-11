@@ -48,6 +48,10 @@ module pow2{
          return this;
       }
 
+      toString():string {
+         return "p(" + this.point.toString() + ") extent(" + this.extent.toString() + ")";
+      }
+
       set(rect:IRect):Rect;
       set(point:Point,extent:Point):Rect;
       set(x:number,y:number,width:number,height:number);
