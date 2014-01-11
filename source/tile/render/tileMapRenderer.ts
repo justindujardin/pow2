@@ -89,6 +89,7 @@ module pow2 {
                if(!renderRect.intersect(clipRect)){
                   continue;
                }
+               //console.log("Tile " + renderRect.toString())
                view.context.drawImage(this.buffer[col][row],
                   // From source
                   0,
@@ -98,8 +99,8 @@ module pow2 {
                   // Scaled to camera
                   renderRect.point.x,
                   renderRect.point.y,
-                  squareScreen,
-                  squareScreen);
+                  squareScreen + 1,
+                  squareScreen + 1);
             }
          }
       }
