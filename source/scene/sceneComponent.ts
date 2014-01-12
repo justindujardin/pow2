@@ -25,7 +25,7 @@ module pow2 {
     * Basic component interface.  Supports component host lifetime implementations, and
     * hot-swapping components.
     */
-   export interface ISceneComponent extends IObject {
+   export interface ISceneComponent extends IObject, ISceneEvents {
 
       /**
        * The host object that this component belongs to.
@@ -54,11 +54,13 @@ module pow2 {
     * time constructs, we have to have an actual implementation to instanceof.  For that
     * reason, all SceneComponents should derive this class.
     */
-   export class SceneComponent implements ISceneComponent {
+   export class SceneComponent extends SceneEvents implements ISceneComponent {
       id:number = _.uniqueId();
       scene: Scene;
       host:SceneObject;
-      constructor(public name:string = _.uniqueId('comp')){}
+      constructor(public name:string = _.uniqueId('comp')){
+         super();
+      }
       connectComponent():boolean { return true; }
       disconnectComponent():boolean { return true; }
       syncComponent():boolean { return true; }

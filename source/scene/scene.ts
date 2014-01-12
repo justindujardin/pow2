@@ -22,7 +22,40 @@
 /// <reference path="./sceneSpatialDatabase.ts"/>
 
 module pow2 {
-   export class Scene extends Backbone.Model implements IProcessObject, IWorldObject {
+
+
+   export interface ISceneEvents {
+      on?(eventName: any, callback?: Function, context?: any): any;
+      off?(eventName?: string, callback?: Function, context?: any): any;
+      trigger?(eventName: string, ...args: any[]): any;
+      bind?(eventName: string, callback: Function, context?: any): any;
+      unbind?(eventName?: string, callback?: Function, context?: any): any;
+
+      once?(events: string, callback: Function, context?: any): any;
+      listenTo?(object: any, events: string, callback: Function): any;
+      listenToOnce?(object: any, events: string, callback: Function): any;
+      stopListening?(object?: any, events?: string, callback?: Function): any;
+   }
+
+
+   // Backbone.Events does not work with extend in Typescript, so use this
+   // base class to all extends to work with proper type information.
+   // TODO: This is kind of bad for different versions of Backbone.
+   export class SceneEvents implements ISceneEvents {
+      constructor() {}
+      on(eventName: any, callback?: Function, context?: any): any {}
+      off(eventName?: string, callback?: Function, context?: any): any {}
+      trigger(eventName: string, ...args: any[]): any {}
+      bind(eventName: string, callback: Function, context?: any): any {}
+      unbind(eventName?: string, callback?: Function, context?: any): any {}
+      once(events: string, callback: Function, context?: any): any {}
+      listenTo(object: any, events: string, callback: Function): any {}
+      listenToOnce(object: any, events: string, callback: Function): any {}
+      stopListening(object?: any, events?: string, callback?: Function): any {}
+   }
+   _.extend(SceneEvents.prototype,Backbone.Events);
+
+   export class Scene extends SceneEvents implements IProcessObject, IWorldObject {
       id:number = _.uniqueId();
       name:string = _.uniqueId('scene');
       db:SceneSpatialDatabase = new SceneSpatialDatabase;

@@ -40,7 +40,7 @@ module pow2 {
       findComponents(type:Function):ISceneComponent[];
    }
 
-   export class SceneObject implements ISceneComponentHost {
+   export class SceneObject extends SceneEvents implements ISceneComponentHost {
       id:number = _.uniqueId();
       name:string;
       scene: Scene;
@@ -52,6 +52,7 @@ module pow2 {
       renderPoint:Point;
       _components:ISceneComponent[] = [];
       constructor(options?: any) {
+         super();
          _.extend(this, _.defaults(options || {}), {
             point: new Point(0,0),
             enabled:true
@@ -146,7 +147,5 @@ module pow2 {
          }
          return change;
       }
-
-
    }
 }
