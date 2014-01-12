@@ -22,7 +22,40 @@
 /// <reference path="./sceneSpatialDatabase.ts"/>
 
 module pow2 {
-   export class Scene extends Backbone.Model implements IProcessObject, IWorldObject {
+
+
+   export interface ISceneEvents {
+      on?(eventName: any, callback?: Function, context?: any): any;
+      off?(eventName?: string, callback?: Function, context?: any): any;
+      trigger?(eventName: string, ...args: any[]): any;
+      bind?(eventName: string, callback: Function, context?: any): any;
+      unbind?(eventName?: string, callback?: Function, context?: any): any;
+
+      once?(events: string, callback: Function, context?: any): any;
+      listenTo?(object: any, events: string, callback: Function): any;
+      listenToOnce?(object: any, events: string, callback: Function): any;
+      stopListening?(object?: any, events?: string, callback?: Function): any;
+   }
+
+
+   // Backbone.Events does not work with extend in Typescript, so use this
+   // base class to all extends to work with proper type information.
+   // TODO: This is kind of bad for different versions of Backbone.
+   export class SceneEvents implements ISceneEvents {
+      constructor() {}
+      on(eventName: any, callback?: Function, context?: any): any {}
+      off(eventName?: string, callback?: Function, context?: any): any {}
+      trigger(eventName: string, ...args: any[]): any {}
+      bind(eventName: string, callback: Function, context?: any): any {}
+      unbind(eventName?: string, callback?: Function, context?: any): any {}
+      once(events: string, callback: Function, context?: any): any {}
+      listenTo(object: any, events: string, callback: Function): any {}
+      listenToOnce(object: any, events: string, callback: Function): any {}
+      stopListening(object?: any, events?: string, callback?: Function): any {}
+   }
+   _.extend(SceneEvents.prototype,Backbone.Events);
+
+   export class Scene extends SceneEvents implements IProcessObject, IWorldObject {
       id:number = _.uniqueId();
       name:string = _.uniqueId('scene');
       db:SceneSpatialDatabase = new SceneSpatialDatabase;
@@ -32,12 +65,25 @@ module pow2 {
       world:IWorld = null;
       fps:number = 0;
       time:number = 0;
+      paused:boolean = false;
 
-      constructor(options){
+      constructor(options:any={}){
          super();
          this.options = _.defaults(options || {},{
             debugRender:false
          });
+      }
+
+      destroy() {
+         this.world.erase(this);
+         _.each(this._objects,(obj) => {
+            this.removeObject(obj,true);
+         });
+         _.each(this._views,(obj) => {
+            this.removeView(obj);
+         });
+         this.paused = true;
+
       }
 
       // IWorldObject
@@ -51,13 +97,18 @@ module pow2 {
 
       // IProcessObject
       // -----------------------------------------------------------------------------
-      tickRateMS:number = 32;
       tick(elapsed:number) {
+         if(this.paused){
+            return;
+         }
          for(var i = 0; i < this._objects.length; i++){
             this._objects[i].tick(elapsed);
          }
       }
       processFrame(elapsed:number) {
+         if(this.paused){
+            return;
+         }
          this.time = this.world.time.time;
          // Interpolate objects.
          for(var i = 0; i < this._objects.length; i++){
@@ -140,12 +191,27 @@ module pow2 {
          }
          this.addIt('_objects',object);
       }
-      removeObject(object){
+      removeObject(object:SceneObject,destroy:boolean=true){
          this.removeIt('_objects',object);
+         if(destroy){
+            object.destroy();
+         }
       }
       findObject(object){
          return this.findIt('_objects',object);
       }
+
+
+      componentsByType(type) {
+         return _.chain(this._objects)
+            .map((o:ISceneComponentHost) => {
+               return o.findComponents(type);
+            })
+            .flatten()
+            .compact()
+            .value();
+      }
+
 
       objectsByType(type) {
          return _.filter(this._objects, (o) => {

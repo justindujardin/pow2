@@ -20,18 +20,20 @@
 /// <reference path="../core/resources/json.ts" />
 /// <reference path="../scene/sceneObject.ts" />
 /// <reference path="./tileObject.ts" />
-/// <reference path="./tiledMap.ts" />
+/// <reference path="./components/tileMapCameraComponent.ts" />
+/// <reference path="./resources/tiledTmx.ts" />
+/// <reference path="./resources/tiledTsx.ts" />
 
 module pow2 {
    export class TileMap extends SceneObject {
-      resource: JSONResource;
-      map: tiled.TiledMap;
+      map: TiledTMXResource;
       tileSet:any; // TODO: Tileset
       tiles:any; // TODO: TilesetProperties
-      terrain:tiled.TileLayer;
-      features:tiled.FeaturesLayer;
+      terrain:any;
+      features:any;
       mapName: string;
       bounds: pow2.Rect;
+      private _loaded:boolean = false;
 
       constructor(mapName: string) {
          super();
@@ -43,47 +45,55 @@ module pow2 {
       // Scene Object Lifetime
       //
       onAddToScene(scene) {
+         this.world.loader.ensureType('tmx',TiledTMXResource);
+         this.world.loader.ensureType('tsx',TiledTSXResource);
+         // If there is no camera, create a basic one.
+         if(!this.findComponent(CameraComponent)){
+            this.addComponent(new TileMapCameraComponent());
+         }
          this.load();
       }
 
       load(mapName:string=this.mapName){
-         this.world.loader.load("/maps/" + mapName + ".json", (mapResource:JSONResource) => {
+         this.world.loader.load("/maps/" + mapName + ".tmx", (mapResource:TiledTMXResource) => {
             this.mapName = mapName;
             this.setMap(mapResource);
          });
       }
 
+      isLoaded():boolean {
+         return this._loaded;
+      }
+
       loaded(){
          this.scene.trigger("map:loaded",this);
+         this._loaded = true;
       }
 
       unloaded(){
          this.scene.trigger("map:unloaded",this);
+         this._loaded = false;
       }
 
-      setMap(map:JSONResource) {
+      setMap(map:TiledTMXResource) {
          if (!map || !map.isReady()) {
             return false;
          }
          if(this.map){
             this.unloaded();
          }
-         this.resource = map;
-         this.map = new tiled.TiledMap(map.data);
+         this.map = map;
          this.bounds = new pow2.Rect(0, 0, this.map.width, this.map.height);
          this.terrain = _.where(this.map.layers,{name:"Terrain"})[0];
          if(!this.terrain){
             throw new Error("Terrain layer must be present");
          }
-         this.features = _.where(this.map.layers,{name:"Features"})[0];
-         if(!this.features){
-            throw new Error("Features object group must be present");
-         }
+         this.features = _.where(this.map.objectGroups,{name:"Features"})[0] || [];
          this.tileSet = _.where(this.map.tilesets,{name:"Environment"})[0];
          if(!this.tileSet){
             throw new Error("Environment tile set must be present");
          }
-         this.tiles = this.tileSet.tileproperties;
+         this.tiles = this.tileSet.tiles;
          if(!this.tiles){
             throw new Error("Environment tileset must have properties for tile types");
          }

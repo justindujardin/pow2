@@ -31,9 +31,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
          "/images/creatures.png",
          "/images/environment.png",
          "/images/equipment.png",
-         "/images/items.png",
-         "/images/ui.png",
-         "/maps/isle.json"
+         "/images/items.png"
       ],
       maps: _.keys(pow2.getMaps()),
       state:'Uninitialized',
@@ -67,7 +65,8 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             scene:new pow2.Scene({
                autoStart: true,
                debugRender:false
-            })
+            }),
+            state:new pow2.GameStateMachine()
          });
          this.loader.load(this.files,function(){
             self.state = 'Loaded';
@@ -75,18 +74,18 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             self.input = self.scene.input = self.world.input;
             self.scene.once('map:loaded',function(){
                // Create a movable character with basic components.
-               self.sprite = new pow2.TileObject({
+               self.sprite = new pow2.GameEntityObject({
                   point: self.tileMap.bounds.getCenter(),
-                  icon:"party.png"
+                  icon:"warrior.png"
                });
                self.sprite.addComponent(new pow2.CollisionComponent());
-               self.sprite.addComponent(new pow2.GamePartyComponent());
+               self.sprite.addComponent(new pow2.PlayerComponent());
+               self.sprite.addComponent(new pow2.PlayerRenderComponent());
+               self.sprite.addComponent(new pow2.PlayerCameraComponent());
+               //self.sprite.addComponent(new pow2.PlayerTouchComponent());
                self.scene.addObject(self.sprite);
-               if(self.tileView){
-                  self.tileView.trackObject(self.sprite);
-               }
             });
-            self.tileMap = new pow2.GameTileMap("isle");
+            self.tileMap = new pow2.GameTileMap("town");
             self.scene.addObject(self.tileMap);
 
             return done();
@@ -98,58 +97,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             return null;
          }
          return this.tileMap.map.name;
-      },
-      /**
-       * Guess a good starting point for a player in a new map.
-       *
-       * Try to get a transition feature (door or exit), then
-       * fall back to the map center.
-       */
-      setMapSpawn: function(mapName) {
-         this.tileMap.setMap(mapName);
-         var map = this.tileMap.map;
-         var point = new pow2.Point(0,0);
-         if(map){
-            point = this.tileMap.bounds.getCenter();
-            if(map.features){
-               // Pick the first transition feature we find.
-               var feature = _.where(this.tileMap.map.features,{type : "transition"})[0];
-               if(feature){
-                  point = new pow2.Point(feature.x,feature.y);
-               }
-            }
-            this.sprite.setPoint(point);
-            if(this.tileView && map.width < 10 && map.height < 10){
-               this.tileView.camera.point.zero();
-               this.tileView.trackObject(null);
-            }
-            else if(this.tileView && this.sprite) {
-               this.tileView.trackObject(this.sprite);
-            }
-            return;
-         }
-         this.sprite.setPoint(point);
-         //self.tileMap.bounds.getCenter()
-      },
-      nextMap: function(){
-         var curr = this.currentMap;
-         var next = curr + 1;
-         if(next >= this.maps.length){
-            next = 0;
-         }
-         this.currentMap = next;
-         this.setMapSpawn(this.maps[next]);
-      },
-      previousMap : function(){
-         var curr = this.currentMap;
-         var next = curr - 1;
-         if(next < 0){
-            next = this.maps.length - 1;
-         }
-         this.currentMap = next;
-         this.setMapSpawn(this.maps[next]);
       }
-
    }
 });
 
@@ -164,15 +112,6 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
    $scope.getState = function(){
       return localStorage.getItem(stateKey);
    };
-   $scope.nextMap = function(){
-      game.nextMap();
-      $scope.mapName = game.getCurrentMapName();
-   };
-   $scope.previousMap = function(){
-      game.previousMap();
-      $scope.mapName = game.getCurrentMapName();
-   };
-
    game.load().then(function(){
       $scope.mapName = game.getCurrentMapName();
 
@@ -214,6 +153,7 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
          var context = $scope.canvas.getContext("2d");
          context.webkitImageSmoothingEnabled = false;
          context.mozImageSmoothingEnabled = false;
+
          game.load().then(function () {
 
             // Inspired by : http://seb.ly/2011/04/multi-touch-game-controller-in-javascripthtml5-for-ipad/
@@ -314,8 +254,9 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
             }
 
             game.tileView = new pow2.GameMapView(element[0], game.loader);
+            game.world.state.setGameView(game.tileView);
             game.tileView.camera.extent.set(10, 10);
-            game.tileView.tileMap = game.tileMap;
+            game.tileView.setTileMap(game.tileMap);
             game.scene.addView(game.tileView);
             if(game.sprite){
                game.tileView.trackObject(game.sprite);
@@ -366,6 +307,7 @@ twoFiftySix.app.directive('iconRender', function ($compile, game) {
 twoFiftySix.app.directive('dialogBubble', function () {
    return {
       restrict: 'E',
+      replace:true,
       templateUrl: '/templates/dialogBubble.html'
    };
 });

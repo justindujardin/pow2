@@ -32,6 +32,14 @@ body {
   overflow: hidden;
 }
 
+canvas {
+  image-rendering: -moz-crisp-edges;         /* Firefox */
+  image-rendering:   -o-crisp-edges;         /* Opera */
+  image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+}
+
 .game-container {
   position: absolute;
   top:0;
@@ -39,42 +47,33 @@ body {
   right:0;
   bottom:0;
   canvas{
-    position: relative;
-  }
-  // Basic dialog styles
-  // --------------------------------------------------------------------------
-  .dialog {
     position: absolute;
-    &.top {
-      top: 10px;
-      left: 10px;
-      right: 10px;
-    }
-    &.left{
-      top: 100px;
-      left: 10px;
-    }
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
   }
-
   // Dialog
   // --------------------------------------------------------------------------
   .message {
-    line-height:110px;
+    text-align: center;
+    .dialog {
+      margin-top:15px;
+      padding:10px 10px;
+    }
     .content {
-      padding-left: 80px;
       line-height: normal;
       text-align: center;
       display: table;
       width: 100%;
     }
     .character {
-      position: absolute;
-      left: 10px;
-      top: 10px;
-      margin-top:10px;
+      padding:0;
+      p {
+        margin:0;
+      }
     }
     .text {
-      height: 110px;
       display: table-cell;
       text-align: center;
       vertical-align: middle;
@@ -85,7 +84,15 @@ body {
 
   // Stores
   // --------------------------------------------------------------------------
+  .title {
+    text-align: center;
+    margin-bottom: 20px;
+    .ebp {
+      padding:0 25px;
+    }
+  }
   .store {
+    text-align:center;
     .name {
       h1 {
         margin:10px;
@@ -93,12 +100,18 @@ body {
       }
     }
     .inventory {
+      width:90%;
       padding:0;
-      left:10px;
-      right:10px;
+      .item-price {
+        color: #E8C627;
+        text-align: right;
+        padding-right:10px;
+      }
+
     }
     ul {
       padding:0;
+      margin:0;
       text-align: left;
       list-style-type: none;
       li {
@@ -106,6 +119,8 @@ body {
         border:1px solid transparent;
         padding:5px;
         font-size: 16px;
+        margin-left:0;
+        margin-right:0;
         .icon {
           line-height: 28px;
           img {
@@ -117,14 +132,6 @@ body {
             max-width: 160px;
             white-space: nowrap;
             text-overflow: ellipsis;
-          }
-          .item-price {
-            display: inline-block;
-            float: right;
-            min-width: 50px;
-            color: #E8C627;
-            text-align: right;
-            margin-right: 5px;
           }
         }
         &:hover {
@@ -152,8 +159,6 @@ body {
         }
       }
       .inventory{
-        right:auto;
-        width:50%;
         .item-name {
           max-width: 160px;
           white-space: nowrap;

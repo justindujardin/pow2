@@ -23,15 +23,11 @@ module pow2 {
    export class TileComponent extends SceneComponent {
       tileMap:TileMap;
       host:TileObject;
-      data:any;
+      isEntered:boolean;
 
-      constructor(feature:any){
-         super();
-         this.data = feature;
-      }
       connectComponent():boolean{
          this.tileMap = this.host.tileMap;
-         return !!this.tileMap;
+         return !!this.tileMap && this.tileMap instanceof TileMap;
       }
       disconnectComponent():boolean{
          this.tileMap = null;
@@ -42,12 +38,14 @@ module pow2 {
          return true;
       }
       entered(object:TileObject) {
+         this.isEntered = true;
          return true;
       }
       exit(object:TileObject):boolean {
          return true;
       }
       exited(object:TileObject) {
+         this.isEntered = false;
          return true;
       }
    }

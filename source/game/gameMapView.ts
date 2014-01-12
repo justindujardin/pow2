@@ -14,32 +14,27 @@
  limitations under the License.
  */
 
-/// <reference path="./../tile/tileMapView.ts"/>
-/// <reference path="./../tile/render/tileObjectRenderer.ts"/>
-/// <reference path="./components/gamePartyComponent.ts"/>
+/// <reference path="../tile/tileMapView.ts"/>
+/// <reference path="../tile/render/tileObjectRenderer.ts"/>
+/// <reference path="./components/playerComponent.ts"/>
+/// <reference path="./components/playerCameraComponent.ts"/>
+/// <reference path="../tile/components/spriteComponent.ts"/>
 
 module pow2{
    export class GameMapView extends TileMapView {
       objectRenderer:TileObjectRenderer = new TileObjectRenderer;
-      tracking:TileObject = null;
       tileMap:TileMap = null;
-
-      /*
-       * Set the camera to track a given object.
-       */
-      trackObject(tileObject) {
-         this.tracking = tileObject;
-      }
 
       /*
        * Update the camera for this frame.
        */
       processCamera() {
-         super.processCamera();
-         if (this.tracking && this.tracking instanceof pow2.TileObject) {
-            this.camera.setCenter(this.tracking.renderPoint || this.tracking.point);
+         var host = this.scene.objectByComponent(PlayerCameraComponent);
+         host = host ? host : this.scene.objectByComponent(TileMapCameraComponent);
+         if(host){
+            this.cameraComponent = <CameraComponent>host.findComponent(CameraComponent);
          }
-         return this;
+         super.processCamera();
       }
 
       /*
@@ -49,17 +44,21 @@ module pow2{
          super.renderFrame(elapsed);
          var objects = this.scene.objectsByType(pow2.GameFeatureObject);
          _.each(objects, (object) => {
-            return this.objectRenderer.render(object,this);
+            return this.objectRenderer.render(object,object,this);
          });
-         var player = this.scene.objectByComponent(pow2.GamePartyComponent);
-         if (player) {
-            this.objectRenderer.render(player, this);
-         }
+         var players = this.scene.objectsByComponent(pow2.PlayerRenderComponent);
+         _.each(players, (player) => {
+            this.objectRenderer.render(player,player,this);
+         });
+         var sprites = <ISceneComponent[]>this.scene.componentsByType(pow2.SpriteComponent);
+         _.each(sprites, (sprite:SpriteComponent) => {
+            this.objectRenderer.render(sprite.host,sprite, this);
+         });
          return this;
       }
 
       debugRender(debugStrings: string[] = []) {
-         var party = this.scene.objectByComponent(pow2.GamePartyComponent);
+         var party = this.scene.objectByComponent(pow2.PlayerComponent);
          if (party) {
             debugStrings.push("Party: (" + party.point.x + "," + party.point.y + ")");
          }

@@ -15,10 +15,12 @@
  */
 
 /// <reference path="../tile/tileMap.ts" />
-/// <reference path="./components/gameDialogComponent.ts" />
-/// <reference path="./components/gamePortalComponent.ts" />
-/// <reference path="./components/gameShipComponent.ts" />
-/// <reference path="./components/gameStoreComponent.ts" />
+/// <reference path="../tile/resources/tiled.ts" />
+/// <reference path="./components/features/dialogFeatureComponent.ts" />
+/// <reference path="./components/features/combatFeatureComponent.ts" />
+/// <reference path="./components/features/portalFeatureComponent.ts" />
+/// <reference path="./components/features/shipFeatureComponent.ts" />
+/// <reference path="./components/features/storeFeatureComponent.ts" />
 
 module pow2 {
    export class GameTileMap extends TileMap {
@@ -34,38 +36,45 @@ module pow2 {
       featureKey(x, y) {
          return "" + x + "_" + y;
       }
-      getFeature(x, y) {
-         if (!this.featureHash) {
-            return {};
-         }
-         return this.featureHash[this.featureKey(x, y)];
+      getFeature(name:string){
+         return _.find(<any>this.features.objects,(feature:any) => {
+            return feature.name === name;
+         });
       }
-      getFeatures() {
-         return this.featureHash;
+      addFeature(feature:any){
+         feature._object = this.createFeatureObject(feature);
+         this.scene.addObject(feature._object);
+         this.indexFeature(feature._object);
+      }
+
+      indexFeature(obj:GameFeatureObject){
+         var key = this.featureKey(obj.point.x, obj.point.y);
+         var object = this.featureHash[key];
+         if (!object) {
+            object = this.featureHash[key] = {};
+         }
+         object[obj.type] = obj.feature.properties;
       }
 
       // Construct
       addFeaturesToScene() {
-         _.each(this.features.objects,(obj) => {
-            obj._object = this.getObjectForFeature(obj.properties);
+         _.each(this.features.objects,(obj:any) => {
+            obj._object = this.createFeatureObject(obj);
             this.scene.addObject(obj._object);
          });
       }
-
       removeFeaturesFromScene() {
-         _.each(this.features.objects,(obj) => {
+         _.each(this.features.objects,(obj:any) => {
             var featureObject:SceneObject = <SceneObject>obj._object;
+            delete obj._object;
             if(featureObject){
                featureObject.destroy();
-               delete obj._object;
             }
          });
       }
-
-
       buildFeatures():boolean {
          this.removeFeaturesFromScene();
-         _.each(this.features.objects,(obj) => {
+         _.each(this.features.objects,(obj:any) => {
             var key = this.featureKey(obj.x, obj.y);
             var object = this.featureHash[key];
             if (!object) {
@@ -78,29 +87,40 @@ module pow2 {
          }
          return true;
       }
-
-      // TODO jd:  Composition for this is weird.  Seems like creating specific objects for this might be better.
-      // Yes?
-      getObjectForFeature(feature):TileObject {
+      createFeatureObject(tiledObject:tiled.ITiledObject):TileObject {
+         var feature = tiledObject.properties;
          var options = _.extend({}, feature, {
-            tileMap: this
+            tileMap: this,
+            x: Math.round(tiledObject.x / this.map.tilewidth),
+            y: Math.round(tiledObject.y / this.map.tileheight)
          });
          var object = new GameFeatureObject(options);
-         switch(feature.type){
+         var componentType:any = null;
+         var type:string = (feature && feature.type) ? feature.type : tiledObject.type;
+         switch(type){
             case 'transition':
-               object.addComponent(new GamePortalComponent(object));
+               componentType = PortalFeatureComponent;
                break;
             case 'ship':
-               object.addComponent(new GameShipComponent(object));
-               break;
-            case 'sign':
-               if(feature.action === 'TALK'){
-                  object.addComponent(new GameDialogComponent(object));
-               }
+               componentType = ShipFeatureComponent;
                break;
             case 'store':
-               object.addComponent(new GameStoreComponent(object));
+               componentType = StoreFeatureComponent;
                break;
+            case 'encounter':
+               componentType = CombatFeatureComponent;
+               break;
+            default:
+               if(feature && feature.action === 'TALK'){
+                  componentType = DialogFeatureComponent;
+               }
+               break;
+         }
+         if(componentType !== null){
+            var component = <ISceneComponent>(new componentType());
+            if(!object.addComponent(component)){
+               throw new Error("Component " + component.name + " failed to connect to host " + this.name);
+            }
          }
          return object;
       }

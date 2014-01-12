@@ -17,10 +17,15 @@
 ///<reference path='./point.ts' />
 
 module pow2{
-   export class Rect {
+   export interface IRect {
       point: Point;
       extent: Point;
-      constructor(rect:Rect);
+   }
+
+   export class Rect implements IRect{
+      point: Point;
+      extent: Point;
+      constructor(rect:IRect);
       constructor(point:Point,extent:Point);
       constructor(x:number,y:number,width:number,height:number);
       constructor(rectOrPointOrX:any,extentOrY?:any,width?:number,height?:number) {
@@ -43,7 +48,11 @@ module pow2{
          return this;
       }
 
-      set(rect:Rect):Rect;
+      toString():string {
+         return "p(" + this.point.toString() + ") extent(" + this.extent.toString() + ")";
+      }
+
+      set(rect:IRect):Rect;
       set(point:Point,extent:Point):Rect;
       set(x:number,y:number,width:number,height:number);
       set(rectOrPointOrX:any,extentOrY?:any,width?:number,height?:number):Rect {
@@ -69,7 +78,7 @@ module pow2{
          return new Rect(this.point.clone(),this.extent.clone());
       }
 
-      clamp(rect:Rect):Rect {
+      clamp(rect:IRect):Rect {
          if(this.point.x < rect.point.x){
             this.point.x += rect.point.x - this.point.x;
          }
@@ -87,7 +96,7 @@ module pow2{
       }
 
 
-      clip(clipRect:Rect):Rect{
+      clip(clipRect:IRect):Rect{
          var right:number = this.point.x + this.extent.x;
          var bottom:number = this.point.y + this.extent.y;
          this.point.x = Math.max(clipRect.point.x, this.point.x);
@@ -99,14 +108,11 @@ module pow2{
       isValid():boolean {
          return this.extent.x > 0 && this.extent.y > 0;
       }
-      intersect(clipRect:Rect):boolean {
-         var bottomLX:number = Math.min(this.point.x+this.extent.x,clipRect.point.x+clipRect.extent.x);
-         var bottomLY:number = Math.min(this.point.y+this.extent.y,clipRect.point.y+clipRect.extent.y);
-         this.point.x = Math.max(this.point.x,this.extent.x);
-         this.point.y = Math.max(this.point.y,this.extent.y);
-         this.extent.x = bottomLX - this.point.x;
-         this.extent.y = bottomLY - this.point.y;
-         return this.isValid();
+      intersect(clipRect:IRect):boolean {
+         return !(clipRect.point.x > this.point.x + this.extent.x ||
+            clipRect.point.x + clipRect.extent.x < this.point.x ||
+            clipRect.point.y > this.point.y + this.extent.y ||
+            clipRect.point.y + clipRect.extent.y < this.point.y);
       }
 
       pointInRect(point:Point):boolean;

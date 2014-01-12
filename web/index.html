@@ -14,7 +14,8 @@
     <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="/js/underscore-min.js"></script>
     <script type="text/javascript" src="/js/backbone-min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
+    <script type="text/javascript" src="/js/base64.js"></script>
 </head>
 <body ng-controller="twoFiftySixApp">
 
@@ -22,8 +23,10 @@
     <canvas width="576" height="576" game-view>
         Your browser doesn't support this.
     </canvas>
-    <dialog-bubble ng-show="dialog"></dialog-bubble>
-    <store-bubble ng-show="store"></store-bubble>
+    <div class="container">
+        <dialog-bubble ng-show="dialog"></dialog-bubble>
+        <store-bubble ng-show="store"></store-bubble>
+    </div>
 </div>
 
 
@@ -34,7 +37,6 @@
 
 <script type="text/javascript" src="/pow2.data.js"></script>
 <script type="text/javascript" src="/pow2.sprites.js"></script>
-<script type="text/javascript" src="/pow2.maps.js"></script>
 <script type="text/javascript" src="/index.js"></script>
 </body>
 </html>

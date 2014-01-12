@@ -32,7 +32,9 @@ module pow2 {
     */
    export interface ISceneComponentHost extends IObject {
       addComponent(component:ISceneComponent,silent?:boolean):boolean;
+      addComponentDictionary(components:any,silent?:boolean):boolean;
       removeComponent(component:ISceneComponent,silent?:boolean):boolean;
+      removeComponentDictionary(components:any,silent?:boolean):boolean;
 
       syncComponents();
 
@@ -40,7 +42,7 @@ module pow2 {
       findComponents(type:Function):ISceneComponent[];
    }
 
-   export class SceneObject implements ISceneComponentHost {
+   export class SceneObject extends SceneEvents implements ISceneComponentHost {
       id:number = _.uniqueId();
       name:string;
       scene: Scene;
@@ -52,12 +54,11 @@ module pow2 {
       renderPoint:Point;
       _components:ISceneComponent[] = [];
       constructor(options?: any) {
-         if(options){
-            _.extend(this, _.defaults(options || {}), {
-               point: new Point(0,0),
-               enabled:true
-            });
-         }
+         super();
+         _.extend(this, _.defaults(options || {}), {
+            point: new Point(0,0),
+            enabled:true
+         });
       }
 
       // Tick components.
@@ -85,6 +86,9 @@ module pow2 {
       }
 
       destroy() {
+         _.each(this._components,(o:ISceneComponent) => {
+            o.disconnectComponent();
+         });
          if (this.scene) {
             this.scene.removeObject(this);
          }
@@ -127,6 +131,47 @@ module pow2 {
          return true;
       }
 
+      addComponentDictionary(components:any,silent?:boolean):boolean {
+         var failed:ISceneComponent = null;
+         _.each(components,(comp:ISceneComponent,key:string) => {
+            if(failed){
+               return;
+            }
+            if(!this.addComponent(comp,true)){
+               failed = comp;
+            }
+         });
+         if(failed){
+            console.log("Failed to add component set to host. Component " + failed.toString() + " failed to connect to host.");
+         }
+         else {
+            this.syncComponents();
+         }
+         return !failed;
+      }
+      removeComponentDictionary(components:any,silent?:boolean):boolean {
+         var previousCount:number = this._components.length;
+         var removeIds:number[] = _.map(components,(value:ISceneComponent) => {
+            return value.id;
+         });
+         this._components = _.filter(this._components, (obj:SceneComponent) => {
+            if(_.indexOf(removeIds,obj.id) !== -1){
+               if(obj.disconnectComponent() === false){
+                  return true;
+               }
+               obj.host = null;
+               return false;
+            }
+            return true;
+         });
+         var change:boolean = this._components.length === previousCount;
+         if(change && silent !== true){
+            this.syncComponents();
+         }
+         return change;
+      }
+
+
       removeComponent(component:ISceneComponent,silent:boolean=false):boolean{
          var previousCount:number = this._components.length;
          this._components = _.filter(this._components, (obj:SceneComponent) => {
@@ -145,7 +190,5 @@ module pow2 {
          }
          return change;
       }
-
-
    }
 }

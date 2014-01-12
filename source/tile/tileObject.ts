@@ -34,7 +34,9 @@ module pow2 {
       // The sprite name, e.g. "party.png" or "knight.png"
       icon:string;
       // The sprite sheet source information
-      iconCoords:any;
+      meta:any;
+      // The sprite sheet frame (if applicable)
+      frame:number = 0;
 
       constructor(options?: any) {
          super(options);
@@ -68,19 +70,22 @@ module pow2 {
          if(this.icon){
             this.setSprite(this.icon);
          }
+         if(!this.tileMap){
+            this.tileMap = this.scene.objectByType(TileMap);
+         }
       }
 
       /**
        * Set the current sprite name.  Returns the previous sprite name.
        */
-      setSprite(name:string):string {
+      setSprite(name:string,frame:number = 0):string {
          var oldSprite:string = this.icon;
          if (!name) {
-            this.iconCoords = null;
+            this.meta = null;
          }
          else{
-            this.iconCoords = this.world.sprites.getSpriteCoords(name);
-            this.world.sprites.getSpriteSheet(this.iconCoords.source, (image) => {
+            this.meta = this.world.sprites.getSpriteMeta(name);
+            this.world.sprites.getSpriteSheet(this.meta.source, (image) => {
                return this.image = image.data;
             });
          }

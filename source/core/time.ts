@@ -19,8 +19,8 @@
 module pow2 {
    export interface IProcessObject {
       id:number;
-      tick(elapsed:number);
-      processFrame(elapsed:number);
+      tick?(elapsed:number);
+      processFrame?(elapsed:number);
    }
 
    export class Time {
@@ -71,17 +71,20 @@ module pow2 {
       }
 
       addObject(object:IProcessObject){
+         if(_.where(this.objects,{id:object.id}).length > 0){
+            return;
+         }
          this.objects.push(object);
       }
 
       tickObjects(elapsedMS:number){
          _.each(this.objects, (o:IProcessObject) => {
-            o.tick(elapsedMS);
+            return o.tick && o.tick(elapsedMS);
          });
       }
       processFrame(elapsedMS:number){
          _.each(this.objects, (o:IProcessObject) => {
-            o.processFrame(elapsedMS);
+            return o.processFrame && o.processFrame(elapsedMS);
          });
       }
 

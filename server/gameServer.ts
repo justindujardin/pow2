@@ -28,14 +28,23 @@ server.use(express.session({
  */
 function getPageScripts(){
    require("../Gruntfile")(grunt);
-   var app = grunt.config.get('typescript.core');
-   var src = app.options.base_path;
-   var dst = app.dest;
-   var sourceFiles:any = grunt.file.expand(app.src);
-   sourceFiles = _.map(sourceFiles,function(f:string){
-      return f.replace(src + '/',dst + '/').replace('.ts','.js');
+   var ts = grunt.config.get('typescript');
+   var names = ['core','scene','tile','game'];
+   var src = grunt.config.get('typescript.options.base_path');
+   var scripts:string[] = [];
+   _.each(names, (name:string) => {
+      var app = grunt.config.get('typescript.' + name);
+      if(!app){
+         console.log("Failed to include specified app: " + name);
+         return;
+      }
+      var sourceFiles:any = grunt.file.expand(app.src);
+      sourceFiles = _.map(sourceFiles,function(f:string){
+         return f.replace(src + '/',app.dest + '/').replace('.ts','.js');
+      });
+      scripts = scripts.concat(sourceFiles)
    });
-   return sourceFiles;
+   return scripts;
 }
 
 server.get('/', function(req,res){

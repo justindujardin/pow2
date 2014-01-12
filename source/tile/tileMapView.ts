@@ -17,6 +17,7 @@
 /// <reference path="../scene/sceneObject.ts"/>
 /// <reference path="./tileObject.ts"/>
 /// <reference path="./tileMap.ts"/>
+/// <reference path="./components/tileMapCameraComponent.ts"/>
 /// <reference path="./render/tileObjectRenderer.ts"/>
 /// <reference path="./render/tileMapRenderer.ts"/>
 
@@ -24,28 +25,18 @@ module pow2{
    export class TileMapView extends SceneView {
       objectRenderer:TileObjectRenderer = new TileObjectRenderer;
       mapRenderer:TileMapRenderer = new TileMapRenderer;
-      tracking:TileObject = null;
       tileMap:TileMap = null;
 
-      /*
-       * Set the camera to track a given object.
-       */
-      trackObject(tileObject) {
-         this.tracking = tileObject;
+      setTileMap(tileMap:TileMap){
+         this.tileMap = tileMap;
       }
 
-      /*
-       * Update the camera for this frame.
-       */
-      processCamera() {
-         super.processCamera();
-         this.cameraScale = Math.round(this.cameraScale);
-         var canvasSize = this.screenToWorld(new Point(this.context.canvas.width,this.context.canvas.height),this.cameraScale);
-         this.camera.extent.set(canvasSize);
-         if (this.tracking && this.tracking instanceof pow2.TileObject) {
-            this.camera.setCenter(this.tracking.renderPoint || this.tracking.point);
+      setScene(scene:Scene){
+         if(scene === this.scene){
+            return;
          }
-         return this;
+         this.cameraComponent = null;
+         super.setScene(scene);
       }
 
       /*
@@ -53,12 +44,11 @@ module pow2{
        * @returns {pow2.Rect}
        */
       getCameraClip() {
-         var clipGrow, clipRect;
          if (!this.tileMap) {
             return this.camera;
          }
-         clipGrow = this.camera.clone().round();
-         clipRect = clipGrow.clamp(this.tileMap.bounds).inflate(1).round();
+         var clipGrow = this.camera.clone().round();
+         var clipRect = clipGrow.clamp(this.tileMap.bounds);
          return clipRect;
       }
 
@@ -81,14 +71,13 @@ module pow2{
       }
 
       /*
-       * Render the tile map, and any features it has.
+       * Render the tile $map, and any features it has.
        */
       renderFrame(elapsed) {
          this.clearRect();
          if (!this.tileMap) {
             return;
          }
-         var clipRect:Rect = this.getCameraClip();
          this.mapRenderer.render(this.tileMap,this);
          return this;
       }

@@ -101,8 +101,12 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
       _.each(cells,function(cell:any){
          var fileName = cell.file.substr(cell.file.lastIndexOf("/") + 1);
          var index = (cell.x / (spriteSize * scale)) + (cell.y / (spriteSize * scale)) * (width / spriteSize);
+         var width = cell.png.width / (spriteSize * scale);
+         var height = cell.png.height / (spriteSize * scale);
          metaData[fileName] = {
-            frames: cell.png.width / (spriteSize * scale),
+            width: width,
+            height: height,
+            frames: width * height,
             source: baseName,
             index: index,
             x: cell.x,

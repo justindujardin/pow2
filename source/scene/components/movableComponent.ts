@@ -24,7 +24,7 @@ module pow2 {
    export class MovableComponent extends TickedComponent {
       _elapsed: number = 0;
       targetPoint: pow2.Point;
-      tickRateMS: number = 350;
+      tickRateMS: number = 300;
       velocity: pow2.Point = new pow2.Point(0, 0);
       workPoint: Point = new Point(0,0);
       host: SceneObject;
@@ -37,9 +37,9 @@ module pow2 {
          this.host.renderPoint = this.targetPoint.clone();
          return true;
       }
-      syncComponent(){
-         super.syncComponent();
+      syncComponent():boolean{
          this.collider = <CollisionComponent>this.host.findComponent(CollisionComponent);
+         return super.syncComponent();
       }
 
       /**
@@ -158,14 +158,12 @@ module pow2 {
          // Check to see if both axes can advance by simply going to the
          // target point.
          this.targetPoint.add(this.velocity);
-         if (!this.collideMove(this.targetPoint.x, this.targetPoint.y)) {
-         }
-         // If not, can we move only along the y axis?
-         else if (!this.collideMove(this.host.point.x, this.targetPoint.y)) {
+         // Determine which axis we can move along
+         if (this.velocity.y !== 0 && !this.collideMove(this.host.point.x, this.targetPoint.y)) {
             this.targetPoint.x = this.host.point.x;
          }
          // How about the X axis?  We'll take any axis we can get.
-         else if (!this.collideMove(this.targetPoint.x, this.host.point.y)) {
+         else if (this.velocity.x !== 0 && !this.collideMove(this.targetPoint.x, this.host.point.y)) {
             this.targetPoint.y = this.host.point.y;
          }
          else {
@@ -177,7 +175,7 @@ module pow2 {
          // Successful move, do something.
          // BEGIN_MOVE
          var moveFn:Function = this.moveFilter || this.beginMove;
-         moveFn(this.host.point,this.targetPoint);
+         moveFn.call(this,this.host.point,this.targetPoint);
       }
    }
 }

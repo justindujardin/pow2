@@ -19,63 +19,76 @@
 ///<reference path="./time.ts"/>
 ///<reference path="./input.ts"/>
 ///<reference path="./spriteRender.ts"/>
+///<reference path="./stateMachine.ts"/>
 
 
 module pow2 {
 
-    export interface IWorld {
-        loader:ResourceLoader;
-        time:Time;
-        scene:any;
-        input:Input;
-        sprites:SpriteRender;
-        mark(object:IWorldObject);
-        erase(object:IWorldObject);
-    }
-    export interface IWorldObject {
-        world:IWorld;
-        onAddToWorld(world:IWorld);
-        onRemoveFromWorld(world:IWorld);
-    }
+   export interface IWorld {
+      loader:ResourceLoader;
+      time:Time;
+      scene:any;
+      input:Input;
+      sprites:SpriteRender;
+      state:IStateMachine;
+      mark(object:IWorldObject);
+      erase(object:IWorldObject);
+      setService(name:string,value:IWorldObject):IWorldObject;
+   }
+   export interface IWorldObject {
+      world:IWorld;
+      onAddToWorld(world:IWorld);
+      onRemoveFromWorld(world:IWorld);
+   }
 
 
-    export class World implements IWorld {
-        loader:ResourceLoader = null;
-        time:Time = null;
-        scene:any = null;
-        input:Input = null;
-        sprites:SpriteRender = null;
-        constructor(services){
-            services = _.defaults(services,{
-                loader: new ResourceLoader,
-                time:   new Time({autoStart: true}),
-                scene:  null, // TODO: When scene is ported
-                input:  new Input,
-                sprites:new SpriteRender
-            });
-            _.extend(this,services);
+   // TODO: Set a service after constructor, and have it auto mark'd.
+   export class World implements IWorld {
+      loader:ResourceLoader = null;
+      time:Time;
+      scene:any;
+      input:Input;
+      sprites:SpriteRender;
+      state: IStateMachine;
+      constructor(services){
+         services = _.defaults(services,{
+            loader: new ResourceLoader,
+            time:   new Time({autoStart: true}),
+            scene:  null, // TODO: When scene is ported
+            state:  null,
+            input:  new Input,
+            sprites:new SpriteRender
+         });
+         _.extend(this,services);
 
-            _.each(services,(s:IWorldObject,k) => {
-                this.mark(s);
-            });
-        }
+         _.each(services,(s:IWorldObject,k) => {
+            this.mark(s);
+         });
+      }
 
-        mark(object:IWorldObject){
-            if(object){
-                object.world = this;
-                if(object.onAddToWorld){
-                    object.onAddToWorld(this);
-                }
+
+      setService(name:string,value:IWorldObject):IWorldObject{
+         this.mark(value);
+         this[name] = value;
+         return value;
+      }
+
+      mark(object:IWorldObject){
+         if(object){
+            object.world = this;
+            if(object.onAddToWorld){
+               object.onAddToWorld(this);
             }
-        }
+         }
+      }
 
-        erase(object:IWorldObject){
-            if(object){
-                delete object.world;
-                if(object.onRemoveFromWorld){
-                    object.onRemoveFromWorld(this);
-                }
+      erase(object:IWorldObject){
+         if(object){
+            if(object.onRemoveFromWorld){
+               object.onRemoveFromWorld(this);
             }
-        }
-    }
+            delete object.world;
+         }
+      }
+   }
 }

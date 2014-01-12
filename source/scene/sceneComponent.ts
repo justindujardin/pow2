@@ -25,7 +25,7 @@ module pow2 {
     * Basic component interface.  Supports component host lifetime implementations, and
     * hot-swapping components.
     */
-   export interface ISceneComponent extends IObject {
+   export interface ISceneComponent extends IObject, ISceneEvents {
 
       /**
        * The host object that this component belongs to.
@@ -46,7 +46,7 @@ module pow2 {
        * host object components, the references to them should be looked up and
        * stored here.
        */
-      syncComponent();
+      syncComponent():boolean;
    }
 
    /**
@@ -54,20 +54,23 @@ module pow2 {
     * time constructs, we have to have an actual implementation to instanceof.  For that
     * reason, all SceneComponents should derive this class.
     */
-   export class SceneComponent implements ISceneComponent {
+   export class SceneComponent extends SceneEvents implements ISceneComponent {
       id:number = _.uniqueId();
-      name:string = _.uniqueId('comp');
       scene: Scene;
       host:SceneObject;
+      constructor(public name:string = _.uniqueId('comp')){
+         super();
+      }
       connectComponent():boolean { return true; }
       disconnectComponent():boolean { return true; }
-      syncComponent() {}
+      syncComponent():boolean { return true; }
    }
 
    /**
     * A component that supports tick/interpolateTick
     */
    export class TickedComponent extends SceneComponent {
+      tickRateMS:number = 300;
 
       /**
        * Update the component at a tick interval.

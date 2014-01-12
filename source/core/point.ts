@@ -32,6 +32,10 @@ module pow2{
             }
         }
 
+       toString():string {
+          return "" + this.x + "," + this.y;
+       }
+
         set(point:Point):Point;
         set(x:number,y:number):Point;
         set(pointOrX:any,y?:any):Point{
