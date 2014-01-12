@@ -50,7 +50,7 @@ module pow2{
          _.each(players, (player) => {
             this.objectRenderer.render(player,player,this);
          });
-         var sprites = this.scene.componentsByType(pow2.SpriteComponent);
+         var sprites = <ISceneComponent[]>this.scene.componentsByType(pow2.SpriteComponent);
          _.each(sprites, (sprite:SpriteComponent) => {
             this.objectRenderer.render(sprite.host,sprite, this);
          });

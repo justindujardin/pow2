@@ -15,6 +15,7 @@
  */
 
 /// <reference path="../objects/gameEntityObject.ts" />
+/// <reference path="../../tile/components/animatedSpriteComponent.ts" />
 /// <reference path="../gameStateMachine.ts" />
 /// <reference path="./gameMapState.ts" />
 /// <reference path="./combat/combatBeginTurnState.ts" />
@@ -119,17 +120,16 @@ module pow2 {
                icon:"warrior.png",
                model:friendlyPlayer(1)
             });
-            this.machine.friendly.addComponent(new pow2.PlayerRenderComponent);
             this.scene.addObject(this.machine.friendly);
+            this.machine.friendly.addComponent(new pow2.PlayerRenderComponent);
 
             // Create the enemy
             this.machine.enemy = new pow2.GameEntityObject({
                point: new Point(enemy.x / 16, enemy.y / 16),
-               icon:machine.combatant.icon,
                model: enemyPlayer(1)
             });
-            this.machine.enemy.addComponent(new pow2.PlayerRenderComponent);
             this.scene.addObject(this.machine.enemy);
+            this.machine.enemy.addComponent(new pow2.SpriteComponent("enemy",machine.combatant.icon));
 
             machine.view.setScene(this.scene);
             machine.view.setTileMap(this.tileMap);

@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
+/// <reference path="../../../types/backbone/backbone.d.ts" />
 /// <reference path="../../scene/components/movableComponent.ts" />
 /// <reference path="../../scene/sceneComponent.ts" />
 /// <reference path="../../tile/tileObject.ts" />
@@ -47,7 +48,10 @@ module pow2 {
       }
       tick(elapsed:number){
          this._elapsed += elapsed;
-         this._elapsed = this._elapsed % this.lengthMS;
+         if(this._elapsed >= this.lengthMS){
+            this.trigger('anim:done');
+            this._elapsed = this._elapsed % this.lengthMS;
+         }
          super.tick(elapsed);
       }
 

@@ -29,30 +29,53 @@ module pow2 {
       ];
       enter(machine:CombatStateMachine){
          super.enter(machine);
-         machine.currentDone = !machine.isFriendlyTurn();
-         // If enemy turn, complete it here.
-         if(machine.currentDone){
-            var enemy:string = machine.enemy.model.get('name');
-            var friendly:string = machine.friendly.model.get('name');
-            var damage:number = machine.enemy.model.attack(machine.friendly.model);
-            console.log(friendly + " was attacked by " + enemy + ", and took " + damage + " damage.");
-            console.log(friendly + " has (" + machine.friendly.model.get('hp') + ") hit points left");
+         machine.currentDone = false;
+         if(!machine.isFriendlyTurn()){
+            this.attack(machine);
          }
       }
       keyPress(machine:CombatStateMachine,keyCode:KeyCode):boolean {
+         if(!machine.isFriendlyTurn()){
+            return true;
+         }
          switch(keyCode){
             case KeyCode.ENTER:
-               var enemy:string = machine.enemy.model.get('name');
-               var friendly:string = machine.friendly.model.get('name');
-               var damage:number = machine.friendly.model.attack(machine.enemy.model);
-               console.log(friendly + " attacked " + enemy + " for (" + damage + ") damage");
-               console.log(enemy + " has (" + machine.enemy.model.get('hp') + ") hit points left");
-               machine.currentDone = true;
+               this.attack(machine);
                break;
             default:
                return super.keyPress(machine,keyCode);
          }
          return false;
+      }
+
+      attack(machine:CombatStateMachine){
+         //
+         var attacker:GameEntityObject = null;
+         var defender:GameEntityObject = null;
+         if(machine.current.id === machine.friendly.id){
+            attacker = machine.friendly;
+            defender = machine.enemy;
+         }
+         else {
+            attacker = machine.enemy;
+            defender = machine.friendly;
+         }
+
+         var defName:string = defender.model.get('name');
+         var attName:string = attacker.model.get('name');
+         var damage:number = attacker.model.attack(defender.model);
+         console.log(attName + " attacked " + defName + " for (" + damage + ") damage");
+         console.log(defName + " has (" + defender.model.get('hp') + ") hit points left");
+
+         var animComp:ISceneComponent = new pow2.AnimatedSpriteComponent("attack");
+         var spriteComp:ISceneComponent = new pow2.SpriteComponent("attack",damage > 0 ? "animHit.png" : "animMiss.png");
+         defender.addComponent(animComp,true);
+         defender.addComponent(spriteComp);
+         animComp.once('anim:done',() => {
+            defender.removeComponent(animComp,true);
+            defender.removeComponent(spriteComp);
+            _.delay(() => { machine.currentDone = true; },500);
+         });
       }
    }
 
