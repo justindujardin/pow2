@@ -26,7 +26,16 @@ module pow2 {
       }
       process(view:SceneView) {
          super.process(view);
+         // Center on player object
          view.camera.setCenter(this.host.renderPoint || this.host.point);
+
+         // Clamp to tile map if it is present.
+         if(this.host.tileMap){
+            view.camera.point.x = Math.max(0,view.camera.point.x);
+            view.camera.point.y = Math.max(0,view.camera.point.y);
+            view.camera.point.x = Math.min(view.camera.point.x,this.host.tileMap.bounds.extent.x - view.camera.extent.x);
+            view.camera.point.y = Math.min(view.camera.point.y,this.host.tileMap.bounds.extent.y - view.camera.extent.y);
+         }
       }
   }
 }
