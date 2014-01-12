@@ -25,7 +25,7 @@ module pow2 {
       host:TileObject;
       isEntered:boolean;
 
-      connectComponent():boolean{
+      syncComponent():boolean{
          this.tileMap = this.host.tileMap;
          return !!this.tileMap && this.tileMap instanceof TileMap;
       }

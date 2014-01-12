@@ -19,8 +19,8 @@ module pow2 {
    export class StoreFeatureComponent extends GameFeatureComponent {
       name:string;
       inventory:any[];
-      connectComponent():boolean{
-         if(!super.connectComponent()){
+      syncComponent():boolean{
+         if(!super.syncComponent()){
             return false;
          }
          this.name = this.feature.name;

@@ -24,6 +24,7 @@ module pow2 {
       enter(machine:CombatStateMachine){
          super.enter(machine);
          console.log("HOLY CRAP YOU WON");
+         machine.trigger("combat:victory",machine);
          machine.parent.setCurrentState(GameMapState.NAME);
       }
    }

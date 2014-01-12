@@ -19,6 +19,7 @@ limitations under the License.
 /// <reference path="../../tile/components/spriteComponent.ts" />
 /// <reference path="./playerComponent.ts" />
 /// <reference path="../gameComponent.ts" />
+/// <reference path="../objects/gameEntityObject.ts" />
 
 module pow2 {
    // TODO: This
@@ -29,8 +30,8 @@ module pow2 {
    /**
     * A component that defines the functionality of a map feature.
     */
-   export class DamageComponent extends GameComponent {
-      host:GameFeatureObject;
+   export class DamageComponent extends TileComponent {
+      host:GameEntityObject;
       animation:AnimatedSpriteComponent;
       sprite:SpriteComponent;
       sound:SoundComponent;

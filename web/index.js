@@ -101,8 +101,9 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
    }
 });
 
-twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,game){
+twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,$timeout,game){
    var stateKey = "_testPow2State";
+   $scope.overlayText = null;
    $scope.saveState = function(data){
       localStorage.setItem(stateKey,data);
    };
@@ -112,18 +113,43 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
    $scope.getState = function(){
       return localStorage.getItem(stateKey);
    };
-   game.load().then(function(){
-      $scope.mapName = game.getCurrentMapName();
 
+   $scope.displayMessage = function(message) {
+      $scope.overlayText = message;
+      $timeout(function(){
+         $scope.overlayText = null;
+      },1500);
+   };
+
+   game.load().then(function(){
       // TODO: A better system for game event handling.
       game.world.state.on('enter',function(state){
          console.log("UI: Entered state: " + state.name);
+         $scope.$apply(function(){
+            $scope.inCombat = true;
+            $scope.displayMessage(state.name);
+            if(state.name === pow2.GameCombatState.NAME){
+               $scope.combat = state.machine;
+               state.machine.on('combat:attack',function(attacker,defender){
+                  var change = defender.model.previous('hp') - defender.model.attributes.hp;
+                  $scope.$apply(function(){
+                     $scope.displayMessage(attacker.model.get('name') + " attacked " + defender.model.get('name') + " for " + change + " damage!");
+                  });
+               });
+            }
+         });
       });
       game.world.state.on('exit',function(state){
-         if(state.name === pow2.GameMapState.NAME){
-            $scope.dialog = null;
-            $scope.store = null;
-         }
+         $scope.$apply(function(){
+            if(state.name === pow2.GameMapState.NAME){
+               $scope.dialog = null;
+               $scope.store = null;
+            }
+            else if(state.name === pow2.GameCombatState.NAME){
+               $scope.inCombat = false;
+               $scope.combat = null;
+            }
+         });
          console.log("UI: Exited state: " + state.name);
       });
 
@@ -295,15 +321,15 @@ twoFiftySix.app.directive('iconRender', function ($compile, game) {
          $scope.renderContext.mozImageSmoothingEnabled = false;
 
          $scope.$watch(attrs.feature, function(feature) {
-            if(!feature || !feature.icon){
+            if(!feature || !feature.getIcon()){
                return;
             }
             game.load().then(function () {
-               game.world.sprites.getSingleSprite(feature.icon,function(sprite){
+               game.world.sprites.getSingleSprite(feature.getIcon(),function(sprite){
                   $scope.renderContext.clearRect(0, 0, 64, 64);
                   $scope.renderContext.drawImage(sprite, 0, 0, 64, 64);
                   $scope.$apply(function(){
-                     feature.image = $scope.renderCanvas[0].toDataURL();
+                     feature.rendered = $scope.renderCanvas[0].toDataURL();
                   });
 
                });
@@ -312,6 +338,17 @@ twoFiftySix.app.directive('iconRender', function ($compile, game) {
       }
    };
 });
+
+// CombatView directive
+// ----------------------------------------------------------------------------
+twoFiftySix.app.directive('combatView', function () {
+   return {
+      restrict: 'E',
+      templateUrl: '/templates/combatView.html'
+   };
+});
+
+
 // DialogBubble directive
 // ----------------------------------------------------------------------------
 twoFiftySix.app.directive('dialogBubble', function () {

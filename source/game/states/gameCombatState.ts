@@ -107,40 +107,39 @@ module pow2 {
          this.saveScene = machine.world.scene;
          this.saveTileMap = machine.player.tileMap;
          this.saveScene.paused = true;
-
+         this.machine = new CombatStateMachine(machine);
          this.scene = <Scene>machine.world.setService('scene',new Scene());
-         this.scene.once('map:loaded',() => {
-            this.machine = new CombatStateMachine(machine);
 
-            var friendly = this.tileMap.getFeature('friendly');
-            var enemy = this.tileMap.getFeature('enemy');
-
-            // Create the hero facing his enemy
-            this.machine.friendly = new pow2.GameEntityObject({
-               point: new Point(friendly.x / 16, friendly.y / 16),
-               icon:"warrior.png",
-               model:friendlyPlayer(1)
-            });
-            this.scene.addObject(this.machine.friendly);
-            this.machine.friendly.addComponent(new pow2.PlayerRenderComponent);
-
-            // Create the enemy
-            this.machine.enemy = new pow2.GameEntityObject({
-               point: new Point(enemy.x / 16, enemy.y / 16),
-               model: CreatureModel.fromLevel(1)
-            });
-            this.scene.addObject(this.machine.enemy);
-            this.machine.enemy.addComponent(new pow2.SpriteComponent({
-               name:"enemy",
-               icon:this.machine.enemy.model.get('icon')
-            }));
-
-            machine.view.setScene(this.scene);
-            machine.view.setTileMap(this.tileMap);
-         });
          this.tileMap = new pow2.GameTileMap("combat");
          this.tileMap.addComponent(new pow2.TileMapCameraComponent);
          this.scene.addObject(this.tileMap);
+
+         // Create the hero facing his enemy
+         this.machine.friendly = new pow2.GameEntityObject({
+            icon:"warrior.png",
+            model:friendlyPlayer(1)
+         });
+         this.scene.addObject(this.machine.friendly);
+         this.machine.friendly.addComponent(new pow2.PlayerRenderComponent);
+
+         // Create the enemy
+         this.machine.enemy = new pow2.GameEntityObject({
+            model: CreatureModel.fromLevel(1)
+         });
+         this.scene.addObject(this.machine.enemy);
+         this.machine.enemy.addComponent(new pow2.SpriteComponent({
+            name:"enemy",
+            icon:this.machine.enemy.model.get('icon')
+         }));
+
+         this.scene.once('map:loaded',() => {
+            var friendly = this.tileMap.getFeature('friendly');
+            var enemy = this.tileMap.getFeature('enemy');
+            this.machine.friendly.point = new Point(friendly.x / 16, friendly.y / 16);
+            this.machine.enemy.point = new Point(enemy.x / 16, enemy.y / 16);
+            machine.view.setScene(this.scene);
+            machine.view.setTileMap(this.tileMap);
+         });
          console.log("FIGHT!!!");
       }
       exit(machine:GameStateMachine){

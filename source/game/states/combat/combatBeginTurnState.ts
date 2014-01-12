@@ -80,6 +80,7 @@ module pow2 {
                defender.removeComponentDictionary(components);
                machine.currentDone = true;
             });
+            machine.trigger("combat:attack",attacker,defender);
          },150);
       }
    }

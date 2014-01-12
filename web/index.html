@@ -26,9 +26,15 @@
     <div class="container">
         <dialog-bubble ng-show="dialog"></dialog-bubble>
         <store-bubble ng-show="store"></store-bubble>
+        <combat-view ng-show="inCombat"></combat-view>
+
     </div>
 </div>
 
+<!-- Image drop screen overlay -->
+<div class="drop-overlay" ng-show="overlayText">
+    <div eight-bit-panel>{{overlayText}}</div>
+</div>
 
 <!-- Compiled Game Files -->
 <% for(var i=0; i<scripts.length; i++) {%>

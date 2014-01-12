@@ -40,6 +40,27 @@ canvas {
   -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
 }
 
+.drop-overlay {
+  padding: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+  position: fixed;
+  background-color: transparent;
+  z-index: 50;
+  .ebp {
+    bottom: 25px;
+    left: 20px;
+    right:20px;
+    margin:auto;
+    position: absolute;
+    padding:25px;
+    font-size: 32px;
+  }
+}
+
+
 .game-container {
   position: absolute;
   top:0;
@@ -53,6 +74,20 @@ canvas {
     right:0;
     bottom:0;
   }
+
+  // Combat View
+  // --------------------------------------------------------------------------
+  .combat {
+    .ebp {
+      min-width: 100px;
+      text-align: center;
+    }
+    .friendly {
+
+      text-align: right;
+    }
+  }
+
   // Dialog
   // --------------------------------------------------------------------------
   .message {

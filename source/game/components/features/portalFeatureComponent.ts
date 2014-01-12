@@ -21,8 +21,8 @@ module pow2 {
    export class PortalFeatureComponent extends GameFeatureComponent {
       map:string;
       target:Point;
-      connectComponent():boolean{
-         if(!super.connectComponent()){
+      syncComponent():boolean{
+         if(!super.syncComponent()){
             return false;
          }
          this.map = this.feature.target;
