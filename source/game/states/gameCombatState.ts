@@ -129,7 +129,10 @@ module pow2 {
                model: enemyPlayer(1)
             });
             this.scene.addObject(this.machine.enemy);
-            this.machine.enemy.addComponent(new pow2.SpriteComponent("enemy",machine.combatant.icon));
+            this.machine.enemy.addComponent(new pow2.SpriteComponent({
+               name:"enemy",
+               icon:machine.combatant.icon
+            }));
 
             machine.view.setScene(this.scene);
             machine.view.setTileMap(this.tileMap);

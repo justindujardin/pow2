@@ -68,7 +68,10 @@ module pow2 {
          console.log(defName + " has (" + defender.model.get('hp') + ") hit points left");
 
          var animComp:ISceneComponent = new pow2.AnimatedSpriteComponent("attack");
-         var spriteComp:ISceneComponent = new pow2.SpriteComponent("attack",damage > 0 ? "animHit.png" : "animMiss.png");
+         var spriteComp:ISceneComponent = new pow2.SpriteComponent({
+            name:"attack",
+            icon: damage > 0 ? "animHit.png" : "animMiss.png"
+         });
          defender.addComponent(animComp,true);
          defender.addComponent(spriteComp);
          animComp.once('anim:done',() => {

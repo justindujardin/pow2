@@ -19,6 +19,13 @@
 /// <reference path="../../tile/tileObject.ts" />
 
 module pow2 {
+
+   export interface SpriteComponentOptions {
+      icon:string;
+      name?:string;
+      frame?:number;
+   }
+
    export class SpriteComponent extends SceneComponent {
       host:TileObject;
       image: HTMLImageElement;
@@ -34,10 +41,11 @@ module pow2 {
       // The sprite frame (if applicable)
       frame:number = 0;
 
-      constructor(name:string,icon:string){
+      constructor(options?:SpriteComponentOptions){
          super();
-         this.name = name;
-         this.icon = icon;
+         if(typeof options !== 'undefined'){
+            _.extend(this,options);
+         }
       }
 
       connectComponent():boolean {
