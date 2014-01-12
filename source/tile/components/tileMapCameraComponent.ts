@@ -25,9 +25,23 @@ module pow2 {
       }
       process(view:SceneView) {
          view.camera.point.set(this.host.bounds.point);
-         view.cameraScale = Math.min(4,Math.round(view.screenToWorld(view.context.canvas.width) / view.camera.extent.x));
-         var canvasSize = view.screenToWorld(new Point(view.context.canvas.width,view.context.canvas.height),view.cameraScale);
-         view.camera.extent.set(canvasSize);
+         view.cameraScale = Math.min(6,Math.round(view.screenToWorld(view.context.canvas.width) / view.camera.extent.x));
+
+         // Clamp to tile map if it is present.
+         if(this.host){
+            view.camera.point.x = Math.max(0,view.camera.point.x);
+            view.camera.point.y = Math.max(0,view.camera.point.y);
+            view.camera.point.x = Math.min(view.camera.point.x,this.host.bounds.extent.x - view.camera.extent.x);
+            view.camera.point.y = Math.min(view.camera.point.y,this.host.bounds.extent.y - view.camera.extent.y);
+
+            // Center in viewport if tilemap is smaller than camera.
+            if(this.host.bounds.extent.x < view.camera.extent.x){
+               view.camera.point.x = (this.host.bounds.extent.x - view.camera.extent.x) / 2;
+            }
+            if(this.host.bounds.extent.y < view.camera.extent.y){
+               view.camera.point.y = (this.host.bounds.extent.y - view.camera.extent.y) / 2;
+            }
+         }
       }
   }
 }
