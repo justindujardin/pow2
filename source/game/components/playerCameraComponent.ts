@@ -35,6 +35,14 @@ module pow2 {
             view.camera.point.y = Math.max(0,view.camera.point.y);
             view.camera.point.x = Math.min(view.camera.point.x,this.host.tileMap.bounds.extent.x - view.camera.extent.x);
             view.camera.point.y = Math.min(view.camera.point.y,this.host.tileMap.bounds.extent.y - view.camera.extent.y);
+
+            // Center in viewport if tilemap is smaller than camera.
+            if(this.host.tileMap.bounds.extent.x < view.camera.extent.x){
+               view.camera.point.x = (this.host.tileMap.bounds.extent.x - view.camera.extent.x) / 2;
+            }
+            if(this.host.tileMap.bounds.extent.y < view.camera.extent.y){
+               view.camera.point.y = (this.host.tileMap.bounds.extent.y - view.camera.extent.y) / 2;
+            }
          }
       }
   }
