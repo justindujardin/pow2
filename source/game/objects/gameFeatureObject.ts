@@ -32,8 +32,5 @@ module pow2 {
          this.type = options.type;
          this.groups = typeof options.groups === 'string' ? JSON.parse(options.groups) : options.groups;
       }
-      getIcon() {
-         return this.icon;
-      }
    }
 }

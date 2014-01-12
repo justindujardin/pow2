@@ -321,11 +321,19 @@ twoFiftySix.app.directive('iconRender', function ($compile, game) {
          $scope.renderContext.mozImageSmoothingEnabled = false;
 
          $scope.$watch(attrs.feature, function(feature) {
-            if(!feature || !feature.getIcon()){
+
+            if(!feature){
+               return;
+            }
+            var icon = feature.icon;
+            if(!icon && feature.getIcon){
+               icon = feature.getIcon();
+            }
+            if(!icon){
                return;
             }
             game.load().then(function () {
-               game.world.sprites.getSingleSprite(feature.getIcon(),function(sprite){
+               game.world.sprites.getSingleSprite(icon,function(sprite){
                   $scope.renderContext.clearRect(0, 0, 64, 64);
                   $scope.renderContext.drawImage(sprite, 0, 0, 64, 64);
                   $scope.$apply(function(){

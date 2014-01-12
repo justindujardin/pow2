@@ -59,7 +59,11 @@ module pow2 {
          level:level,
          exp: 0
       });
-      tpl.set({hp: getHPForLevel(tpl)});
+      var levelHitPoints = getHPForLevel(tpl);
+      tpl.set({
+         hp: levelHitPoints,
+         maxHP: levelHitPoints
+      });
       return tpl;
    }
 
@@ -68,6 +72,7 @@ module pow2 {
          name:"Nothing",
          level:1,
          hp:0,
+         maxHP: 0,
          strength: 5,
          vitality: 4,
          intelligence: 1,
@@ -79,7 +84,7 @@ module pow2 {
       }
 
       damage(amount:number){
-         this.set({hp: this.attributes.hp - amount});
+         this.set({hp: Math.max(0,this.attributes.hp - amount)});
          if(this.attributes.hp < 0){
             this.set({dead:true});
          }
