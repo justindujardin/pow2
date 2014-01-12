@@ -56,9 +56,9 @@ module pow2 {
     */
    export class SceneComponent implements ISceneComponent {
       id:number = _.uniqueId();
-      name:string = _.uniqueId('comp');
       scene: Scene;
       host:SceneObject;
+      constructor(public name:string = _.uniqueId('comp')){}
       connectComponent():boolean { return true; }
       disconnectComponent():boolean { return true; }
       syncComponent():boolean { return true; }

@@ -14,10 +14,11 @@
  limitations under the License.
  */
 
-/// <reference path="./../tile/tileMapView.ts"/>
-/// <reference path="./../tile/render/tileObjectRenderer.ts"/>
+/// <reference path="../tile/tileMapView.ts"/>
+/// <reference path="../tile/render/tileObjectRenderer.ts"/>
 /// <reference path="./components/playerComponent.ts"/>
 /// <reference path="./components/playerCameraComponent.ts"/>
+/// <reference path="../tile/components/spriteComponent.ts"/>
 
 module pow2{
    export class GameMapView extends TileMapView {
@@ -43,11 +44,15 @@ module pow2{
          super.renderFrame(elapsed);
          var objects = this.scene.objectsByType(pow2.GameFeatureObject);
          _.each(objects, (object) => {
-            return this.objectRenderer.render(object,this);
+            return this.objectRenderer.render(object,object,this);
          });
          var players = this.scene.objectsByComponent(pow2.PlayerRenderComponent);
          _.each(players, (player) => {
-            this.objectRenderer.render(player, this);
+            this.objectRenderer.render(player,player,this);
+         });
+         var sprites = this.scene.componentsByType(pow2.SpriteComponent);
+         _.each(sprites, (sprite:SpriteComponent) => {
+            this.objectRenderer.render(sprite.host,sprite, this);
          });
          return this;
       }

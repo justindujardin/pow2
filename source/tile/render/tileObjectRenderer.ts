@@ -24,35 +24,35 @@
 
 module pow2 {
    export class TileObjectRenderer extends pow2.SceneObjectRenderer {
-      render(object:any, view:pow2.SceneView) { // TODO: typedef
+      render(object:any, data:any, view:pow2.SceneView) { // TODO: typedef
 
-         if (!object.image || !object.visible) {
+         if (!data.image || !object.visible) {
             return;
          }
          var point = object.renderPoint || object.point;
          var height, width, x, y;
-         if (object.icon && object.iconMeta) {
-            var c = object.iconMeta;
+         if (data.icon && data.meta) {
+            var c = data.meta;
             width = view.unitSize * view.cameraScale;
             height = view.unitSize * view.cameraScale;
 
             var cx = c.x;
             var cy = c.y;
-            if(object.iconMeta.frames > 1){
-               var fx = (object.iconFrame % (c.width));
-               var fy = Math.floor((object.iconFrame - fx) / c.width);
+            if(data.meta.frames > 1){
+               var fx = (data.frame % (c.width));
+               var fy = Math.floor((data.frame - fx) / c.width);
                cx += fx * view.unitSize;
                cy += fy * view.unitSize;
             }
             x = point.x * width;
             y = point.y * height;
-            return view.context.drawImage(object.image, cx, cy, view.unitSize, view.unitSize, x, y, width, height);
+            return view.context.drawImage(data.image, cx, cy, view.unitSize, view.unitSize, x, y, width, height);
          } else {
-            width = object.image.width * view.cameraScale;
-            height = object.image.height * view.cameraScale;
+            width = data.image.width * view.cameraScale;
+            height = data.image.height * view.cameraScale;
             x = point.x * width;
             y = point.y * height;
-            return view.context.drawImage(object.image, x, y, width, height);
+            return view.context.drawImage(data.image, x, y, width, height);
          }
       }
    }

@@ -83,7 +83,7 @@ module pow2 {
          if(altFrame && this.animating){
             frame += 4;
          }
-         this.host.iconFrame = this._renderFrame = frame;
+         this.host.frame = this._renderFrame = frame;
       }
    }
 }
