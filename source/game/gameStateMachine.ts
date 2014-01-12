@@ -35,7 +35,7 @@ module pow2 {
    export class GameStateMachine extends StateMachine {
       defaultState:string = GameDefaultState.NAME;
       player:TileObject = null;
-      combatant:GameFeatureObject = null;
+      combatant:TileObject = null;
       view:GameMapView = null;
       tickRateMS:number = 300;
       states:IState[] = [

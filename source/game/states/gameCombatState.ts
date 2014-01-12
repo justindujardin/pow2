@@ -14,11 +14,76 @@
  limitations under the License.
  */
 
+/// <reference path="../objects/gameEntityObject.ts" />
 /// <reference path="../gameStateMachine.ts" />
 /// <reference path="./gameMapState.ts" />
-/// <reference path="./combat/combatStateMachine.ts" />
+/// <reference path="./combat/combatBeginTurnState.ts" />
+/// <reference path="./combat/combatEndTurnState.ts" />
+/// <reference path="./combat/combatVictoryState.ts" />
+/// <reference path="./combat/combatDefeatState.ts" />
+/// <reference path="./combat/combatStartState.ts" />
+/// <reference path="../models/entityModel.ts" />
+
 
 module pow2 {
+
+
+   // Combat State Machine
+   //--------------------------------------------------------------------------
+   export class CombatStateMachine extends StateMachine {
+      parent:GameStateMachine;
+      defaultState:string = CombatStartState.NAME;
+      states:IState[] = [
+         new CombatStartState(),
+         new CombatVictoryState(),
+         new CombatDefeatState(),
+         new CombatBeginTurnState(),
+         new CombatEndTurnState()
+      ];
+      friendly:GameEntityObject;
+      enemy:GameEntityObject;
+
+      current:TileObject;
+      currentDone:boolean = false;
+
+
+      isFriendlyTurn():boolean {
+         return this.current && this.current.id === this.friendly.id;
+      }
+
+      keyListener:any = null;
+      constructor(parent:GameStateMachine){
+         super();
+         this.parent = parent;
+      }
+   }
+
+
+   // Combat States
+   //--------------------------------------------------------------------------
+   export class CombatState extends State {
+      enter(machine:CombatStateMachine){
+         super.enter(machine);
+         machine.keyListener = (e) => {
+            if(this.keyPress(machine,e.keyCode) === false){
+               e.preventDefault();
+               return false;
+            }
+            return true;
+         };
+         $(window).on('keypress',machine.keyListener);
+      }
+      exit(machine:CombatStateMachine){
+         $(window).off('keypress',machine.keyListener);
+         super.exit(machine);
+      }
+
+      // Return false to eat the event.
+      keyPress(machine:CombatStateMachine,keyCode:KeyCode):boolean {
+         return true;
+      }
+   }
+
 
    // Combat Lifetime State Machine
    //--------------------------------------------------------------------------
@@ -49,21 +114,19 @@ module pow2 {
             var enemy = this.tileMap.getFeature('enemy');
 
             // Create the hero facing his enemy
-            this.machine.friendly = new pow2.TileObject({
+            this.machine.friendly = new pow2.GameEntityObject({
                point: new Point(friendly.x / 16, friendly.y / 16),
-               icon:"warrior.png"
+               icon:"warrior.png",
+               model:friendlyPlayer(1)
             });
             this.machine.friendly.addComponent(new pow2.PlayerRenderComponent);
             this.scene.addObject(this.machine.friendly);
 
-
             // Create the enemy
-            this.machine.enemy = new pow2.TileObject({
+            this.machine.enemy = new pow2.GameEntityObject({
                point: new Point(enemy.x / 16, enemy.y / 16),
                icon:machine.combatant.icon,
-               components: [
-                  new pow2.PlayerRenderComponent
-               ]
+               model: enemyPlayer(1)
             });
             this.machine.enemy.addComponent(new pow2.PlayerRenderComponent);
             this.scene.addObject(this.machine.enemy);

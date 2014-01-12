@@ -29,7 +29,7 @@ module pow2 {
 
       syncComponent():boolean{
          if(!this.host || !this.host.scene || !super.syncComponent()){
-            return;
+            return false;
          }
          this.player = this.host.scene.objectByComponent(PlayerComponent);
          return !!this.player;
