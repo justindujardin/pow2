@@ -15,6 +15,7 @@
  */
 
 /// <reference path="../../types/underscore/underscore.d.ts" />
+/// <reference path="../core/events.ts" />
 /// <reference path="./scene.ts" />
 
 // An object that may exist in a `Scene`, has a unique `id` and receives ticked updates.
@@ -25,7 +26,7 @@ module pow2 {
     * Basic component interface.  Supports component host lifetime implementations, and
     * hot-swapping components.
     */
-   export interface ISceneComponent extends IObject, ISceneEvents {
+   export interface ISceneComponent extends IObject, IEvents {
 
       /**
        * The host object that this component belongs to.
@@ -54,7 +55,7 @@ module pow2 {
     * time constructs, we have to have an actual implementation to instanceof.  For that
     * reason, all SceneComponents should derive this class.
     */
-   export class SceneComponent extends SceneEvents implements ISceneComponent {
+   export class SceneComponent extends Events implements ISceneComponent {
       id:number = _.uniqueId();
       scene: Scene;
       host:SceneObject;

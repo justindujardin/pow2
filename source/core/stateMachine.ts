@@ -17,6 +17,7 @@
 /// <reference path="../../types/underscore/underscore.d.ts" />
 /// <reference path="./state.ts" />
 /// <reference path="./world.ts" />
+/// <reference path="./events.ts" />
 module pow2 {
 
    // State Machine Interfaces
@@ -36,7 +37,7 @@ module pow2 {
 
    // Implementation
    // -------------------------------------------------------------------------
-   export class StateMachine implements IStateMachine, IWorldObject {
+   export class StateMachine extends Events implements IStateMachine, IWorldObject {
       defaultState:string = null;
       states:IState[] = [];
       private _currentState:IState = null;

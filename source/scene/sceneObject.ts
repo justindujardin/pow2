@@ -15,6 +15,7 @@
  */
 
 /// <reference path="../../types/underscore/underscore.d.ts" />
+/// <reference path="../core/events.ts" />
 /// <reference path="./scene.ts" />
 /// <reference path="./sceneComponent.ts" />
 
@@ -42,7 +43,7 @@ module pow2 {
       findComponents(type:Function):ISceneComponent[];
    }
 
-   export class SceneObject extends SceneEvents implements ISceneComponentHost {
+   export class SceneObject extends Events implements ISceneComponentHost {
       id:number = _.uniqueId();
       name:string;
       scene: Scene;
