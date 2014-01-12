@@ -96,9 +96,11 @@ module pow2 {
          this._previousState = this._currentState;
          this._currentState = state;
          if(oldState){
+            this.trigger("exit",oldState,state);
             oldState.exit(this);
          }
          state.enter(this);
+         this.trigger("enter",state,oldState);
          return true;
       }
       getPreviousState():IState{

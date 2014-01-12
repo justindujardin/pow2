@@ -82,7 +82,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                self.sprite.addComponent(new pow2.PlayerComponent());
                self.sprite.addComponent(new pow2.PlayerRenderComponent());
                self.sprite.addComponent(new pow2.PlayerCameraComponent());
-               //self.sprite.addComponent(new pow2.PlayerTouchComponent());
+               self.sprite.addComponent(new pow2.PlayerTouchComponent());
                self.scene.addObject(self.sprite);
             });
             self.tileMap = new pow2.GameTileMap("town");
@@ -116,6 +116,16 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,gam
       $scope.mapName = game.getCurrentMapName();
 
       // TODO: A better system for game event handling.
+      game.world.state.on('enter',function(state){
+         console.log("UI: Entered state: " + state.name);
+      });
+      game.world.state.on('exit',function(state){
+         if(state.name === pow2.GameMapState.NAME){
+            $scope.dialog = null;
+            $scope.store = null;
+         }
+         console.log("UI: Exited state: " + state.name);
+      });
 
       // Dialog bubbles
       game.scene.on('dialog:entered',function(feature){
