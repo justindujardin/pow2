@@ -74,7 +74,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
             self.input = self.scene.input = self.world.input;
             self.scene.once('map:loaded',function(){
                // Create a movable character with basic components.
-               self.sprite = new pow2.TileObject({
+               self.sprite = new pow2.GameEntityObject({
                   point: self.tileMap.bounds.getCenter(),
                   icon:"warrior.png"
                });
@@ -82,7 +82,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                self.sprite.addComponent(new pow2.PlayerComponent());
                self.sprite.addComponent(new pow2.PlayerRenderComponent());
                self.sprite.addComponent(new pow2.PlayerCameraComponent());
-               self.sprite.addComponent(new pow2.PlayerTouchComponent());
+               //self.sprite.addComponent(new pow2.PlayerTouchComponent());
                self.scene.addObject(self.sprite);
             });
             self.tileMap = new pow2.GameTileMap("town");
