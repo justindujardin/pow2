@@ -17,7 +17,7 @@
 /// <reference path="../../../types/backbone/backbone.d.ts" />
 /// <reference path="../../../types/underscore/underscore.d.ts" />
 /// <reference path="../../core/api.ts" />
-/// <reference path="./EntityModel.ts" />
+/// <reference path="./entityModel.ts" />
 module pow2 {
 
    export interface CreatureModelOptions {
