@@ -24,6 +24,7 @@
 /// <reference path="./combat/combatDefeatState.ts" />
 /// <reference path="./combat/combatStartState.ts" />
 /// <reference path="../models/entityModel.ts" />
+/// <reference path="../models/creatureModel.ts" />
 
 
 module pow2 {
@@ -126,12 +127,12 @@ module pow2 {
             // Create the enemy
             this.machine.enemy = new pow2.GameEntityObject({
                point: new Point(enemy.x / 16, enemy.y / 16),
-               model: enemyPlayer(1)
+               model: CreatureModel.fromLevel(1)
             });
             this.scene.addObject(this.machine.enemy);
             this.machine.enemy.addComponent(new pow2.SpriteComponent({
                name:"enemy",
-               icon:machine.combatant.icon
+               icon:this.machine.enemy.model.get('icon')
             }));
 
             machine.view.setScene(this.scene);

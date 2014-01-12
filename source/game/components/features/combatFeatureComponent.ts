@@ -25,7 +25,7 @@ module pow2 {
          return !!this.party;
       }
       exited(object:GameFeatureObject):boolean {
-         this.host.destroy();
+         //this.host.destroy();
          return super.exited(object);
       }
    }

@@ -15,6 +15,7 @@
  */
 
 /// <reference path="../gameCombatState.ts" />
+/// <reference path="../../components/damageComponent.ts" />
 /// <reference path="../../../core/state.ts" />
 
 module pow2 {
@@ -60,25 +61,26 @@ module pow2 {
             attacker = machine.enemy;
             defender = machine.friendly;
          }
-
-         var defName:string = defender.model.get('name');
-         var attName:string = attacker.model.get('name');
-         var damage:number = attacker.model.attack(defender.model);
-         console.log(attName + " attacked " + defName + " for (" + damage + ") damage");
-         console.log(defName + " has (" + defender.model.get('hp') + ") hit points left");
-
-         var animComp:ISceneComponent = new pow2.AnimatedSpriteComponent("attack");
-         var spriteComp:ISceneComponent = new pow2.SpriteComponent({
-            name:"attack",
-            icon: damage > 0 ? "animHit.png" : "animMiss.png"
-         });
-         defender.addComponent(animComp,true);
-         defender.addComponent(spriteComp);
-         animComp.once('anim:done',() => {
-            defender.removeComponent(animComp,true);
-            defender.removeComponent(spriteComp);
-            _.delay(() => { machine.currentDone = true; },500);
-         });
+         _.delay(() => {
+            var defName:string = defender.model.get('name');
+            var attName:string = attacker.model.get('name');
+            var damage:number = attacker.model.attack(defender.model);
+            console.log(attName + " attacked " + defName + " for (" + damage + ") damage");
+            console.log(defName + " has (" + defender.model.get('hp') + ") hit points left");
+            var components = {
+               animation: new pow2.AnimatedSpriteComponent("attack"),
+               sprite: new pow2.SpriteComponent({
+                  name:"attack",
+                  icon: damage > 0 ? "animHit.png" : "animMiss.png"
+               }),
+               damage: new pow2.DamageComponent()
+            };
+            defender.addComponentDictionary(components);
+            components.damage.once('damage:done',() => {
+               defender.removeComponentDictionary(components);
+               machine.currentDone = true;
+            });
+         },150);
       }
    }
 
