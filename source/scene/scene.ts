@@ -170,9 +170,13 @@ module pow2 {
 
 
       componentsByType(type) {
-         return _.compact(_.map(this._objects, (o) => {
-            return o.findComponent(type);
-         }));
+         return _.chain(this._objects)
+            .map((o:ISceneComponentHost) => {
+               return o.findComponents(type);
+            })
+            .flatten()
+            .compact()
+            .value();
       }
 
 
