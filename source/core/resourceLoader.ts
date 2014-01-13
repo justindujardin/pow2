@@ -83,9 +83,9 @@ module pow2 {
          return type;
       }
 
-      load(sources:Array<string>,done:Function):Array<Resource>;
-      load(source:string,done:Function):Resource;
-      load(sources:any,done:any):any{
+      load(sources:Array<string>,done?:Function):Array<Resource>;
+      load(source:string,done?:Function):Resource;
+      load(sources:any,done?:any):any{
          var results:Array<Resource> = [];
          var loadQueue:number = 0;
          if(!_.isArray(sources)){

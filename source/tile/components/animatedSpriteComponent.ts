@@ -49,7 +49,7 @@ module pow2 {
       tick(elapsed:number){
          this._elapsed += elapsed;
          if(this._elapsed >= this.lengthMS){
-            this.trigger('anim:done');
+            this.trigger('animation:done',this);
             this._elapsed = this._elapsed % this.lengthMS;
          }
          super.tick(elapsed);

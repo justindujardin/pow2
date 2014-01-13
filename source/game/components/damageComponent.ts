@@ -15,6 +15,7 @@ limitations under the License.
 */
 
 /// <reference path="../../scene/sceneComponent.ts" />
+/// <reference path="../../scene/components/soundComponent.ts" />
 /// <reference path="../../tile/components/animatedSpriteComponent.ts" />
 /// <reference path="../../tile/components/spriteComponent.ts" />
 /// <reference path="./playerComponent.ts" />
@@ -22,10 +23,6 @@ limitations under the License.
 /// <reference path="../objects/gameEntityObject.ts" />
 
 module pow2 {
-   // TODO: This
-   export class SoundComponent extends SceneComponent {
-
-   }
 
    /**
     * A component that defines the functionality of a map feature.
@@ -46,8 +43,8 @@ module pow2 {
          var ok = !!(this.animation && this.sprite);
          if(!this.started && ok){
             this.started = true;
-            this.animation.once('anim:done',() => {
-               this.trigger('damage:done');
+            this.animation.once('animation:done',() => {
+               this.trigger('damage:done',this);
             });
          }
          return ok;

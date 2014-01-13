@@ -65,15 +65,20 @@ module pow2 {
             var defName:string = defender.model.get('name');
             var attName:string = attacker.model.get('name');
             var damage:number = attacker.model.attack(defender.model);
-            console.log(attName + " attacked " + defName + " for (" + damage + ") damage");
-            console.log(defName + " has (" + defender.model.get('hp') + ") hit points left");
+//            console.log(attName + " attacked " + defName + " for (" + damage + ") damage");
+//            console.log(defName + " has (" + defender.model.get('hp') + ") hit points left");
+            var hit:boolean = damage > 0;
             var components = {
                animation: new pow2.AnimatedSpriteComponent("attack"),
                sprite: new pow2.SpriteComponent({
                   name:"attack",
-                  icon: damage > 0 ? "animHit.png" : "animMiss.png"
+                  icon: hit ? "animHit.png" : "animMiss.png"
                }),
-               damage: new pow2.DamageComponent()
+               damage: new pow2.DamageComponent(),
+               sound: new pow2.SoundComponent({
+                  url: hit ? "/data/sounds/hit" : "/data/sounds/miss"
+               })
+
             };
             defender.addComponentDictionary(components);
             components.damage.once('damage:done',() => {

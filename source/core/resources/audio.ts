@@ -22,6 +22,7 @@ module pow2 {
     * Use jQuery to load an Audio resource.
     */
    export class AudioResource extends Resource {
+      data:HTMLAudioElement;
       static types:Object = {
          'mp3' : 'audio/mpeg',
          'ogg' : 'audio/ogg',
