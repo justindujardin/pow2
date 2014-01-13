@@ -37,9 +37,21 @@ module pow2 {
          }
       }
 
+      disconnectComponent():boolean {
+         if(this.audio.isReady()){
+            this.audio.data.pause();
+            this.audio.data.currentTime = 0;
+         }
+         return super.disconnectComponent();
+      }
+
       connectComponent():boolean {
          if(!super.connectComponent() || !this.url){
             return false;
+         }
+         if(this.audio && this.audio.isReady()){
+            this.audio.data.currentTime = 0;
+            return true;
          }
          this.audio = this.host.world.loader.load(this.url,() => {
             if(this.audio.isReady()){

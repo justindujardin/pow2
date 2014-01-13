@@ -111,8 +111,11 @@ module pow2 {
          this.scene = <Scene>machine.world.setService('scene',new Scene());
 
          this.tileMap = new pow2.GameTileMap("combat");
-         this.tileMap.addComponent(new pow2.TileMapCameraComponent);
          this.scene.addObject(this.tileMap);
+         this.tileMap.addComponent(new pow2.TileMapCameraComponent);
+         this.tileMap.addComponent(new pow2.SoundComponent({
+            url:'/data/music/combatMusic'
+         }));
 
          // Create the hero facing his enemy
          this.machine.friendly = new pow2.GameEntityObject({
@@ -147,6 +150,7 @@ module pow2 {
          machine.view.setScene(this.saveScene);
          machine.view.setTileMap(this.saveTileMap);
          machine.updatePlayer();
+         this.tileMap.destroy();
          this.machine = null;
          this.saveScene.paused = false;
          this.scene.destroy();

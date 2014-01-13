@@ -64,9 +64,6 @@ module pow2 {
          _.delay(() => {
             var damage:number = attacker.model.attack(defender.model);
             var didKill:boolean = defender.model.get('hp') <= 0;
-
-//            console.log(attName + " attacked " + defName + " for (" + damage + ") damage");
-//            console.log(defName + " has (" + defender.model.get('hp') + ") hit points left");
             var hit:boolean = damage > 0;
             var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? "hit" : "miss"));
             var components = {
@@ -79,10 +76,12 @@ module pow2 {
                sound: new pow2.SoundComponent({
                   url: hitSound
                })
-
             };
             defender.addComponentDictionary(components);
             components.damage.once('damage:done',() => {
+               if(didKill){
+                  defender.visible = false;
+               }
                defender.removeComponentDictionary(components);
                machine.currentDone = true;
             });
