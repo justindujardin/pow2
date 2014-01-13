@@ -62,12 +62,13 @@ module pow2 {
             defender = machine.friendly;
          }
          _.delay(() => {
-            var defName:string = defender.model.get('name');
-            var attName:string = attacker.model.get('name');
             var damage:number = attacker.model.attack(defender.model);
+            var didKill:boolean = defender.model.get('hp') <= 0;
+
 //            console.log(attName + " attacked " + defName + " for (" + damage + ") damage");
 //            console.log(defName + " has (" + defender.model.get('hp') + ") hit points left");
             var hit:boolean = damage > 0;
+            var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? "hit" : "miss"));
             var components = {
                animation: new pow2.AnimatedSpriteComponent("attack"),
                sprite: new pow2.SpriteComponent({
@@ -76,7 +77,7 @@ module pow2 {
                }),
                damage: new pow2.DamageComponent(),
                sound: new pow2.SoundComponent({
-                  url: hit ? "/data/sounds/hit" : "/data/sounds/miss"
+                  url: hitSound
                })
 
             };
