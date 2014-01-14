@@ -25,15 +25,19 @@ module pow2 {
       volume?:number;
    }
 
+   var DEFAULTS:SoundComponentOptions = {
+      url:null,
+      volume:1
+   };
+
    export class SoundComponent extends SceneComponent implements SoundComponentOptions {
       url:string;
+      volume:number;
       audio:AudioResource;
-      constructor(options:SoundComponentOptions={
-         url:null
-      }){
+      constructor(options:SoundComponentOptions=DEFAULTS){
          super();
          if(typeof options !== 'undefined'){
-            _.extend(this,options);
+            _.extend(this,DEFAULTS,options);
          }
       }
 
@@ -51,10 +55,13 @@ module pow2 {
          }
          if(this.audio && this.audio.isReady()){
             this.audio.data.currentTime = 0;
+            this.audio.data.volume = this.volume;
             return true;
          }
          this.audio = this.host.world.loader.load(this.url,() => {
             if(this.audio.isReady()){
+               this.audio.data.currentTime = 0;
+               this.audio.data.volume = this.volume;
                this.audio.data.play();
                this.audio.data.addEventListener('timeupdate',() => {
                   if(this.audio.data.currentTime >= this.audio.data.duration){

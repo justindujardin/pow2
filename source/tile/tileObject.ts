@@ -21,34 +21,47 @@
 /// <reference path="./tileMap.ts" />
 
 module pow2 {
-   export class TileObject extends pow2.SceneObject {
+   export interface TileObjectOptions {
+      point?: pow2.Point;
+      renderPoint?:pow2.Point;
+      image?: HTMLImageElement;
+      visible?:boolean;
+      enabled?:boolean;
+      tileMap:TileMap;
+
+      // Game Sprite support.
+      // ----------------------------------------------------------------------
+      // The sprite name, e.g. "party.png" or "knight.png"
+      icon?:string;
+      // The sprite sheet source information
+      meta?:any;
+      // The sprite sheet frame (if applicable)
+      frame?:number;
+   }
+
+   var DEFAULTS:TileObjectOptions = {
+      visible:true,
+      enabled:true,
+      icon: "",
+      iconCoords: null,
+      image: null,
+      tileMap: null
+   };
+
+   export class TileObject extends SceneObject implements TileObjectOptions {
       point: pow2.Point;
       renderPoint:pow2.Point;
       image: HTMLImageElement;
       visible:boolean;
       enabled:boolean;
       tileMap:TileMap;
-
-      // Game Sprite support.
-      // ----------------------------------------------------------------------
-      // The sprite name, e.g. "party.png" or "knight.png"
       icon:string;
-      // The sprite sheet source information
       meta:any;
-      // The sprite sheet frame (if applicable)
-      frame:number = 0;
+      frame:number;
 
-      constructor(options?: any) {
+      constructor(options:TileObjectOptions=DEFAULTS) {
          super(options);
-         _.extend(this, _.defaults(options || {}, {
-            point: new pow2.Point(0, 0),
-            visible:true,
-            enabled:true,
-            icon: "",
-            iconCoords: null,
-            image: null,
-            tileMap: null
-         }));
+         _.extend(this, _.defaults(options || {}, DEFAULTS));
          return this;
       }
 
@@ -66,7 +79,7 @@ module pow2 {
       /**
        * When added to a scene, resolve a feature icon to a renderable sprite.
        */
-      onAddToScene() {
+         onAddToScene() {
          if(this.icon){
             this.setSprite(this.icon);
          }
@@ -78,7 +91,7 @@ module pow2 {
       /**
        * Set the current sprite name.  Returns the previous sprite name.
        */
-      setSprite(name:string,frame:number = 0):string {
+         setSprite(name:string,frame:number = 0):string {
          var oldSprite:string = this.icon;
          if (!name) {
             this.meta = null;

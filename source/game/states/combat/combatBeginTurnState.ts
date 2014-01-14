@@ -67,7 +67,10 @@ module pow2 {
             var hit:boolean = damage > 0;
             var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? "hit" : "miss"));
             var components = {
-               animation: new pow2.AnimatedSpriteComponent("attack"),
+               animation: new pow2.AnimatedSpriteComponent({
+                  spriteName:"attack",
+                  lengthMS:350
+               }),
                sprite: new pow2.SpriteComponent({
                   name:"attack",
                   icon: hit ? "animHit.png" : "animMiss.png"

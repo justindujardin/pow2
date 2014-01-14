@@ -21,6 +21,12 @@
 /// <reference path="./spriteComponent.ts" />
 
 module pow2 {
+
+   export interface AnimatedSpriteComponentOptions {
+      lengthMS?:number;
+      spriteName:string;
+   }
+
    export class AnimatedSpriteComponent extends TickedComponent {
       host:TileObject;
       _elapsed: number = 0;
@@ -28,9 +34,14 @@ module pow2 {
       lengthMS:number = 500;
       spriteComponent:SpriteComponent;
       spriteName:string;
-      constructor(spriteName:string){
+      constructor(options:AnimatedSpriteComponentOptions={
+         lengthMS:500,
+         spriteName:null
+      }){
          super();
-         this.spriteName = spriteName;
+         if(typeof options !== 'undefined'){
+            _.extend(this,options);
+         }
       }
 
       connectComponent():boolean {
