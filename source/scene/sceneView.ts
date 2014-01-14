@@ -111,6 +111,7 @@ module pow2 {
             return;
          }
          this.context.save();
+         this.context.scale(this.cameraScale,this.cameraScale);
       }
 
       // Restore the render state to what it was before a call to setRenderState.
@@ -205,7 +206,7 @@ module pow2 {
 
       worldToScreen(value: number, scale?): number;
 
-      worldToScreen(value: any, scale = this.cameraScale): any {
+      worldToScreen(value: any, scale = 1): any {
          if (value instanceof Rect) {
             return new Rect(value).scale(this.unitSize * scale);
          } else if (value instanceof Point) {

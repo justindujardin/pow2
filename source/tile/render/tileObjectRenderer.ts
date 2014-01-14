@@ -30,12 +30,12 @@ module pow2 {
             return;
          }
          var point = object.renderPoint || object.point;
-         var height, width, x, y;
+         var width = view.unitSize;
+         var height = view.unitSize;
+         var x = (point.x) * width;
+         var y = (point.y) * height;
          if (data.icon && data.meta) {
             var c = data.meta;
-            width = view.unitSize * view.cameraScale;
-            height = view.unitSize * view.cameraScale;
-
             var cx = c.x;
             var cy = c.y;
             if(data.meta.frames > 1){
@@ -44,14 +44,8 @@ module pow2 {
                cx += fx * view.unitSize;
                cy += fy * view.unitSize;
             }
-            x = point.x * width;
-            y = point.y * height;
             return view.context.drawImage(data.image, cx, cy, view.unitSize, view.unitSize, x, y, width, height);
          } else {
-            width = data.image.width * view.cameraScale;
-            height = data.image.height * view.cameraScale;
-            x = point.x * width;
-            y = point.y * height;
             return view.context.drawImage(data.image, x, y, width, height);
          }
       }
