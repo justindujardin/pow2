@@ -78,7 +78,7 @@ module pow2 {
                this.tiles = tileLookup;
 
                this.ready();
-               console.log(this);
+               //console.log(this);
             });
          }
          else {
