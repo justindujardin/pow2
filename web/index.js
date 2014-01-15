@@ -132,12 +132,12 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,$ti
             if(state.name === pow2.GameCombatState.NAME){
                $scope.combat = state.machine;
                state.machine.on('combat:attack',function(attacker,defender){
-                  state.machine.uiBlocked = true;
+                  state.machine.paused = true;
                   var change = defender.model.previous('hp') - defender.model.attributes.hp;
                   $scope.$apply(function(){
                      var msg = attacker.model.get('name') + " attacked " + defender.model.get('name') + " for " + change + " damage!";
                      $scope.displayMessage(msg,function(){
-                        state.machine.uiBlocked = false;
+                        state.machine.paused = false;
                      });
                   });
                });
