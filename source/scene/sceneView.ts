@@ -138,7 +138,7 @@ module pow2 {
          if (this.scene && this.scene.options.debugRender) {
             this.debugRender();
          }
-         return this.restoreRenderState();
+         this.restoreRenderState();
       }
 
       // Do any debug rendering for this view.
@@ -146,19 +146,20 @@ module pow2 {
          if (!this.context) {
             return;
          }
-         var fontSize = 16;
+         var fontSize = 4;
          debugStrings.push("MSPF: " + this.world.time.mspf);
          debugStrings.push("FPS:  " + this.scene.fps.toFixed(0));
          // MSPF/FPS Counter debug
          this.context.save();
+         this.context.scale(1,1);
          this.context.font = "bold " + fontSize + "px Arial";
          var renderPos = this.worldToScreen(this.camera.point);
-         var x = renderPos.x + 20;
-         var y = renderPos.y + 40;
+         var x = renderPos.x + 10;
+         var y = renderPos.y + 10;
          var i:number;
          for (i = 0; i < debugStrings.length; ++i) {
             this.context.fillStyle = "rgba(0,0,0,0.8)";
-            this.context.fillText(<string>debugStrings[i], x + 2, y + 2);
+            this.context.fillText(<string>debugStrings[i], x + 0.5, y + 0.5);
             this.context.fillStyle = "rgba(255,255,255,1)";
             this.context.fillText(<string>debugStrings[i], x, y);
             y += fontSize;

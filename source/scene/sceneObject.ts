@@ -51,6 +51,7 @@ module pow2 {
       enabled:boolean;
       // The object point
       point:Point;
+      size:Point;
       // The render point that is interpolated between ticks.
       renderPoint:Point;
       _components:ISceneComponent[] = [];
@@ -58,6 +59,7 @@ module pow2 {
          super();
          _.extend(this, _.defaults(options || {}), {
             point: new Point(0,0),
+            size: new Point(1,1),
             enabled:true
          });
       }

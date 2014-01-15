@@ -24,6 +24,11 @@ module pow2{
    export class GameMapView extends TileMapView {
       objectRenderer:TileObjectRenderer = new TileObjectRenderer;
       tileMap:TileMap = null;
+      mouse:NamedMouseElement = null;
+
+      onAddToScene(scene:Scene) {
+         this.mouse = scene.world.input.mouseHook(this.canvas,"gameMap");
+      }
 
       /*
        * Update the camera for this frame.
@@ -61,6 +66,18 @@ module pow2{
          var party = this.scene.objectByComponent(pow2.PlayerComponent);
          if (party) {
             debugStrings.push("Party: (" + party.point.x + "," + party.point.y + ")");
+         }
+         if(this.mouse){
+            var worldMouse:Point = this.screenToWorld(this.mouse.point,this.cameraScale).add(this.camera.point).round();
+            debugStrings.push("Mouse: " + this.mouse.point + ", World: " + worldMouse);
+
+            var tileRect:Rect = new Rect(worldMouse,new Point(1,1));
+            tileRect.point.x -= 0.5;
+            tileRect.point.y -= 0.5;
+            var screenTile = this.worldToScreen(tileRect,1);
+            this.context.strokeStyle = "rgba(10,255,10,0.9)";
+            this.context.lineWidth = 1.5;
+            this.context.strokeRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
          }
          super.debugRender(debugStrings);
       }
