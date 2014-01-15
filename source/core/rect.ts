@@ -170,6 +170,9 @@ module pow2{
       getTop():number { return this.point.y; }
       getRight():number { return this.point.x + this.extent.x; }
       getBottom():number { return this.point.y + this.extent.y; }
+      getHalfSize():Point {
+         return new Point(this.extent.x / 2, this.extent.y / 2);
+      }
 
       inflate(x:number=1,y:number=1):Rect {
          this.point.x -= x;

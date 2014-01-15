@@ -30,8 +30,8 @@ module pow2 {
             return;
          }
          var point = (object.renderPoint || object.point).clone();
-         point.x -= 0.5;
-         point.y -= 0.5;
+         point.x -= object.size.x / 2;
+         point.y -= object.size.y / 2;
          point = view.worldToScreen(point);
 
 

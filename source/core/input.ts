@@ -40,7 +40,6 @@ module pow2 {
 
    export class Input {
       _keysDown:Object = {};
-      _mousePosition:Point = new Point(0,0);
       _mouseElements:NamedMouseElement[] = [];
 
       constructor() {
@@ -52,19 +51,22 @@ module pow2 {
          });
          var hooks = this._mouseElements;
          window.addEventListener(<string>'mousemove', (ev:MouseEvent) => {
-            _.find(hooks,(hook:NamedMouseElement) => {
+            _.each(hooks,(hook:NamedMouseElement) => {
                if(ev.srcElement === hook.el){
                   var canoffset = $(event.srcElement).offset();
                   var x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
                   var y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
                   hook.point.set(x,y);
-                  return true;
+               }
+               else {
+                  hook.point.set(-1,-1);
                }
                return false;
             });
          });
       }
 
+      // Track the mouse position for a given element.
       mouseHook(el:HTMLElement,name:string){
          var hooks = _.where(this._mouseElements,{name:name});
          if(hooks.length > 0){
@@ -73,7 +75,7 @@ module pow2 {
          var result:NamedMouseElement = {
             name:name,
             el:el,
-            point: new Point(0,0)
+            point: new Point(-1,-1)
          };
          this._mouseElements.push(result);
          return result;

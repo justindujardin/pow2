@@ -72,12 +72,27 @@ module pow2{
             debugStrings.push("Mouse: " + this.mouse.point + ", World: " + worldMouse);
 
             var tileRect:Rect = new Rect(worldMouse,new Point(1,1));
-            tileRect.point.x -= 0.5;
-            tileRect.point.y -= 0.5;
+            var half = tileRect.getHalfSize();
+            tileRect.point.x -= half.x;
+            tileRect.point.y -= half.y;
             var screenTile = this.worldToScreen(tileRect,1);
-            this.context.strokeStyle = "rgba(10,255,10,0.9)";
+
+
+            var results:TileObject[] = [];
+            var hit = this.scene.db.queryRect(tileRect,SceneObject,results);
+            if(hit){
+               _.each(results,(obj:any) => {
+                  debugStrings.push("Hit: " + obj.type || obj.name);
+               });
+               this.context.fillStyle = "rgba(10,255,10,0.3)";
+               this.context.fillRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
+
+            }
+
+            this.context.strokeStyle = hit ? "rgba(10,255,10,0.9)" : "rgba(255,255,255,0.9)";
             this.context.lineWidth = 1.5;
             this.context.strokeRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
+
          }
          super.debugRender(debugStrings);
       }
