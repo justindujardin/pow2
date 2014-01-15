@@ -29,11 +29,14 @@ module pow2 {
          if (!data.image || !object.visible) {
             return;
          }
-         var point = object.renderPoint || object.point;
+         var point = (object.renderPoint || object.point).clone();
+         point.x -= 0.5;
+         point.y -= 0.5;
+         point = view.worldToScreen(point);
+
+
          var width = view.unitSize;
          var height = view.unitSize;
-         var x = (point.x) * width;
-         var y = (point.y) * height;
          if (data.icon && data.meta) {
             var c = data.meta;
             var cx = c.x;
@@ -44,9 +47,9 @@ module pow2 {
                cx += fx * view.unitSize;
                cy += fy * view.unitSize;
             }
-            return view.context.drawImage(data.image, cx, cy, view.unitSize, view.unitSize, x, y, width, height);
+            return view.context.drawImage(data.image, cx, cy, view.unitSize, view.unitSize, point.x, point.y, width, height);
          } else {
-            return view.context.drawImage(data.image, x, y, width, height);
+            return view.context.drawImage(data.image, point.x, point.y, width, height);
          }
       }
    }

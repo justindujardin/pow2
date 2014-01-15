@@ -85,7 +85,7 @@ module pow2 {
          // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
          for(var col:number = 0; col < cols; col++){
             for(var row:number = 0; row < rows; row++){
-               var renderRect:Rect = view.worldToScreen(new Rect(col * squareUnits,row * squareUnits,squareUnits,squareUnits));
+               var renderRect:Rect = view.worldToScreen(new Rect(col * squareUnits - 0.5,row * squareUnits - 0.5,squareUnits,squareUnits));
                if(!renderRect.intersect(clipRect)){
                   continue;
                }
