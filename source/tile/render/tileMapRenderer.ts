@@ -99,8 +99,8 @@ module pow2 {
                   // Scaled to camera
                   renderRect.point.x,
                   renderRect.point.y,
-                  squareScreen + 1,
-                  squareScreen + 1);
+                  squareScreen,
+                  squareScreen);
             }
          }
       }
