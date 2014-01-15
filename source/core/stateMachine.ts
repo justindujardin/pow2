@@ -23,6 +23,13 @@ module pow2 {
    // State Machine Interfaces
    // -------------------------------------------------------------------------
    export interface IStateMachine {
+      // Allow UI elements to interrupt state machine operations.
+      // INTENT: The UI can use this to force delays in action for
+      // animations and prompts, updates, etc.  This will essentially
+      // keep the machine in the same state until it is set back to false.
+      //
+      // TODO: Did this work out well?  Combat UI is much improved, yes?
+      uiBlocked:boolean;
       update(data:any);
       addState(state:IState);
       addStates(states:IState[]);
@@ -43,6 +50,8 @@ module pow2 {
       private _currentState:IState = null;
       private _previousState:IState = null;
       private _newState:boolean = false;
+      uiBlocked:boolean = false;
+
 
       // IWorldObject interface
       world:IWorld;

@@ -40,7 +40,7 @@ module pow2 {
    export class CombatEndTurnTransition extends StateTransition {
       targetState:string = CombatEndTurnState.NAME;
       evaluate(machine:CombatStateMachine):boolean {
-         return machine.currentDone === true;
+         return super.evaluate(machine) && machine.currentDone === true;
       }
    }
 }

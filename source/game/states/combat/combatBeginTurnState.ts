@@ -98,7 +98,7 @@ module pow2 {
    export class CombatBeginTurnTransition extends StateTransition {
       targetState:string = CombatBeginTurnState.NAME;
       evaluate(machine:CombatStateMachine):boolean {
-         return machine.current !== null && machine.currentDone === true;
+         return super.evaluate(machine) && machine.current !== null && machine.currentDone === true;
       }
    }
 

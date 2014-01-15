@@ -40,6 +40,9 @@ module pow2 {
    export class CombatCompletedTransition extends StateTransition {
       targetState:string = "";
       evaluate(machine:CombatStateMachine):boolean {
+         if(!super.evaluate(machine)){
+            return false;
+         }
          var friendHP:number = machine.friendly.model.get('hp');
          var enemyHP:number = machine.enemy.model.get('hp');
          if(friendHP <= 0){

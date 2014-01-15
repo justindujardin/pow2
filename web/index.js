@@ -114,11 +114,12 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,$ti
       return localStorage.getItem(stateKey);
    };
 
-   $scope.displayMessage = function(message) {
+   $scope.displayMessage = function(message,callback) {
       $scope.overlayText = message;
       $timeout(function(){
          $scope.overlayText = null;
-      },1500);
+         callback && callback();
+      },2000);
    };
 
    game.load().then(function(){
@@ -131,9 +132,13 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,$ti
             if(state.name === pow2.GameCombatState.NAME){
                $scope.combat = state.machine;
                state.machine.on('combat:attack',function(attacker,defender){
+                  state.machine.uiBlocked = true;
                   var change = defender.model.previous('hp') - defender.model.attributes.hp;
                   $scope.$apply(function(){
-                     $scope.displayMessage(attacker.model.get('name') + " attacked " + defender.model.get('name') + " for " + change + " damage!");
+                     var msg = attacker.model.get('name') + " attacked " + defender.model.get('name') + " for " + change + " damage!";
+                     $scope.displayMessage(msg,function(){
+                        state.machine.uiBlocked = false;
+                     });
                   });
                });
             }

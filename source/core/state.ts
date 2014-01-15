@@ -49,7 +49,7 @@ module pow2 {
    export class StateTransition implements IStateTransition {
       targetState:string;
       evaluate(machine:IStateMachine):boolean {
-         return true;
+         return !machine.uiBlocked;
       }
    }
 }
