@@ -116,6 +116,8 @@ module pow2 {
          return false;
       }
       beginMove(from:Point,to:Point) {
+         this.host.trigger('move:begin',this,from,to);
+
          var results = [];
          var collision:boolean = this.collider.collide(to.x,to.y,GameFeatureObject,results);
          if(collision){
@@ -136,6 +138,8 @@ module pow2 {
          if(!this.collider){
             return;
          }
+
+         this.host.trigger('move:end',this,from,to);
 
          // Successful move, collide against target point and check any new tile actions.
          var fromFeature:GameFeatureObject = <GameFeatureObject>this.collider.collideFirst(from.x,from.y,GameFeatureObject);

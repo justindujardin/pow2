@@ -40,6 +40,11 @@ module pow2 {
                if(this.mapPoint){
                   machine.player.setPoint(this.mapPoint);
                }
+               if(machine.encounter){
+                  machine.player.on('combat:encounter',(combatComponent) => {
+                     machine.encounter.combatFlag = true;
+                  });
+               }
             });
             machine.player.tileMap.load(this.mapName);
          }
@@ -52,6 +57,10 @@ module pow2 {
          if(!machine.player.tileMap){
             throw new Error("Defensive exception: The player must have a tileMap.");
          }
+         if(machine.encounter){
+            machine.encounter.resetBattleCounter();
+         }
+         machine.player.off('combat:encounter');
          this.mapName = machine.player.tileMap.mapName;
          this.mapPoint = machine.player.point.clone();
       }

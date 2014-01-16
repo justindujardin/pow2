@@ -110,40 +110,44 @@ module pow2 {
          this.machine = new CombatStateMachine(machine);
          this.scene = <Scene>machine.world.setService('scene',new Scene());
 
-         this.tileMap = new pow2.GameTileMap("combat");
-         this.scene.addObject(this.tileMap);
-         this.tileMap.addComponent(new pow2.TileMapCameraComponent);
-         this.tileMap.addComponent(new pow2.SoundComponent({
-            url:'/data/music/combatMusic'
-         }));
 
-         // Create the hero facing his enemy
-         this.machine.friendly = new pow2.GameEntityObject({
-            icon:"warrior.png",
-            model:friendlyPlayer(1)
-         });
-         this.scene.addObject(this.machine.friendly);
-         this.machine.friendly.addComponent(new pow2.PlayerRenderComponent);
+         machine.world.loader.load("/data/sounds/summon",(res) => {
+            if(res.isReady()){
+               res.data.play();
+            }
+            this.tileMap = new pow2.GameTileMap("combat");
+            this.scene.addObject(this.tileMap);
+            this.tileMap.addComponent(new pow2.TileMapCameraComponent);
 
-         // Create the enemy
-         this.machine.enemy = new pow2.GameEntityObject({
-            model: CreatureModel.fromLevel(1)
-         });
-         this.scene.addObject(this.machine.enemy);
-         this.machine.enemy.addComponent(new pow2.SpriteComponent({
-            name:"enemy",
-            icon:this.machine.enemy.model.get('icon')
-         }));
+            // Create the hero facing his enemy
+            this.machine.friendly = new pow2.GameEntityObject({
+               icon:"warrior.png",
+               model:friendlyPlayer(1)
+            });
+            this.scene.addObject(this.machine.friendly);
+            this.machine.friendly.addComponent(new pow2.PlayerRenderComponent);
 
-         this.scene.once('map:loaded',() => {
-            var friendly = this.tileMap.getFeature('friendly');
-            var enemy = this.tileMap.getFeature('enemy');
-            this.machine.friendly.point = new Point(friendly.x / 16, friendly.y / 16);
-            this.machine.enemy.point = new Point(enemy.x / 16, enemy.y / 16);
-            machine.view.setScene(this.scene);
-            machine.view.setTileMap(this.tileMap);
+            // Create the enemy
+            this.machine.enemy = new pow2.GameEntityObject({
+               model: CreatureModel.fromLevel(1)
+            });
+            this.scene.addObject(this.machine.enemy);
+            this.machine.enemy.addComponent(new pow2.SpriteComponent({
+               name:"enemy",
+               icon:this.machine.enemy.model.get('icon')
+            }));
+
+            this.scene.once('map:loaded',() => {
+               var friendly = this.tileMap.getFeature('friendly');
+               var enemy = this.tileMap.getFeature('enemy');
+               this.machine.friendly.point = new Point(friendly.x / 16, friendly.y / 16);
+               this.machine.enemy.point = new Point(enemy.x / 16, enemy.y / 16);
+               machine.view.setScene(this.scene);
+               machine.view.setTileMap(this.tileMap);
+            });
+            console.log("FIGHT!!!");
          });
-         console.log("FIGHT!!!");
+
       }
       exit(machine:GameStateMachine){
          machine.world.setService('scene',this.saveScene);
@@ -155,7 +159,12 @@ module pow2 {
          this.saveScene.paused = false;
          this.scene.destroy();
          this.finished = false;
-         machine.combatant.destroy();
+         if(machine.combatant){
+            machine.combatant.destroy();
+         }
+         if(machine.player){
+            machine.player.trigger('combat:end',this);
+         }
       }
       tick(machine:IStateMachine){
          if(this.machine){
@@ -168,6 +177,9 @@ module pow2 {
       evaluate(machine:GameStateMachine):boolean {
          if(!super.evaluate(machine) || !machine.player || !machine.player.tileMap){
             return false;
+         }
+         if(machine.encounter && machine.encounter.combatFlag === true){
+            return true;
          }
          var coll = <CollisionComponent>machine.player.findComponent(CollisionComponent);
          if(coll){

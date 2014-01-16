@@ -83,6 +83,7 @@ twoFiftySix.app.factory('game', function($q,$rootScope){
                self.sprite.addComponent(new pow2.PlayerRenderComponent());
                self.sprite.addComponent(new pow2.PlayerCameraComponent());
                self.sprite.addComponent(new pow2.PlayerTouchComponent());
+               self.sprite.addComponent(new pow2.CombatEncounterComponent());
                self.scene.addObject(self.sprite);
             });
             self.tileMap = new pow2.GameTileMap("town");
@@ -127,15 +128,24 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,$ti
       game.world.state.on('enter',function(state){
          console.log("UI: Entered state: " + state.name);
          $scope.$apply(function(){
-            $scope.inCombat = true;
-            $scope.displayMessage(state.name);
             if(state.name === pow2.GameCombatState.NAME){
+               $scope.inCombat = true;
+               $scope.displayMessage(state.name);
                $scope.combat = state.machine;
                state.machine.on('combat:attack',function(attacker,defender){
                   state.machine.paused = true;
                   var change = defender.model.previous('hp') - defender.model.attributes.hp;
                   $scope.$apply(function(){
                      var msg = attacker.model.get('name') + " attacked " + defender.model.get('name') + " for " + change + " damage!";
+                     $scope.displayMessage(msg,function(){
+                        state.machine.paused = false;
+                     });
+                  });
+               });
+               state.machine.on('combat:victory',function(winner,loser) {
+                  state.machine.paused = true;
+                  $scope.$apply(function(){
+                     var msg = winner.model.get('name') + " DEFEATED " + loser.model.get('name') + "!";
                      $scope.displayMessage(msg,function(){
                         state.machine.paused = false;
                      });

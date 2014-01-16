@@ -18,6 +18,7 @@
 /// <reference path="./gameMapView.ts" />
 /// <reference path="./components/playerComponent.ts" />
 /// <reference path="./components/playerTouchComponent.ts" />
+/// <reference path="./components/combatEncounterComponent.ts" />
 /// <reference path="./states/gameMapState.ts"/>
 /// <reference path="./states/gameCombatState.ts"/>
 module pow2 {
@@ -35,6 +36,7 @@ module pow2 {
    export class GameStateMachine extends StateMachine {
       defaultState:string = GameDefaultState.NAME;
       player:TileObject = null;
+      encounter:CombatEncounterComponent = null;
       combatant:TileObject = null;
       view:GameMapView = null;
       tickRateMS:number = 300;
@@ -52,6 +54,7 @@ module pow2 {
          if(this.world && this.world.scene){
             var scene:Scene = this.world.scene;
             this.player = scene.objectByComponent(PlayerComponent);
+            this.encounter = <CombatEncounterComponent>scene.componentByType(CombatEncounterComponent);
          }
       }
 

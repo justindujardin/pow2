@@ -24,7 +24,14 @@ module pow2 {
       enter(machine:CombatStateMachine){
          super.enter(machine);
          console.log("HOLY CRAP YOU WON");
-         machine.trigger("combat:victory",machine);
+         // callback(winner,loser);
+         machine.trigger("combat:victory",machine.friendly,machine.enemy);
+      }
+
+      tick(machine:CombatStateMachine){
+         if(machine.paused){
+            return;
+         }
          machine.parent.setCurrentState(GameMapState.NAME);
       }
    }

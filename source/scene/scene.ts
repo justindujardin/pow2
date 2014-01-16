@@ -169,9 +169,18 @@ module pow2 {
          return this.findIt('_objects',object);
       }
 
+      componentByType(type):ISceneComponent {
+         var obj:ISceneComponentHost = _.find(this._objects, (o) => {
+            return !!o.findComponent(type);
+         });
+         if(!obj){
+            return null;
+         }
+         return obj.findComponent(type);
+      }
 
-      componentsByType(type) {
-         return _.chain(this._objects)
+      componentsByType(type):ISceneComponent[] {
+         return <ISceneComponent[]>_.chain(this._objects)
             .map((o:ISceneComponentHost) => {
                return o.findComponents(type);
             })

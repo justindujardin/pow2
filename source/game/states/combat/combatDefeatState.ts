@@ -25,7 +25,13 @@ module pow2 {
       enter(machine:CombatStateMachine){
          super.enter(machine);
          console.log("SORRY BRO, YOU LOSE.");
-         machine.trigger("combat:defeat",machine);
+         // callback(winner,loser);
+         machine.trigger("combat:defeat",machine.enemy,machine.friendly);
+      }
+      tick(machine:CombatStateMachine){
+         if(machine.paused){
+            return;
+         }
          machine.parent.setCurrentState(GameMapState.NAME);
       }
    }
