@@ -22,7 +22,7 @@ module pow2 {
 
    // State Machine Interfaces
    // -------------------------------------------------------------------------
-   export interface IStateMachine {
+   export interface IStateMachine extends IEvents {
       paused:boolean;
       update(data:any);
       addState(state:IState);

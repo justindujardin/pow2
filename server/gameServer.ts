@@ -29,7 +29,7 @@ server.use(express.session({
 function getPageScripts(){
    require("../Gruntfile")(grunt);
    var ts = grunt.config.get('typescript');
-   var names = ['core','scene','tile','game'];
+   var names = ['core','scene','tile','game','web'];
    var src = grunt.config.get('typescript.options.base_path');
    var scripts:string[] = [];
    _.each(names, (name:string) => {

@@ -1,134 +1,79 @@
-"use strict";
-/*globals angular,window*/
+/// <reference path="../../source/game/gameStateMachine.ts"/>
+/// <reference path="../../types/underscore/underscore.d.ts"/>
+/// <reference path="../../types/backbone/backbone.d.ts"/>
+/// <reference path="../../types/angularjs/angular.d.ts"/>
 
-window.twoFiftySix = {
-   controllers: {},
-   directives: {}
-};
-twoFiftySix.app = angular.module('twoFiftySix', []);
-
-
-twoFiftySix.app.directive('eightBitPanel', function($compile) {
-   return {
-      restrict: 'A',
-      transclude:true,
-      template: '<div class="tl"></div><div class="tr"></div><div class="bl"></div><div class="br"></div><div class="content"  ng-transclude></div>',
-      link: function (scope, element, attrs) {
-         element.addClass('ebp');
-         var compiled = $compile('')(scope);
-         element.append(compiled);
-      }
-   };
-});
-
-//
-
-twoFiftySix.app.factory('game', function($q,$rootScope){
-   return {
-      files:[
-         "/images/animation.png",
-         "/images/characters.png",
-         "/images/creatures.png",
-         "/images/environment.png",
-         "/images/equipment.png",
-         "/images/items.png"
-      ],
-      maps: _.keys(pow2.getMaps()),
-      state:'Uninitialized',
-      listeners:[],
-      currentMap: 15,
-      loader: new pow2.ResourceLoader(),
-      load : function(){
-         var deferred = $q.defer();
-         var self = this;
-         this.listeners.push(deferred);
-         function done(){
-            _.defer(function(){
-               var listeners = self.listeners;
-               self.listeners = [];
-               $rootScope.$apply(function(){
-                  angular.forEach(listeners,function(l){
-                     l.resolve();
-                  });
-               });
-            });
+module pow2 {
+   export var app = angular.module('pow2', []);
+   app.directive('eightBitPanel', function() {
+      return {
+         restrict: 'A',
+         transclude:true,
+         template: '<div class="tl"></div><div class="tr"></div><div class="bl"></div><div class="br"></div><div class="content"  ng-transclude></div>',
+         link: function (scope, element, attrs) {
+            element.addClass('ebp');
          }
-         if(this.state === 'Loaded'){
-            done();
-            return deferred.promise;
-         }
-         else if(this.state === 'Loading'){
-            return deferred.promise;
-         }
-         this.state = 'Loading';
-         self.world = new pow2.World({
-            scene:new pow2.Scene({
-               autoStart: true,
-               debugRender:false
-            }),
-            state:new pow2.GameStateMachine()
+      };
+   });
+
+   app.factory('game', function(){
+      this.loader = new ResourceLoader();
+      this.world = new World({
+         scene:new Scene({
+            autoStart: true,
+            debugRender:false
+         }),
+         state:new GameStateMachine()
+      });
+      this.state = 'Loaded';
+      this.scene = this.world.scene;
+      this.input = this.scene.input = this.world.input;
+      this.scene.once('map:loaded',() => {
+         // Create a movable character with basic components.
+         this.sprite = new GameEntityObject({
+            point: this.tileMap.bounds.getCenter(),
+            icon:"warrior.png"
          });
-         this.loader.load(this.files,function(){
-            self.state = 'Loaded';
-            self.scene = self.world.scene;
-            self.input = self.scene.input = self.world.input;
-            self.scene.once('map:loaded',function(){
-               // Create a movable character with basic components.
-               self.sprite = new pow2.GameEntityObject({
-                  point: self.tileMap.bounds.getCenter(),
-                  icon:"warrior.png"
-               });
-               self.sprite.addComponent(new pow2.CollisionComponent());
-               self.sprite.addComponent(new pow2.PlayerComponent());
-               self.sprite.addComponent(new pow2.PlayerRenderComponent());
-               self.sprite.addComponent(new pow2.PlayerCameraComponent());
-               self.sprite.addComponent(new pow2.PlayerTouchComponent());
-               self.sprite.addComponent(new pow2.CombatEncounterComponent());
-               self.scene.addObject(self.sprite);
-            });
-            self.tileMap = new pow2.GameTileMap("town");
-            self.scene.addObject(self.tileMap);
+         this.sprite.addComponent(new CollisionComponent());
+         this.sprite.addComponent(new PlayerComponent());
+         this.sprite.addComponent(new PlayerRenderComponent());
+         this.sprite.addComponent(new PlayerCameraComponent());
+         this.sprite.addComponent(new PlayerTouchComponent());
+         this.sprite.addComponent(new CombatEncounterComponent());
+         this.scene.addObject(this.sprite);
+      });
+      this.tileMap = new GameTileMap("town");
+      this.scene.addObject(this.tileMap);
 
-            return done();
-         });
-         return deferred.promise;
-      },
-      getCurrentMapName: function(){
-         if(!this.tileMap || !this.tileMap.map){
-            return null;
-         }
-         return this.tileMap.map.name;
-      }
-   }
-});
+      return this;
+   });
 
-twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,$timeout,game){
-   var stateKey = "_testPow2State";
-   $scope.overlayText = null;
-   $scope.saveState = function(data){
-      localStorage.setItem(stateKey,data);
-   };
-   $scope.clearState = function() {
-      localStorage.removeItem(stateKey);
-   };
-   $scope.getState = function(){
-      return localStorage.getItem(stateKey);
-   };
+   app.controller('pow2App',function($scope,$rootScope,$http,$timeout,game){
+      var stateKey = "_testPow2State";
+      $scope.overlayText = null;
+      $scope.saveState = function(data){
+         localStorage.setItem(stateKey,data);
+      };
+      $scope.clearState = function() {
+         localStorage.removeItem(stateKey);
+      };
+      $scope.getState = function(){
+         return localStorage.getItem(stateKey);
+      };
 
-   $scope.displayMessage = function(message,callback) {
-      $scope.overlayText = message;
-      $timeout(function(){
-         $scope.overlayText = null;
-         callback && callback();
-      },2000);
-   };
+      $scope.displayMessage = function(message,callback?) {
+         $scope.overlayText = message;
+         $timeout(function(){
+            $scope.overlayText = null;
+            callback && callback();
+         },1200);
+      };
 
-   game.load().then(function(){
       // TODO: A better system for game event handling.
       game.world.state.on('enter',function(state){
          console.log("UI: Entered state: " + state.name);
          $scope.$apply(function(){
-            if(state.name === pow2.GameCombatState.NAME){
+            if(state.name === GameCombatState.NAME){
                $scope.inCombat = true;
                $scope.displayMessage(state.name);
                $scope.combat = state.machine;
@@ -156,11 +101,11 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,$ti
       });
       game.world.state.on('exit',function(state){
          $scope.$apply(function(){
-            if(state.name === pow2.GameMapState.NAME){
+            if(state.name === GameMapState.NAME){
                $scope.dialog = null;
                $scope.store = null;
             }
-            else if(state.name === pow2.GameCombatState.NAME){
+            else if(state.name === GameCombatState.NAME){
                $scope.inCombat = false;
                $scope.combat = null;
             }
@@ -193,19 +138,15 @@ twoFiftySix.app.controller('twoFiftySixApp',function($scope,$rootScope,$http,$ti
       });
    });
 
-});
 
-
-twoFiftySix.app.directive('gameView', function ($compile, game) {
-   return {
-      restrict: 'A',
-      link: function ($scope, element, attrs) {
-         $scope.canvas = element[0];
-         var context = $scope.canvas.getContext("2d");
-         context.webkitImageSmoothingEnabled = false;
-         context.mozImageSmoothingEnabled = false;
-
-         game.load().then(function () {
+   app.directive('gameView', function ($compile, game) {
+      return {
+         restrict: 'A',
+         link: function ($scope, element, attrs) {
+            $scope.canvas = element[0];
+            var context = $scope.canvas.getContext("2d");
+            context.webkitImageSmoothingEnabled = false;
+            context.mozImageSmoothingEnabled = false;
 
             // Inspired by : http://seb.ly/2011/04/multi-touch-game-controller-in-javascripthtml5-for-ipad/
             $scope.canvas.addEventListener('touchstart', onTouchStart, false);
@@ -215,12 +156,12 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
 
             /**
              * Game analog input
+             * TODO: Move this into a touch input component.
              */
-            var halfWidth = $scope.canvas.width / 2;
             game.world.input.touchId = -1;
-            game.world.input.touchCurrent = new pow2.Point(0, 0);
-            game.world.input.touchStart = new pow2.Point(0, 0);
-            game.world.input.analogVector = new pow2.Point(0, 0);
+            game.world.input.touchCurrent = new Point(0, 0);
+            game.world.input.touchStart = new Point(0, 0);
+            game.world.input.analogVector = new Point(0, 0);
 
 
             function relTouch(touch){
@@ -304,7 +245,7 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
                }
             }
 
-            game.tileView = new pow2.GameMapView(element[0], game.loader);
+            game.tileView = new GameMapView(element[0], game.loader);
             game.world.state.setGameView(game.tileView);
             game.tileView.camera.extent.set(10, 10);
             game.tileView.setTileMap(game.tileMap);
@@ -315,39 +256,37 @@ twoFiftySix.app.directive('gameView', function ($compile, game) {
 
             onResize();
             console.log("READY TO GO!");
-         });
-      }
-   };
-});
+         }
+      };
+   });
 
 // IconRender directive
 // ----------------------------------------------------------------------------
-twoFiftySix.app.directive('iconRender', function ($compile, game) {
-   return {
-      restrict: 'A',
-      link: function ($scope, element, attrs) {
-         // A rendering canvas
-         $scope.renderCanvas = $compile('<canvas style="position:absolute;left:-9000px;top:-9000px;" width="64" height="64"></canvas>')($scope);
-         element.append($scope.renderCanvas);
+   app.directive('iconRender', function ($compile, game) {
+      return {
+         restrict: 'A',
+         link: function ($scope, element, attrs) {
+            // A rendering canvas
+            $scope.renderCanvas = $compile('<canvas style="position:absolute;left:-9000px;top:-9000px;" width="64" height="64"></canvas>')($scope);
+            element.append($scope.renderCanvas);
 
-         // Get the context for drawing
-         $scope.renderContext = $scope.renderCanvas[0].getContext("2d");
-         $scope.renderContext.webkitImageSmoothingEnabled = false;
-         $scope.renderContext.mozImageSmoothingEnabled = false;
+            // Get the context for drawing
+            $scope.renderContext = $scope.renderCanvas[0].getContext("2d");
+            $scope.renderContext.webkitImageSmoothingEnabled = false;
+            $scope.renderContext.mozImageSmoothingEnabled = false;
 
-         $scope.$watch(attrs.feature, function(feature) {
+            $scope.$watch(attrs.feature, function(feature) {
 
-            if(!feature){
-               return;
-            }
-            var icon = feature.icon;
-            if(!icon && feature.getIcon){
-               icon = feature.getIcon();
-            }
-            if(!icon){
-               return;
-            }
-            game.load().then(function () {
+               if(!feature){
+                  return;
+               }
+               var icon = feature.icon;
+               if(!icon && feature.getIcon){
+                  icon = feature.getIcon();
+               }
+               if(!icon){
+                  return;
+               }
                game.world.sprites.getSingleSprite(icon,function(sprite){
                   $scope.renderContext.clearRect(0, 0, 64, 64);
                   $scope.renderContext.drawImage(sprite, 0, 0, 64, 64);
@@ -357,35 +296,40 @@ twoFiftySix.app.directive('iconRender', function ($compile, game) {
 
                });
             });
-         });
-      }
-   };
-});
+         }
+      };
+   });
 
 // CombatView directive
 // ----------------------------------------------------------------------------
-twoFiftySix.app.directive('combatView', function () {
-   return {
-      restrict: 'E',
-      templateUrl: '/templates/combatView.html'
-   };
-});
+   app.directive('combatView', function () {
+      return {
+         restrict: 'E',
+         templateUrl: '/templates/combatView.html'
+      };
+   });
 
 
 // DialogBubble directive
 // ----------------------------------------------------------------------------
-twoFiftySix.app.directive('dialogBubble', function () {
-   return {
-      restrict: 'E',
-      replace:true,
-      templateUrl: '/templates/dialogBubble.html'
-   };
-});
+   app.directive('dialogBubble', function () {
+      return {
+         restrict: 'E',
+         replace:true,
+         templateUrl: '/templates/dialogBubble.html'
+      };
+   });
 // StoreBubble directive
 // ----------------------------------------------------------------------------
-twoFiftySix.app.directive('storeBubble', function () {
-   return {
-      restrict: 'E',
-      templateUrl: '/templates/storeBubble.html'
-   };
-});
+   app.directive('storeBubble', function () {
+      return {
+         restrict: 'E',
+         templateUrl: '/templates/storeBubble.html'
+      };
+   });
+
+}
+
+
+//
+

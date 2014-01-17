@@ -78,6 +78,9 @@ module.exports = function(grunt) {
          game: {
             src: ["build/game"]
          },
+         web: {
+            src: ["build/web"]
+         },
          server: {
             src: [
                "server/*.d.ts",
@@ -137,6 +140,12 @@ module.exports = function(grunt) {
                "source/game/components/features/*.ts"
             ],
             dest: 'build'
+         },
+         web: {
+            src: [
+               "source/web/*.ts"
+            ],
+            dest:'build'
          },
          server: {
             options: {
@@ -272,6 +281,12 @@ module.exports = function(grunt) {
                '<%= typescript.game.src %>'
             ],
             tasks: ['clean:game', 'typescript:game', 'notify:code']
+         },
+         web: {
+            files: [
+               '<%= typescript.web.src %>'
+            ],
+            tasks: ['typescript:web']
          },
          typedefs: {
             files: [
