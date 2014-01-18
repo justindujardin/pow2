@@ -30,46 +30,23 @@ module pow2 {
       return Math.floor(baseExperience * Math.pow(level,experienceFactor));
    }
 
-   export function getHPForLevel(character:EntityModel,level?:number){
-      if(typeof level === 'undefined') {
-         level = character.get('level');
-      }
-      var vitality = level * character.get('vitality');
-      return Math.floor(vitality * Math.pow(level,1)) + 15;
-      //return vitality * (maxAttr / maxLevel) + 30;
-   }
-
-   export function enemyPlayer(level){
-      var vitality:number = 3;
-      return new EntityModel({
-         strength:3,
-         vitality:vitality,
-         intelligence:1,
-         agility:3,
-         name:"Slime",
-         level:level,
-         hp:Math.floor(Math.pow(level + vitality,1.95)),
-         exp:level * 2
-      });
-   }
-
-   export function friendlyPlayer(level) {
-      var tpl:EntityModel = new EntityModel({
-         name:"Hero",
-         level:level,
-         exp: 0
-      });
-      var levelHitPoints = getHPForLevel(tpl);
-      tpl.set({
-         hp: levelHitPoints,
-         maxHP: levelHitPoints
-      });
-      return tpl;
+   export interface EntityModelOptions {
+      name:string;
+      icon:string; // The file name of a sprite source file
+      level?:number;
+      hp?:number;
+      maxHP?:number;
+      strength?:number;
+      vitality?:number;
+      intelligence?:number;
+      agility?:number;
+      dead?:boolean;
    }
 
    export class EntityModel extends Backbone.Model {
-      static DEFAULTS:any = {
+      static DEFAULTS:EntityModelOptions = {
          name:"Nothing",
+         icon:"",
          level:1,
          hp:0,
          maxHP: 0,

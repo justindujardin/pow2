@@ -118,18 +118,14 @@ module pow2 {
             this.tileMap = new pow2.GameTileMap("combat");
             this.scene.addObject(this.tileMap);
             this.tileMap.addComponent(new pow2.TileMapCameraComponent);
-
-            // Create the hero facing his enemy
-            this.machine.friendly = new pow2.GameEntityObject({
-               icon:"warrior.png",
-               model:friendlyPlayer(1)
-            });
+            var gameHero = machine.model.get('party')[0];
+            this.machine.friendly = GameStateMachine.createHeroEntity("combat hero",gameHero);
             this.scene.addObject(this.machine.friendly);
             this.machine.friendly.addComponent(new pow2.PlayerRenderComponent);
 
             // Create the enemy
             this.machine.enemy = new pow2.GameEntityObject({
-               model: CreatureModel.fromLevel(1)
+               model: CreatureModel.fromLevel(2)
             });
             this.scene.addObject(this.machine.enemy);
             this.machine.enemy.addComponent(new pow2.SpriteComponent({
@@ -140,7 +136,7 @@ module pow2 {
             this.scene.once('map:loaded',() => {
                var friendly = this.tileMap.getFeature('friendly');
                var enemy = this.tileMap.getFeature('enemy');
-               this.machine.friendly.point = new Point(friendly.x / 16, friendly.y / 16);
+               this.machine.friendly.setPoint(new Point(friendly.x / 16, friendly.y / 16));
                this.machine.enemy.point = new Point(enemy.x / 16, enemy.y / 16);
                machine.view.setScene(this.scene);
                machine.view.setTileMap(this.tileMap);
@@ -155,10 +151,11 @@ module pow2 {
          machine.view.setTileMap(this.saveTileMap);
          machine.updatePlayer();
          this.tileMap.destroy();
-         this.machine = null;
+         this.saveScene.addObject(this.machine.friendly);
          this.saveScene.paused = false;
          this.scene.destroy();
          this.finished = false;
+         this.machine = null;
          if(machine.combatant){
             machine.combatant.destroy();
          }

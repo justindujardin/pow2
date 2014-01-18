@@ -1,4 +1,6 @@
 /// <reference path="../../source/game/gameStateMachine.ts"/>
+/// <reference path="../../source/game/gameWorld.ts"/>
+/// <reference path="../../source/game/models/heroModel.ts"/>
 /// <reference path="../../types/underscore/underscore.d.ts"/>
 /// <reference path="../../types/backbone/backbone.d.ts"/>
 /// <reference path="../../types/angularjs/angular.d.ts"/>
@@ -18,7 +20,7 @@ module pow2 {
 
    app.factory('game', function(){
       this.loader = new ResourceLoader();
-      this.world = new World({
+      this.world = new GameWorld({
          scene:new Scene({
             autoStart: true,
             debugRender:false
@@ -29,16 +31,12 @@ module pow2 {
       this.scene = this.world.scene;
       this.input = this.scene.input = this.world.input;
       this.scene.once('map:loaded',() => {
+         var heroModel:HeroModel = HeroModel.create(HeroType.Warrior);
+         this.world.state.model.addHero(heroModel);
+
          // Create a movable character with basic components.
-         this.sprite = new GameEntityObject({
-            point: this.tileMap.bounds.getCenter(),
-            icon:"warrior.png"
-         });
-         this.sprite.addComponent(new CollisionComponent());
-         this.sprite.addComponent(new PlayerComponent());
-         this.sprite.addComponent(new PlayerRenderComponent());
-         this.sprite.addComponent(new PlayerCameraComponent());
-         this.sprite.addComponent(new PlayerTouchComponent());
+         this.sprite = GameStateMachine.createHeroEntity("Hero!", heroModel);
+         this.sprite.setPoint(this.tileMap.bounds.getCenter());
          this.sprite.addComponent(new CombatEncounterComponent());
          this.scene.addObject(this.sprite);
       });

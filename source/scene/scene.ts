@@ -114,14 +114,26 @@ module pow2 {
       }
 
       addIt(property:string,object:any){
+
+         // Remove object from any scene it might already be in.
+         if(object.scene){
+            object.scene.removeIt(property,object);
+         }
+
+         // Check that we're not adding this twice (though, I suspect the above
+         // should make that pretty unlikely)
          if(_.where(this[property],{ id: object.id}).length > 0){
             throw new Error("Object added to scene twice");
          }
          this[property].push(object);
+         // Mark it in the scene's world.
          if(this.world){
             this.world.mark(object);
          }
+         // Add to the scene's spatial database
          this.db.addSpatialObject(object);
+
+         // Mark it in this scene, and trigger the onAdd
          object.scene = this;
          if(object.onAddToScene){
             object.onAddToScene(this);
@@ -190,6 +202,16 @@ module pow2 {
       }
 
 
+      objectsByName(name:string) {
+         return _.filter(this._objects, (o) => {
+            return o.name === name;
+         });
+      }
+      objectByName(name:string) {
+         return _.find(this._objects, (o) => {
+            return o.name === name;
+         });
+      }
       objectsByType(type) {
          return _.filter(this._objects, (o) => {
             return o instanceof type;

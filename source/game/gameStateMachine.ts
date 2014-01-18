@@ -20,7 +20,10 @@
 /// <reference path="./components/playerTouchComponent.ts" />
 /// <reference path="./components/combatEncounterComponent.ts" />
 /// <reference path="./states/gameMapState.ts"/>
+/// <reference path="./models/heroModel.ts"/>
 /// <reference path="./states/gameCombatState.ts"/>
+/// <reference path="./models/gameStateModel.ts"/>
+
 module pow2 {
 
    export class GameDefaultState extends State {
@@ -34,6 +37,7 @@ module pow2 {
    // Implementation
    // -------------------------------------------------------------------------
    export class GameStateMachine extends StateMachine {
+      model:GameStateModel = new GameStateModel();
       defaultState:string = GameDefaultState.NAME;
       player:TileObject = null;
       encounter:CombatEncounterComponent = null;
@@ -48,6 +52,21 @@ module pow2 {
       private _elapsed: number = 0;
       setGameView(view:GameMapView){
          this.view = view;
+      }
+
+
+      static createHeroEntity(name:string,model:HeroModel){
+         var result = new GameEntityObject({
+            name:name,
+            icon:"warrior.png",
+            model:model
+         });
+         result.addComponent(new CollisionComponent());
+         result.addComponent(new PlayerComponent());
+         result.addComponent(new PlayerRenderComponent());
+         result.addComponent(new PlayerCameraComponent());
+         result.addComponent(new PlayerTouchComponent());
+         return result;
       }
 
       updatePlayer(){
