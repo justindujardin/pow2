@@ -37,6 +37,10 @@ module pow2 {
          // Create a movable character with basic components.
          this.sprite = GameStateMachine.createHeroEntity("Hero!", heroModel);
          this.sprite.setPoint(this.tileMap.bounds.getCenter());
+         this.sprite.addComponent(new CollisionComponent());
+         this.sprite.addComponent(new PlayerComponent());
+         this.sprite.addComponent(new PlayerCameraComponent());
+         this.sprite.addComponent(new PlayerTouchComponent());
          this.sprite.addComponent(new CombatEncounterComponent());
          this.scene.addObject(this.sprite);
       });
@@ -64,7 +68,7 @@ module pow2 {
          $timeout(function(){
             $scope.overlayText = null;
             callback && callback();
-         },1200);
+         },1000);
       };
 
       // TODO: A better system for game event handling.

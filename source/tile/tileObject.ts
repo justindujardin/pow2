@@ -66,13 +66,14 @@ module pow2 {
       }
 
       setPoint(point:Point) {
+         point.round();
          if(this.renderPoint){
             this.renderPoint = point.clone();
          }
          this.point = point.clone();
          var moveComponent = <MovableComponent>this.findComponent(MovableComponent);
          if(moveComponent){
-            moveComponent.targetPoint.set(point.round());
+            moveComponent.targetPoint.set(point);
          }
       }
 

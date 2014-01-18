@@ -121,7 +121,6 @@ module pow2 {
             var gameHero = machine.model.get('party')[0];
             this.machine.friendly = GameStateMachine.createHeroEntity("combat hero",gameHero);
             this.scene.addObject(this.machine.friendly);
-            this.machine.friendly.addComponent(new pow2.PlayerRenderComponent);
 
             // Create the enemy
             this.machine.enemy = new pow2.GameEntityObject({
@@ -151,7 +150,6 @@ module pow2 {
          machine.view.setTileMap(this.saveTileMap);
          machine.updatePlayer();
          this.tileMap.destroy();
-         this.saveScene.addObject(this.machine.friendly);
          this.saveScene.paused = false;
          this.scene.destroy();
          this.finished = false;

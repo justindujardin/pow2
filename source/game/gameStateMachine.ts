@@ -61,11 +61,7 @@ module pow2 {
             icon:"warrior.png",
             model:model
          });
-         result.addComponent(new CollisionComponent());
-         result.addComponent(new PlayerComponent());
          result.addComponent(new PlayerRenderComponent());
-         result.addComponent(new PlayerCameraComponent());
-         result.addComponent(new PlayerTouchComponent());
          return result;
       }
 
