@@ -28,9 +28,11 @@ module pow2 {
       transitions:IStateTransition[] = [
          new CombatEndTurnTransition()
       ];
+      attacksLeft:number = 0;
       enter(machine:CombatStateMachine){
          super.enter(machine);
          machine.currentDone = false;
+         this.attacksLeft = 1;
          if(!machine.isFriendlyTurn()){
             this.attack(machine);
          }
@@ -50,6 +52,10 @@ module pow2 {
       }
 
       attack(machine:CombatStateMachine){
+         if(this.attacksLeft <= 0){
+            return;
+         }
+         this.attacksLeft -= 1;
          //
          var attacker:GameEntityObject = null;
          var defender:GameEntityObject = null;

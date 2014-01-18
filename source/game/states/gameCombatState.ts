@@ -118,13 +118,13 @@ module pow2 {
             this.tileMap = new pow2.GameTileMap("combat");
             this.scene.addObject(this.tileMap);
             this.tileMap.addComponent(new pow2.TileMapCameraComponent);
-            var gameHero = machine.model.get('party')[0];
+            var gameHero = machine.model.party[0];
             this.machine.friendly = GameStateMachine.createHeroEntity("combat hero",gameHero);
             this.scene.addObject(this.machine.friendly);
 
             // Create the enemy
             this.machine.enemy = new pow2.GameEntityObject({
-               model: CreatureModel.fromLevel(2)
+               model: CreatureModel.fromLevel(1)
             });
             this.scene.addObject(this.machine.enemy);
             this.machine.enemy.addComponent(new pow2.SpriteComponent({

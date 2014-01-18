@@ -48,6 +48,10 @@ module pow2 {
          this.tileMap = new GameTileMap("town");
          this.world.scene.addObject(this.tileMap);
       }
+
+      loadGame(data:any){
+         this.world.state.model.parse(data);
+      }
    }
    app.factory('game', () => {
       return new AngularGameFactory();
@@ -74,14 +78,16 @@ module pow2 {
          },1000);
       };
 
+      game.loadGame($scope.getState());
+
       // TODO: A better system for game event handling.
       game.world.state.on('enter',function(state){
          console.log("UI: Entered state: " + state.name);
          $scope.$apply(function(){
             if(state.name === GameCombatState.NAME){
+               $scope.combat = state.machine;
                $scope.inCombat = true;
                $scope.displayMessage(state.name);
-               $scope.combat = state.machine;
                state.machine.on('combat:attack',function(attacker,defender){
                   state.machine.paused = true;
                   var change = defender.model.previous('hp') - defender.model.attributes.hp;
@@ -98,6 +104,10 @@ module pow2 {
                      var msg = winner.model.get('name') + " DEFEATED " + loser.model.get('name') + "!";
                      $scope.displayMessage(msg,function(){
                         state.machine.paused = false;
+                        var data = game.world.state.model.toJSON();
+                        //console.log(data);
+                        $scope.saveState(JSON.stringify(data));
+
                      });
                   });
                });

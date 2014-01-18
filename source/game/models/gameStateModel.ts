@@ -18,18 +18,17 @@
 /// <reference path="../../../types/underscore/underscore.d.ts" />
 /// <reference path="../../core/api.ts" />
 /// <reference path="./entityModel.ts" />
+/// <reference path="./heroModel.ts" />
 module pow2 {
 
    export interface GameStateModelOptions {
-      party:EntityModel[]; // The player's party
-      inventory:any[]; // The inventory of items owned by the player.
       gold:number;
    }
 
    export class GameStateModel extends Backbone.Model {
+      party:EntityModel[] = []; // The player's party
+      inventory:any[] = []; // The inventory of items owned by the player.
       static DEFAULTS:GameStateModelOptions = {
-         party: [],
-         inventory: [],
          gold: 0
       };
       defaults():any {
@@ -37,21 +36,31 @@ module pow2 {
       }
 
       addHero(model:EntityModel){
-         this.attributes.party.push(model);
+         this.party.push(model);
       }
 
-      private _isSerializing:boolean = false;
-      toJSON() {
-         if (this._isSerializing) {
-            return this.id || this.cid;
+      parse(data:any,options?:any):any {
+         try{
+            data = JSON.parse(data);
+            this.party = _.map(data.party,(partyMember) => {
+               return new HeroModel(partyMember);
+            });
+            return {
+               gold:data.gold
+            }
          }
-         this._isSerializing = true;
-         var json = _.clone(this.attributes);
-         _.each(json, function(value:any, name) {
-            _.isFunction(value.toJSON) && (json[name] = value.toJSON());
+         catch(e){
+            console.log("Failed to load save game.");
+            return {};
+         }
+      }
+
+      toJSON() {
+         var result = super.toJSON();
+         result.party = _.map(this.party,(p) => {
+            return p.toJSON();
          });
-         this._isSerializing = false;
-         return json;
+         return result;
       }
    }
 }
