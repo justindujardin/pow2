@@ -174,6 +174,13 @@ module pow2 {
          return change;
       }
 
+      removeComponentByType(componentType:any,silent:boolean=false):boolean{
+         var component = this.findComponent(componentType);
+         if(!component){
+            return false;
+         }
+         return this.removeComponent(component);
+      }
 
       removeComponent(component:ISceneComponent,silent:boolean=false):boolean{
          var previousCount:number = this._components.length;

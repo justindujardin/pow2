@@ -18,36 +18,39 @@ module pow2 {
       };
    });
 
-   app.factory('game', function(){
-      this.loader = new ResourceLoader();
-      this.world = new GameWorld({
-         scene:new Scene({
-            autoStart: true,
-            debugRender:false
-         }),
-         state:new GameStateMachine()
-      });
-      this.state = 'Loaded';
-      this.scene = this.world.scene;
-      this.input = this.scene.input = this.world.input;
-      this.scene.once('map:loaded',() => {
-         var heroModel:HeroModel = HeroModel.create(HeroType.Warrior);
-         this.world.state.model.addHero(heroModel);
+   export class AngularGameFactory {
+      loader:ResourceLoader;
+      world:GameWorld;
+      tileMap:GameTileMap;
+      sprite:GameEntityObject;
+      constructor(){
+         this.loader = new ResourceLoader();
+         this.world = new GameWorld({
+            scene:new Scene({
+               autoStart: true,
+               debugRender:false
+            }),
+            state:new GameStateMachine()
+         });
+         this.world.scene.once('map:loaded',() => {
+            var heroModel:HeroModel = HeroModel.create(HeroType.Warrior);
+            this.world.state.model.addHero(heroModel);
 
-         // Create a movable character with basic components.
-         this.sprite = GameStateMachine.createHeroEntity("Hero!", heroModel);
-         this.sprite.setPoint(this.tileMap.bounds.getCenter());
-         this.sprite.addComponent(new CollisionComponent());
-         this.sprite.addComponent(new PlayerComponent());
-         this.sprite.addComponent(new PlayerCameraComponent());
-         this.sprite.addComponent(new PlayerTouchComponent());
-         this.sprite.addComponent(new CombatEncounterComponent());
-         this.scene.addObject(this.sprite);
-      });
-      this.tileMap = new GameTileMap("town");
-      this.scene.addObject(this.tileMap);
-
-      return this;
+            // Create a movable character with basic components.
+            this.sprite = GameStateMachine.createHeroEntity("Hero!", heroModel);
+            this.sprite.setPoint(this.tileMap.bounds.getCenter());
+            this.sprite.addComponent(new CollisionComponent());
+            this.sprite.addComponent(new PlayerComponent());
+            this.sprite.addComponent(new PlayerCameraComponent());
+            this.sprite.addComponent(new PlayerTouchComponent());
+            this.world.scene.addObject(this.sprite);
+         });
+         this.tileMap = new GameTileMap("town");
+         this.world.scene.addObject(this.tileMap);
+      }
+   }
+   app.factory('game', () => {
+      return new AngularGameFactory();
    });
 
    app.controller('pow2App',function($scope,$rootScope,$http,$timeout,game){
@@ -116,24 +119,24 @@ module pow2 {
       });
 
       // Dialog bubbles
-      game.scene.on('dialog:entered',function(feature){
+      game.world.scene.on('dialog:entered',function(feature){
          $scope.$apply(function(){
             $scope.dialog = feature;
          });
       });
-      game.scene.on('dialog:exited',function(){
+      game.world.scene.on('dialog:exited',function(){
          $scope.$apply(function(){
             $scope.dialog = null;
          });
       });
 
       // Stores
-      game.scene.on('store:entered',function(feature){
+      game.world.scene.on('store:entered',function(feature){
          $scope.$apply(function(){
             $scope.store = feature;
          });
       });
-      game.scene.on('store:exited',function(){
+      game.world.scene.on('store:exited',function(){
          $scope.$apply(function(){
             $scope.store = null;
          });
@@ -150,29 +153,7 @@ module pow2 {
             context.webkitImageSmoothingEnabled = false;
             context.mozImageSmoothingEnabled = false;
 
-            // Inspired by : http://seb.ly/2011/04/multi-touch-game-controller-in-javascripthtml5-for-ipad/
-            $scope.canvas.addEventListener('touchstart', onTouchStart, false);
-            $scope.canvas.addEventListener('touchmove', onTouchMove, false);
-            $scope.canvas.addEventListener('touchend', onTouchEnd, false);
             window.addEventListener('resize',onResize,false);
-
-            /**
-             * Game analog input
-             * TODO: Move this into a touch input component.
-             */
-            game.world.input.touchId = -1;
-            game.world.input.touchCurrent = new Point(0, 0);
-            game.world.input.touchStart = new Point(0, 0);
-            game.world.input.analogVector = new Point(0, 0);
-
-
-            function relTouch(touch){
-               var canoffset = $($scope.canvas).offset();
-               touch.gameX = touch.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
-               touch.gameY = touch.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top) + 1;
-               return touch;
-            }
-
             var $window = $(window);
             function onResize(){
                context.canvas.width = $window.width();
@@ -181,77 +162,41 @@ module pow2 {
                context.mozImageSmoothingEnabled = false;
             }
 
-            /*
-             *	Touch event (e) properties :
-             *	e.touches: 			Array of touch objects for every finger currently touching the screen
-             *	e.targetTouches: 	Array of touch objects for every finger touching the screen that
-             *						originally touched down on the DOM object the transmitted the event.
-             *	e.changedTouches	Array of touch objects for touches that are changed for this event.
-             *						I'm not sure if this would ever be a list of more than one, but would
-             *						be bad to assume.
-             *
-             *	Touch objects :
-             *
-             *	identifier: An identifying number, unique to each touch event
-             *	target: DOM object that broadcast the event
-             *	clientX: X coordinate of touch relative to the viewport (excludes scroll offset)
-             *	clientY: Y coordinate of touch relative to the viewport (excludes scroll offset)
-             *	screenX: Relative to the screen
-             *	screenY: Relative to the screen
-             *	pageX: Relative to the full page (includes scrolling)
-             *	pageY: Relative to the full page (includes scrolling)
-             */
-            function onTouchStart(e) {
-               _.each(e.touches,function(t){relTouch(t)});
-               _.each(e.changedTouches,function(t){relTouch(t)});
-               for (var i = 0; i < e.changedTouches.length; i++) {
-                  var touch = e.changedTouches[i];
-                  if (game.world.input.touchId < 0) {
-                     game.world.input.touchId = touch.identifier;
-                     game.world.input.touchStart.set(touch.gameX, touch.gameY);
-                     game.world.input.touchCurrent.copy(game.world.input.touchStart);
-                     game.world.input.analogVector.zero();
-                  }
-               }
-               game.world.input.touches = e.touches;
-            }
-
-            function onTouchMove(e) {
-               // Prevent the browser from doing its default thing (scroll, zoom)
-               e.preventDefault();
-               _.each(e.touches,function(t){relTouch(t)});
-               _.each(e.changedTouches,function(t){relTouch(t)});
-               for (var i = 0; i < e.changedTouches.length; i++) {
-                  var touch = e.changedTouches[i];
-                  if (game.world.input.touchId == touch.identifier) {
-                     game.world.input.touchCurrent.set(touch.gameX, touch.gameY);
-                     game.world.input.analogVector.copy(game.world.input.touchCurrent);
-                     game.world.input.analogVector.subtract(game.world.input.touchStart);
-                     break;
-                  }
-               }
-               game.world.input.touches = e.touches;
-            }
-
-            function onTouchEnd(e) {
-               _.each(e.touches,function(t){relTouch(t)});
-               _.each(e.changedTouches,function(t){relTouch(t)});
-               game.world.input.touches = e.touches;
-               for (var i = 0; i < e.changedTouches.length; i++) {
-                  var touch = e.changedTouches[i];
-                  if (game.world.input.touchId == touch.identifier) {
-                     game.world.input.touchId = -1;
-                     game.world.input.analogVector.zero();
-                     break;
-                  }
-               }
-            }
-
             game.tileView = new GameMapView(element[0], game.loader);
             game.world.state.setGameView(game.tileView);
             game.tileView.camera.extent.set(10, 10);
             game.tileView.setTileMap(game.tileMap);
-            game.scene.addView(game.tileView);
+            game.world.scene.addView(game.tileView);
+            if(game.sprite){
+               game.tileView.trackObject(game.sprite);
+            }
+
+            onResize();
+            console.log("READY TO GO!");
+         }
+      };
+   });
+   app.directive('combatView', function ($compile, game) {
+      return {
+         restrict: 'A',
+         link: function ($scope, element, attrs) {
+            $scope.canvas = element[0];
+            var context = $scope.canvas.getContext("2d");
+            context.webkitImageSmoothingEnabled = false;
+            context.mozImageSmoothingEnabled = false;
+            window.addEventListener('resize',onResize,false);
+            var $window = $(window);
+            function onResize(){
+               context.canvas.width = $window.width();
+               context.canvas.height = $window.height();
+               context.webkitImageSmoothingEnabled = false;
+               context.mozImageSmoothingEnabled = false;
+            }
+            game.tileView = new GameMapView(element[0], game.loader);
+            game.world.state.setGameView(game.tileView);
+            game.tileView.camera.extent.set(10, 10);
+            game.tileView.setTileMap(game.tileMap);
+            game.world.scene.addView(game.tileView);
             if(game.sprite){
                game.tileView.trackObject(game.sprite);
             }

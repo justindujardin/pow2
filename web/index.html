@@ -20,14 +20,16 @@
 <body ng-controller="pow2App">
 
 <div class="game-container">
-    <canvas width="576" height="576" game-view>
+    <canvas width="576" height="576" game-view ng-hide="inCombat">
+        Your browser doesn't support this.
+    </canvas>
+    <canvas width="576" height="576" combat-view ng-show="inCombat">
         Your browser doesn't support this.
     </canvas>
     <div class="container">
         <dialog-bubble ng-show="dialog"></dialog-bubble>
         <store-bubble ng-show="store"></store-bubble>
         <combat-view ng-show="inCombat"></combat-view>
-
     </div>
 </div>
 

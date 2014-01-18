@@ -43,6 +43,7 @@ module pow2 {
          this.orientation = this.getElAttribute(this.$map,'orientation');
          this.tileheight = parseInt(this.getElAttribute(this.$map,'tileheight'));
          this.tilewidth = parseInt(this.getElAttribute(this.$map,'tilewidth'));
+         this.properties = tiled.readTiledProperties(this.$map);
          var tileSetDeps = [];
          var tileSets = this.getChildren(this.$map,'tileset');
          _.each(tileSets,(ts) => {
