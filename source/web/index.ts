@@ -118,6 +118,21 @@ module pow2 {
          console.log("UI: Exited state: " + state.name);
       });
 
+      // TODO: Some kind of events mapping, that handles this (assigning to scope)
+      // in a generic way.  Lots of duplication here.  Beware!
+
+      // Temple Dialog
+      game.world.scene.on('temple:entered',function(feature){
+         $scope.$apply(function(){
+            $scope.temple = feature;
+         });
+      });
+      game.world.scene.on('temple:exited',function(){
+         $scope.$apply(function(){
+            $scope.temple = null;
+         });
+      });
+
       // Dialog bubbles
       game.world.scene.on('dialog:entered',function(feature){
          $scope.$apply(function(){
@@ -272,6 +287,22 @@ module pow2 {
       return {
          restrict: 'E',
          templateUrl: '/templates/storeBubble.html'
+      };
+   });
+// TempleView directive
+// ----------------------------------------------------------------------------
+   app.directive('templeView', function () {
+      return {
+         restrict: 'E',
+         templateUrl: '/templates/templeView.html',
+         link: ($scope, element, attrs) => {
+            $scope.heal = () => {
+               $scope.temple = null;
+            };
+            $scope.cancel = () => {
+               $scope.temple = null;
+            };
+         }
       };
    });
 

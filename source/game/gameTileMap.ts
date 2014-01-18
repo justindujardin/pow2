@@ -21,6 +21,7 @@
 /// <reference path="./components/features/portalFeatureComponent.ts" />
 /// <reference path="./components/features/shipFeatureComponent.ts" />
 /// <reference path="./components/features/storeFeatureComponent.ts" />
+/// <reference path="./components/features/templeFeatureComponent.ts" />
 
 module pow2 {
    export class GameTileMap extends TileMap {
@@ -109,6 +110,9 @@ module pow2 {
                break;
             case 'encounter':
                componentType = CombatFeatureComponent;
+               break;
+            case 'temple':
+               componentType = TempleFeatureComponent;
                break;
             default:
                if(feature && feature.action === 'TALK'){
