@@ -1,0 +1,21 @@
+<div class="row title" ng-show="temple">
+    <div class="col-xs-12">
+        <div class="name" eight-bit-panel>
+            <div icon-render feature="temple"><img src="{{temple.rendered}}"></div>
+            <h1>{{temple.name}}</h1>
+        </div>
+    </div>
+</div>
+
+<div class="row temple" ng-show="temple">
+    <div class="col-xs-12">
+        <div class="inventory" eight-bit-panel>
+            <div>
+                <h1>It will cost you 10 monies to heal here.</h1>
+                <span>Do you want to spend your $$$?</span>
+            </div>
+            <button ng-click="heal()">Yep</button>
+            <button ng-click="cancel()">Nope</button>
+        </div>
+    </div>
+</div>
