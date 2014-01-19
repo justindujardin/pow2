@@ -16,6 +16,7 @@
 
 /// <reference path="../tile/tileMap.ts" />
 /// <reference path="../tile/resources/tiled.ts" />
+/// <reference path="../scene/components/soundComponent.ts" />
 /// <reference path="./components/features/dialogFeatureComponent.ts" />
 /// <reference path="./components/features/combatFeatureComponent.ts" />
 /// <reference path="./components/features/portalFeatureComponent.ts" />
@@ -28,9 +29,29 @@ module pow2 {
       featureHash:any = {};
       loaded(){
          super.loaded();
+
+         // If there are map properties, take them into account.
+         if(this.map.properties){
+            var props = this.map.properties;
+            // Does this map have random encounters?
+            if(props.combat === true){
+               this.addComponent(new CombatEncounterComponent());
+            }
+            // Does it have a music track?
+            if(typeof props.music === 'string'){
+               this.addComponent(new SoundComponent({
+                  url:<string>props.music,
+                  volume:0.5,
+                  loop:true
+               }));
+            }
+         }
+
          this.buildFeatures();
       }
       unloaded(){
+         this.removeComponentByType(CombatEncounterComponent);
+         this.removeComponentByType(SoundComponent);
          this.removeFeaturesFromScene();
          super.unloaded();
       }

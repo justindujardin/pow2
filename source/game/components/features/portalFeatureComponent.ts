@@ -37,14 +37,6 @@ module pow2 {
          object.scene.once("map:loaded",(map) => {
             console.log("Transition to: " + this.map);
             object.setPoint(this.target);
-            if(map.map && map.map.properties && map.map.properties.combat === true){
-               object.addComponent(new CombatEncounterComponent());
-               // Add encounter component
-            }
-            else {
-               object.removeComponentByType(CombatEncounterComponent);
-               // remove encounter component
-            }
          });
          this.tileMap.load(this.map);
          return true;
