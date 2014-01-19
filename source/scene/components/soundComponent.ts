@@ -27,12 +27,14 @@ module pow2 {
 
    var DEFAULTS:SoundComponentOptions = {
       url:null,
-      volume:1
+      volume:1,
+      loop:false
    };
 
    export class SoundComponent extends SceneComponent implements SoundComponentOptions {
       url:string;
       volume:number;
+      loop:boolean;
       audio:AudioResource;
       constructor(options:SoundComponentOptions=DEFAULTS){
          super();
@@ -62,11 +64,17 @@ module pow2 {
             if(this.audio.isReady()){
                this.audio.data.currentTime = 0;
                this.audio.data.volume = this.volume;
+               this.audio.data.loop = this.loop;
                this.audio.data.play();
                this.audio.data.addEventListener('timeupdate',() => {
                   if(this.audio.data.currentTime >= this.audio.data.duration){
-                     this.audio.data.pause();
-                     this.trigger("audio:done",this);
+                     if(!this.loop){
+                        this.audio.data.pause();
+                        this.trigger("audio:done",this);
+                     }
+                     else {
+                        this.trigger("audio:loop",this);
+                     }
                   }
                });
             }
