@@ -79,6 +79,8 @@ module pow2 {
       };
       game.loadGame($scope.getState());
       $scope.gameModel = game.world.state.model;
+      $scope.party = game.world.state.model.party;
+      $scope.player = game.world.state.model.party[0];
 
       // TODO: A better system for game event handling.
       game.world.state.on('enter',function(state){

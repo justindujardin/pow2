@@ -118,7 +118,7 @@ module pow2 {
             this.tileMap = new pow2.GameTileMap("combat");
             this.scene.addObject(this.tileMap);
             this.tileMap.addComponent(new pow2.TileMapCameraComponent);
-            var gameHero = machine.model.party[0];
+            var gameHero = <HeroModel>machine.model.party[0];
             this.machine.friendly = GameStateMachine.createHeroEntity("combat hero",gameHero);
             this.scene.addObject(this.machine.friendly);
 

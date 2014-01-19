@@ -23,8 +23,8 @@ module pow2 {
       name:string = CombatVictoryState.NAME;
       enter(machine:CombatStateMachine){
          super.enter(machine);
-         console.log("HOLY CRAP YOU WON");
-         // callback(winner,loser);
+         var player:HeroModel = <HeroModel>machine.friendly.model;
+         player.awardExperience(<CreatureModel>machine.enemy.model);
          machine.trigger("combat:victory",machine.friendly,machine.enemy);
       }
 
