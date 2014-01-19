@@ -1,3 +1,5 @@
+///<reference path="../../types/underscore/underscore.d.ts"/>
+
 /**
  Copyright (C) 2013 by Justin DuJardin
 

@@ -1,3 +1,4 @@
+///<reference path="../../source/core/api.ts"/>
 //// Creatures
 pow2.registerCreatures(6,[
    //// LEVEL 6

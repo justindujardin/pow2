@@ -1,3 +1,5 @@
+///<reference path="../source/core/api.ts"/>
+
 //// Character Classes
 pow2.registerData("characters",[
    {

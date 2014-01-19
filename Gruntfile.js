@@ -50,14 +50,6 @@ module.exports = function(grunt) {
          options: {
             separator: '\n'
          },
-         data: {
-            src: [
-               "data/game.js",
-               "data/*.js",
-               "data/creatures/*.js"
-            ],
-            dest: 'web/<%= pkg.name %>.data.js'
-         },
          maps: {
             src: [
                "data/maps/*.js"
@@ -101,6 +93,13 @@ module.exports = function(grunt) {
             base_path: 'source',
             sourcemap: true,
             declaration: false
+         },
+         data: {
+            src: [
+               "data/*.ts",
+               "data/creatures/*.ts"
+            ],
+            dest: 'web/<%= pkg.name %>.data.js'
          },
 
          core: {
@@ -265,6 +264,12 @@ module.exports = function(grunt) {
             ],
             tasks: ['clean:core', 'typescript:core', 'notify:code']
          },
+         data: {
+            files: [
+               '<%= typescript.data.src %>'
+            ],
+            tasks: ['typescript:data', 'notify:data']
+         },
          scene: {
             files: [
                '<%= typescript.scene.src %>'
@@ -299,12 +304,6 @@ module.exports = function(grunt) {
 
          // Game Metadata
          //--------------------------------------------------------------------
-         data: {
-            files: [
-               '<%= concat.data.src %>'
-            ],
-            tasks: ['concat:data', 'notify:data']
-         },
          maps: {
             files: [
                '<%= concat.maps.src %>'

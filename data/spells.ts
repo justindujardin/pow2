@@ -1,3 +1,4 @@
+///<reference path="../source/core/api.ts"/>
 //// Spells
 
 // Hero spells (just mage spells in this demo game)
