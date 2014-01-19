@@ -124,7 +124,7 @@ module pow2 {
 
             // Create the enemy
             this.machine.enemy = new pow2.GameEntityObject({
-               model: CreatureModel.fromLevel(1)
+               model: CreatureModel.fromLevel(gameHero.get('level'))
             });
             this.scene.addObject(this.machine.enemy);
             this.machine.enemy.addComponent(new pow2.SpriteComponent({

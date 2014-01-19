@@ -18,17 +18,6 @@
 /// <reference path="../../../types/underscore/underscore.d.ts" />
 module pow2 {
    var maxLevel = 50;
-   var maxAttr = 255;
-   var baseExperience = 3;
-   var experienceFactor = 1.75;
-   export function getXPForLevel(character,level){
-      if(level === undefined){
-         level = character.level;
-      }
-
-      // TODO: Need to add all previous levels to this.
-      return Math.floor(baseExperience * Math.pow(level,experienceFactor));
-   }
 
    export interface EntityModelOptions {
       name:string;
@@ -68,8 +57,7 @@ module pow2 {
       }
 
       attack(defender:EntityModel):number{
-         var agility = this.attributes.level * (this.attributes.agility / maxLevel);
-         var damage = Math.floor((this.attributes.strength + agility) * Math.random());
+         var damage = Math.floor((this.attributes.strength + this.attributes.agility) * Math.random());
          defender.damage(damage);
          return damage;
       }

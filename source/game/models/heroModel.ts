@@ -66,6 +66,7 @@ module pow2 {
                maxHP: HeroModel.getHPForLevel(this,nextLevel),
                experience:newExp
             });
+            this.trigger('levelUp',this);
          }
          else{
             this.set({
@@ -94,7 +95,11 @@ module pow2 {
          var maxHP:number = HeroModel.getHPForLevel(character,level);
          character.set({
             hp:maxHP,
-            maxHP:maxHP
+            maxHP:maxHP,
+            strength:5,
+            vitality:6,
+            intelligence:1,
+            agility:2
          });
          return character;
       }

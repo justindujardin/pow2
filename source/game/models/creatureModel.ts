@@ -25,24 +25,24 @@ module pow2 {
       icon:string; // The file name of a sprite source file
       groups: string[]; // Named groups this creature belongs to
       level:number;
-      minHP:number;
-      maxHP:number;
-      experienceValue:number;
+      hp:number;
+      exp:number;
+      strength:number;
       numAttacks:number;
       armorClass:number;
       description:string; // An description of the creature.
    }
    export class CreatureModel extends EntityModel {
       static DEFAULTS:CreatureModelOptions = {
-         name: "Unnamed",
-         icon: "cavePeeper.png",
+         name: "Unnamed Creature",
+         icon: "noIcon.png",
          groups: [],
-         level: 1,
-         minHP: 2,
-         maxHP: 6,
-         experienceValue: 5,
-         numAttacks: 1,
-         armorClass: 2,
+         level: 0,
+         hp: 0,
+         exp: 0,
+         strength:0,
+         numAttacks: 0,
+         armorClass: 0,
          description: ""
       };
 
@@ -51,27 +51,19 @@ module pow2 {
       }
 
       static fromName(name:string){
-         var creatures = pow2.getData('creatures');
+         var creatures = pow2.data.creatures;
          var cData:CreatureModelOptions = <CreatureModelOptions>_.where(creatures,{name:name})[0];
-         var creature:CreatureModel = new CreatureModel(cData);
-         creature.set({
-            hp:Math.floor(Math.random() * (cData.maxHP - cData.minHP + 1)) + cData.minHP
-         });
-         return creature;
+         return new CreatureModel(cData);
 
       }
       static fromLevel(level:number){
-         var creatures = pow2.getData('creatures');
+         var creatures = pow2.data.creatures;
          if(!creatures){
             throw new Error("Creature data set is missing.");
          }
          var templates:CreatureModelOptions[] = <CreatureModelOptions[]>_.where(creatures,{level:level});
          var cData = templates[Math.floor(Math.random()*templates.length)];
-         var creature:CreatureModel = new CreatureModel(cData);
-         creature.set({
-            hp:Math.floor(Math.random() * (cData.maxHP - cData.minHP + 1)) + cData.minHP
-         });
-         return creature;
+         return new CreatureModel(cData);
 
       }
 
