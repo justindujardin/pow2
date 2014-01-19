@@ -234,6 +234,8 @@ module pow2 {
 
 // IconRender directive
 // ----------------------------------------------------------------------------
+// TODO:  This is all wrong.  It requires an img with a specific binding.  Generate the image here
+// and set its src directly.
    app.directive('iconRender', function ($compile, game) {
       return {
          restrict: 'A',
