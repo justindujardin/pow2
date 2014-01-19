@@ -53,7 +53,8 @@ module.exports = function(grunt) {
          data: {
             src: [
                "data/game.js",
-               "data/*.js"
+               "data/*.js",
+               "data/creatures/*.js"
             ],
             dest: 'web/<%= pkg.name %>.data.js'
          },

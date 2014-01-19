@@ -21,7 +21,8 @@ module pow2 {
    export var data = {
       maps: {},
       sprites: {},
-      items:{}
+      items:{},
+      creatures:[]
    };
 
    /**
@@ -46,7 +47,11 @@ module pow2 {
             data.sprites[prop] = value[prop];
          }
       }
-
+   }
+   export function registerCreatures(level,creatures){
+      _.each(creatures,(c) => {
+         data.creatures.push(_.extend(c,{level:level}));
+      });
    }
    export function getMap(name:string){
       return data.maps[name];
