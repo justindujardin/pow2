@@ -70,15 +70,15 @@ module pow2 {
          return localStorage.getItem(stateKey);
       };
 
-      $scope.displayMessage = function(message,callback?) {
+      $scope.displayMessage = function(message,callback?,time:number=1000) {
          $scope.overlayText = message;
          $timeout(function(){
             $scope.overlayText = null;
             callback && callback();
-         },1000);
+         },time);
       };
-
       game.loadGame($scope.getState());
+      $scope.gameModel = game.world.state.model;
 
       // TODO: A better system for game event handling.
       game.world.state.on('enter',function(state){
@@ -142,6 +142,36 @@ module pow2 {
             $scope.temple = null;
          });
       });
+      $scope.heal = () => {
+         if(!$scope.temple){
+            return;
+         }
+         var model:GameStateModel = game.world.state.model;
+         var money:number = model.get('gold');
+         var cost:number = parseInt($scope.temple.cost);
+         if(cost > money){
+            $scope.displayMessage("You don't have enough money");
+         }
+         else {
+            //console.log("You have (" + money + ") monies.  Spending (" + cost + ") on temple");
+            model.set({
+               gold: money - cost
+            });
+            _.each(model.party,(hero:HeroModel) => {
+               hero.set({
+                  hp: hero.get('maxHP')
+               });
+            });
+            $scope.displayMessage("Your party has been healed! \nYou now have (" + model.get('gold') + ") monies.",null,2500);
+
+         }
+         $scope.temple = null;
+
+      };
+      $scope.cancel = () => {
+         $scope.temple = null;
+      };
+
 
       // Dialog bubbles
       game.world.scene.on('dialog:entered',function(feature){
@@ -306,15 +336,7 @@ module pow2 {
    app.directive('templeView', function () {
       return {
          restrict: 'E',
-         templateUrl: '/templates/templeView.html',
-         link: ($scope, element, attrs) => {
-            $scope.heal = () => {
-               $scope.temple = null;
-            };
-            $scope.cancel = () => {
-               $scope.temple = null;
-            };
-         }
+         templateUrl: '/templates/templeView.html'
       };
    });
 
