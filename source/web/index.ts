@@ -271,23 +271,18 @@ module pow2 {
          restrict: 'A',
          link: function ($scope, element, attrs) {
             // A rendering canvas
-            $scope.renderCanvas = $compile('<canvas style="position:absolute;left:-9000px;top:-9000px;" width="64" height="64"></canvas>')($scope);
-            element.append($scope.renderCanvas);
+            var renderCanvas = $compile('<canvas style="position:absolute;left:-9000px;top:-9000px;" width="64" height="64"></canvas>')($scope);
+            var renderImage = $compile('<img src="" width="64"/>')($scope);
+            element.append(renderCanvas);
+            element.append(renderImage);
 
             // Get the context for drawing
-            $scope.renderContext = $scope.renderCanvas[0].getContext("2d");
+            $scope.renderContext = renderCanvas[0].getContext("2d");
             $scope.renderContext.webkitImageSmoothingEnabled = false;
             $scope.renderContext.mozImageSmoothingEnabled = false;
 
-            $scope.$watch(attrs.feature, function(feature) {
+            $scope.$watch(attrs.icon, function(icon) {
 
-               if(!feature){
-                  return;
-               }
-               var icon = feature.icon;
-               if(!icon && feature.getIcon){
-                  icon = feature.getIcon();
-               }
                if(!icon){
                   return;
                }
@@ -295,9 +290,8 @@ module pow2 {
                   $scope.renderContext.clearRect(0, 0, 64, 64);
                   $scope.renderContext.drawImage(sprite, 0, 0, 64, 64);
                   $scope.$apply(function(){
-                     feature.rendered = $scope.renderCanvas[0].toDataURL();
+                     renderImage[0].src = renderCanvas[0].toDataURL();
                   });
-
                });
             });
          }

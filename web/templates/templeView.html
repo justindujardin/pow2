@@ -11,7 +11,7 @@
     <div class="col-xs-12">
         <div class="inventory" eight-bit-panel>
             <div>
-                <h1>It will cost you {{temple.cost}} of your {{gameModel.get('gold')}} monies to heal here.</h1>
+                <h1>It will cost you {{temple.cost}} of your {{gameModel.attributes.gold}} monies to heal here.</h1>
                 <p>Would you like to heal your party members?</p>
             </div>
             <button class="btn btn-primary btn-lg" ng-click="heal()">Yes</button>
@@ -19,3 +19,13 @@
         </div>
     </div>
 </div>
+
+<div class="row" ng-show="temple">
+    <div class="col-xs-12 friendly">
+        <div eight-bit-panel>
+            <div class="character" icon-render icon="party[0].attributes.icon"></div>
+            <div><strong>HP</strong>: {{party[0].attributes.hp}}/{{party[0].attributes.maxHP}}</div>
+        </div>
+    </div>
+</div>
+

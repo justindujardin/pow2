@@ -1,18 +1,14 @@
 <div class="row combat" ng-show="combat">
     <div class="col-xs-6 enemy">
         <div eight-bit-panel>
-            <div class="character" icon-render feature="combat.enemy" ng-show="combat.enemy.rendered">
-                <img src="{{combat.enemy.rendered}}">
-                <div><strong>HP</strong>: {{combat.enemy.model.attributes.hp}}</div>
-            </div>
+            <div class="character" icon-render icon="combat.enemy.getIcon()"></div>
+            <div><strong>HP</strong>: {{combat.enemy.model.attributes.hp}}</div>
         </div>
     </div>
     <div class="col-xs-6 friendly">
         <div eight-bit-panel>
-            <div class="character" icon-render feature="combat.friendly" ng-show="combat.friendly.rendered">
-                <img src="{{combat.friendly.rendered}}">
-                <div><strong>HP</strong>: {{combat.friendly.model.attributes.hp}}/{{combat.friendly.model.attributes.maxHP}}</div>
-            </div>
+            <div class="character" icon-render icon="combat.friendly.getIcon()"></div>
+            <div><strong>HP</strong>: {{combat.friendly.model.attributes.hp}}/{{combat.friendly.model.attributes.maxHP}}</div>
         </div>
     </div>
 </div>

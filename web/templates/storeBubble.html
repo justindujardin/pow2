@@ -11,8 +11,7 @@
         <div class="inventory" eight-bit-panel>
             <ul class="container">
                 <li class="item row" ng-repeat="item in store.inventory">
-                    <div class="col-xs-1 icon" icon-render feature="item" ng-show="item.rendered">
-                        <img src="{{item.rendered}}">
+                    <div class="col-xs-1 icon" icon-render icon="item.icon">
                     </div>
                     <div class="col-xs-8">
                         <span class="item-name">{{item.name}}</span>
