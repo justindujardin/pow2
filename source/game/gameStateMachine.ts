@@ -66,10 +66,10 @@ module pow2 {
       }
 
       updatePlayer(){
-         if(this.world && this.world.scene){
+         if(this.world && this.world.scene && this.view.tileMap){
             var scene:Scene = this.world.scene;
             this.player = scene.objectByComponent(PlayerComponent);
-            this.encounter = <CombatEncounterComponent>scene.componentByType(CombatEncounterComponent);
+            this.encounter = <CombatEncounterComponent>this.view.tileMap.findComponent(CombatEncounterComponent);
          }
       }
 

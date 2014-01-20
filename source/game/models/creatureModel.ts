@@ -18,6 +18,7 @@
 /// <reference path="../../../types/underscore/underscore.d.ts" />
 /// <reference path="../../core/api.ts" />
 /// <reference path="./entityModel.ts" />
+/// <reference path="./heroModel.ts" />
 module pow2 {
 
    export interface CreatureModelOptions extends EntityModelOptions {
@@ -50,8 +51,13 @@ module pow2 {
       }
 
       attack(defender:EntityModel):number{
-         var damage = Math.floor((this.attributes.strength + this.attributes.agility) * Math.random() + this.attributes.strength);
-         defender.damage(damage);
+         var hero = <HeroModel>defender;
+         var defense = hero.getDefense();
+
+         var min = this.attributes.attackLow;
+         var max = this.attributes.attackHigh;
+         var damage = Math.floor(Math.random() * (max - min + 1)) + min;
+         defender.damage(damage - defense);
          return damage;
       }
 

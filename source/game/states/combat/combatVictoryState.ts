@@ -24,7 +24,7 @@ module pow2 {
       enter(machine:CombatStateMachine){
          super.enter(machine);
          var player:HeroModel = <HeroModel>machine.friendly.model;
-         player.awardExperience(<CreatureModel>machine.enemy.model);
+         player.awardWin(<CreatureModel>machine.enemy.model);
          machine.trigger("combat:victory",machine.friendly,machine.enemy);
       }
 

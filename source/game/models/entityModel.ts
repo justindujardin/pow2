@@ -51,6 +51,9 @@ module pow2 {
       }
 
       damage(amount:number){
+         if(amount < 0){
+            return;
+         }
          this.set({hp: Math.max(0,this.attributes.hp - amount)});
          if(this.attributes.hp < 0){
             this.set({dead:true});
@@ -59,8 +62,7 @@ module pow2 {
 
       attack(defender:EntityModel):number{
          var halfStrength = this.attributes.strength / 2;
-         var quarterStrength = halfStrength / 2;
-         var damage = Math.floor((quarterStrength + this.attributes.agility) * Math.random() + quarterStrength);
+         var damage = halfStrength;
          defender.damage(damage);
          return damage;
       }

@@ -18,6 +18,11 @@ module pow2 {
       };
    });
 
+   var stateKey = "_testPow2State";
+   export function resetGame() {
+      localStorage.removeItem(stateKey);
+   }
+
    export class AngularGameFactory {
       loader:ResourceLoader;
       world:GameWorld;
@@ -33,11 +38,15 @@ module pow2 {
             state:new GameStateMachine()
          });
          this.world.scene.once('map:loaded',() => {
-            var heroModel:HeroModel = HeroModel.create(HeroType.Warrior);
-            this.world.state.model.addHero(heroModel);
+            // Only add a hero if none exists.
+            // TODO: This init stuff should go in a 'newGame' method or something.
+            if(this.world.state.model.party.length === 0){
+               var heroModel:HeroModel = HeroModel.create(HeroType.Warrior);
+               this.world.state.model.addHero(heroModel);
+            }
 
             // Create a movable character with basic components.
-            this.sprite = GameStateMachine.createHeroEntity("Hero!", heroModel);
+            this.sprite = GameStateMachine.createHeroEntity("Hero!", this.world.state.model.party[0]);
             this.sprite.setPoint(this.tileMap.bounds.getCenter());
             this.sprite.addComponent(new CollisionComponent());
             this.sprite.addComponent(new PlayerComponent());
@@ -50,7 +59,10 @@ module pow2 {
       }
 
       loadGame(data:any){
-         this.world.state.model.parse(data);
+         if(this.world.state.model){
+            this.world.state.model.destroy();
+         }
+         this.world.state.model = new GameStateModel(data, {parse: true});
       }
    }
    app.factory('game', () => {
@@ -58,7 +70,6 @@ module pow2 {
    });
 
    app.controller('pow2App',function($scope,$rootScope,$http,$timeout,game){
-      var stateKey = "_testPow2State";
       $scope.overlayText = null;
       $scope.saveState = function(data){
          localStorage.setItem(stateKey,data);
@@ -69,6 +80,8 @@ module pow2 {
       $scope.getState = function(){
          return localStorage.getItem(stateKey);
       };
+      // TODO: Resets state every page load.  Remove when persistence is desired.
+      //resetGame();
 
       $scope.displayMessage = function(message,callback?,time:number=1000) {
          $scope.overlayText = message;
@@ -198,6 +211,37 @@ module pow2 {
             $scope.store = null;
          });
       });
+      $scope.buyItem = (item) => {
+         if(!$scope.store || !item){
+            return;
+         }
+         var model:GameStateModel = game.world.state.model;
+         var money:number = model.get('gold');
+         var cost:number = parseInt(item.cost);
+         if(cost > money){
+            $scope.displayMessage("You don't have enough money");
+         }
+         else {
+            //console.log("You have (" + money + ") monies.  Spending (" + cost + ") on temple");
+            model.set({
+               gold: money - cost
+            });
+            model.inventory.push(item);
+
+            //HACKS: Force equip to player0
+            //TODO: equipment UI
+            var player:HeroModel = model.party[0];
+            if(item.itemType === 'armor'){
+               player.armor.push(new ArmorModel(item));
+            }
+            else if(item.itemType === 'weapon'){
+               player.weapon = new WeaponModel(item);
+            }
+
+            $scope.displayMessage("Purchased " + item.name + ".",null,2500);
+
+         }
+      };
    });
 
 
@@ -266,8 +310,6 @@ module pow2 {
 
 // IconRender directive
 // ----------------------------------------------------------------------------
-// TODO:  This is all wrong.  It requires an img with a specific binding.  Generate the image here
-// and set its src directly.
    app.directive('iconRender', function ($compile, game) {
       return {
          restrict: 'A',

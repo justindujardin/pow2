@@ -11,5 +11,10 @@
                 <span class="sr-only">60% Complete</span>
             </div>
         </div>
+        <div><strong>EXP</strong> {{hero.attributes.exp}} / {{hero.attributes.nextLevelExp}}</div>
+        <div class="progress">
+            <div class="progress-bar" style="width:{{hero.attributes.exp / hero.attributes.nextLevelExp * 100}}%;">
+            </div>
+        </div>
     </div>
 </div>

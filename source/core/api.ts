@@ -20,11 +20,30 @@
 declare var mixpanel: any;
 
 module pow2 {
+
+   export interface IInventory {
+      name:string;
+      cost:number;
+   }
+
+   export interface IWeapon extends IInventory {
+      attack:number; // Damage value
+      hit:number; // 0-100%
+   }
+
+   export interface IArmor extends IInventory {
+      defense:number; // Defensive value
+      evade:number; // Value to add to evasion <= 0
+   }
+
+
    export var data = {
       maps: {},
       sprites: {},
       items:{},
-      creatures:[]
+      creatures:[],
+      weapons:[],
+      armor:[]
    };
 
    /**
@@ -53,6 +72,22 @@ module pow2 {
    export function registerCreatures(level,creatures){
       _.each(creatures,(c) => {
          data.creatures.push(_.extend(c,{level:level}));
+      });
+   }
+   export function registerWeapons(level,weapons:IWeapon[]){
+      _.each(weapons,(c) => {
+         data.weapons.push(_.extend(c,{
+            level:level,
+            itemType:"weapon"
+         }));
+      });
+   }
+   export function registerArmor(level,items:IArmor[]){
+      _.each(items,(c) => {
+         data.armor.push(_.extend(c,{
+            level:level,
+            itemType:"armor"
+         }));
       });
    }
    export function getMap(name:string){

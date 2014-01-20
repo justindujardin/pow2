@@ -26,24 +26,27 @@ module pow2 {
    }
 
    export class GameStateModel extends Backbone.Model {
-      party:EntityModel[] = []; // The player's party
-      inventory:any[] = []; // The inventory of items owned by the player.
+      party:HeroModel[]; // The player's party
+      inventory:any[]; // The inventory of items owned by the player.
       static DEFAULTS:GameStateModelOptions = {
-         gold: 100
+         gold: 100,
+         party:[],
+         inventory:[]
       };
       defaults():any {
          return _.extend({}, GameStateModel.DEFAULTS);
       }
 
-      addHero(model:EntityModel){
+      addHero(model:HeroModel){
          this.party.push(model);
+         model.game = this;
       }
 
       parse(data:any,options?:any):any {
          try{
             data = JSON.parse(data);
             this.party = _.map(data.party,(partyMember) => {
-               return new HeroModel(partyMember);
+               return new HeroModel(partyMember,{parse:true});
             });
             return {
                gold:data.gold

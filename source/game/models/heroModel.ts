@@ -19,6 +19,9 @@
 /// <reference path="../../core/api.ts" />
 /// <reference path="./entityModel.ts" />
 /// <reference path="./creatureModel.ts" />
+/// <reference path="./gameStateModel.ts" />
+/// <reference path="./armorModel.ts" />
+/// <reference path="./weaponModel.ts" />
 module pow2 {
    var maxLevel = 50;
    var maxAttr = 255;
@@ -44,6 +47,9 @@ module pow2 {
 
    }
    export class HeroModel extends EntityModel {
+      weapon:WeaponModel = null;
+      armor:ArmorModel[] = [];
+      game:GameStateModel = null;
       static DEFAULTS:HeroModelOptions = {
          name: "Hero",
          icon: "warrior.png",
@@ -71,7 +77,14 @@ module pow2 {
          return _.extend(super.defaults(), HeroModel.DEFAULTS);
       }
 
-      awardExperience(defeated:CreatureModel){
+
+      getDefense():number {
+         return _.reduce(this.armor,(val:number,item) => {
+            return val + item.attributes.defense;
+         },0);
+      }
+
+      awardWin(defeated:CreatureModel){
          var exp:number = defeated.get('exp');
          var newExp:number = this.attributes.exp + exp;
          this.set({
@@ -79,6 +92,12 @@ module pow2 {
          });
          if(newExp >= this.attributes.nextLevelExp){
             this.awardLevelUp();
+         }
+
+         if(this.game){
+            var gold:number = this.game.get('gold');
+            var newGold = (defeated.get('gold') || 0) + gold;
+            this.game.set({gold:newGold});
          }
       }
 
@@ -97,29 +116,58 @@ module pow2 {
             nextLevelExp:this.getXPForLevel(nextLevel+1)
          });
          this.trigger('levelUp',this);
-
       }
 
-      static getHPForLevel(character:HeroModel,level?:number){
-         if(typeof level === 'undefined'){
-            level = character.get('level');
+      parse(data:any,options?:any):any {
+         try{
+            if(typeof data === 'string'){
+               data = JSON.parse(data);
+            }
          }
-         var vitality = level * character.get('vitality');
-         return Math.floor(vitality * Math.pow(level,1)) + 15;
-         //return vitality * (maxAttr / maxLevel) + 30;
+         catch(e){
+            console.log("Failed to load save game.");
+            return {};
+         }
+         if(!data){
+            return {};
+         }
+         if(data.weapon){
+            var weapon = _.where(pow2.data.weapons,{name:data.weapon})[0];
+            this.weapon = new WeaponModel(weapon);
+         }
+         this.armor = _.map(data.armor,(item) => {
+            var armor = _.where(pow2.data.armor,{name:item})[0];
+            return new ArmorModel(armor);
+         });
+         return _.omit(data,'armor','weapon');
+
       }
 
+      toJSON() {
+         var result = super.toJSON();
+         if(this.weapon){
+            result.weapon = this.weapon.get('name');
+         }
+         result.armor = _.map(this.armor,(p) => {
+            return p.get('name');
+         });
+         return result;
+      }
+
+      static getHPForLevel(character:HeroModel,level:number=character.attributes.level){
+         return Math.floor(character.attributes.vitality * Math.pow(level,1)) + 15;
+      }
       static getStrengthForLevel(character:HeroModel,level:number=character.attributes.level){
-         return Math.floor(character.attributes.baseStrength * Math.pow(level,1));
+         return Math.floor(character.attributes.baseStrength * Math.pow(level,0.95));
       }
       static getAgilityForLevel(character:HeroModel,level:number=character.attributes.level){
-         return Math.floor(character.attributes.baseAgility * Math.pow(level,1));
+         return Math.floor(character.attributes.baseAgility * Math.pow(level,0.95));
       }
       static getVitalityForLevel(character:HeroModel,level:number=character.attributes.level){
-         return Math.floor(character.attributes.baseVitality * Math.pow(level,1));
+         return Math.floor(character.attributes.baseVitality * Math.pow(level,0.95));
       }
       static getIntelligenceForLevel(character:HeroModel,level:number=character.attributes.level){
-         return Math.floor(character.attributes.baseIntelligence * Math.pow(level,1));
+         return Math.floor(character.attributes.baseIntelligence * Math.pow(level,0.95));
       }
 
 

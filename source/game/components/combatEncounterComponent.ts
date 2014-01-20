@@ -22,24 +22,47 @@ module pow2 {
    /**
     * A component that defines the functionality of a map feature.
     */
-   export class CombatEncounterComponent extends TileComponent {
-      host:GameEntityObject;
+   export class CombatEncounterComponent extends SceneComponent {
+      host:GameTileMap;
       battleCounter:number = 256;
       combatFlag:boolean = false;
 
       connectComponent():boolean {
-         if(!super.connectComponent()){
+         if(!super.connectComponent() || !(this.host instanceof GameTileMap)){
             return false;
          }
-         this.host.on('move:begin',this.moveProcess,this);
          this.resetBattleCounter();
          return true;
       }
       disconnectComponent():boolean {
-         this.host.off('move:begin',this.moveProcess);
+         if(this.player){
+            this.player.off(null,null,this);
+         }
+         this.player = null;
          return super.disconnectComponent();
       }
-      moveProcess() {
+
+      player:GameEntityObject = null;
+      syncComponent():boolean{
+         super.syncComponent();
+         if(this.player){
+            this.player.off(null,null,this);
+         }
+         this.player = <GameEntityObject>this.scene.objectByComponent(PlayerComponent);
+         if(this.player){
+            this.player.on('move:begin',this.moveProcess,this);
+         }
+         return !!this.player;
+      }
+
+      moveProcess(player:PlayerComponent,from:Point,to:Point) {
+         var map = this.host.scene.objectByType(pow2.TileMap);
+         if (map) {
+            var terrain = this.host.getTerrain(to.x,to.y);
+            if (!terrain) {
+            }
+         }
+
          if(this.battleCounter <= 0){
             this.host.trigger('combat:encounter',this);
             this.combatFlag = true;
