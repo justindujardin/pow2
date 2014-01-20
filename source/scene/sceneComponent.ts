@@ -62,9 +62,18 @@ module pow2 {
       constructor(public name:string = _.uniqueId('comp')){
          super();
       }
-      connectComponent():boolean { return true; }
-      disconnectComponent():boolean { return true; }
-      syncComponent():boolean { return true; }
+      connectComponent():boolean {
+         this.scene = this.host.scene;
+         return true;
+      }
+      disconnectComponent():boolean {
+         this.scene = null;
+         return true;
+      }
+      syncComponent():boolean {
+         this.scene = this.host.scene;
+         return !!this.scene;
+      }
    }
 
    /**
