@@ -127,10 +127,10 @@ module pow2 {
          var character = new HeroModel({
             type:type,
             level:0,
-            baseStrength:5,
-            baseAgility:2,
+            baseStrength:20,
+            baseAgility:5,
             baseIntelligence:1,
-            baseVitality:3
+            baseVitality:10
 
          });
          character.awardLevelUp();

@@ -49,6 +49,13 @@ module pow2 {
          return _.extend(super.defaults(), CreatureModel.DEFAULTS);
       }
 
+      attack(defender:EntityModel):number{
+         var damage = Math.floor((this.attributes.strength + this.attributes.agility) * Math.random() + this.attributes.strength);
+         defender.damage(damage);
+         return damage;
+      }
+
+
       static fromName(name:string){
          var creatures = pow2.data.creatures;
          var cData:CreatureModelOptions = <CreatureModelOptions>_.where(creatures,{name:name})[0];
