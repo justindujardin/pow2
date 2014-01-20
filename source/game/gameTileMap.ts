@@ -23,12 +23,14 @@
 /// <reference path="./components/features/shipFeatureComponent.ts" />
 /// <reference path="./components/features/storeFeatureComponent.ts" />
 /// <reference path="./components/features/templeFeatureComponent.ts" />
+/// <reference path="./components/gameFeatureInputComponent.ts" />
 
 module pow2 {
    export class GameTileMap extends TileMap {
       featureHash:any = {};
       loaded(){
          super.loaded();
+         this.addComponent(new GameFeatureInputComponent());
 
          // If there are map properties, take them into account.
          if(this.map.properties){
@@ -50,6 +52,7 @@ module pow2 {
          this.buildFeatures();
       }
       unloaded(){
+         this.removeComponentByType(GameFeatureInputComponent);
          this.removeComponentByType(CombatEncounterComponent);
          this.removeComponentByType(SoundComponent);
          this.removeFeaturesFromScene();
