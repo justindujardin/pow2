@@ -15,6 +15,7 @@
  */
 /// <reference path="./point.ts"/>
 /// <reference path="../../types/jquery/jquery.d.ts"/>
+/// <reference path="../scene/sceneView.ts"/>
 module pow2 {
    export enum KeyCode {
       UP = 38,
@@ -34,8 +35,9 @@ module pow2 {
 
    export interface NamedMouseElement {
       name:string;
-      el:HTMLElement;
-      point:Point;
+      view:SceneView;
+      point:Point; // Point on the canvas in pixels.
+      world:Point; // Point in the world, accounting for camera scale and offset.
    }
 
    export class Input {
@@ -52,47 +54,53 @@ module pow2 {
          var hooks = this._mouseElements;
          window.addEventListener(<string>'mousemove', (ev:MouseEvent) => {
             _.each(hooks,(hook:NamedMouseElement) => {
-               if(ev.srcElement === hook.el){
+               if(ev.srcElement === hook.view.canvas){
                   var canoffset = $(event.srcElement).offset();
                   var x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
                   var y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
                   hook.point.set(x,y);
+                  // Generate world mouse position
+                  var worldMouse = hook.view.screenToWorld(hook.point,hook.view.cameraScale).add(hook.view.camera.point).round();
+                  hook.world.set(worldMouse.x,worldMouse.y);
                }
                else {
                   hook.point.set(-1,-1);
+                  hook.world.set(-1,-1);
+
                }
                return false;
             });
          });
       }
 
-      // Track the mouse position for a given element.
-      mouseHook(el:HTMLElement,name:string){
+      mouseHook(view:SceneView,name:string){
          var hooks = _.where(this._mouseElements,{name:name});
          if(hooks.length > 0){
             return hooks[0];
          }
          var result:NamedMouseElement = {
             name:name,
-            el:el,
-            point: new Point(-1,-1)
+            view:view,
+            point: new Point(-1,-1),
+            world: new Point(-1,-1)
          };
          this._mouseElements.push(result);
          return result;
       }
+
       mouseUnhook(name:string);
-      mouseUnhook(el:HTMLElement);
-      mouseUnhook(nameOrEl:any){
+      mouseUnhook(view:SceneView);
+      mouseUnhook(nameOrView:any){
          this._mouseElements = _.filter(this._mouseElements,(hook:NamedMouseElement) => {
-            return hook.name === nameOrEl || hook.el === nameOrEl;
+            return hook.name === nameOrView || hook.view.id === nameOrView.id;
          });
       }
 
       getMouseHook(name:string);
-      getMouseHook(el:HTMLElement);
-      getMouseHook(nameOrEl:any){
+      getMouseHook(view:SceneView);
+      getMouseHook(nameOrView:any){
          return _.find(this._mouseElements,(hook:NamedMouseElement) => {
-            return hook.name === nameOrEl || hook.el === nameOrEl;
+            return hook.name === nameOrView || hook.view.id === nameOrView.id;
          });
       }
 
@@ -100,14 +108,5 @@ module pow2 {
          return !!this._keysDown[key];
       }
 
-      // Convert a mouse event on the canvas into coordinates that are relative
-      // to it, rather than to the DOM.
-      canvasMousePosition(event: MouseEvent): Point {
-         var canoffset, x, y;
-         canoffset = $(event.currentTarget).offset();
-         x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
-         y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
-         return new Point(x, y);
-      }
    }
 }

@@ -27,7 +27,10 @@ module pow2{
       mouse:NamedMouseElement = null;
 
       onAddToScene(scene:Scene) {
-         this.mouse = scene.world.input.mouseHook(this.canvas,"gameMap");
+         this.mouse = scene.world.input.mouseHook(this,"world");
+      }
+      onRemoveFromScene(scene:Scene) {
+         scene.world.input.mouseUnhook("world");
       }
 
       /*
