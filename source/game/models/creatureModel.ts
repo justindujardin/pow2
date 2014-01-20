@@ -20,13 +20,12 @@
 /// <reference path="./entityModel.ts" />
 module pow2 {
 
-   export interface CreatureModelOptions {
+   export interface CreatureModelOptions extends EntityModelOptions {
       name:string; // The creature name
       icon:string; // The file name of a sprite source file
       groups: string[]; // Named groups this creature belongs to
       level:number;
       hp:number;
-      exp:number;
       strength:number;
       numAttacks:number;
       armorClass:number;

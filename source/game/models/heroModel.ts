@@ -23,7 +23,7 @@ module pow2 {
    var maxLevel = 50;
    var maxAttr = 255;
    var baseExperience = 3;
-   var experienceFactor = 1.75;
+   var experienceFactor = 2.75;
 
    export enum HeroType {
       Warrior = 1,
@@ -31,9 +31,17 @@ module pow2 {
    }
    export interface HeroModelOptions extends EntityModelOptions {
       type:HeroType;
-      experience:number;
-
       description:string; // An description of the hero.
+
+      // Hidden attributes.
+      baseStrength:number;
+      baseAgility:number;
+      baseIntelligence:number;
+      baseVitality:number;
+
+      // The experience required to advance to the next level.
+      nextLevelExp:number;
+
    }
    export class HeroModel extends EntityModel {
       static DEFAULTS:HeroModelOptions = {
@@ -41,14 +49,22 @@ module pow2 {
          icon: "warrior.png",
          type: HeroType.Warrior,
          level: 1,
-         experience:0,
+         exp:0,
+         nextLevelExp:0,
          hp:0,
          maxHP: 6,
-         description: ""
+         description: "",
+         // Hidden attributes.
+         baseStrength:0,
+         baseAgility:0,
+         baseIntelligence:0,
+         baseVitality:0
       };
       getXPForLevel(level=this.attributes.level){
-         // TODO: Need to add all previous levels to this.
-         return Math.floor(baseExperience * Math.pow(level,experienceFactor));
+         if(level === 0){
+            return 0;
+         }
+         return Math.floor(baseExperience * Math.pow(level,experienceFactor)) + this.getXPForLevel(level-1);
       }
 
       defaults():any {
@@ -56,23 +72,32 @@ module pow2 {
       }
 
       awardExperience(defeated:CreatureModel){
-         var experience:number = defeated.get('experienceValue');
-         var newExp:number = this.attributes.experience + experience;
+         var exp:number = defeated.get('exp');
+         var newExp:number = this.attributes.exp + exp;
+         this.set({
+            exp:newExp
+         });
+         if(newExp >= this.attributes.nextLevelExp){
+            this.awardLevelUp();
+         }
+      }
+
+      awardLevelUp(){
          var nextLevel:number = this.attributes.level+1;
-         var nextLevelExp:number = this.getXPForLevel(nextLevel);
-         if(newExp >= nextLevelExp){
-            this.set({
-               level: nextLevel,
-               maxHP: HeroModel.getHPForLevel(this,nextLevel),
-               experience:newExp
-            });
-            this.trigger('levelUp',this);
-         }
-         else{
-            this.set({
-               experience:newExp
-            });
-         }
+         var newHP = HeroModel.getHPForLevel(this,nextLevel);
+         this.set({
+            level: nextLevel,
+            maxHP: newHP,
+            hp: newHP,
+            strength:HeroModel.getStrengthForLevel(this,nextLevel),
+            agility:HeroModel.getAgilityForLevel(this,nextLevel),
+            vitality:HeroModel.getVitalityForLevel(this,nextLevel),
+            intelligence:HeroModel.getIntelligenceForLevel(this,nextLevel),
+
+            nextLevelExp:this.getXPForLevel(nextLevel+1)
+         });
+         this.trigger('levelUp',this);
+
       }
 
       static getHPForLevel(character:HeroModel,level?:number){
@@ -84,23 +109,31 @@ module pow2 {
          //return vitality * (maxAttr / maxLevel) + 30;
       }
 
+      static getStrengthForLevel(character:HeroModel,level:number=character.attributes.level){
+         return Math.floor(character.attributes.baseStrength * Math.pow(level,1));
+      }
+      static getAgilityForLevel(character:HeroModel,level:number=character.attributes.level){
+         return Math.floor(character.attributes.baseAgility * Math.pow(level,1));
+      }
+      static getVitalityForLevel(character:HeroModel,level:number=character.attributes.level){
+         return Math.floor(character.attributes.baseVitality * Math.pow(level,1));
+      }
+      static getIntelligenceForLevel(character:HeroModel,level:number=character.attributes.level){
+         return Math.floor(character.attributes.baseIntelligence * Math.pow(level,1));
+      }
 
 
       static create(type:HeroType){
          var character = new HeroModel({
-            type:type
+            type:type,
+            level:0,
+            baseStrength:5,
+            baseAgility:2,
+            baseIntelligence:1,
+            baseVitality:3
+
          });
-         var level:number = 1;
-         var vitality = level * character.get('vitality');
-         var maxHP:number = HeroModel.getHPForLevel(character,level);
-         character.set({
-            hp:maxHP,
-            maxHP:maxHP,
-            strength:5,
-            vitality:6,
-            intelligence:1,
-            agility:2
-         });
+         character.awardLevelUp();
          return character;
       }
    }

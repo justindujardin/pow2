@@ -25,6 +25,7 @@ module pow2 {
       level?:number;
       hp?:number;
       maxHP?:number;
+      exp?:number;
       strength?:number;
       vitality?:number;
       intelligence?:number;
@@ -57,7 +58,8 @@ module pow2 {
       }
 
       attack(defender:EntityModel):number{
-         var damage = Math.floor((this.attributes.strength + this.attributes.agility) * Math.random());
+         var halfStrength = this.attributes.strength / 2;
+         var damage = Math.floor((halfStrength + this.attributes.agility) * Math.random() + halfStrength);
          defender.damage(damage);
          return damage;
       }
