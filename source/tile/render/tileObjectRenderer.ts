@@ -29,11 +29,11 @@ module pow2 {
          if (!data.image || !object.visible) {
             return;
          }
-         var point = (object.renderPoint || object.point).clone();
-         point.x -= object.size.x / 2;
-         point.y -= object.size.y / 2;
-         point = view.worldToScreen(point);
 
+         var point = (object.renderPoint || object.point).clone();
+         point.x -= object.size.x * object.scale / 2;
+         point.y -= object.size.y * object.scale / 2;
+         point = view.worldToScreen(point);
 
          var width = view.unitSize;
          var height = view.unitSize;
@@ -47,9 +47,9 @@ module pow2 {
                cx += fx * view.unitSize;
                cy += fy * view.unitSize;
             }
-            return view.context.drawImage(data.image, cx, cy, view.unitSize, view.unitSize, point.x, point.y, width, height);
+            view.context.drawImage(data.image, cx, cy, view.unitSize, view.unitSize, point.x, point.y, width * object.scale, height * object.scale);
          } else {
-            return view.context.drawImage(data.image, point.x, point.y, width, height);
+            view.context.drawImage(data.image, point.x, point.y, width * object.scale, height * object.scale);
          }
       }
    }

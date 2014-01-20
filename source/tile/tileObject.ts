@@ -25,6 +25,7 @@ module pow2 {
       point?: pow2.Point;
       renderPoint?:pow2.Point;
       image?: HTMLImageElement;
+      scale?:number;
       visible?:boolean;
       enabled?:boolean;
       tileMap:TileMap;
@@ -44,6 +45,7 @@ module pow2 {
       enabled:true,
       icon: "",
       iconCoords: null,
+      scale:1,
       image: null,
       tileMap: null
    };
@@ -55,6 +57,7 @@ module pow2 {
       visible:boolean;
       enabled:boolean;
       tileMap:TileMap;
+      scale:number;
       icon:string;
       meta:any;
       frame:number;
