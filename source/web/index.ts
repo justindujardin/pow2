@@ -335,6 +335,29 @@ module pow2 {
          templateUrl: '/templates/templeView.html'
       };
    });
+// PartyView directive
+// ----------------------------------------------------------------------------
+   app.directive('partyView', function () {
+      return {
+         restrict: 'E',
+         templateUrl: '/templates/partyView.html'
+      };
+   });
+// HeroView directive
+// ----------------------------------------------------------------------------
+   app.directive('heroView', function ($compile) {
+      return {
+         restrict: 'E',
+         scope:true,
+         templateUrl: '/templates/heroView.html',
+         link: function ($scope, element, attrs) {
+            $scope.hero = attrs.hero;
+            $scope.$watch(attrs.hero, function(hero) {
+               $scope.hero = hero;
+            });
+         }
+      };
+   });
 
 }
 
