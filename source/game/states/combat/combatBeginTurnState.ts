@@ -94,7 +94,7 @@ module pow2 {
                defender.removeComponentDictionary(components);
                machine.currentDone = true;
             });
-            machine.trigger("combat:attack",attacker,defender);
+            machine.trigger("combat:attack",damage,attacker,defender);
          },150);
       }
    }

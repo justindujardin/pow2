@@ -1,3 +1,18 @@
+/**
+ Copyright (C) 2013 by Justin DuJardin
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
 /// <reference path="../../../source/game/gameStateMachine.ts"/>
 /// <reference path="../../../source/game/gameWorld.ts"/>
 /// <reference path="../../../source/game/models/heroModel.ts"/>
@@ -11,6 +26,8 @@ module pow2.ui {
       world:GameWorld;
       tileMap:GameTileMap;
       sprite:GameEntityObject;
+      machine:GameStateMachine;
+      model:GameStateModel;
       constructor(){
          this.loader = new ResourceLoader();
          this.world = new GameWorld({
@@ -20,9 +37,11 @@ module pow2.ui {
             }),
             state:new GameStateMachine()
          });
+         this.machine = this.world.state;
+         this.model = this.world.state.model;
          this.world.scene.once('map:loaded',() => {
             // Create a movable character with basic components.
-            this.sprite = GameStateMachine.createHeroEntity("Hero!", this.world.state.model.party[0]);
+            this.sprite = GameStateMachine.createHeroEntity("Hero!", this.model.party[0]);
             this.sprite.setPoint(this.tileMap.bounds.getCenter());
             this.sprite.addComponent(new CollisionComponent());
             this.sprite.addComponent(new PlayerComponent());
@@ -35,17 +54,18 @@ module pow2.ui {
       }
 
       loadGame(data:any){
-         if(this.world.state.model){
-            this.world.state.model.destroy();
+         if(data){
+            this.model.clear();
+            this.model.parse(data);
          }
-         this.world.state.model = new GameStateModel(data, {parse: true});
          // Only add a hero if none exists.
          // TODO: This init stuff should go in a 'newGame' method or something.
-         if(this.world.state.model.party.length === 0){
-            var heroModel:HeroModel = HeroModel.create(HeroType.Warrior);
-            this.world.state.model.addHero(heroModel);
-            var heroModel:HeroModel = HeroModel.create(HeroType.Wizard);
-            this.world.state.model.addHero(heroModel);
+         //
+         if(this.model.party.length === 0){
+            var heroModel:HeroModel = HeroModel.create(HeroType.Warrior,"Warrior");
+            this.model.addHero(heroModel);
+            var heroModel:HeroModel = HeroModel.create(HeroType.Wizard,"Wizard");
+            this.model.addHero(heroModel);
          }
 
       }

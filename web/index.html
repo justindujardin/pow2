@@ -17,13 +17,13 @@
     <script type="text/javascript" src="/js/angular-1.2.9/angular.js"></script>
     <script type="text/javascript" src="/js/base64.js"></script>
 </head>
-<body ng-controller="pow2App">
+<body ng-controller="RPGGameController">
 
 <div class="game-container">
-    <canvas width="576" height="576" game-view ng-hide="inCombat">
+    <canvas width="576" height="576" game-canvas ng-hide="inCombat">
         Your browser doesn't support this.
     </canvas>
-    <canvas width="576" height="576" combat-view ng-show="inCombat">
+    <canvas width="576" height="576" combat-canvas ng-show="inCombat">
         Your browser doesn't support this.
     </canvas>
     <div class="menu-overlay">

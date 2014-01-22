@@ -50,6 +50,8 @@ module pow2 {
          new GameCombatState()
       ];
       private _elapsed: number = 0;
+
+
       setGameView(view:GameMapView){
          this.view = view;
       }

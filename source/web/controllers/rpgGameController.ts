@@ -1,3 +1,18 @@
+/**
+ Copyright (C) 2013 by Justin DuJardin
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
 /// <reference path="../services/gameFactory.ts"/>
 
 module pow2.ui {
@@ -5,7 +20,7 @@ module pow2.ui {
    export function resetGame() {
       localStorage.removeItem(stateKey);
    }
-   app.controller('pow2App',function($scope,$rootScope,$http,$timeout,game){
+   app.controller('RPGGameController',function($scope,$rootScope,$http,$timeout,game){
       $scope.overlayText = null;
       $scope.saveState = function(data){
          localStorage.setItem(stateKey,data);
@@ -32,9 +47,9 @@ module pow2.ui {
          },time);
       };
       game.loadGame($scope.getState());
-      $scope.gameModel = game.world.state.model;
-      $scope.party = game.world.state.model.party;
-      $scope.player = game.world.state.model.party[0];
+      $scope.gameModel = game.model;
+      $scope.party = game.model.party;
+      $scope.player = game.model.party[0];
 
       var warriorTable = [];
       var p:HeroModel = $scope.party[0];
@@ -65,18 +80,17 @@ module pow2.ui {
 
 
       // TODO: A better system for game event handling.
-      game.world.state.on('enter',function(state){
+      game.machine.on('enter',function(state){
          console.log("UI: Entered state: " + state.name);
          $scope.$apply(function(){
             if(state.name === GameCombatState.NAME){
                $scope.combat = state.machine;
                $scope.inCombat = true;
                $scope.displayMessage(state.name);
-               state.machine.on('combat:attack',function(attacker,defender){
+               state.machine.on('combat:attack',function(damage,attacker,defender){
                   state.machine.paused = true;
-                  var change = defender.model.previous('hp') - defender.model.attributes.hp;
                   $scope.$apply(function(){
-                     var msg = attacker.model.get('name') + " attacked " + defender.model.get('name') + " for " + change + " damage!";
+                     var msg = attacker.model.get('name') + " attacked " + defender.model.get('name') + " for " + damage + " damage!";
                      $scope.displayMessage(msg,function(){
                         state.machine.paused = false;
                      });
@@ -88,7 +102,7 @@ module pow2.ui {
                      var msg = winner.model.get('name') + " DEFEATED " + loser.model.get('name') + "!";
                      $scope.displayMessage(msg,function(){
                         state.machine.paused = false;
-                        var data = game.world.state.model.toJSON();
+                        var data = game.model.toJSON();
                         //console.log(data);
                         $scope.saveState(JSON.stringify(data));
                      });
@@ -97,7 +111,7 @@ module pow2.ui {
             }
          });
       });
-      game.world.state.on('exit',function(state){
+      game.machine.on('exit',function(state){
          $scope.$apply(function(){
             if(state.name === GameMapState.NAME){
                $scope.dialog = null;
@@ -113,103 +127,6 @@ module pow2.ui {
 
       // TODO: Some kind of events mapping, that handles this (assigning to scope)
       // in a generic way.  Lots of duplication here.  Beware!
-
-      // Temple Dialog
-      game.world.scene.on('temple:entered',function(feature){
-         $scope.$apply(function(){
-            $scope.temple = feature;
-         });
-      });
-      game.world.scene.on('temple:exited',function(){
-         $scope.$apply(function(){
-            $scope.temple = null;
-         });
-      });
-      $scope.heal = () => {
-         if(!$scope.temple){
-            return;
-         }
-         var model:GameStateModel = game.world.state.model;
-         var money:number = model.get('gold');
-         var cost:number = parseInt($scope.temple.cost);
-         if(cost > money){
-            $scope.displayMessage("You don't have enough money");
-         }
-         else {
-            //console.log("You have (" + money + ") monies.  Spending (" + cost + ") on temple");
-            model.set({
-               gold: money - cost
-            });
-            _.each(model.party,(hero:HeroModel) => {
-               hero.set({
-                  hp: hero.get('maxHP')
-               });
-            });
-            $scope.displayMessage("Your party has been healed! \nYou now have (" + model.get('gold') + ") monies.",null,2500);
-
-         }
-         $scope.temple = null;
-
-      };
-      $scope.cancel = () => {
-         $scope.temple = null;
-      };
-
-
-      // Dialog bubbles
-      game.world.scene.on('dialog:entered',function(feature){
-         $scope.$apply(function(){
-            $scope.dialog = feature;
-         });
-      });
-      game.world.scene.on('dialog:exited',function(){
-         $scope.$apply(function(){
-            $scope.dialog = null;
-         });
-      });
-
-      // Stores
-      game.world.scene.on('store:entered',function(feature){
-         $scope.$apply(function(){
-            $scope.store = feature;
-         });
-      });
-      game.world.scene.on('store:exited',function(){
-         $scope.$apply(function(){
-            $scope.store = null;
-         });
-      });
-      $scope.buyItem = (item) => {
-         if(!$scope.store || !item){
-            return;
-         }
-         var model:GameStateModel = game.world.state.model;
-         var money:number = model.get('gold');
-         var cost:number = parseInt(item.cost);
-         if(cost > money){
-            $scope.displayMessage("You don't have enough money");
-         }
-         else {
-            //console.log("You have (" + money + ") monies.  Spending (" + cost + ") on temple");
-            model.set({
-               gold: money - cost
-            });
-            model.inventory.push(item);
-
-            //HACKS: Force equip to player0
-            //TODO: equipment UI
-            var player:HeroModel = model.party[0];
-            if(item.itemType === 'armor'){
-               player.armor.push(new ArmorModel(item));
-            }
-            else if(item.itemType === 'weapon'){
-               player.weapon = new WeaponModel(item);
-            }
-
-            $scope.displayMessage("Purchased " + item.name + ".",null,2500);
-
-         }
-      };
    });
 }
 
