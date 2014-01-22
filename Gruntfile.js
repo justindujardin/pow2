@@ -143,7 +143,8 @@ module.exports = function(grunt) {
          },
          web: {
             src: [
-               "source/web/*.ts"
+               "source/web/index.ts",
+               "source/web/**/*.ts"
             ],
             dest:'build'
          },
