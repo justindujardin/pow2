@@ -12,8 +12,8 @@
     <link rel="stylesheet" type="text/css" href="/css/index.css" media="all" />
     <link rel="stylesheet" type="text/css" href="/fonts/minecraftia/stylesheet.css" media="all" />
     <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="/js/underscore-min.js"></script>
-    <script type="text/javascript" src="/js/backbone-min.js"></script>
+    <script type="text/javascript" src="/js/underscore.js"></script>
+    <script type="text/javascript" src="/js/backbone.js"></script>
     <script type="text/javascript" src="/js/angular-1.2.9/angular.js"></script>
     <script type="text/javascript" src="/js/base64.js"></script>
 </head>
@@ -26,11 +26,64 @@
     <canvas width="576" height="576" combat-view ng-show="inCombat">
         Your browser doesn't support this.
     </canvas>
+    <div class="menu-overlay">
+        <span class="glyphicon glyphicon-user" ng-click="showParty()"></span>
+        <span class="glyphicon glyphicon-cog" ng-click="showSettings()"></span>
+    </div>
     <div class="container">
         <dialog-bubble ng-show="dialog"></dialog-bubble>
         <store-bubble ng-show="store"></store-bubble>
         <combat-view ng-show="inCombat"></combat-view>
         <temple-view ng-show="temple"></temple-view>
+        <!--<hero-stats-view hero="gameModel.party[0]"></hero-stats-view>-->
+
+        <div class="stats-table col-xs-12" eight-bit-panel>
+            <div class="col-xs-6">
+                <h3>Warrior</h3>
+                <div class="row">
+                    <div class="col-xs-1">LVL</div>
+                    <div class="col-xs-2">EXP</div>
+                    <div class="col-xs-1">HP</div>
+                    <div class="col-xs-1">STR</div>
+                    <div class="col-xs-1">AGL</div>
+                    <div class="col-xs-1">VIT</div>
+                    <div class="col-xs-1">INT</div>
+                </div>
+                <div class="row" ng-repeat="level in warriorLevelTable">
+                    <div class="col-xs-1">{{level.level}}</div>
+                    <div class="col-xs-2">{{level.experience}}</div>
+                    <div class="col-xs-1">{{level.hp}}</div>
+                    <div class="col-xs-1">{{level.strength}}</div>
+                    <div class="col-xs-1">{{level.agility}}</div>
+                    <div class="col-xs-1">{{level.vitality}}</div>
+                    <div class="col-xs-1">{{level.intelligence}}</div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <h3>Wizard</h3>
+                <div class="row">
+                    <div class="col-xs-1">LVL</div>
+                    <div class="col-xs-2">EXP</div>
+                    <div class="col-xs-1">HP</div>
+                    <div class="col-xs-1">STR</div>
+                    <div class="col-xs-1">AGL</div>
+                    <div class="col-xs-1">VIT</div>
+                    <div class="col-xs-1">INT</div>
+                </div>
+                <div class="row" ng-repeat="level in wizardLevelTable">
+
+                    <div class="col-xs-1">{{level.level}}</div>
+                    <div class="col-xs-2">{{level.experience}}</div>
+                    <div class="col-xs-1">{{level.hp}}</div>
+                    <div class="col-xs-1">{{level.strength}}</div>
+                    <div class="col-xs-1">{{level.agility}}</div>
+                    <div class="col-xs-1">{{level.vitality}}</div>
+                    <div class="col-xs-1">{{level.intelligence}}</div>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 </div>
 

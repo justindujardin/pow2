@@ -38,13 +38,6 @@ module pow2 {
             state:new GameStateMachine()
          });
          this.world.scene.once('map:loaded',() => {
-            // Only add a hero if none exists.
-            // TODO: This init stuff should go in a 'newGame' method or something.
-            if(this.world.state.model.party.length === 0){
-               var heroModel:HeroModel = HeroModel.create(HeroType.Warrior);
-               this.world.state.model.addHero(heroModel);
-            }
-
             // Create a movable character with basic components.
             this.sprite = GameStateMachine.createHeroEntity("Hero!", this.world.state.model.party[0]);
             this.sprite.setPoint(this.tileMap.bounds.getCenter());
@@ -63,6 +56,15 @@ module pow2 {
             this.world.state.model.destroy();
          }
          this.world.state.model = new GameStateModel(data, {parse: true});
+         // Only add a hero if none exists.
+         // TODO: This init stuff should go in a 'newGame' method or something.
+         if(this.world.state.model.party.length === 0){
+            var heroModel:HeroModel = HeroModel.create(HeroType.Warrior);
+            this.world.state.model.addHero(heroModel);
+            var heroModel:HeroModel = HeroModel.create(HeroType.Wizard);
+            this.world.state.model.addHero(heroModel);
+         }
+
       }
    }
    app.factory('game', () => {
@@ -74,6 +76,9 @@ module pow2 {
       $scope.saveState = function(data){
          localStorage.setItem(stateKey,data);
       };
+      $scope.range = function(n) {
+         return new Array(n);
+      };
       $scope.clearState = function() {
          localStorage.removeItem(stateKey);
       };
@@ -82,6 +87,8 @@ module pow2 {
       };
       // TODO: Resets state every page load.  Remove when persistence is desired.
       //resetGame();
+
+      // TODO: Move level table elsewhere
 
       $scope.displayMessage = function(message,callback?,time:number=1000) {
          $scope.overlayText = message;
@@ -94,6 +101,34 @@ module pow2 {
       $scope.gameModel = game.world.state.model;
       $scope.party = game.world.state.model.party;
       $scope.player = game.world.state.model.party[0];
+
+      var warriorTable = [];
+      var p:HeroModel = $scope.party[0];
+      var wizardTable = [];
+      var q:HeroModel = $scope.party[1];
+      for(var i = 1; i <= HeroModel.MAX_LEVEL; i++){
+         warriorTable.push({
+            level:i,
+            hp:p.getHPForLevel(i),
+            experience:p.getXPForLevel(i),
+            strength: p.getStrengthForLevel(i),
+            agility: p.getAgilityForLevel(i),
+            intelligence: p.getIntelligenceForLevel(i),
+            vitality: p.getVitalityForLevel(i)
+         });
+         wizardTable.push({
+            level:i,
+            hp:q.getHPForLevel(i),
+            experience:q.getXPForLevel(i),
+            strength: q.getStrengthForLevel(i),
+            agility: q.getAgilityForLevel(i),
+            intelligence: q.getIntelligenceForLevel(i),
+            vitality: q.getVitalityForLevel(i)
+         });
+      }
+      $scope.warriorLevelTable = warriorTable;
+      $scope.wizardLevelTable = wizardTable;
+
 
       // TODO: A better system for game event handling.
       game.world.state.on('enter',function(state){
@@ -122,7 +157,6 @@ module pow2 {
                         var data = game.world.state.model.toJSON();
                         //console.log(data);
                         $scope.saveState(JSON.stringify(data));
-
                      });
                   });
                });
@@ -392,6 +426,22 @@ module pow2 {
          restrict: 'E',
          scope:true,
          templateUrl: '/templates/heroView.html',
+         link: function ($scope, element, attrs) {
+            $scope.hero = attrs.hero;
+            $scope.$watch(attrs.hero, function(hero) {
+               $scope.hero = hero;
+            });
+         }
+      };
+   });
+
+// HeroView directive
+// ----------------------------------------------------------------------------
+   app.directive('heroStatsView', function ($compile) {
+      return {
+         restrict: 'E',
+         scope:true,
+         templateUrl: '/templates/heroStatsView.html',
          link: function ($scope, element, attrs) {
             $scope.hero = attrs.hero;
             $scope.$watch(attrs.hero, function(hero) {

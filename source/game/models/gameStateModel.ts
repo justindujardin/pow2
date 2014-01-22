@@ -29,9 +29,7 @@ module pow2 {
       party:HeroModel[]; // The player's party
       inventory:any[]; // The inventory of items owned by the player.
       static DEFAULTS:GameStateModelOptions = {
-         gold: 100,
-         party:[],
-         inventory:[]
+         gold: 100
       };
       defaults():any {
          return _.extend({}, GameStateModel.DEFAULTS);
@@ -44,18 +42,19 @@ module pow2 {
 
       parse(data:any,options?:any):any {
          try{
-            data = JSON.parse(data);
-            this.party = _.map(data.party,(partyMember) => {
-               return new HeroModel(partyMember,{parse:true});
-            });
-            return {
-               gold:data.gold
+            if(typeof data === 'string'){
+               data = JSON.parse(data);
             }
          }
          catch(e){
             console.log("Failed to load save game.");
             return {};
          }
+         this.party = _.map(data.party,(partyMember) => {
+            return new HeroModel(partyMember,{parse:true});
+         });
+         this.inventory = [];
+         return _.omit(data,'party');
       }
 
       toJSON() {

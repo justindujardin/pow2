@@ -15,6 +15,7 @@
 @import "less/bootstrap/forms";
 @import "less/bootstrap/buttons";
 @import "less/bootstrap/progress-bars";
+@import "less/bootstrap/glyphicons";
 
 // Utility classes
 @import "less/bootstrap/utilities";
@@ -98,6 +99,26 @@ canvas {
     bottom:0;
   }
 
+  .menu-overlay {
+    padding:5px;
+    position: absolute;
+    top: 0;
+    right:0;
+    margin:5px;
+    > span {
+      .opacity(0.8);
+      color: #ffffff;
+      text-align: center;
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
+      font-size:42px;
+      cursor: pointer;
+      &:hover {
+        .opacity(1);
+      }
+    }
+
+  }
+
   // Combat View
   // --------------------------------------------------------------------------
   .combat {
@@ -150,6 +171,18 @@ canvas {
     .row {
       margin-bottom:10px;
     }
+  }
+
+  .stats-table {
+    //    position: absolute;
+    //    left: 0;
+    //    right: 0;
+    //    top: 0;
+    //    bottom: 0;
+    display:none;
+    max-height:500px;
+    overflow: auto;
+    overflow-x: hidden;
   }
 
   // Stores
@@ -223,6 +256,11 @@ canvas {
 /* Small devices (tablets, 768px and up) */
 @media (min-width: @screen-sm-min) {
   .game-container{
+    .menu-overlay {
+      > span {
+        font-size:24px;
+      }
+    }
     .store {
       .name {
         h1 {
