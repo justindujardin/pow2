@@ -51,34 +51,6 @@ module pow2.ui {
       $scope.party = game.model.party;
       $scope.player = game.model.party[0];
 
-      var warriorTable = [];
-      var p:HeroModel = $scope.party[0];
-      var wizardTable = [];
-      var q:HeroModel = $scope.party[1];
-      for(var i = 1; i <= HeroModel.MAX_LEVEL; i++){
-         warriorTable.push({
-            level:i,
-            hp:p.getHPForLevel(i),
-            experience:p.getXPForLevel(i),
-            strength: p.getStrengthForLevel(i),
-            agility: p.getAgilityForLevel(i),
-            intelligence: p.getIntelligenceForLevel(i),
-            vitality: p.getVitalityForLevel(i)
-         });
-         wizardTable.push({
-            level:i,
-            hp:q.getHPForLevel(i),
-            experience:q.getXPForLevel(i),
-            strength: q.getStrengthForLevel(i),
-            agility: q.getAgilityForLevel(i),
-            intelligence: q.getIntelligenceForLevel(i),
-            vitality: q.getVitalityForLevel(i)
-         });
-      }
-      $scope.warriorLevelTable = warriorTable;
-      $scope.wizardLevelTable = wizardTable;
-
-
       // TODO: A better system for game event handling.
       game.machine.on('enter',function(state){
          console.log("UI: Entered state: " + state.name);
