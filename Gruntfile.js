@@ -253,7 +253,6 @@ module.exports = function(grunt) {
        */
       watch: {
          options:{
-            atBegin:true,
             spawn: false
          },
 
@@ -325,18 +324,19 @@ module.exports = function(grunt) {
             ],
             tasks: ['recess', 'notify:recess']
          },
+         expressts: {
+            files:  [ 'server/*.ts' ],
+            tasks:  [ 'typescript:server', 'express', 'notify:server' ],
+            options: {
+               atBegin:true,
+               nospawn: true
+            }
+         },
          express: {
             files:  [ 'web/*.html', 'server/*.js' ],
             tasks:  [ 'express', 'notify:server' ],
             options: {
                nospawn: true //Without this option specified express won't be reloaded
-            }
-         },
-         expressts: {
-            files:  [ 'server/*.ts' ],
-            tasks:  [ 'typescript:server', 'express', 'notify:server' ],
-            options: {
-               nospawn: true
             }
          }
       }
