@@ -56,7 +56,7 @@ module pow2.ui {
       loadGame(data:any){
          if(data){
             this.model.clear();
-            this.model.parse(data);
+            this.model.set(this.model.parse(data));
          }
          // Only add a hero if none exists.
          // TODO: This init stuff should go in a 'newGame' method or something.
