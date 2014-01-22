@@ -80,15 +80,22 @@ module pow2 {
          baseIntelligence:0,
          baseVitality:0
       };
+      defaults():any {
+         return _.extend(super.defaults(), HeroModel.DEFAULTS);
+      }
+
+      initialize(options?:any) {
+         super.initialize(options);
+         if(typeof this.armor === 'undefined'){
+            this.armor = [];
+         }
+      }
+
       getXPForLevel(level=this.attributes.level){
          if(level == 0){
             return 0;
          }
          return levelExpChart[level-1];
-      }
-
-      defaults():any {
-         return _.extend(super.defaults(), HeroModel.DEFAULTS);
       }
 
 
@@ -174,7 +181,7 @@ module pow2 {
       }
 
       getHPForLevel(level:number=this.attributes.level){
-         return Math.floor(this.attributes.vitality * Math.pow(level,1)) + 15;
+         return Math.floor(this.attributes.vitality * Math.pow(level,1.1)) + 15;
       }
       getStrengthForLevel(level:number=this.attributes.level){
          return Math.floor(this.attributes.baseStrength * Math.pow(level,0.95));
@@ -190,16 +197,17 @@ module pow2 {
       }
 
 
-      static create(type:HeroType){
+      static create(type:HeroType,name:string){
          var character:HeroModel = null;
          switch(type){
             case HeroType.Warrior:
                character = new HeroModel({
                   type:type,
                   level:0,
+                  name:name,
                   icon: "warrior.png",
                   baseStrength:10,
-                  baseAgility:3,
+                  baseAgility:2,
                   baseIntelligence:1,
                   baseVitality:7
 
@@ -208,11 +216,12 @@ module pow2 {
             case HeroType.Wizard:
                character = new HeroModel({
                   type:type,
+                  name:name,
                   level:0,
                   icon: "wizard.png",
                   baseStrength:1,
-                  baseAgility:2,
-                  baseIntelligence:8,
+                  baseAgility:6,
+                  baseIntelligence:9,
                   baseVitality:4
                });
                break;

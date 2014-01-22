@@ -34,6 +34,16 @@ module pow2 {
       defaults():any {
          return _.extend({}, GameStateModel.DEFAULTS);
       }
+      initialize(options?:any) {
+         super.initialize(options);
+         if(typeof this.party === 'undefined'){
+            this.party = [];
+         }
+         if(typeof this.inventory === 'undefined'){
+            this.inventory = [];
+         }
+      }
+
 
       addHero(model:HeroModel){
          this.party.push(model);
