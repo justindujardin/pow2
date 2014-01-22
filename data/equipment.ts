@@ -73,9 +73,9 @@ pow2.registerArmor(1,[
       icon : "leatherArmor.png",
       groups : ["default", "armor"],
       usedBy : ["warrior", "archer"],
-      defense:4,
+      defense:5,
       evade:-1,
-      cost:80
+      cost:70
    },
    {
       name : "Cloak",
@@ -103,8 +103,8 @@ pow2.registerArmor(1,[
       icon : "leatherHelm.png",
       groups : ["default", "armor"],
       usedBy : ["warrior", "archer"],
-      defense:3,
-      evade:-3,
+      defense:1,
+      evade:-1,
       cost:20
    },
    {
@@ -115,6 +115,6 @@ pow2.registerArmor(1,[
       usedBy : ["warrior", "archer", "mage"],
       defense:1,
       evade:-1,
-      cost:30
+      cost:20
    }
 ]);

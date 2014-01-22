@@ -91,6 +91,14 @@ module pow2 {
          }
       }
 
+      attack(defender:EntityModel):number{
+         var halfStrength = this.attributes.strength / 2;
+         var weaponAttack = this.weapon ? this.weapon.attributes.attack : 0;
+         var amount = halfStrength + weaponAttack;
+         defender.damage(amount);
+         return amount;
+      }
+
       getXPForLevel(level=this.attributes.level){
          if(level == 0){
             return 0;
