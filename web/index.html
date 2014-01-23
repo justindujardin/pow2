@@ -26,10 +26,6 @@
     <canvas width="576" height="576" combat-canvas ng-show="inCombat">
         Your browser doesn't support this.
     </canvas>
-    <div class="menu-overlay">
-        <span class="glyphicon glyphicon-user" ng-click="showParty()"></span>
-        <span class="glyphicon glyphicon-cog" ng-click="showSettings()"></span>
-    </div>
     <div class="container">
         <dialog-bubble ng-show="dialog"></dialog-bubble>
         <store-bubble ng-show="store"></store-bubble>
@@ -37,6 +33,13 @@
         <temple-view ng-show="temple"></temple-view>
         <level-stats-view></level-stats-view>
     </div>
+</div>
+
+<div class="menu-overlay">
+    <!--<span class="glyphicon glyphicon-volume-off" ng-click="volumeOn()" ng-visible="gameModel.attributes.sound > 0"></span>-->
+    <!--<span class="glyphicon glyphicon-volume-up" ng-click="volumeOff()" ng-visible="!gameModel.attributes.sound"></span>-->
+    <span class="glyphicon glyphicon-user" ng-click="showParty()"></span>
+    <span class="glyphicon glyphicon-cog" ng-click="showSettings()"></span>
 </div>
 
 <!-- Image drop screen overlay -->

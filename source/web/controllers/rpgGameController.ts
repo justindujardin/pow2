@@ -37,8 +37,6 @@ module pow2.ui {
       // TODO: Resets state every page load.  Remove when persistence is desired.
       //resetGame();
 
-      // TODO: Move level table elsewhere
-
       $scope.displayMessage = function(message,callback?,time:number=1000) {
          $scope.overlayText = message;
          $timeout(function(){

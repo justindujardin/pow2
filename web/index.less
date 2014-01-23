@@ -85,6 +85,24 @@ canvas {
 }
 
 
+.menu-overlay {
+  padding:5px;
+  position: absolute;
+  top: 0;
+  right:0;
+  margin:5px;
+  > span {
+    .opacity(0.8);
+    color: #ffffff;
+    text-align: center;
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
+    font-size:42px;
+    cursor: pointer;
+    &:hover {
+      .opacity(1);
+    }
+  }
+}
 .game-container {
   position: absolute;
   top:0;
@@ -99,25 +117,6 @@ canvas {
     bottom:0;
   }
 
-  .menu-overlay {
-    padding:5px;
-    position: absolute;
-    top: 0;
-    right:0;
-    margin:5px;
-    > span {
-      .opacity(0.8);
-      color: #ffffff;
-      text-align: center;
-      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
-      font-size:42px;
-      cursor: pointer;
-      &:hover {
-        .opacity(1);
-      }
-    }
-
-  }
 
   // Combat View
   // --------------------------------------------------------------------------
@@ -180,7 +179,7 @@ canvas {
     //    top: 0;
     //    bottom: 0;
     display:none;
-//    .opacity(.8);
+    //    .opacity(.8);
     max-height:500px;
     overflow: auto;
     overflow-x: hidden;
@@ -256,12 +255,12 @@ canvas {
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: @screen-sm-min) {
-  .game-container{
-    .menu-overlay {
-      > span {
-        font-size:24px;
-      }
+  .menu-overlay {
+    > span {
+      font-size:24px;
     }
+  }
+  .game-container{
     .store {
       .name {
         h1 {
