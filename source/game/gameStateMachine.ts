@@ -60,7 +60,7 @@ module pow2 {
       static createHeroEntity(name:string,model:HeroModel){
          var result = new GameEntityObject({
             name:name,
-            icon:"warrior.png",
+            icon: model.attributes.icon,
             model:model
          });
          result.addComponent(new PlayerRenderComponent());

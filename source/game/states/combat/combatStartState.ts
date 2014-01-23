@@ -30,7 +30,7 @@ module pow2 {
 
       enter(machine:CombatStateMachine){
          super.enter(machine);
-         machine.current = machine.friendly;
+         machine.current = machine.party[0];
          machine.currentDone = true;
       }
    }

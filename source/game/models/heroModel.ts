@@ -226,7 +226,7 @@ module pow2 {
                   type:type,
                   name:name,
                   level:0,
-                  icon: "wizard.png",
+                  icon: "girlWizard.png",
                   baseStrength:1,
                   baseAgility:6,
                   baseIntelligence:9,

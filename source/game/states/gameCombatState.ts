@@ -42,6 +42,9 @@ module pow2 {
          new CombatBeginTurnState(),
          new CombatEndTurnState()
       ];
+
+      party:GameEntityObject[] = [];
+      enemies:GameEntityObject[] = [];
       friendly:GameEntityObject;
       enemy:GameEntityObject;
 
@@ -118,9 +121,13 @@ module pow2 {
             this.tileMap = new pow2.GameTileMap("combat");
             this.scene.addObject(this.tileMap);
             this.tileMap.addComponent(new pow2.TileMapCameraComponent);
-            var gameHero = <HeroModel>machine.model.party[0];
-            this.machine.friendly = GameStateMachine.createHeroEntity("combat hero",gameHero);
-            this.scene.addObject(this.machine.friendly);
+
+            // Build party
+            _.each(machine.model.party,(hero:HeroModel,index:number) => {
+               var heroEntity:GameEntityObject = GameStateMachine.createHeroEntity(hero.attributes.name,hero);
+               this.machine.party.push(heroEntity);
+               this.scene.addObject(heroEntity);
+            });
 
             // Create the enemy
             this.machine.enemy = new pow2.GameEntityObject({
@@ -133,9 +140,14 @@ module pow2 {
             }));
 
             this.scene.once('map:loaded',() => {
-               var friendly = this.tileMap.getFeature('friendly');
-               var enemy = this.tileMap.getFeature('enemy');
-               this.machine.friendly.setPoint(new Point(friendly.x / 16, friendly.y / 16));
+
+               // Build party
+               _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
+                  var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
+                  heroEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+               });
+
+               var enemy = this.tileMap.getFeature('e1');
                this.machine.enemy.point = new Point(enemy.x / 16, enemy.y / 16);
                machine.view.setScene(this.scene);
                machine.view.setTileMap(this.tileMap);
