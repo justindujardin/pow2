@@ -29,7 +29,7 @@ module pow2 {
       party:HeroModel[]; // The player's party
       inventory:any[]; // The inventory of items owned by the player.
       static DEFAULTS:GameStateModelOptions = {
-         gold: 100
+         gold: 200
       };
       defaults():any {
          return _.extend({}, GameStateModel.DEFAULTS);

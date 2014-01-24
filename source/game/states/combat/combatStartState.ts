@@ -43,8 +43,8 @@ module pow2 {
          if(!super.evaluate(machine)){
             return false;
          }
-         var friendHP:number = machine.friendly.model.get('hp');
-         var enemyHP:number = machine.enemy.model.get('hp');
+         var friendHP:number = machine.party[0].model.get('hp');
+         var enemyHP:number = machine.enemies[0].model.get('hp');
          if(friendHP <= 0){
             this.targetState = CombatDefeatState.NAME;
             return true;

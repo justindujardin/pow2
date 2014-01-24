@@ -45,15 +45,13 @@ module pow2 {
 
       party:GameEntityObject[] = [];
       enemies:GameEntityObject[] = [];
-      friendly:GameEntityObject;
-      enemy:GameEntityObject;
 
       current:TileObject;
       currentDone:boolean = false;
 
 
       isFriendlyTurn():boolean {
-         return this.current && this.current.id === this.friendly.id;
+         return this.current && this.current.id === this.party[0].id;
       }
 
       keyListener:any = null;
@@ -130,13 +128,13 @@ module pow2 {
             });
 
             // Create the enemy
-            this.machine.enemy = new pow2.GameEntityObject({
+            this.machine.enemies.push(new pow2.GameEntityObject({
                model: CreatureModel.fromLevel(1)//gameHero.get('level'))
-            });
-            this.scene.addObject(this.machine.enemy);
-            this.machine.enemy.addComponent(new pow2.SpriteComponent({
+            }));
+            this.scene.addObject(this.machine.enemies[0]);
+            this.machine.enemies[0].addComponent(new pow2.SpriteComponent({
                name:"enemy",
-               icon:this.machine.enemy.model.get('icon')
+               icon:this.machine.enemies[0].model.get('icon')
             }));
 
             this.scene.once('map:loaded',() => {
@@ -148,7 +146,7 @@ module pow2 {
                });
 
                var enemy = this.tileMap.getFeature('e1');
-               this.machine.enemy.point = new Point(enemy.x / 16, enemy.y / 16);
+               this.machine.enemies[0].point = new Point(enemy.x / 16, enemy.y / 16);
                machine.view.setScene(this.scene);
                machine.view.setTileMap(this.tileMap);
             });

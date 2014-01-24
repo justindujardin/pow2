@@ -59,13 +59,13 @@ module pow2 {
          //
          var attacker:GameEntityObject = null;
          var defender:GameEntityObject = null;
-         if(machine.current.id === machine.friendly.id){
-            attacker = machine.friendly;
-            defender = machine.enemy;
+         if(machine.current.id === machine.party[0].id){
+            attacker = machine.party[0];
+            defender = machine.enemies[0];
          }
          else {
-            attacker = machine.enemy;
-            defender = machine.friendly;
+            attacker = machine.enemies[0];
+            defender = machine.party[0];
          }
          _.delay(() => {
             var damage:number = attacker.model.attack(defender.model);

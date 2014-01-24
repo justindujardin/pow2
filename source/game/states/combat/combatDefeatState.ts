@@ -26,7 +26,7 @@ module pow2 {
          super.enter(machine);
          console.log("SORRY BRO, YOU LOSE.");
          // callback(winner,loser);
-         machine.trigger("combat:defeat",machine.enemy,machine.friendly);
+         machine.trigger("combat:defeat",machine.enemies[0],machine.party[0]);
       }
       tick(machine:CombatStateMachine){
          if(machine.paused){

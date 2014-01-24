@@ -23,9 +23,9 @@ module pow2 {
       name:string = CombatVictoryState.NAME;
       enter(machine:CombatStateMachine){
          super.enter(machine);
-         var player:HeroModel = <HeroModel>machine.friendly.model;
-         player.awardWin(<CreatureModel>machine.enemy.model);
-         machine.trigger("combat:victory",machine.friendly,machine.enemy);
+         var player:HeroModel = <HeroModel>machine.party[0].model;
+         player.awardWin(<CreatureModel>machine.enemies[0].model);
+         machine.trigger("combat:victory",machine.party[0],machine.enemies[0]);
       }
 
       tick(machine:CombatStateMachine){

@@ -29,7 +29,7 @@ module pow2 {
 
       enter(machine:CombatStateMachine){
          super.enter(machine);
-         machine.current = machine.current.id === machine.friendly.id ? machine.enemy : machine.friendly;
+         machine.current = machine.current.id === machine.party[0].id ? machine.enemies[0] : machine.party[0];
       }
    }
 
