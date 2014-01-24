@@ -43,21 +43,6 @@ module.exports = function(grunt) {
          }
       },
 
-      /**
-       * Concatenate data files
-       */
-      concat: {
-         options: {
-            separator: '\n'
-         },
-         maps: {
-            src: [
-               "data/maps/*.js"
-            ],
-            dest: 'web/<%= pkg.name %>.maps.js'
-         }
-      },
-
       clean: {
          core: {
             src: ["build/core"]
@@ -71,8 +56,8 @@ module.exports = function(grunt) {
          game: {
             src: ["build/game"]
          },
-         web: {
-            src: ["build/web"]
+         ui: {
+            src: ["build/ui"]
          },
          server: {
             src: [
@@ -141,10 +126,11 @@ module.exports = function(grunt) {
             ],
             dest: 'build'
          },
-         web: {
+         ui: {
             src: [
-               "source/web/index.ts",
-               "source/web/**/*.ts"
+               "source/ui/index.ts",
+               "source/ui/*.ts",
+               "source/ui/**/*.ts"
             ],
             dest:'build'
          },
@@ -288,11 +274,11 @@ module.exports = function(grunt) {
             ],
             tasks: ['clean:game', 'typescript:game', 'notify:code']
          },
-         web: {
+         ui: {
             files: [
-               '<%= typescript.web.src %>'
+               '<%= typescript.ui.src %>'
             ],
-            tasks: ['typescript:web']
+            tasks: ['typescript:ui']
          },
          typedefs: {
             files: [
@@ -304,12 +290,6 @@ module.exports = function(grunt) {
 
          // Game Metadata
          //--------------------------------------------------------------------
-         maps: {
-            files: [
-               '<%= concat.maps.src %>'
-            ],
-            tasks: ['concat:maps', 'notify:maps']
-         },
          sprites: {
             files: [
                'data/textures/**/*.png'
@@ -383,7 +363,6 @@ module.exports = function(grunt) {
       _next();
    });
 
-   grunt.loadNpmTasks('grunt-contrib-concat');
    grunt.loadNpmTasks('grunt-contrib-uglify');
    grunt.loadNpmTasks('grunt-contrib-clean');
    grunt.loadNpmTasks('grunt-typescript');
@@ -394,10 +373,10 @@ module.exports = function(grunt) {
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-notify');
-      grunt.registerTask('default', ['concat', 'typescript', 'copy','recess','sprites']);
+      grunt.registerTask('default', ['typescript', 'copy','recess','sprites']);
    }
    else {
-      grunt.registerTask('default', ['concat', 'typescript', 'copy','recess','sprites']);
-      grunt.registerTask('heroku:production', ['concat','typescript', 'copy','recess','sprites','uglify']);
+      grunt.registerTask('default', ['typescript', 'copy','recess','sprites']);
+      grunt.registerTask('heroku:production', ['typescript', 'copy','recess','sprites','uglify']);
    }
 };

@@ -29,7 +29,7 @@ server.use(express.session({
 function getPageScripts(){
    require("../Gruntfile")(grunt);
    var ts = grunt.config.get('typescript');
-   var names = ['core','scene','tile','game','web'];
+   var names = ['core','scene','tile','game','ui'];
    var src = grunt.config.get('typescript.options.base_path');
    var scripts:string[] = [];
    _.each(names, (name:string) => {
@@ -83,6 +83,10 @@ server.use('/source', express.static(path.resolve(__dirname + "/../source")));
 server.use('/build', express.static(path.resolve(__dirname + "/../build")));
 server.use('/game', express.static(path.resolve(__dirname + "/../game")));
 server.use('/images', express.static(path.resolve(__dirname + "/../images")));
+
+// Path for Angular UI templates
+server.use('/templates', express.static(path.resolve(__dirname + "/../source/ui/templates")));
+
 fb.routes(server);
 
 // Use EJS templating with Express, and assign .html as the default extension.

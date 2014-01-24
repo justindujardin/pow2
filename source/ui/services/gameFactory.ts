@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-/// <reference path="../../../source/game/gameStateMachine.ts"/>
+/// <reference path="../../game/gameStateMachine.ts"/>
 /// <reference path="../../../source/game/gameWorld.ts"/>
 /// <reference path="../../../source/game/models/heroModel.ts"/>
 /// <reference path="../../../types/underscore/underscore.d.ts"/>
