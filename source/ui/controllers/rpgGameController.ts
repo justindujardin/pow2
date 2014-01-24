@@ -51,9 +51,8 @@ module pow2.ui {
 
       // TODO: A better system for game event handling.
       game.machine.on('enter',function(state){
-         console.log("UI: Entered state: " + state.name);
-         $scope.$apply(function(){
-            if(state.name === GameCombatState.NAME){
+         if(state.name === GameCombatState.NAME){
+            $scope.$apply(function(){
                $scope.combat = state.machine;
                $scope.inCombat = true;
                $scope.displayMessage(state.name);
@@ -78,8 +77,8 @@ module pow2.ui {
                      });
                   });
                });
-            }
-         });
+            });
+         }
       });
       game.machine.on('exit',function(state){
          $scope.$apply(function(){

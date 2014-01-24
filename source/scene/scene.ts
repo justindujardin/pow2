@@ -43,7 +43,9 @@ module pow2 {
       }
 
       destroy() {
-         this.world.erase(this);
+         if(this.world){
+            this.world.erase(this);
+         }
          _.each(this._objects,(obj) => {
             this.removeObject(obj,true);
          });

@@ -62,7 +62,7 @@ module pow2 {
    export class GameMapTransition extends StateTransition {
       targetState:string = GameMapState.NAME;
       evaluate(machine:GameStateMachine):boolean {
-         if(!super.evaluate(machine) || !machine.player || !machine.view){
+         if(!super.evaluate(machine) || !machine.player){
             return false;
          }
          if(machine.getCurrentName() === GameCombatState.NAME){

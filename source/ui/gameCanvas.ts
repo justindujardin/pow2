@@ -34,7 +34,6 @@ module pow2.ui {
             }
 
             game.tileView = new GameMapView(element[0], game.loader);
-            game.machine.setGameView(game.tileView);
             game.tileView.camera.extent.set(10, 10);
             game.tileView.setTileMap(game.tileMap);
             game.world.scene.addView(game.tileView);

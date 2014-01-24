@@ -16,7 +16,7 @@
 /// <reference path="services/gameFactory.ts"/>
 
 module pow2.ui {
-   app.directive('combatCanvas', function ($compile, game) {
+   app.directive('combatCanvas', function ($compile, game:AngularGameFactory) {
       return {
          restrict: 'A',
          link: function ($scope, element, attrs) {
@@ -32,17 +32,22 @@ module pow2.ui {
                context.webkitImageSmoothingEnabled = false;
                context.mozImageSmoothingEnabled = false;
             }
-            game.tileView = new GameMapView(element[0], game.loader);
-            game.world.state.setGameView(game.tileView);
-            game.tileView.camera.extent.set(10, 10);
-            game.tileView.setTileMap(game.tileMap);
-            game.world.scene.addView(game.tileView);
-            if(game.sprite){
-               game.tileView.trackObject(game.sprite);
-            }
+            var tileView = new GameMapView(element[0], game.loader);
+            game.machine.on('combat:begin',(state:GameCombatState) => {
+               // Scope apply?
+               // Transition canvas views, and such
+               state.scene.addView(tileView);
+               game.tileMap.scene.paused = true;
 
+               tileView.camera.extent.set(state.tileMap.bounds.extent.x,state.tileMap.bounds.extent.y);
+               tileView.camera.setCenter(state.tileMap.bounds.getCenter());
+               tileView.setTileMap(state.tileMap);
+            });
+            game.machine.on('combat:end',(state:GameCombatState) => {
+               state.scene.removeView(tileView);
+               game.tileMap.scene.paused = false;;
+            });
             onResize();
-            console.log("READY TO GO!");
          }
       };
    });

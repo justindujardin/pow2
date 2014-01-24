@@ -97,48 +97,45 @@ module pow2 {
          new GameMapTransition()
       ];
       machine:CombatStateMachine = null;
-      saveScene:Scene;
-      saveTileMap:TileMap;
+      parent:GameStateMachine = null;
       scene:Scene;
       tileMap:GameTileMap;
       finished:boolean = false; // Trigger state to exit when true.
       enter(machine:GameStateMachine){
          super.enter(machine);
-         this.machine = null;
-         this.saveScene = machine.world.scene;
-         this.saveTileMap = machine.player.tileMap;
-         this.saveScene.paused = true;
+         this.parent = machine;
          this.machine = new CombatStateMachine(machine);
-         this.scene = <Scene>machine.world.setService('scene',new Scene());
+         this.scene = new Scene();
+         machine.world.mark(this.scene);
 
+         // Build party
+         _.each(machine.model.party,(hero:HeroModel,index:number) => {
+            var heroEntity:GameEntityObject = GameStateMachine.createHeroEntity(hero.attributes.name,hero);
+            this.machine.party.push(heroEntity);
+            this.scene.addObject(heroEntity);
+         });
+
+         // Create the enemy
+         // TODO: Enemies (plural)
+         this.machine.enemies.push(new pow2.GameEntityObject({
+            model: CreatureModel.fromLevel(1)//gameHero.get('level'))
+         }));
+         this.scene.addObject(this.machine.enemies[0]);
+         this.machine.enemies[0].addComponent(new pow2.SpriteComponent({
+            name:"enemy",
+            icon:this.machine.enemies[0].model.get('icon')
+         }));
 
          machine.world.loader.load("/data/sounds/summon",(res) => {
             if(res.isReady()){
                res.data.play();
             }
+
             this.tileMap = new pow2.GameTileMap("combat");
             this.scene.addObject(this.tileMap);
             this.tileMap.addComponent(new pow2.TileMapCameraComponent);
 
-            // Build party
-            _.each(machine.model.party,(hero:HeroModel,index:number) => {
-               var heroEntity:GameEntityObject = GameStateMachine.createHeroEntity(hero.attributes.name,hero);
-               this.machine.party.push(heroEntity);
-               this.scene.addObject(heroEntity);
-            });
-
-            // Create the enemy
-            this.machine.enemies.push(new pow2.GameEntityObject({
-               model: CreatureModel.fromLevel(1)//gameHero.get('level'))
-            }));
-            this.scene.addObject(this.machine.enemies[0]);
-            this.machine.enemies[0].addComponent(new pow2.SpriteComponent({
-               name:"enemy",
-               icon:this.machine.enemies[0].model.get('icon')
-            }));
-
             this.scene.once('map:loaded',() => {
-
                // Build party
                _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
                   var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
@@ -147,28 +144,22 @@ module pow2 {
 
                var enemy = this.tileMap.getFeature('e1');
                this.machine.enemies[0].point = new Point(enemy.x / 16, enemy.y / 16);
-               machine.view.setScene(this.scene);
-               machine.view.setTileMap(this.tileMap);
+               machine.trigger('combat:begin',this);
             });
-            console.log("FIGHT!!!");
          });
 
       }
       exit(machine:GameStateMachine){
-         machine.world.setService('scene',this.saveScene);
-         machine.view.setScene(this.saveScene);
-         machine.view.setTileMap(this.saveTileMap);
+         machine.trigger('combat:end',this);
+         this.scene.destroy();
          machine.updatePlayer();
          this.tileMap.destroy();
-         this.saveScene.paused = false;
          this.scene.destroy();
          this.finished = false;
          this.machine = null;
+         this.parent = null;
          if(machine.combatant){
             machine.combatant.destroy();
-         }
-         if(machine.player){
-            machine.player.trigger('combat:end',this);
          }
       }
       tick(machine:IStateMachine){

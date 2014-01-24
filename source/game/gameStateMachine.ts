@@ -42,7 +42,6 @@ module pow2 {
       player:TileObject = null;
       encounter:CombatEncounterComponent = null;
       combatant:TileObject = null;
-      view:GameMapView = null;
       tickRateMS:number = 300;
       states:IState[] = [
          new GameDefaultState(),
@@ -50,11 +49,6 @@ module pow2 {
          new GameCombatState()
       ];
       private _elapsed: number = 0;
-
-
-      setGameView(view:GameMapView){
-         this.view = view;
-      }
 
 
       static createHeroEntity(name:string,model:HeroModel){
@@ -68,10 +62,10 @@ module pow2 {
       }
 
       updatePlayer(){
-         if(this.world && this.world.scene && this.view.tileMap){
+         if(this.world && this.world.scene){
             var scene:Scene = this.world.scene;
             this.player = scene.objectByComponent(PlayerComponent);
-            this.encounter = <CombatEncounterComponent>this.view.tileMap.findComponent(CombatEncounterComponent);
+            this.encounter = <CombatEncounterComponent>this.world.scene.componentByType(CombatEncounterComponent);
          }
       }
 
