@@ -21,6 +21,7 @@
 @import "less/bootstrap/utilities";
 @import "less/bootstrap/responsive-utilities";
 @import "less/eightBitPanel";
+@import "less/pageTransitions";
 * {
   -webkit-touch-callout: none;
   -webkit-text-size-adjust: none;
@@ -41,6 +42,35 @@ canvas {
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
 }
+
+.scale-up {
+  .pt-page-scaleUpDown;
+
+}
+.scale-up.ng-hide {
+  .pt-page-scaleUp;
+}
+.scale-up.ng-hide-add, .scale-up.ng-hide-remove {
+  display:block!important;
+}
+
+.scale-down {
+}
+.scale-down.ng-hide {
+}
+.scale-down.ng-hide-add {
+  .pt-page-scaleDownUp;
+  .pt-page-ontop;
+  .pt-page-delay500;
+  display:block!important;
+}
+
+.scale-down.ng-hide-remove {
+  .pt-page-delay1000;
+  .pt-page-scaleUp;
+  display:block!important;
+}
+
 
 .hero-view {
   text-align: center;
@@ -103,6 +133,11 @@ canvas {
     }
   }
 }
+.container {
+  z-index: 100;
+
+}
+
 .game-container {
   position: absolute;
   top:0;
@@ -116,7 +151,14 @@ canvas {
     right:0;
     bottom:0;
   }
+}
 
+.ui-container {
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
 
   // Combat View
   // --------------------------------------------------------------------------

@@ -19,7 +19,7 @@
 /// <reference path="../../types/angularjs/angular.d.ts"/>
 
 module pow2.ui {
-   export var app = angular.module('pow2', []);
+   export var app = angular.module('pow2', ['ngAnimate']);
 
 // CombatView directive
 // ----------------------------------------------------------------------------

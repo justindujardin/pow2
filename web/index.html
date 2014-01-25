@@ -15,25 +15,28 @@
     <script type="text/javascript" src="/js/underscore.js"></script>
     <script type="text/javascript" src="/js/backbone.js"></script>
     <script type="text/javascript" src="/js/angular-1.2.9/angular.js"></script>
+    <script type="text/javascript" src="/js/angular-1.2.9/angular-animate.js"></script>
     <script type="text/javascript" src="/js/base64.js"></script>
 </head>
 <body ng-controller="RPGGameController">
 
 <div class="game-container">
-    <canvas width="576" height="576" game-canvas ng-hide="inCombat">
+    <canvas class="game-view map scale-down" width="576" height="576" game-canvas ng-hide="inCombat">
         Your browser doesn't support this.
     </canvas>
-    <canvas width="576" height="576" combat-canvas ng-show="inCombat">
+    <canvas class="game-view combat scale-down" width="576" height="576" combat-canvas ng-hide="!inCombat">
         Your browser doesn't support this.
     </canvas>
-    <div class="container">
-        <dialog-bubble ng-show="dialog"></dialog-bubble>
-        <store-bubble ng-show="store"></store-bubble>
-        <combat-view ng-show="inCombat"></combat-view>
-        <temple-view ng-show="temple"></temple-view>
-        <level-stats-view></level-stats-view>
-    </div>
 </div>
+
+<div class="ui-container container">
+    <dialog-bubble ng-show="dialog"></dialog-bubble>
+    <store-bubble ng-show="store"></store-bubble>
+    <combat-view ng-show="inCombat"></combat-view>
+    <temple-view ng-show="temple"></temple-view>
+    <level-stats-view></level-stats-view>
+</div>
+
 
 <div class="menu-overlay">
     <!--<span class="glyphicon glyphicon-volume-off" ng-click="volumeOn()" ng-visible="gameModel.attributes.sound > 0"></span>-->
