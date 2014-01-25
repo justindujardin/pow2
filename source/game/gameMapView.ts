@@ -17,6 +17,7 @@
 /// <reference path="../tile/tileMapView.ts"/>
 /// <reference path="../tile/render/tileObjectRenderer.ts"/>
 /// <reference path="./components/playerComponent.ts"/>
+/// <reference path="./components/combatCameraComponent.ts"/>
 /// <reference path="./components/playerCameraComponent.ts"/>
 /// <reference path="../tile/components/spriteComponent.ts"/>
 
@@ -38,7 +39,7 @@ module pow2{
        */
       processCamera() {
          var host = this.scene.objectByComponent(PlayerCameraComponent);
-         host = host ? host : this.scene.objectByComponent(TileMapCameraComponent);
+         host = host ? host : this.scene.objectByComponent(CombatCameraComponent);
          if(host){
             this.cameraComponent = <CameraComponent>host.findComponent(CameraComponent);
          }

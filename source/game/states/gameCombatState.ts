@@ -23,6 +23,7 @@
 /// <reference path="./combat/combatVictoryState.ts" />
 /// <reference path="./combat/combatDefeatState.ts" />
 /// <reference path="./combat/combatStartState.ts" />
+/// <reference path="../components/combatCameraComponent.ts" />
 /// <reference path="../models/entityModel.ts" />
 /// <reference path="../models/creatureModel.ts" />
 
@@ -132,8 +133,8 @@ module pow2 {
             }
 
             this.tileMap = new pow2.GameTileMap("combat");
+            this.tileMap.addComponent(new pow2.CombatCameraComponent);
             this.scene.addObject(this.tileMap);
-            this.tileMap.addComponent(new pow2.TileMapCameraComponent);
 
             this.scene.once('map:loaded',() => {
                // Build party
