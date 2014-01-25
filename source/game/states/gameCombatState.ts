@@ -46,13 +46,50 @@ module pow2 {
 
       party:GameEntityObject[] = [];
       enemies:GameEntityObject[] = [];
+      turnList:GameEntityObject[] = [];
 
-      current:TileObject;
+      current:GameEntityObject;
       currentDone:boolean = false;
 
 
       isFriendlyTurn():boolean {
-         return this.current && this.current.id === this.party[0].id;
+         return this.current && !!_.find(this.party,(h) => {
+            return h.id === this.current.id;
+         });
+      }
+
+      getRandomPartyMember():GameEntityObject {
+         var players:GameEntityObject[] = _.shuffle(this.party);
+         while(players.length > 0){
+            var p = players.shift();
+            if(!p.isDefeated()){
+               return p;
+            }
+         }
+         return null;
+      }
+
+      getRandomEnemy():GameEntityObject {
+         var players:GameEntityObject[] = _.shuffle(this.enemies);
+         while(players.length > 0){
+            var p = players.shift();
+            if(!p.isDefeated()){
+               return p;
+            }
+         }
+         return null;
+      }
+
+      partyDefeated():boolean {
+         var deadList = _.reject(this.party,(obj:GameEntityObject) => {
+            return obj.model.attributes.hp <= 0;
+         });
+         return deadList.length === 0;
+      }
+      enemiesDefeated():boolean {
+         return _.reject(this.enemies,(obj:GameEntityObject) => {
+            return obj.model.attributes.hp <= 0;
+         }).length === 0;
       }
 
       keyListener:any = null;
@@ -117,9 +154,8 @@ module pow2 {
          });
 
          // Create the enemy
-         // TODO: Enemies (plural)
-         var max = 9;
-         var min = 2;
+         var max = 3;
+         var min = 1;
          var enemyCount = Math.floor(Math.random() * (max - min + 1)) + min;
          for(var i = 0; i < enemyCount; i++){
             var nme = new pow2.GameEntityObject({

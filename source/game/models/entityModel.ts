@@ -60,6 +60,10 @@ module pow2 {
          }
       }
 
+      isDefeated():boolean {
+         return this.attributes.hp <= 0;
+      }
+
       attack(defender:EntityModel):number{
          var halfStrength = this.attributes.strength / 2;
          defender.damage(halfStrength);

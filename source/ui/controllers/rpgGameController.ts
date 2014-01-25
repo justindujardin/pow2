@@ -68,7 +68,7 @@ module pow2.ui {
                state.machine.on('combat:victory',function(winner,loser) {
                   state.machine.paused = true;
                   $scope.$apply(function(){
-                     var msg = winner.model.get('name') + " DEFEATED " + loser.model.get('name') + "!";
+                     var msg = "Enemies Defeated!";
                      $scope.displayMessage(msg,function(){
                         state.machine.paused = false;
                         var data = game.model.toJSON();

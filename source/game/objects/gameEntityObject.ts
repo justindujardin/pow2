@@ -34,6 +34,10 @@ module pow2 {
          this.model = options.model || new EntityModel(options);
       }
 
+      isDefeated():boolean {
+         return this.model.isDefeated();
+      }
+
       getIcon() {
          if(this.icon){
             return this.icon;

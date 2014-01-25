@@ -24,12 +24,21 @@ module pow2 {
       name:string = CombatEndTurnState.NAME;
       transitions:IStateTransition[] = [
          new CombatCompletedTransition(),
+         new CombatStartTransition(),
          new CombatBeginTurnTransition()
       ];
 
       enter(machine:CombatStateMachine){
          super.enter(machine);
-         machine.current = machine.current.id === machine.party[0].id ? machine.enemies[0] : machine.party[0];
+         machine.current = null;
+         // Find the next turn.
+         while(machine.turnList.length > 0 && !machine.current){
+            machine.current = machine.turnList.shift();
+            // Strip out defeated players.
+            if(machine.current && machine.current.isDefeated()){
+               machine.current = null;
+            }
+         }
       }
    }
 

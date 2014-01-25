@@ -25,7 +25,7 @@ module pow2 {
          super.enter(machine);
          var player:HeroModel = <HeroModel>machine.party[0].model;
          player.awardWin(<CreatureModel>machine.enemies[0].model);
-         machine.trigger("combat:victory",machine.party[0],machine.enemies[0]);
+         machine.trigger("combat:victory",machine.party,machine.enemies);
       }
 
       tick(machine:CombatStateMachine){

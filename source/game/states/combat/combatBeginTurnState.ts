@@ -29,13 +29,20 @@ module pow2 {
          new CombatEndTurnTransition()
       ];
       attacksLeft:number = 0;
+      current:GameEntityObject; // Used to restore scale on exit.
       enter(machine:CombatStateMachine){
          super.enter(machine);
          machine.currentDone = false;
          this.attacksLeft = 1;
+         machine.current.scale = 1.5;
+         this.current = machine.current;
          if(!machine.isFriendlyTurn()){
             this.attack(machine);
          }
+      }
+      exit(machine:CombatStateMachine){
+         this.current.scale = 1;
+         super.exit(machine);
       }
       keyPress(machine:CombatStateMachine,keyCode:KeyCode):boolean {
          if(!machine.isFriendlyTurn()){
@@ -59,13 +66,13 @@ module pow2 {
          //
          var attacker:GameEntityObject = null;
          var defender:GameEntityObject = null;
-         if(machine.current.id === machine.party[0].id){
-            attacker = machine.party[0];
-            defender = machine.enemies[0];
+         if(machine.isFriendlyTurn()){
+            attacker = machine.current;
+            defender = machine.getRandomEnemy();
          }
          else {
-            attacker = machine.enemies[0];
-            defender = machine.party[0];
+            attacker = machine.current;
+            defender = machine.getRandomPartyMember();
          }
          _.delay(() => {
             var damage:number = attacker.model.attack(defender.model);

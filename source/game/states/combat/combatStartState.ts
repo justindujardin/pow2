@@ -30,26 +30,35 @@ module pow2 {
 
       enter(machine:CombatStateMachine){
          super.enter(machine);
-         machine.current = machine.party[0];
+
+         machine.turnList = _.shuffle(_.union(machine.party,machine.enemies));
+         machine.current = machine.turnList.shift();
          machine.currentDone = true;
       }
    }
 
    // Combat Transitions
    //--------------------------------------------------------------------------
+   export class CombatStartTransition extends StateTransition {
+      targetState:string = CombatStartState.NAME;
+      evaluate(machine:CombatStateMachine):boolean {
+         return super.evaluate(machine)
+            && machine.currentDone === true
+            && machine.turnList.length === 0
+            && machine.current === null;
+      }
+   }
    export class CombatCompletedTransition extends StateTransition {
       targetState:string = "";
       evaluate(machine:CombatStateMachine):boolean {
          if(!super.evaluate(machine)){
             return false;
          }
-         var friendHP:number = machine.party[0].model.get('hp');
-         var enemyHP:number = machine.enemies[0].model.get('hp');
-         if(friendHP <= 0){
+         if(machine.partyDefeated()){
             this.targetState = CombatDefeatState.NAME;
             return true;
          }
-         if(enemyHP <= 0){
+         if(machine.enemiesDefeated()){
             this.targetState = CombatVictoryState.NAME;
             return true;
          }
