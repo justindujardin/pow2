@@ -189,7 +189,7 @@ module pow2 {
       }
 
       getHPForLevel(level:number=this.attributes.level){
-         return Math.floor(this.attributes.vitality * Math.pow(level,1.1)) + 15;
+         return Math.floor(this.attributes.vitality * Math.pow(level,1.1)) + (this.attributes.baseVitality * 2);
       }
       getStrengthForLevel(level:number=this.attributes.level){
          return Math.floor(this.attributes.baseStrength * Math.pow(level,0.95));
