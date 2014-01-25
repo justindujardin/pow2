@@ -118,14 +118,21 @@ module pow2 {
 
          // Create the enemy
          // TODO: Enemies (plural)
-         this.machine.enemies.push(new pow2.GameEntityObject({
-            model: CreatureModel.fromLevel(1)//gameHero.get('level'))
-         }));
-         this.scene.addObject(this.machine.enemies[0]);
-         this.machine.enemies[0].addComponent(new pow2.SpriteComponent({
-            name:"enemy",
-            icon:this.machine.enemies[0].model.get('icon')
-         }));
+         var max = 9;
+         var min = 2;
+         var enemyCount = Math.floor(Math.random() * (max - min + 1)) + min;
+         for(var i = 0; i < enemyCount; i++){
+            var nme = new pow2.GameEntityObject({
+               model: CreatureModel.fromLevel(1)//gameHero.get('level'))
+            });
+            this.scene.addObject(nme);
+            nme.addComponent(new pow2.SpriteComponent({
+               name:"enemy",
+               icon:nme.model.get('icon')
+            }));
+            this.machine.enemies.push(nme);
+
+         }
 
          machine.world.loader.load("/data/sounds/summon",(res) => {
             if(res.isReady()){
@@ -137,14 +144,22 @@ module pow2 {
             this.scene.addObject(this.tileMap);
 
             this.scene.once('map:loaded',() => {
-               // Build party
+               // Position Party/Enemies
+
                _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
                   var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
                   heroEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
                });
 
-               var enemy = this.tileMap.getFeature('e1');
-               this.machine.enemies[0].point = new Point(enemy.x / 16, enemy.y / 16);
+               _.each(this.machine.enemies,(enemyEntity:GameEntityObject,index:number) => {
+                  var battleSpawn = this.tileMap.getFeature('e' + (index + 1));
+                  if(battleSpawn){
+                     enemyEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+                  }
+               });
+//
+//               var enemy = this.tileMap.getFeature('e1');
+//               this.machine.enemies[0].point = new Point(enemy.x / 16, enemy.y / 16);
                machine.trigger('combat:begin',this);
             });
          });
