@@ -35,7 +35,7 @@ module pow2.ui {
          return localStorage.getItem(stateKey);
       };
       // TODO: Resets state every page load.  Remove when persistence is desired.
-      //resetGame();
+      resetGame();
 
       $scope.displayMessage = function(message,callback?,time:number=1000) {
          $scope.overlayText = message;
