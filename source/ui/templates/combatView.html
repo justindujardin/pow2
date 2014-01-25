@@ -1,9 +1,9 @@
 <div class="row combat" ng-show="combat">
     <div class="col-xs-3 enemy">
         <div eight-bit-panel>
-            <div class="character">{{combat.enemy.model.attributes.name}}</div>
-            <div class="character" icon-render icon="combat.enemy.getIcon()"></div>
-            <div><strong>HP</strong>: {{combat.enemy.model.attributes.hp}}</div>
+            <div class="character">{{combat.enemies[0].model.attributes.name}}</div>
+            <div class="character" icon-render icon="combat.enemies[0].getIcon()"></div>
+            <div><strong>HP</strong>: {{combat.enemies[0].model.attributes.hp}}</div>
         </div>
     </div>
     <div class="col-xs-9 friendly">
