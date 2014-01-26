@@ -118,6 +118,7 @@ module.exports = function(grunt) {
                "source/game/*.ts",
                "source/game/objects/*.ts",
                "source/game/models/entityModel.ts",
+               "source/game/models/itemModel.ts",
                "source/game/models/*.ts",
                "source/game/states/*.ts",
                "source/game/states/combat/*.ts",

@@ -19,6 +19,7 @@
 /// <reference path="../../core/api.ts" />
 /// <reference path="./entityModel.ts" />
 /// <reference path="./heroModel.ts" />
+/// <reference path="./itemModel.ts" />
 module pow2 {
 
    export interface GameStateModelOptions {
@@ -27,7 +28,7 @@ module pow2 {
 
    export class GameStateModel extends Backbone.Model {
       party:HeroModel[]; // The player's party
-      inventory:any[]; // The inventory of items owned by the player.
+      inventory:ItemModel[]; // The inventory of items owned by the player.
       static DEFAULTS:GameStateModelOptions = {
          gold: 200
       };

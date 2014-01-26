@@ -16,19 +16,16 @@
 
 /// <reference path="../../../types/backbone/backbone.d.ts" />
 /// <reference path="../../../types/underscore/underscore.d.ts" />
-/// <reference path="./itemModel.ts" />
-
+/// <reference path="../../core/api.ts" />
 module pow2 {
-   export class WeaponModel extends ItemModel {
-      static DEFAULTS:IGameWeapon = {
-         name:"No Weapon",
+   export class ItemModel extends Backbone.Model {
+      static DEFAULTS:IGameItem = {
+         name:"",
          icon:"",
-         attack:0,
-         hit:0,
          cost:0
       };
       defaults():any {
-         return _.extend(super.defaults(),WeaponModel.DEFAULTS);
+         return _.extend({},ItemModel.DEFAULTS);
       }
    }
 }

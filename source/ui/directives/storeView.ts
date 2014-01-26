@@ -17,7 +17,7 @@
 module pow2.ui {
 // StoreBubble directive
 // ----------------------------------------------------------------------------
-   app.directive('storeBubble', function (game) {
+   app.directive('storeBubble',['game',function (game,$aside) {
       return {
          restrict: 'E',
          templateUrl: '/templates/storeBubble.html',
@@ -33,23 +33,24 @@ module pow2.ui {
                   $scope.displayMessage("You don't have enough money");
                }
                else {
-                  //console.log("You have (" + money + ") monies.  Spending (" + cost + ") on temple");
                   model.set({
                      gold: money - cost
                   });
-                  model.inventory.push(item);
 
                   //HACKS: Force equip to player0
                   //TODO: equipment UI
                   var player:HeroModel = model.party[0];
+                  var inventoryModel:any = null;
                   if(item.itemType === 'armor'){
-                     player.armor.push(new ArmorModel(item));
+                     inventoryModel = new ArmorModel(item);
+                     player.armor.push(inventoryModel);
                   }
                   else if(item.itemType === 'weapon'){
-                     player.weapon = new WeaponModel(item);
+                     inventoryModel = new WeaponModel(item);
+                     player.weapon = inventoryModel;
                   }
-
                   $scope.displayMessage("Purchased " + item.name + ".",null,2500);
+                  model.inventory.push(inventoryModel);
 
                }
             };
@@ -71,5 +72,5 @@ module pow2.ui {
          }
 
       };
-   });
+   }]);
 }

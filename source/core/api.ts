@@ -21,17 +21,18 @@ declare var mixpanel: any;
 
 module pow2 {
 
-   export interface IInventory {
-      name:string;
-      cost:number;
+   export interface IGameItem {
+      name:string; // The item name
+      cost:number; // The cost of this item
+      icon:string; // Sprite icon name, e.g. LongSword.png
    }
 
-   export interface IWeapon extends IInventory {
+   export interface IGameWeapon extends IGameItem {
       attack:number; // Damage value
       hit:number; // 0-100%
    }
 
-   export interface IArmor extends IInventory {
+   export interface IGameArmor extends IGameItem {
       defense:number; // Defensive value
       evade:number; // Value to add to evasion <= 0
    }
@@ -74,7 +75,7 @@ module pow2 {
          data.creatures.push(_.extend(c,{level:level}));
       });
    }
-   export function registerWeapons(level,weapons:IWeapon[]){
+   export function registerWeapons(level,weapons:IGameWeapon[]){
       _.each(weapons,(c) => {
          data.weapons.push(_.extend(c,{
             level:level,
@@ -82,7 +83,7 @@ module pow2 {
          }));
       });
    }
-   export function registerArmor(level,items:IArmor[]){
+   export function registerArmor(level,items:IGameArmor[]){
       _.each(items,(c) => {
          data.armor.push(_.extend(c,{
             level:level,

@@ -16,10 +16,10 @@
 
 /// <reference path="../../../types/backbone/backbone.d.ts" />
 /// <reference path="../../../types/underscore/underscore.d.ts" />
-/// <reference path="../../core/api.ts" />
+/// <reference path="./itemModel.ts" />
 module pow2 {
-   export class ArmorModel extends Backbone.Model {
-      static DEFAULTS:IArmor = {
+   export class ArmorModel extends ItemModel {
+      static DEFAULTS:IGameArmor = {
          name:"No Armor",
          icon:"",
          defense:0,
@@ -27,7 +27,7 @@ module pow2 {
          cost:0
       };
       defaults():any {
-         return _.extend({},ArmorModel.DEFAULTS);
+         return _.extend(super.defaults(),ArmorModel.DEFAULTS);
       }
    }
 }
