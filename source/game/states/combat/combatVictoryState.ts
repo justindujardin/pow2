@@ -29,18 +29,21 @@ module pow2 {
             gold += nme.model.get('gold') || 0;
             exp += nme.model.get('exp') || 0;
          });
+         machine.parent.model.addGold(gold);
 
          var players:GameEntityObject[] = _.reject(machine.party,(p:GameEntityObject) => {
             return p.isDefeated();
          });
          var expPerParty:number = Math.round(exp / players.length);
+         var leveledHeros:HeroModel[] = [];
          _.each(players,(p:GameEntityObject) => {
             var heroModel:HeroModel = <HeroModel>p.model;
-            heroModel.awardExperience(expPerParty);
+            var leveled:boolean = heroModel.awardExperience(expPerParty);
+            if(leveled){
+               leveledHeros.push(heroModel);
+            }
          });
-
-         machine.parent.model.addGold(gold);
-         machine.trigger("combat:victory",machine.party,machine.enemies);
+         machine.trigger("combat:victory",machine.party,machine.enemies,leveledHeros);
       }
 
       tick(machine:CombatStateMachine){

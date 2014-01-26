@@ -119,14 +119,16 @@ module pow2 {
          return ((this.weapon ? this.weapon.attributes.attack : 0) + this.attributes.strength / 2) | 0;
       }
 
-      awardExperience(exp:number){
+      awardExperience(exp:number):boolean{
          var newExp:number = this.attributes.exp + exp;
          this.set({
             exp:newExp
          });
          if(newExp >= this.attributes.nextLevelExp){
             this.awardLevelUp();
+            return true;
          }
+         return false;
       }
 
       awardLevelUp(){
