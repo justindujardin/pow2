@@ -23,8 +23,23 @@ module pow2 {
       name:string = CombatVictoryState.NAME;
       enter(machine:CombatStateMachine){
          super.enter(machine);
-         var player:HeroModel = <HeroModel>machine.party[0].model;
-         player.awardWin(<CreatureModel>machine.enemies[0].model);
+         var gold:number = 0;
+         var exp: number = 0;
+         _.each(machine.enemies,(nme:GameEntityObject) => {
+            gold += nme.model.get('gold') || 0;
+            exp += nme.model.get('exp') || 0;
+         });
+
+         var players:GameEntityObject[] = _.reject(machine.party,(p:GameEntityObject) => {
+            return p.isDefeated();
+         });
+         var expPerParty:number = Math.round(exp / players.length);
+         _.each(players,(p:GameEntityObject) => {
+            var heroModel:HeroModel = <HeroModel>p.model;
+            heroModel.awardExperience(expPerParty);
+         });
+
+         machine.parent.model.addGold(gold);
          machine.trigger("combat:victory",machine.party,machine.enemies);
       }
 

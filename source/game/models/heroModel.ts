@@ -119,20 +119,13 @@ module pow2 {
          return ((this.weapon ? this.weapon.attributes.attack : 0) + this.attributes.strength / 2) | 0;
       }
 
-      awardWin(defeated:CreatureModel){
-         var exp:number = defeated.get('exp');
+      awardExperience(exp:number){
          var newExp:number = this.attributes.exp + exp;
          this.set({
             exp:newExp
          });
          if(newExp >= this.attributes.nextLevelExp){
             this.awardLevelUp();
-         }
-
-         if(this.game){
-            var gold:number = this.game.get('gold');
-            var newGold = (defeated.get('gold') || 0) + gold;
-            this.game.set({gold:newGold});
          }
       }
 

@@ -51,6 +51,10 @@ module pow2 {
          model.game = this;
       }
 
+      addGold(amount:number){
+         this.set({ gold: this.attributes.gold + amount});
+      }
+
       parse(data:any,options?:any):any {
          try{
             if(typeof data === 'string'){
