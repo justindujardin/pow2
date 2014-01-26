@@ -20,55 +20,58 @@
 ///<reference path="./resourceLoader.ts"/>
 ///<reference path="./world.ts"/>
 module pow2 {
-    export class SpriteRender implements IWorldObject {
-        canvas:HTMLCanvasElement = null;
-        context:CanvasRenderingContext2D = null;
+   export class SpriteRender implements IWorldObject {
+      canvas:HTMLCanvasElement = null;
+      context:CanvasRenderingContext2D = null;
 
-        // IWorldObject implementation.
-        world:IWorld = null;
-        onAddToWorld(world:IWorld){}
-        onRemoveFromWorld(world:IWorld){}
+      // IWorldObject implementation.
+      world:IWorld = null;
+      onAddToWorld(world:IWorld){}
+      onRemoveFromWorld(world:IWorld){}
 
-        constructor() {
-            this.canvas = document.createElement('canvas');
-            this.canvas.width = this.canvas.height = 16;
+      constructor() {
+         this.canvas = document.createElement('canvas');
+         this.canvas.width = this.canvas.height = 16;
 
-            this.context = this.canvas.getContext('2d');
-            (<any>this.context).webkitImageSmoothingEnabled = false;
-            (<any>this.context).mozImageSmoothingEnabled = false;
-        }
+         this.context = this.canvas.getContext('2d');
+         (<any>this.context).webkitImageSmoothingEnabled = false;
+         (<any>this.context).mozImageSmoothingEnabled = false;
+      }
 
-        getSpriteSheet(name:string,done:Function=()=>{}):ImageResource{
-            if(this.world){
-                return this.world.loader.load("/images/" + name + ".png",done);
-            }
-            return null;
-        }
+      getSpriteSheet(name:string,done:Function=()=>{}):ImageResource{
+         if(this.world){
+            return this.world.loader.load("/images/" + name + ".png",done);
+         }
+         return null;
+      }
 
-        getSingleSprite(spriteName:string,done:Function=(result:any)=>{}):ImageResource{
-            var coords:any = pow2.data.sprites[spriteName];
-            return this.getSpriteSheet(coords.source,(image:ImageResource)=>{
-                this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
-                this.context.drawImage(image.data,coords.x,coords.y,this.canvas.width,this.canvas.height,0,0,this.canvas.width,this.canvas.height);
-                var src:string = this.canvas.toDataURL();
-                var result:HTMLImageElement = new Image();
-                result.src = src;
-                result.onload = function() {
-                    done(result);
-                };
-                result.onerror = function(err){
-                    done(err);
-                };
-            });
-        }
+      getSingleSprite(spriteName:string,done:Function=(result:any)=>{}):ImageResource{
+         var coords:any = pow2.data.sprites[spriteName];
+         if(!coords){
+            throw new Error("Unable to find sprite by name: " + spriteName);
+         }
+         return this.getSpriteSheet(coords.source,(image:ImageResource)=>{
+            this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
+            this.context.drawImage(image.data,coords.x,coords.y,this.canvas.width,this.canvas.height,0,0,this.canvas.width,this.canvas.height);
+            var src:string = this.canvas.toDataURL();
+            var result:HTMLImageElement = new Image();
+            result.src = src;
+            result.onload = function() {
+               done(result);
+            };
+            result.onerror = function(err){
+               done(err);
+            };
+         });
+      }
 
-        getSpriteMeta(name:string) {
-            var desc = pow2.data.sprites[name];
-            if(!desc){
-                throw new Error("Missing sprite data for: " + name);
-            }
-            return desc;
-        }
-    }
+      getSpriteMeta(name:string) {
+         var desc = pow2.data.sprites[name];
+         if(!desc){
+            throw new Error("Missing sprite data for: " + name);
+         }
+         return desc;
+      }
+   }
 
 }
