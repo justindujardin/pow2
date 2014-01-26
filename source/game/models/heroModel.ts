@@ -39,7 +39,9 @@ module pow2 {
 
    export enum HeroType {
       Warrior = 1,
-      Wizard = 2
+      Wizard = 2,
+      Ranger = 3,
+      Thief = 4
    }
    export interface HeroModelOptions extends EntityModelOptions {
       type:HeroType;
@@ -230,6 +232,30 @@ module pow2 {
                   baseStrength:1,
                   baseAgility:6,
                   baseIntelligence:9,
+                  baseVitality:4
+               });
+               break;
+            case HeroType.Ranger:
+               character = new HeroModel({
+                  type:type,
+                  name:name,
+                  level:0,
+                  icon: "girlArcher.png",
+                  baseStrength:3,
+                  baseAgility:10,
+                  baseIntelligence:2,
+                  baseVitality:5
+               });
+               break;
+            case HeroType.Thief:
+               character = new HeroModel({
+                  type:type,
+                  name:name,
+                  level:0,
+                  icon: "assassin.png",
+                  baseStrength:2,
+                  baseAgility:10,
+                  baseIntelligence:4,
                   baseVitality:4
                });
                break;
