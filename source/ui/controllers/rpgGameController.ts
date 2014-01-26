@@ -37,15 +37,6 @@ module pow2.ui {
       // TODO: Resets state every page load.  Remove when persistence is desired.
       //resetGame();
 
-      $scope.showParty = function() {
-         $scope.aside = $aside({
-            template: '/templates/partyAside.html',
-            scope:$scope,
-            show: true,
-            placement:"left"
-         });
-      };
-
       $scope.displayMessage = function(message,callback?,time:number=1000) {
          $scope.overlayText = message;
          $timeout(function(){

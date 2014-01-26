@@ -24,14 +24,7 @@
 </head>
 <body ng-controller="RPGGameController">
 
-
-<div class="menu-overlay">
-    <!--<span class="glyphicon glyphicon-volume-off" ng-click="volumeOn()" ng-visible="gameModel.attributes.sound > 0"></span>-->
-    <!--<span class="glyphicon glyphicon-volume-up" ng-click="volumeOff()" ng-visible="!gameModel.attributes.sound"></span>-->
-    <span class="glyphicon glyphicon-user" ng-click="showParty()"></span>
-    <span class="glyphicon glyphicon-cog" ng-click="showSettings()"></span>
-</div>
-
+<game-menu></game-menu>
 
 <div class="game-container">
     <canvas class="game-view map scale-down" width="576" height="576" game-canvas ng-hide="inCombat">
