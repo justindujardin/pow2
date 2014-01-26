@@ -20,7 +20,7 @@ module pow2.ui {
    export function resetGame() {
       localStorage.removeItem(stateKey);
    }
-   app.controller('RPGGameController',function($scope,$rootScope,$http,$timeout,game){
+   app.controller('RPGGameController',function($scope,$timeout,game,$aside){
       $scope.overlayText = null;
       $scope.saveState = function(data){
          localStorage.setItem(stateKey,data);
@@ -35,7 +35,16 @@ module pow2.ui {
          return localStorage.getItem(stateKey);
       };
       // TODO: Resets state every page load.  Remove when persistence is desired.
-      resetGame();
+      //resetGame();
+
+      $scope.showParty = function() {
+         $scope.aside = $aside({
+            template: '/templates/partyAside.html',
+            scope:$scope,
+            show: true,
+            placement:"left"
+         });
+      };
 
       $scope.displayMessage = function(message,callback?,time:number=1000) {
          $scope.overlayText = message;
@@ -65,7 +74,7 @@ module pow2.ui {
                      });
                   });
                });
-               state.machine.on('combat:victory',function(winner,loser) {
+               state.machine.on('combat:victory',function(winner,loser,leveled) {
                   state.machine.paused = true;
                   $scope.$apply(function(){
                      var msg = "Enemies Defeated!";

@@ -1,0 +1,21 @@
+<div class="aside" tabindex="-1" role="dialog">
+    <div class="aside-dialog">
+        <div class="aside-content">
+            <div class="aside-header">
+                <button type="button" class="close" ng-click="$hide()">&times;</button>
+                <h4 class="aside-title">Party - <span class="gold">{{gameModel.attributes.gold}}</span> <strong>Gold</strong></h4>
+            </div>
+            <div class="aside-body">
+                <div class="row">
+
+                </div>
+                <div class="row">
+                    <hero-card class="col-sm-6 col-lg-3" hero="member" ng-repeat="member in party"></hero-card>
+                </div>
+            </div>
+            <div class="aside-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

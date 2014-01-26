@@ -1,0 +1,24 @@
+<div class="hero-card">
+    <div class="row">
+        <h1 class="name">{{hero.attributes.name}}</h1>
+        <div class="image" icon-render icon="hero.attributes.icon"></div>
+        <div><strong>Level</strong> {{hero.attributes.level}}</div>
+        <div><strong>HP</strong> {{hero.attributes.hp}} / {{hero.attributes.maxHP}}</div>
+        <div class="progress">
+            <div class="progress-bar" style="width:{{hero.attributes.hp / hero.attributes.maxHP * 100}}%;">
+                <span class="sr-only">60% Complete</span>
+            </div>
+        </div>
+        <div><strong>EXP</strong> {{hero.attributes.exp}} / {{hero.attributes.nextLevelExp}}</div>
+        <div class="progress">
+            <div class="progress-bar" style="width:{{(hero.attributes.exp - hero.attributes.prevLevelExp) / (hero.attributes.nextLevelExp - hero.attributes.prevLevelExp) * 100 }}%;">
+            </div>
+        </div>
+        <div class="hero-stat"><strong>Strength :</strong> {{hero.attributes.strength}}</div>
+        <div class="hero-stat"><strong>Agility :</strong> {{hero.attributes.agility}}</div>
+        <div class="hero-stat"><strong>Vitality :</strong> {{hero.attributes.vitality}}</div>
+        <div class="hero-stat"><strong>Intelligence :</strong> {{hero.attributes.intelligence}}</div>
+        <div class="hero-stat"><strong>Damage :</strong> {{hero.getDamage()}}</div>
+        <div class="hero-stat"><strong>Defense :</strong> {{hero.getDefense()}}</div>
+    </div>
+</div>

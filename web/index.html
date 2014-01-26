@@ -15,10 +15,23 @@
     <script type="text/javascript" src="/js/underscore.js"></script>
     <script type="text/javascript" src="/js/backbone.js"></script>
     <script type="text/javascript" src="/js/angular-1.2.9/angular.js"></script>
+    <script type="text/javascript" src="/js/angular-1.2.9/angular-sanitize.js"></script>
+    <script type="text/javascript" src="/js/angular-1.2.9/angular-touch.js"></script>
     <script type="text/javascript" src="/js/angular-1.2.9/angular-animate.js"></script>
+    <script type="text/javascript" src="/js/angular-strap/angular-strap.js"></script>
+    <script type="text/javascript" src="/js/angular-strap/angular-strap.tpl.js"></script>
     <script type="text/javascript" src="/js/base64.js"></script>
 </head>
 <body ng-controller="RPGGameController">
+
+
+<div class="menu-overlay">
+    <!--<span class="glyphicon glyphicon-volume-off" ng-click="volumeOn()" ng-visible="gameModel.attributes.sound > 0"></span>-->
+    <!--<span class="glyphicon glyphicon-volume-up" ng-click="volumeOff()" ng-visible="!gameModel.attributes.sound"></span>-->
+    <span class="glyphicon glyphicon-user" ng-click="showParty()"></span>
+    <span class="glyphicon glyphicon-cog" ng-click="showSettings()"></span>
+</div>
+
 
 <div class="game-container">
     <canvas class="game-view map scale-down" width="576" height="576" game-canvas ng-hide="inCombat">
@@ -37,13 +50,6 @@
     <level-stats-view></level-stats-view>
 </div>
 
-
-<div class="menu-overlay">
-    <!--<span class="glyphicon glyphicon-volume-off" ng-click="volumeOn()" ng-visible="gameModel.attributes.sound > 0"></span>-->
-    <!--<span class="glyphicon glyphicon-volume-up" ng-click="volumeOff()" ng-visible="!gameModel.attributes.sound"></span>-->
-    <span class="glyphicon glyphicon-user" ng-click="showParty()"></span>
-    <span class="glyphicon glyphicon-cog" ng-click="showSettings()"></span>
-</div>
 
 <!-- Image drop screen overlay -->
 <div class="drop-overlay" ng-show="overlayText">

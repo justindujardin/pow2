@@ -19,7 +19,11 @@
 /// <reference path="../../types/angularjs/angular.d.ts"/>
 
 module pow2.ui {
-   export var app = angular.module('pow2', ['ngAnimate']);
+   export var app = angular.module('pow2', [
+      'ngAnimate',
+      'mgcrea.ngStrap',
+      'ngSanitize'
+   ]);
 
 // CombatView directive
 // ----------------------------------------------------------------------------
@@ -56,11 +60,11 @@ module pow2.ui {
 
 // HeroView directive
 // ----------------------------------------------------------------------------
-   app.directive('heroStatsView', function ($compile) {
+   app.directive('heroCard', function ($compile) {
       return {
          restrict: 'E',
          scope:true,
-         templateUrl: '/templates/heroStatsView.html',
+         templateUrl: '/templates/heroCard.html',
          link: function ($scope, element, attrs) {
             $scope.hero = attrs.hero;
             $scope.$watch(attrs.hero, function(hero) {

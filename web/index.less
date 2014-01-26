@@ -20,7 +20,10 @@
 // Utility classes
 @import "less/bootstrap/utilities";
 @import "less/bootstrap/responsive-utilities";
+
+// Other
 @import "less/eightBitPanel";
+@import "less/aside";
 @import "less/pageTransitions";
 * {
   -webkit-touch-callout: none;
@@ -121,6 +124,7 @@ canvas {
   top: 0;
   right:0;
   margin:5px;
+  z-index: 150;
   > span {
     .opacity(0.8);
     color: #ffffff;
@@ -150,6 +154,35 @@ canvas {
     left:0;
     right:0;
     bottom:0;
+  }
+}
+
+.hero-card {
+  > * {
+    font-size: 16px;
+    font-smooth: never;
+    -webkit-font-smoothing : none;
+    -moz-font-smoothing : none;
+  }
+
+  > .row:first-child {
+    padding:0 10px;
+  }
+  padding: 0 15px;
+  h1, .image {
+    margin-top:5px;
+    text-align: center;
+  }
+  .progress {
+    margin-bottom:5px;
+    height:10px;
+  }
+
+  .hero-stat {
+    text-align: right;
+    strong {
+      float:left;
+    }
   }
 }
 
