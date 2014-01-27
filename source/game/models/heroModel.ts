@@ -48,10 +48,12 @@ module pow2 {
       description:string; // An description of the hero.
 
       // Hidden attributes.
-      baseStrength:number;
-      baseAgility:number;
-      baseIntelligence:number;
-      baseVitality:number;
+      baseStrength:number; // Strength = damage
+      baseAgility:number; // Agility = evasion
+      baseIntelligence:number; // Higher intelligence = more powerful magic and more mana
+      baseVitality:number; // The base level of vitality for the character class
+
+      hitPercentPerLevel:number; // How much the hit% increases per level.
 
       // The experience required to advance to the next level.
       nextLevelExp:number;
@@ -80,7 +82,10 @@ module pow2 {
          baseStrength:0,
          baseAgility:0,
          baseIntelligence:0,
-         baseVitality:0
+         baseVitality:0,
+         hitPercent:5,
+         hitPercentPerLevel:1,
+         evade:0
       };
       defaults():any {
          return _.extend(super.defaults(), HeroModel.DEFAULTS);
@@ -93,11 +98,21 @@ module pow2 {
          }
       }
 
+      getEvasion():number {
+         var armorWeight:number = _.reduce<ArmorModel,number>(this.armor,(val:number,item) => {
+            return val + item.attributes.evade;
+         },0);
+         return EntityModel.BASE_EVASION + this.attributes.agility - armorWeight;
+      }
+
       attack(defender:EntityModel):number{
          var halfStrength = this.attributes.strength / 2;
          var weaponAttack = this.weapon ? this.weapon.attributes.attack : 0;
          var amount = halfStrength + weaponAttack;
-         return defender.damage(amount);
+         if(this.rollHit(defender)){
+            return defender.damage(amount);
+         }
+         return 0;
       }
 
       getXPForLevel(level=this.attributes.level){
@@ -213,8 +228,9 @@ module pow2 {
                   baseStrength:10,
                   baseAgility:2,
                   baseIntelligence:1,
-                  baseVitality:7
-
+                  baseVitality:7,
+                  hitPercent:10,
+                  hitPercentPerLevel:3
                });
                break;
             case HeroType.Wizard:
@@ -226,7 +242,9 @@ module pow2 {
                   baseStrength:1,
                   baseAgility:6,
                   baseIntelligence:9,
-                  baseVitality:4
+                  baseVitality:4,
+                  hitPercent:5,
+                  hitPercentPerLevel:1
                });
                break;
             case HeroType.Ranger:
@@ -238,7 +256,9 @@ module pow2 {
                   baseStrength:3,
                   baseAgility:10,
                   baseIntelligence:2,
-                  baseVitality:5
+                  baseVitality:5,
+                  hitPercent:7,
+                  hitPercentPerLevel:2
                });
                break;
             case HeroType.Thief:
@@ -250,7 +270,9 @@ module pow2 {
                   baseStrength:2,
                   baseAgility:10,
                   baseIntelligence:4,
-                  baseVitality:4
+                  baseVitality:4,
+                  hitPercent:5,
+                  hitPercentPerLevel:2
                });
                break;
          }

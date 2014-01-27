@@ -43,7 +43,9 @@ module pow2 {
          strength:0,
          numAttacks: 0,
          armorClass: 0,
-         description: ""
+         description: "",
+         evade:0,
+         hitPercent:1
       };
 
       defaults():any {
@@ -53,11 +55,13 @@ module pow2 {
       attack(defender:EntityModel):number{
          var hero = <HeroModel>defender;
          var defense = hero.getDefense();
-
          var min = this.attributes.attackLow;
          var max = this.attributes.attackHigh;
          var damage = Math.floor(Math.random() * (max - min + 1)) + min;
-         return defender.damage(damage - defense);
+         if(this.rollHit(defender)){
+            return defender.damage(damage - defense);
+         }
+         return 0;
       }
 
 
