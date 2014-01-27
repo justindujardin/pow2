@@ -47,6 +47,7 @@ module pow2.ui {
       game.loadGame($scope.getState());
       $scope.gameModel = game.model;
       $scope.party = game.model.party;
+      $scope.inventory = game.model.inventory;
       $scope.player = game.model.party[0];
 
       // TODO: A better system for game event handling.

@@ -77,10 +77,11 @@ module pow2 {
    }
    export function registerWeapons(level,weapons:IGameWeapon[]){
       _.each(weapons,(c) => {
-         data.weapons.push(_.extend(c,{
+         var item = _.extend(c,{
             level:level,
             itemType:"weapon"
-         }));
+         });
+         data.weapons.push(item);
       });
    }
    export function registerArmor(level,items:IGameArmor[]){

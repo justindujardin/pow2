@@ -18,15 +18,28 @@ module pow2.ui {
 
 // Game Menu overlay directive
 // ----------------------------------------------------------------------------
-   app.directive('gameMenu', function (game) {
-      return {
-         restrict: 'E',
-         replace:true,
-         templateUrl: '/templates/gameMenu.html',
-         link: function($scope) {
-         }
-      };
-   });
-
+   app.directive('gameMenu', [
+      'game',
+      function (game) {
+         return {
+            restrict: 'E',
+            replace:true,
+            templateUrl: '/templates/gameMenu.html',
+            controller: function($scope) {
+               $scope.showParty = function(){
+                  alert("Show party");
+               };
+               $scope.showInventory = function(){
+                  alert("Show inv");
+               };
+               $scope.showSettings = function(){
+                  alert("Show settings");
+               };
+            },
+            link: function($scope) {
+            }
+         };
+      }
+   ]);
 }
 

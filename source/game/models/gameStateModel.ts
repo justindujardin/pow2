@@ -68,7 +68,20 @@ module pow2 {
          this.party = _.map(data.party,(partyMember) => {
             return new HeroModel(partyMember,{parse:true});
          });
-         this.inventory = [];
+         this.inventory = _.map(data.inventory,(item:any) => {
+            switch(item.itemType){
+               case "armor":
+                  var armor = _.where(pow2.data.armor,{name:item.name})[0];
+                  return new ArmorModel(armor);
+                  break;
+               case "weapon":
+                  var armor = _.where(pow2.data.weapons,{name:item.name})[0];
+                  return new WeaponModel(armor);
+                  break;
+            }
+            throw new Error("Unknown item type: " + item.itemType);
+         });
+
          return _.omit(data,'party');
       }
 
@@ -76,6 +89,9 @@ module pow2 {
          var result = super.toJSON();
          result.party = _.map(this.party,(p) => {
             return p.toJSON();
+         });
+         result.inventory = _.map(this.inventory,(p) => {
+            return <any>_.pick(p.attributes,'name','itemType');
          });
          return result;
       }

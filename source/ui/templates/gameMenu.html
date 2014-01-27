@@ -1,13 +1,29 @@
 <div class="bt-container">
-    <nav id="bt-menu" class="bt-menu" ng-click="open = (open == 'bt-menu-open' ? 'bt-menu-close' : 'bt-menu-open')" ng-class="open">
-        <a href="#" class="bt-menu-trigger"><span>Menu</span></a>
+    <nav id="bt-menu" class="bt-menu" ng-class="open">
+        <a href="#" class="bt-menu-trigger" ng-click="open = (open == 'bt-menu-open' ? 'bt-menu-close' : 'bt-menu-open')"><span>Menu</span></a>
         <ul>
-            <li><a href="#" class="glyphicon glyphicon-user">Party</a></li>
-            <li><a href="#" class="glyphicon glyphicon-cog">Settings</a></li>
+            <li ng-class="{active:page=='party'}">
+                <a href="#" class="glyphicon glyphicon-user" ng-click="page='party'">Party</a>
+            </li>
+            <li ng-class="{active:page=='inventory'}">
+                <a href="#" class="glyphicon glyphicon-briefcase" ng-click="page='inventory'">Inventory</a>
+            </li>
+            <li ng-class="{active:page=='settings'}">
+                <a href="#" class="glyphicon glyphicon-cog" ng-click="page='settings'">Settings</a>
+            </li>
         </ul>
-        <div class="row party" ng-show="open == 'bt-menu-open'">
+        <div class="row party" ng-show="open != 'bt-menu-close' && page == 'party'">
             <hero-card class="col-sm-6" hero="member" ng-repeat="member in party"></hero-card>
         </div>
-
+        <div class="row party" ng-show="open != 'bt-menu-close' && page == 'inventory'">
+            <h1>Inventory</h1>
+            <div ng-repeat="item in inventory">
+                <div icon-render icon="item.attributes.icon"></div>
+                {{item.attributes.name}}
+            </div>
+        </div>
+        <div class="row party" ng-show="open != 'bt-menu-close' && page == 'settings'">
+            <h1>Settings</h1>
+        </div>
     </nav>
 </div>
