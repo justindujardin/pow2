@@ -97,8 +97,7 @@ module pow2 {
          var halfStrength = this.attributes.strength / 2;
          var weaponAttack = this.weapon ? this.weapon.attributes.attack : 0;
          var amount = halfStrength + weaponAttack;
-         defender.damage(amount);
-         return amount;
+         return defender.damage(amount);
       }
 
       getXPForLevel(level=this.attributes.level){

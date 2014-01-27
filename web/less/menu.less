@@ -32,13 +32,23 @@
   transition: border-width 0.3s, background-color 0.3s, height 0s 0.3s;
   &.bt-menu-open {
     height: 100%;
-    border-width: 30px 30px 30px 90px;
-    background-color: #2a6496;
+    border-width: 0 0px 0 90px;
+    background-color: #004c62;
     color:#fff;
     .bt-shadow-text;
     .bt-shadow;
     -webkit-transition: border-width 0.3s, background-color 0.3s;
     transition: border-width 0.3s, background-color 0.3s;
+
+    .party {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      padding: 0 15px;
+      overflow: auto;
+    }
   }
 }
 

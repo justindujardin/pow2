@@ -31,7 +31,7 @@ module pow2 {
       enter(machine:CombatStateMachine){
          super.enter(machine);
 
-         machine.turnList = _.shuffle(_.union(machine.party,machine.enemies));
+         machine.turnList = _.shuffle(_.union(machine.getLiveParty(),machine.getLiveEnemies()));
          machine.current = machine.turnList.shift();
          machine.currentDone = true;
       }

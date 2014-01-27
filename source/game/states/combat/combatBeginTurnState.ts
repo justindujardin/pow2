@@ -36,6 +36,7 @@ module pow2 {
          this.attacksLeft = 1;
          machine.current.scale = 1.5;
          this.current = machine.current;
+         machine.trigger("combat:beginTurn",machine.current);
          if(!machine.isFriendlyTurn()){
             this.attack(machine);
          }

@@ -50,14 +50,16 @@ module pow2 {
          return _.extend({},EntityModel.DEFAULTS);
       }
 
-      damage(amount:number){
+      damage(amount:number):number{
          if(amount < 0){
-            return;
+            return 0;
          }
+         amount = Math.ceil(amount);
          this.set({hp: Math.max(0,this.attributes.hp - amount)});
          if(this.attributes.hp < 0){
             this.set({dead:true});
          }
+         return amount;
       }
 
       isDefeated():boolean {
@@ -66,8 +68,7 @@ module pow2 {
 
       attack(defender:EntityModel):number{
          var halfStrength = this.attributes.strength / 2;
-         defender.damage(halfStrength);
-         return halfStrength;
+         return defender.damage(halfStrength);;
       }
    }
 }

@@ -1,12 +1,15 @@
-<div class="row combat" ng-show="combat">
-    <div class="col-xs-3 enemy">
-        <div eight-bit-panel>
-            <div class="character">{{combat.enemies[0].model.attributes.name}}</div>
-            <div class="character" icon-render icon="combat.enemies[0].getIcon()"></div>
-            <div><strong>HP</strong>: {{combat.enemies[0].model.attributes.hp}}</div>
+<div class="combat" ng-show="combat" eight-bit-panel>
+    <div class="col-xs-12" ng-repeat="hero in combat.party">
+        <div class="col-xs-6">
+            <strong class="name">{{hero.model.attributes.name}}</strong>
         </div>
-    </div>
-    <div class="col-xs-9 friendly">
-        <hero-view hero="combat.party[0].model"></hero-view>
+        <div class="col-xs-6">
+            <div><strong>HP</strong> {{hero.model.attributes.hp}} / {{hero.model.attributes.maxHP}}</div>
+            <div class="progress">
+                <div class="progress-bar" style="width:{{hero.model.attributes.hp / hero.model.attributes.maxHP * 100}}%;">
+                    <span class="sr-only">60% Complete</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

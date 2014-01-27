@@ -1,4 +1,4 @@
-<div class="hero-card">
+<div class="hero-card" ng-class="{dead:hero.attributes.hp <= 0}">
     <div class="row">
         <h1 class="name">{{hero.attributes.name}}</h1>
         <div class="image" icon-render icon="hero.attributes.icon"></div>
@@ -18,6 +18,7 @@
         <div class="hero-stat"><strong>Agility :</strong> {{hero.attributes.agility}}</div>
         <div class="hero-stat"><strong>Vitality :</strong> {{hero.attributes.vitality}}</div>
         <div class="hero-stat"><strong>Intelligence :</strong> {{hero.attributes.intelligence}}</div>
+        <hr/>
         <div class="hero-stat"><strong>Damage :</strong> {{hero.getDamage()}}</div>
         <div class="hero-stat"><strong>Defense :</strong> {{hero.getDefense()}}</div>
     </div>

@@ -58,6 +58,17 @@ module pow2 {
          });
       }
 
+      getLiveParty():GameEntityObject[] {
+         return _.reject(this.party,(obj:GameEntityObject) => {
+            return obj.isDefeated();
+         });
+      }
+      getLiveEnemies():GameEntityObject[] {
+         return _.reject(this.enemies,(obj:GameEntityObject) => {
+            return obj.isDefeated();
+         });
+      }
+
       getRandomPartyMember():GameEntityObject {
          var players:GameEntityObject[] = _.shuffle(this.party);
          while(players.length > 0){
@@ -149,6 +160,9 @@ module pow2 {
          // Build party
          _.each(machine.model.party,(hero:HeroModel,index:number) => {
             var heroEntity:GameEntityObject = GameStateMachine.createHeroEntity(hero.attributes.name,hero);
+            if(heroEntity.isDefeated()){
+               return;
+            }
             this.machine.party.push(heroEntity);
             this.scene.addObject(heroEntity);
          });

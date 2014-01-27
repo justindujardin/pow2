@@ -57,8 +57,7 @@ module pow2 {
          var min = this.attributes.attackLow;
          var max = this.attributes.attackHigh;
          var damage = Math.floor(Math.random() * (max - min + 1)) + min;
-         defender.damage(damage - defense);
-         return damage;
+         return defender.damage(damage - defense);
       }
 
 

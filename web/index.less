@@ -176,6 +176,15 @@ canvas {
     -moz-font-smoothing : none;
   }
 
+  &.dead {
+    color:#aaa;
+  }
+
+  hr {
+    margin-bottom:5px;
+    margin-top:5px;
+  }
+
   > .row:first-child {
     padding:0 10px;
   }
@@ -207,11 +216,18 @@ canvas {
   // Combat View
   // --------------------------------------------------------------------------
   .combat {
-    .hero-view {
-      width:95%;
+    position: fixed;
+    bottom: 0;
+    width: 350px;
+    right:0;
+    .progress {
+      margin-bottom:0;
     }
-    .friendly {
-      text-align: right;
+
+    .ebp {
+      .content {
+        width:100%;
+      }
     }
   }
 

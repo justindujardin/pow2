@@ -42,10 +42,19 @@ module pow2.ui {
                tileView.camera.extent.set(state.tileMap.bounds.extent.x,state.tileMap.bounds.extent.y);
                tileView.camera.setCenter(state.tileMap.bounds.getCenter());
                tileView.setTileMap(state.tileMap);
+
+               state.machine.on('combat:beginTurn',(player:GameEntityObject) => {
+                  $scope.$apply(function() {
+                     $scope.combat = $scope.combat;
+                  });
+               });
+
             });
             game.machine.on('combat:end',(state:GameCombatState) => {
                state.scene.removeView(tileView);
-               game.tileMap.scene.paused = false;;
+               game.tileMap.scene.paused = false;
+               state.machine.off('combat:beginTurn',null,this);
+
             });
             onResize();
          }
