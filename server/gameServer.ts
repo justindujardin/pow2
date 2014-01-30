@@ -81,8 +81,7 @@ server.use(express.static(path.resolve(__dirname + "/../web")));
 server.use('/data', express.static(path.resolve(__dirname + "/../data")));
 server.use('/source', express.static(path.resolve(__dirname + "/../source")));
 server.use('/build', express.static(path.resolve(__dirname + "/../build")));
-server.use('/game', express.static(path.resolve(__dirname + "/../game")));
-server.use('/images', express.static(path.resolve(__dirname + "/../images")));
+server.use('/fonts', express.static(path.resolve(__dirname + "/../data/fonts")));
 
 // Path for Angular UI templates
 server.use('/templates', express.static(path.resolve(__dirname + "/../source/ui/templates")));
