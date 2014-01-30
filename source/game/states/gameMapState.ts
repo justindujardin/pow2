@@ -19,6 +19,9 @@
 
 module pow2 {
 
+   declare var astar:any;
+   declare var Graph:any;
+
    export class GameMapState extends State {
       static NAME:string = "map";
       name:string = GameMapState.NAME;
@@ -33,10 +36,42 @@ module pow2 {
          this.mapName = name;
       }
 
+      calculatePath(from:Point,to:Point):Point[]{
+         var graph = new Graph([
+            [1,1,1,1],
+            [0,1,1,0],
+            [0,0,1,1]
+         ]);
+
+         // Treat out of range errors as non-critical, and just
+         // return an empty array.
+         if(from.x >= graph.nodes.length){
+            return [];
+         }
+         if(from.y >= graph.nodes[from.x].length){
+            return [];
+         }
+         if(to.x >= graph.nodes.length){
+            return [];
+         }
+         if(to.y >= graph.nodes[to.x].length){
+            return [];
+         }
+
+         var start = graph.nodes[from.x][from.y];
+         var end = graph.nodes[to.x][to.y];
+         var result = astar.search(graph.nodes, start, end);
+         return _.map(result,(graphNode:any) => {
+            return new Point(graphNode.pos.x,graphNode.pos.y);
+         });
+      }
+
       enter(machine:GameStateMachine){
          super.enter(machine);
          if(this.mapName && machine.player){
             machine.player.scene.once("map:loaded",(map) => {
+               // TODO: Calculate path on click/touch, and move to destination.
+               var path = this.calculatePath(new Point(0,0),new Point(1,2));
                if(this.mapPoint){
                   machine.player.setPoint(this.mapPoint);
                }
