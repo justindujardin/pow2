@@ -118,7 +118,7 @@ canvas {
   background-color: transparent;
   z-index: 50;
   .ebp {
-    bottom: 20%;
+    top:0;
     left: 20px;
     right:20px;
     margin:auto;
@@ -194,6 +194,7 @@ canvas {
     text-align: center;
   }
   .progress {
+    border-radius: 0;
     margin-bottom:5px;
     height:10px;
   }
@@ -215,18 +216,33 @@ canvas {
 
   // Combat View
   // --------------------------------------------------------------------------
-  .combat {
+  .combat-view{
     position: fixed;
     bottom: 0;
-    width: 350px;
+    left:0;
     right:0;
     .progress {
       margin-bottom:0;
     }
-
     .ebp {
+      margin-right: 15px;
+      &:last-child {
+        margin-right:inherit;
+      }
       .content {
         width:100%;
+      }
+    }
+    .menu {
+      .clearfix;
+      height:180px;
+      margin-left:auto;
+      margin-right:auto;
+      width:95%;
+      padding: 0 15px;
+      .enemies, .party, .actions, .ebp {
+        height:100%;
+        min-height:100%;
       }
     }
   }

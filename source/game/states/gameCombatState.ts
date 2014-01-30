@@ -162,7 +162,8 @@ module pow2 {
             var heroEntity:GameEntityObject = GameStateMachine.createHeroEntity(hero.attributes.name,hero);
             if(heroEntity.isDefeated()){
                return;
-            }
+            } 
+            //heroEntity.icon = "warriorCombat.png";
             this.machine.party.push(heroEntity);
             this.scene.addObject(heroEntity);
          });
