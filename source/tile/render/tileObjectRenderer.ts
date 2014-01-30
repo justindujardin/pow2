@@ -35,20 +35,23 @@ module pow2 {
          point.y -= object.size.y * object.scale / 2;
          point = view.worldToScreen(point);
 
-         var width = view.unitSize;
-         var height = view.unitSize;
          if (data.icon && data.meta) {
             var c = data.meta;
             var cx = c.x;
             var cy = c.y;
+            var cwidth = c.width / view.unitSize;
             if(data.meta.frames > 1){
-               var fx = (data.frame % (c.width));
-               var fy = Math.floor((data.frame - fx) / c.width);
+               var fx = (data.frame % (cwidth));
+               var fy = Math.floor((data.frame - fx) / cwidth);
                cx += fx * view.unitSize;
                cy += fy * view.unitSize;
             }
-            view.context.drawImage(data.image, cx, cy, view.unitSize, view.unitSize, point.x, point.y, width * object.scale, height * object.scale);
+            var sourceWidth:number = typeof c.cellWidth === 'undefined' ? view.unitSize : c.cellWidth;
+            var sourceHeight:number = typeof c.cellHeight === 'undefined' ? view.unitSize : c.cellHeight;
+            view.context.drawImage(data.image, cx, cy, sourceWidth, sourceHeight, point.x, point.y, sourceWidth * object.scale, sourceHeight * object.scale);
          } else {
+            var width = view.unitSize;
+            var height = view.unitSize;
             view.context.drawImage(data.image, point.x, point.y, width * object.scale, height * object.scale);
          }
       }

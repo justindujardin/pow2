@@ -63,10 +63,27 @@ module pow2 {
    export function registerMap(name:string,value:Object){
       data.maps[name] = value;
    }
+
+   /**
+    * Describe a dictionary of sprites.  This can be use to
+    */
+   export function describeSprites(value:Object){
+      for(var prop in value){
+         if(value.hasOwnProperty(prop)){
+            data.sprites[prop] = _.extend(data.sprites[prop] || {},value[prop]);
+         }
+      }
+   }
+
+   /**
+    * Register a dictionary of sprite meta data.  This is for automatically
+    * generated sprite sheets, and only defaults to setting information if
+    * it has not already been set by a call to describeSprites.
+    */
    export function registerSprites(name:string,value:Object){
       for(var prop in value){
          if(value.hasOwnProperty(prop)){
-            data.sprites[prop] = value[prop];
+            data.sprites[prop] = _.defaults(data.sprites[prop] || {},value[prop]);
          }
       }
    }
