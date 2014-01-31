@@ -27,30 +27,35 @@ module pow2{
       tileMap:GameTileMap = null;
       mouse:NamedMouseElement = null;
 
+      constructor(canvas: HTMLCanvasElement, loader: any) {
+         super(canvas,loader);
+         this.mouseClick = _.bind(this.mouseClick,this);
+      }
       onAddToScene(scene:Scene) {
          this.mouse = scene.world.input.mouseHook(this,"world");
          // TODO: Move this elsewhere.
-         this.$el.click((e) => {
-            //console.log("clicked at " + this.mouse.world);
-            var party = <pow2.PlayerComponent>this.scene.componentByType(pow2.PlayerComponent);
-            if (party) {
-               party.path = this.tileMap.calculatePath(party.targetPoint,this.mouse.world);
-            }
-         });
+         this.$el.on('click',this.mouseClick);
       }
       onRemoveFromScene(scene:Scene) {
          scene.world.input.mouseUnhook("world");
+         this.$el.off('click',this.mouseClick);
       }
 
+
+      /*
+       * Mouse input
+       */
+      mouseClick(e:JQueryMouseEventObject) {
+         var party = <pow2.PlayerComponent>this.scene.componentByType(pow2.PlayerComponent);
+         if (party) {
+            party.path = this.tileMap.calculatePath(party.targetPoint,this.mouse.world);
+         }
+      }
       /*
        * Update the camera for this frame.
        */
       processCamera() {
-         var host = this.scene.objectByComponent(PlayerCameraComponent);
-         host = host ? host : this.scene.objectByComponent(CombatCameraComponent);
-         if(host){
-            this.cameraComponent = <CameraComponent>host.findComponent(CameraComponent);
-         }
+         this.cameraComponent = <CameraComponent>this.scene.componentByType(PlayerCameraComponent);
          super.processCamera();
       }
 

@@ -14,6 +14,7 @@
  limitations under the License.
  */
 /// <reference path="services/gameFactory.ts"/>
+/// <reference path="../game/gameCombatView.ts"/>
 
 module pow2.ui {
    app.directive('combatCanvas', function ($compile, game:AngularGameFactory) {
@@ -32,7 +33,7 @@ module pow2.ui {
                context.webkitImageSmoothingEnabled = false;
                context.mozImageSmoothingEnabled = false;
             }
-            var tileView = new GameMapView(element[0], game.loader);
+            var tileView = new GameCombatView(element[0], game.loader);
             game.machine.on('combat:begin',(state:GameCombatState) => {
                // Scope apply?
                // Transition canvas views, and such
@@ -41,7 +42,7 @@ module pow2.ui {
 
                tileView.camera.extent.set(state.tileMap.bounds.extent.x,state.tileMap.bounds.extent.y);
                tileView.camera.setCenter(state.tileMap.bounds.getCenter());
-               tileView.setTileMap(state.tileMap);
+               tileView.setTileMap(<any>state.tileMap);
 
                state.machine.on('combat:beginTurn',(player:GameEntityObject) => {
                   $scope.$apply(function() {

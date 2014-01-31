@@ -36,6 +36,10 @@ module pow2 {
          this.attacksLeft = 1;
          machine.current.scale = 1.5;
          this.current = machine.current;
+
+         machine.current.scene.on('click',(mouse,hits) => {
+            this.attack(machine,hits[0]);
+         });
          machine.trigger("combat:beginTurn",machine.current);
          if(!machine.isFriendlyTurn()){
             this.attack(machine);
@@ -59,21 +63,20 @@ module pow2 {
          return false;
       }
 
-      attack(machine:CombatStateMachine){
+      attack(machine:CombatStateMachine,defender?:GameEntityObject){
          if(this.attacksLeft <= 0){
             return;
          }
          this.attacksLeft -= 1;
          //
          var attacker:GameEntityObject = null;
-         var defender:GameEntityObject = null;
          if(machine.isFriendlyTurn()){
             attacker = machine.current;
-            defender = machine.getRandomEnemy();
+            defender = defender || machine.getRandomEnemy();
          }
          else {
             attacker = machine.current;
-            defender = machine.getRandomPartyMember();
+            defender = defender || machine.getRandomPartyMember();
          }
          _.delay(() => {
             var damage:number = attacker.model.attack(defender.model);

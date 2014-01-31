@@ -24,6 +24,7 @@
 module pow2 {
    export class SceneSpatialDatabase {
       private _objects: SceneObject[];
+      private _pointRect: Rect = new Rect(0,0,1,1);
 
       constructor() {
          this._objects = [];
@@ -40,6 +41,10 @@ module pow2 {
          });
       }
 
+      queryPoint(point:pow2.Point, type, results:SceneObject[]):boolean {
+         this._pointRect.point.set(point);
+         return this.queryRect(this._pointRect,type,results);
+      }
       queryRect(rect:pow2.Rect, type, results:SceneObject[]):boolean {
          var foundAny:boolean;
          if (!results) {
