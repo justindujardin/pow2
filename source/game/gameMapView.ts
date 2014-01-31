@@ -29,14 +29,13 @@ module pow2{
 
       onAddToScene(scene:Scene) {
          this.mouse = scene.world.input.mouseHook(this,"world");
+         // TODO: Move this elsewhere.
          this.$el.click((e) => {
-            console.log("clicked at " + this.mouse.world);
+            //console.log("clicked at " + this.mouse.world);
             var party = <pow2.PlayerComponent>this.scene.componentByType(pow2.PlayerComponent);
             if (party) {
                party.path = this.tileMap.calculatePath(party.host.point,this.mouse.world);
-               //console.log(path);
             }
-
          });
       }
       onRemoveFromScene(scene:Scene) {
