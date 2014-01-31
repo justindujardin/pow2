@@ -159,28 +159,31 @@ module pow2 {
 
          // Zero and have a path, shift the next tile and move there.
          if(zero){
-            this.targetPoint = this.path.shift();
+            var next:Point = this.path.shift();
+            this.velocity.set(next.x - this.host.point.x, next.y - this.host.point.y);
          }
          else {
             // Clear path is moving manually.
             this.path.length = 0;
-            this.targetPoint.add(this.velocity);
-            // Check to see if both axes can advance by simply going to the
-            // target point.
+         }
+         this.targetPoint.add(this.velocity);
+         // Check to see if both axes can advance by simply going to the
+         // target point.
 
-            // Determine which axis we can move along
-            if (this.velocity.y !== 0 && !this.collideMove(this.host.point.x, this.targetPoint.y)) {
-               this.targetPoint.x = this.host.point.x;
-            }
-            // How about the X axis?  We'll take any axis we can get.
-            else if (this.velocity.x !== 0 && !this.collideMove(this.targetPoint.x, this.host.point.y)) {
-               this.targetPoint.y = this.host.point.y;
-            }
-            else {
-               // Nope, collisions in all directions, just reset the target point
-               this.targetPoint.set(this.host.point);
-               return;
-            }
+         // Determine which axis we can move along
+         if (this.velocity.y !== 0 && !this.collideMove(this.host.point.x, this.targetPoint.y)) {
+            this.targetPoint.x = this.host.point.x;
+         }
+         // How about the X axis?  We'll take any axis we can get.
+         else if (this.velocity.x !== 0 && !this.collideMove(this.targetPoint.x, this.host.point.y)) {
+            this.targetPoint.y = this.host.point.y;
+         }
+         else {
+            // Nope, collisions in all directions, just reset the target point
+            this.targetPoint.set(this.host.point);
+            // If there's a path, it had an invalid move, so clear it.
+            this.path.length = 0;
+            return;
          }
 
          // Successful move, do something.

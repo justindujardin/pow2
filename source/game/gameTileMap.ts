@@ -170,6 +170,21 @@ module pow2 {
                grid[x][y] = tile.passable ? 1 : 0;
             }
          }
+
+         _.each(this.features.objects,(o:any) => {
+            var obj:any = o.properties;
+            var collideTypes:string[] = ['temple','store','sign'];
+            if(obj.passable === true || !obj.type){
+               return;
+            }
+            if(_.indexOf(collideTypes, obj.type.toLowerCase()) !== -1){
+               var x:number = o.x / o.width | 0;
+               var y:number = o.y / o.height | 0;
+               if(!obj.passable && this.bounds.pointInRect(x,y)){
+                  grid[x][y] = 0;
+               }
+            }
+         });
          this.graph = new Graph(grid);
       }
 

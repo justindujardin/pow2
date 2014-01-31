@@ -34,7 +34,7 @@ module pow2{
             //console.log("clicked at " + this.mouse.world);
             var party = <pow2.PlayerComponent>this.scene.componentByType(pow2.PlayerComponent);
             if (party) {
-               party.path = this.tileMap.calculatePath(party.host.point,this.mouse.world);
+               party.path = this.tileMap.calculatePath(party.targetPoint,this.mouse.world);
             }
          });
       }
