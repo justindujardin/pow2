@@ -171,8 +171,12 @@ module pow2 {
             }
          }
 
+         // TOOD: Tiled Editor format is KILLIN' me.
          _.each(this.features.objects,(o:any) => {
             var obj:any = o.properties;
+            if(!obj){
+               return;
+            }
             var collideTypes:string[] = ['temple','store','sign'];
             if(obj.passable === true || !obj.type){
                return;
