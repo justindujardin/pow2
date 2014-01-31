@@ -24,11 +24,20 @@
 module pow2{
    export class GameMapView extends TileMapView {
       objectRenderer:TileObjectRenderer = new TileObjectRenderer;
-      tileMap:TileMap = null;
+      tileMap:GameTileMap = null;
       mouse:NamedMouseElement = null;
 
       onAddToScene(scene:Scene) {
          this.mouse = scene.world.input.mouseHook(this,"world");
+         this.$el.click((e) => {
+            console.log("clicked at " + this.mouse.world);
+            var party = <pow2.PlayerComponent>this.scene.componentByType(pow2.PlayerComponent);
+            if (party) {
+               party.path = this.tileMap.calculatePath(party.host.point,this.mouse.world);
+               //console.log(path);
+            }
+
+         });
       }
       onRemoveFromScene(scene:Scene) {
          scene.world.input.mouseUnhook("world");

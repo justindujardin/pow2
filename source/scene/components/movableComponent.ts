@@ -24,6 +24,7 @@ module pow2 {
    export class MovableComponent extends TickedComponent {
       _elapsed: number = 0;
       targetPoint: pow2.Point;
+      path:Point[] = [];
       tickRateMS: number = 300;
       velocity: pow2.Point = new pow2.Point(0, 0);
       workPoint: Point = new Point(0,0);
@@ -151,25 +152,35 @@ module pow2 {
 
          this.targetPoint.set(this.host.point);
 
-         if (this.velocity.isZero()) {
+         var zero:boolean = this.velocity.isZero();
+         if (zero && this.path.length === 0) {
             return;
          }
 
-         // Check to see if both axes can advance by simply going to the
-         // target point.
-         this.targetPoint.add(this.velocity);
-         // Determine which axis we can move along
-         if (this.velocity.y !== 0 && !this.collideMove(this.host.point.x, this.targetPoint.y)) {
-            this.targetPoint.x = this.host.point.x;
-         }
-         // How about the X axis?  We'll take any axis we can get.
-         else if (this.velocity.x !== 0 && !this.collideMove(this.targetPoint.x, this.host.point.y)) {
-            this.targetPoint.y = this.host.point.y;
+         // Zero and have a path, shift the next tile and move there.
+         if(zero){
+            this.targetPoint = this.path.shift();
          }
          else {
-            // Nope, collisions in all directions, just reset the target point
-            this.targetPoint.set(this.host.point);
-            return;
+            // Clear path is moving manually.
+            this.path.length = 0;
+            this.targetPoint.add(this.velocity);
+            // Check to see if both axes can advance by simply going to the
+            // target point.
+
+            // Determine which axis we can move along
+            if (this.velocity.y !== 0 && !this.collideMove(this.host.point.x, this.targetPoint.y)) {
+               this.targetPoint.x = this.host.point.x;
+            }
+            // How about the X axis?  We'll take any axis we can get.
+            else if (this.velocity.x !== 0 && !this.collideMove(this.targetPoint.x, this.host.point.y)) {
+               this.targetPoint.y = this.host.point.y;
+            }
+            else {
+               // Nope, collisions in all directions, just reset the target point
+               this.targetPoint.set(this.host.point);
+               return;
+            }
          }
 
          // Successful move, do something.

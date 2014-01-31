@@ -26,10 +26,15 @@
 /// <reference path="./components/gameFeatureInputComponent.ts" />
 
 module pow2 {
+   declare var astar:any;
+   declare var Graph:any;
+
    export class GameTileMap extends TileMap {
       featureHash:any = {};
+      graph:any;
       loaded(){
          super.loaded();
+         this.buildAStarGraph();
          this.addComponent(new GameFeatureInputComponent());
 
          // If there are map properties, take them into account.
@@ -151,6 +156,44 @@ module pow2 {
             }
          }
          return object;
+      }
+
+      // Path Finding (astar.js)
+      buildAStarGraph() {
+         var grid = new Array(this.bounds.extent.x);
+         for(var x:number = 0; x < this.bounds.extent.x; x++){
+            grid[x] = new Array(this.bounds.extent.y);
+         }
+         for(var x:number = 0; x < this.bounds.extent.x; x++){
+            for(var y:number = 0; y < this.bounds.extent.y; y++){
+               var tile = this.getTerrain(x,y);
+               grid[x][y] = tile.passable ? 1 : 0;
+            }
+         }
+         this.graph = new Graph(grid);
+      }
+
+      calculatePath(from:Point,to:Point):Point[]{
+         // Treat out of range errors as non-critical, and just
+         // return an empty array.
+         if(from.x >= this.graph.nodes.length){
+            return [];
+         }
+         if(from.y >= this.graph.nodes[from.x].length){
+            return [];
+         }
+         if(to.x >= this.graph.nodes.length){
+            return [];
+         }
+         if(to.y >= this.graph.nodes[to.x].length){
+            return [];
+         }
+         var start = this.graph.nodes[from.x][from.y];
+         var end = this.graph.nodes[to.x][to.y];
+         var result = astar.search(this.graph.nodes, start, end);
+         return _.map(result,(graphNode:any) => {
+            return new Point(graphNode.pos.x,graphNode.pos.y);
+         });
       }
 
    }
