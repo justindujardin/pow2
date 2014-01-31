@@ -225,11 +225,11 @@ module.exports = function(grunt) {
       recess: {
          options: {
             compile: true,
-            includePath: ["web"]
+            includePath: ["source/ui/"]
          },
          game: {
             files: [
-               {src: 'web/index.less', dest: 'web/css/index.css'}
+               {src: 'source/ui/index.less', dest: 'web/css/index.css'}
             ]
          }
       },
