@@ -151,7 +151,6 @@ module pow2 {
          this.set({
             level: nextLevel,
             maxHP: newHP,
-            hp: newHP,
             strength:this.getStrengthForLevel(nextLevel),
             agility:this.getAgilityForLevel(nextLevel),
             vitality:this.getVitalityForLevel(nextLevel),
