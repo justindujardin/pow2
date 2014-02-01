@@ -167,7 +167,7 @@ module pow2 {
          for(var x:number = 0; x < this.bounds.extent.x; x++){
             for(var y:number = 0; y < this.bounds.extent.y; y++){
                var tile = this.getTerrain(x,y);
-               grid[x][y] = tile.passable ? 1 : 0;
+               grid[x][y] = tile.passable ? 1 : 1000;
             }
          }
 
@@ -185,7 +185,7 @@ module pow2 {
                var x:number = o.x / o.width | 0;
                var y:number = o.y / o.height | 0;
                if(!obj.passable && this.bounds.pointInRect(x,y)){
-                  grid[x][y] = 0;
+                  grid[x][y] = 100;
                }
             }
          });
