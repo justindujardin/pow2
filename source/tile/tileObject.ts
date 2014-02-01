@@ -77,6 +77,7 @@ module pow2 {
          var moveComponent = <MovableComponent>this.findComponent(MovableComponent);
          if(moveComponent){
             moveComponent.targetPoint.set(point);
+            moveComponent.path.length = 0;
          }
       }
 

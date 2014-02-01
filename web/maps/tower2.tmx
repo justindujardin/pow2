@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="19" height="19" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="combat" value="true"/>
+ </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <layer name="Terrain" width="19" height="19">
   <data encoding="csv">
@@ -24,7 +27,7 @@
 34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34,34
 </data>
  </layer>
- <objectgroup name="Features" width="19" height="19">
+ <objectgroup draworder="topdown" name="Features" width="19" height="19">
   <object name="tower1" type="transition" x="48" y="240" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
