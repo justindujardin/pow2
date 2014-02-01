@@ -1,9 +1,27 @@
 @import "../style/variables";
+@import "../style/pageTransitions";
 
+.slide-anim {
+}
+.slide-anim.ng-hide {
+}
+.slide-anim.ng-hide-add {
+  .pt-page-moveToLeft;
+  .pt-page-ontop;
+  display:block!important;
+}
+
+.slide-anim.ng-hide-remove {
+  .pt-page-moveToRight;
+  display:block!important;
+}
 
 inventory-view {
-  .unequipped {
+  ul {
     list-style-type: none;
+  }
+  .unequipped {
+    text-align: center;
     margin:0;
     padding:10px;
     > li {

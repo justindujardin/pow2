@@ -1,9 +1,8 @@
 <h1>Inventory</h1>
-
-<ul class="unequipped" ng-init="setPartyMember=false">
-    <li class="item row scale-down" ng-repeat="item in inventory" ng-show="!item.equippedBy" ng-click="selectPartyMember=!selectPartyMember">
-        <div class="col-xs-1 icon" icon-render icon="item.attributes.icon"></div>
-        <div class="col-xs-8"><span class="item-name">{{item.attributes.name}}</span></div>
+<ul class="unequipped row" ng-init="setPartyMember=false">
+    <li class="item slide-anim col-xs-4" ng-repeat="item in inventory" ng-show="!item.equippedBy" ng-click="selectPartyMember=!selectPartyMember">
+        <div class="icon" icon-render icon="item.attributes.icon"></div>
+        <div class=""><span class="item-name">{{item.attributes.name}}</span></div>
         <ul class="party-select" ng-show="selectPartyMember">
             <li ng-repeat="hero in party">
                 <div class="image" icon-render icon="hero.attributes.icon" ng-click="equipItem(item,hero)"></div>
@@ -12,22 +11,15 @@
     </li>
 </ul>
 
-<div class="container">
-    <div class="row">
+<h1>Equipped</h1>
+<ul class="equipped row">
+    <li class="row" ng-repeat="h in party">
         <div class="col-xs-4">
-            <div ng-repeat="item in inventory">
-                <div icon-render icon="item.attributes.icon"></div>
-                {{item.attributes.name}}
-            </div>
+            <h2>{{h.attributes.name}}</h2>
         </div>
-        <div class="col-xs-4">
-            <hero-view hero="member" ng-repeat="member in party"></hero-view>
-        </div>
-        <div class="col-xs-4">
-            <div ng-repeat="item in inventory">
-                <div icon-render icon="item.attributes.icon"></div>
-                {{item.attributes.name}}
-            </div>
-        </div>
-    </div>
-</div>
+        <span class="col-xs-7">
+            <span class="icon" icon-render icon="h.weapon.attributes.icon" ng-click="unequipItem(h.weapon,h)" ng-show="h.weapon"></span>
+            <span class="icon" icon-render icon="i.attributes.icon" ng-repeat="i in h.armor" ng-click="unequipItem(i,h)"></span>
+        </span>
+    </li>
+</ul>

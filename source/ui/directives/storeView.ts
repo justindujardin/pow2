@@ -36,20 +36,14 @@ module pow2.ui {
                   model.set({
                      gold: money - cost
                   });
-
-                  //HACKS: Force equip to player0
-                  //TODO: equipment UI
-                  var player:HeroModel = model.party[0];
                   var inventoryModel:any = null;
                   if(item.itemType === 'armor'){
                      inventoryModel = new ArmorModel(item);
-                     player.armor.push(inventoryModel);
                   }
                   else if(item.itemType === 'weapon'){
                      inventoryModel = new WeaponModel(item);
-                     player.weapon = inventoryModel;
                   }
-                  $scope.displayMessage("Purchased " + item.name + ".",null,2500);
+                  $scope.displayMessage("Purchased " + item.name + ".",null,1500);
                   model.inventory.push(inventoryModel);
 
                }

@@ -17,9 +17,7 @@
 /// <reference path="../../game/models/itemModel.ts"/>
 /// <reference path="../../game/models/heroModel.ts"/>
 module pow2.ui {
-// StoreBubble directive
-// ----------------------------------------------------------------------------
-   app.directive('inventoryView',[function () {
+   app.directive('inventoryView',['game',function (game:AngularGameFactory) {
       return {
          restrict: 'E',
          templateUrl: '/templates/inventoryView.html',
@@ -34,8 +32,28 @@ module pow2.ui {
                else if(item instanceof WeaponModel){
                   hero.weapon = item;
                }
+               game.model.inventory = _.filter(game.model.inventory,(i:ItemModel) => {
+                  return i.cid === item.cid;
+               });
                item.equippedBy = hero;
                $scope.displayMessage("Equipped " + item.attributes.name + " to " + hero.attributes.name,null,2500);
+            };
+
+            $scope.unequipItem = (item:ItemModel,hero:HeroModel) => {
+               if(!$scope.inventory || !item || !hero){
+                  return;
+               }
+               if(item instanceof ArmorModel){
+                  hero.armor = _.filter(hero.armor,(i) => {
+                     return i.cid === item.cid;
+                  });
+               }
+               else if(item instanceof WeaponModel){
+                  hero.weapon = null;
+               }
+               game.model.inventory.push(item);
+               item.equippedBy = null;
+               $scope.displayMessage("Unequipped " + item.attributes.name + " from " + hero.attributes.name,null,2500);
             };
          }
       };
