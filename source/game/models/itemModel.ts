@@ -17,13 +17,17 @@
 /// <reference path="../../../types/backbone/backbone.d.ts" />
 /// <reference path="../../../types/underscore/underscore.d.ts" />
 /// <reference path="../../core/api.ts" />
+/// <reference path="./heroModel.ts" />
+
 module pow2 {
    export class ItemModel extends Backbone.Model {
       static DEFAULTS:IGameItem = {
          name:"",
          icon:"",
-         cost:0
+         cost:0,
+         hero:null
       };
+      equippedBy:HeroModel = null;
       defaults():any {
          return _.extend({},ItemModel.DEFAULTS);
       }

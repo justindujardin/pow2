@@ -169,8 +169,8 @@ module pow2 {
          });
 
          // Create the enemy
-         var max = 3;
-         var min = 1;
+         var max = 6;
+         var min = 2;
          var enemyCount = Math.floor(Math.random() * (max - min + 1)) + min;
          for(var i = 0; i < enemyCount; i++){
             var nme = new pow2.GameEntityObject({

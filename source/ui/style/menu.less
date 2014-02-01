@@ -128,7 +128,7 @@
   transform: translateY(0) rotate(-45deg);
 }
 
-.bt-menu ul {
+.bt-menu > ul {
   position: fixed;
   top: 75px;
   left: 0;
@@ -140,15 +140,15 @@
   backface-visibility: hidden;
 }
 
-.bt-menu ul li,
-.bt-menu ul li a {
+.bt-menu > ul li,
+.bt-menu > ul li a {
   display: block;
   width: 100%;
   text-align: center;
   text-shadow: none;
 }
 
-.bt-menu ul li {
+.bt-menu > ul li {
   padding: 16px 0;
   opacity: 0;
   visibility: hidden;
@@ -159,32 +159,32 @@
   }
 }
 
-.bt-menu ul li:first-child {
+.bt-menu > ul li:first-child {
   -webkit-transform: translate3d(-100%,200%,0);
   transform: translate3d(-100%,200%,0);
 }
 
-.bt-menu ul li:nth-child(2) {
+.bt-menu > ul li:nth-child(2) {
   -webkit-transform: translate3d(-100%,100%,0);
   transform: translate3d(-100%,100%,0);
 }
 
-.bt-menu ul li:nth-child(3) {
+.bt-menu > ul li:nth-child(3) {
   -webkit-transform: translate3d(-100%,0,0);
   transform: translate3d(-100%,0,0);
 }
 
-.bt-menu ul li:nth-child(4) {
+.bt-menu > ul li:nth-child(4) {
   -webkit-transform: translate3d(-100%,-100%,0);
   transform: translate3d(-100%,-100%,0);
 }
 
-.bt-menu ul li:nth-child(5) {
+.bt-menu > ul li:nth-child(5) {
   -webkit-transform: translate3d(-100%,-200%,0);
   transform: translate3d(-100%,-200%,0);
 }
 
-.bt-menu.bt-menu-open ul li {
+.bt-menu.bt-menu-open > ul li {
   visibility: visible;
   opacity: 1;
   -webkit-transition: -webkit-transform 0.3s, opacity 0.3s 0.1s;
@@ -193,7 +193,7 @@
   transform: translate3d(0,0,0);
 }
 
-.bt-menu ul li a {
+.bt-menu > ul li a {
   display: block;
   outline: none;
   color: transparent;
@@ -201,20 +201,20 @@
   font-size: 0px;
 }
 
-.bt-menu ul li a:before {
+.bt-menu > ul li a:before {
   color: #fff;
   font-size: 48px;
   -webkit-transition: color 0.2s;
   transition: color 0.2s;
 }
 
-.bt-menu ul li a:hover:before,
-.bt-menu ul li a:focus:before  {
+.bt-menu > ul li a:hover:before,
+.bt-menu > ul li a:focus:before  {
   color: #fff;
 }
 
 @media screen and (max-height: 31.125em) {
-  .bt-menu ul li a:before {
+  .bt-menu > ul li a:before {
     font-size: 32px;
   }
 }

@@ -16,11 +16,7 @@
             <hero-card class="col-sm-6" hero="member" ng-repeat="member in party"></hero-card>
         </div>
         <div class="row party" ng-show="open != 'bt-menu-close' && page == 'inventory'">
-            <h1>Inventory</h1>
-            <div ng-repeat="item in inventory">
-                <div icon-render icon="item.attributes.icon"></div>
-                {{item.attributes.name}}
-            </div>
+            <inventory-view></inventory-view>
         </div>
         <div class="row party" ng-show="open != 'bt-menu-close' && page == 'settings'">
             <h1>Settings</h1>

@@ -68,10 +68,17 @@ module pow2{
          _.each(objects, (object) => {
             return this.objectRenderer.render(object,object,this);
          });
-         var players = this.scene.objectsByComponent(pow2.PlayerRenderComponent);
-         _.each(players, (player) => {
+         var playerRenderComponents = this.scene.objectsByComponent(pow2.PlayerRenderComponent);
+         _.each(playerRenderComponents, (playerRenderComponent) => {
+            this.objectRenderer.render(playerRenderComponent,playerRenderComponent,this);
+         });
+
+
+         var playerPaths = this.scene.objectsByComponent(pow2.PlayerComponent);
+         _.each(playerPaths, (player) => {
             this.objectRenderer.render(player,player,this);
          });
+
          var sprites = <ISceneComponent[]>this.scene.componentsByType(pow2.SpriteComponent);
          _.each(sprites, (sprite:SpriteComponent) => {
             this.objectRenderer.render(sprite.host,sprite, this);

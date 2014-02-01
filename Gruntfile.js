@@ -299,9 +299,8 @@ module.exports = function(grunt) {
          },
          styles: {
             files: [
-               'web/*.less',
-               'web/less/*.less',
-               'web/less/bootstrap/*.less'
+               'source/ui/*.less',
+               'source/ui/**/*.less'
             ],
             tasks: ['recess', 'notify:recess']
          },

@@ -65,9 +65,6 @@ module pow2 {
             console.log("Failed to load save game.");
             return {};
          }
-         this.party = _.map(data.party,(partyMember) => {
-            return new HeroModel(partyMember,{parse:true});
-         });
          this.inventory = _.map(data.inventory,(item:any) => {
             switch(item.itemType){
                case "armor":
@@ -81,8 +78,10 @@ module pow2 {
             }
             throw new Error("Unknown item type: " + item.itemType);
          });
-
-         return _.omit(data,'party');
+         this.party = _.map(data.party,(partyMember) => {
+            return new HeroModel(partyMember,{parse:true});
+         });
+         return _.omit(data,'party','inventory');
       }
 
       toJSON() {
