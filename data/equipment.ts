@@ -9,7 +9,7 @@ pow2.registerWeapons(1,[
       usedBy : ["warrior"],
       attack:5,
       hit:10,
-      cost:10
+      cost:25
    },
    {
       name : "Sling",
@@ -18,7 +18,7 @@ pow2.registerWeapons(1,[
       usedBy : ["archer"],
       attack:5,
       hit:10,
-      cost:10
+      cost:25
    },
    {
       name : "Short Sword",
@@ -27,16 +27,16 @@ pow2.registerWeapons(1,[
       usedBy : ["warrior"],
       attack:9,
       hit:5,
-      cost:50
+      cost:150
    },
    {
       name : "Short Staff",
       icon : "shortStaff.png",
       groups : ["default", "weapon"],
       usedBy : ["mage"],
-      attack:6,
+      attack:2,
       hit:0,
-      cost:30
+      cost:25
    }
 //   {
 //      name : "Goblin Scimitar",
