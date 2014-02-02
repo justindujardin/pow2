@@ -28,18 +28,17 @@ module pow2.ui {
             element.append(renderImage);
 
             // Get the context for drawing
-            $scope.renderContext = renderCanvas[0].getContext("2d");
-            $scope.renderContext.webkitImageSmoothingEnabled = false;
-            $scope.renderContext.mozImageSmoothingEnabled = false;
+            var renderContext = renderCanvas[0].getContext("2d");
+            renderContext.webkitImageSmoothingEnabled = false;
+            renderContext.mozImageSmoothingEnabled = false;
 
             $scope.$watch(attrs.icon, function(icon) {
-
                if(!icon){
                   return;
                }
                game.world.sprites.getSingleSprite(icon,function(sprite){
-                  $scope.renderContext.clearRect(0, 0, 64, 64);
-                  $scope.renderContext.drawImage(sprite, 0, 0, 64, 64);
+                  renderContext.clearRect(0, 0, 64, 64);
+                  renderContext.drawImage(sprite, 0, 0, 64, 64);
                   $scope.$apply(function(){
                      renderImage[0].src = renderCanvas[0].toDataURL();
                   });

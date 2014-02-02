@@ -18,11 +18,11 @@ module pow2.ui {
 
 // DialogBubble directive
 // ----------------------------------------------------------------------------
-   app.directive('dialogBubble', function (game) {
+   app.directive('dialogView', function (game) {
       return {
          restrict: 'E',
          replace:true,
-         templateUrl: '/templates/dialogBubble.html',
+         templateUrl: '/templates/dialogView.html',
          link: function($scope) {
 
             // Dialog bubbles

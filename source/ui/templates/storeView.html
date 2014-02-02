@@ -1,6 +1,6 @@
 <div class="row title" ng-show="store">
     <div class="col-xs-12">
-        <div class="name" eight-bit-panel>
+        <div class="name ebp">
             <h1>{{store.name}}</h1> <span>Gold: {{gameModel.attributes.gold}}</span>
         </div>
     </div>
@@ -8,7 +8,7 @@
 
 <div class="row store" ng-show="store">
     <div class="col-xs-12">
-        <div class="inventory" eight-bit-panel>
+        <div class="inventory ebp">
             <ul class="container">
                 <li class="item row" ng-repeat="item in store.inventory" ng-click="buyItem(item)">
                     <div class="col-xs-1 icon" icon-render icon="item.icon">

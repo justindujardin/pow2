@@ -17,10 +17,10 @@
 module pow2.ui {
 // StoreBubble directive
 // ----------------------------------------------------------------------------
-   app.directive('storeBubble',['game',function (game,$aside) {
+   app.directive('storeView',['game',function (game,$aside) {
       return {
          restrict: 'E',
-         templateUrl: '/templates/storeBubble.html',
+         templateUrl: '/templates/storeView.html',
          controller : function($scope,$element){
             $scope.buyItem = (item) => {
                if(!$scope.store || !item){

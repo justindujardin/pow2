@@ -1,11 +1,11 @@
 <div class="combat-view" ng-show="combat">
     <div class="menu">
-        <div class="col-xs-4"eight-bit-panel>
+        <div class="col-xs-4 ebp">
             <div class="" ng-repeat="enemy in combat.enemies">
                 {{enemy.model.attributes.name}}
             </div>
         </div>
-        <div class="col-xs-5" eight-bit-panel>
+        <div class="col-xs-5 ebp">
             <div class="col-xs-12" ng-repeat="hero in combat.party">
                 <div class="col-xs-6">
                     <strong class="name">{{hero.model.attributes.name}}</strong>
@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xs-2" eight-bit-panel>
+        <div class="col-xs-3 ebp">
             <ul>
                 <li>Attack</li>
                 <li>Run</li>

@@ -1,64 +1,21 @@
+// eight-bit-panel
+.eight-bit-panel(@borderWidth:6px,@color: white, @backgroundColor:#004c62) {
+//  font-family: 'minecraftiaregular',monospace;
+//  font-smooth: never;
+//  -webkit-font-smoothing : none;
+//  -moz-font-smoothing : none;
+  background-color: @backgroundColor;
+  color: @color;
+  border: @borderWidth solid @color;
+  border-radius:@borderWidth * 1.5;
+  display:inline-block;
+  position: relative;
+  min-width:100px;
+  min-height:100px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
+  .box-shadow("inset 2px 2px 1px rgba(0, 0, 0, 0.3);");
+}
 
 .ebp {
   .eight-bit-panel(6px);
-  &.small {
-    .eight-bit-panel(2px);
-  }
-  &.large {
-    .eight-bit-panel(10px);
-  }
-  &.medium {
-    .eight-bit-panel(8px);
-  }
 }
-
-// eight-bit-panel
-.eight-bit-panel(@borderWidth:10px,@color: white, @backgroundColor:#004c62) {
-  @shadowColor:rgba(0, 0, 0, 0.7);
-  @shadowDepth: @borderWidth / 3;
-  @btnHalfBorder: @borderWidth / 2;
-  font-family: 'minecraftiaregular',monospace;
-  color: @color;
-  display:inline-block;
-  position: relative;
-  text-align: center;
-  padding: @btnHalfBorder @btnHalfBorder;
-  text-shadow: @shadowDepth @shadowDepth 0 @shadowColor;
-  font-smooth: never;
-  -webkit-font-smoothing : none;
-  -moz-font-smoothing : none;
-  border: @borderWidth solid @color;
-  border-left:none;
-  border-right: none;
-  background-color: @backgroundColor;
-  margin-left:@borderWidth;
-  margin-right:@borderWidth;
-
-  &::before, &::after{
-    background-color: @color;
-    content: "";
-    position: absolute;
-    width: @borderWidth;
-    height:auto;
-    top: 0;
-    bottom:0;
-  }
-  &::before { left: -@borderWidth; }
-  &::after  { right: -@borderWidth; }
-
-  > .tl, > .tr, > .bl, > .br {
-    position: absolute;
-    width: @borderWidth;
-    height: @borderWidth;
-    background-color: @color;
-  }
-  > .tl{ left: -@btnHalfBorder; top: -@btnHalfBorder; }
-  > .tr{ right: -@btnHalfBorder; top: -@btnHalfBorder; }
-  > .bl{ left: -@btnHalfBorder; bottom: -@btnHalfBorder; }
-  > .br{ right: -@btnHalfBorder; bottom: -@btnHalfBorder; }
-
-  > .content {
-    .clearfix;
-  }
-}
-
