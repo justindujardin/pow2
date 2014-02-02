@@ -276,6 +276,9 @@ module pow2 {
                break;
          }
          character.awardLevelUp();
+         character.set({
+            hp:character.get('maxHP')
+         });
          return character;
       }
    }
