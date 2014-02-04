@@ -10,7 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" type="text/css" href="/css/index.css" media="all" />
-    <link rel="stylesheet" type="text/css" href="/fonts/minecraftia/stylesheet.css" media="all" />
     <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="/js/underscore.js"></script>
     <script type="text/javascript" src="/js/backbone.js"></script>
@@ -40,14 +39,13 @@
     <store-view ng-show="store"></store-view>
     <combat-view ng-show="inCombat"></combat-view>
     <temple-view ng-show="temple"></temple-view>
-    <level-stats-view></level-stats-view>
+    <div class="drop-overlay" ng-show="overlayText">
+        <div class="ebp">{{overlayText}}</div>
+    </div>
 </div>
 
 
 <!-- Image drop screen overlay -->
-<div class="drop-overlay" ng-show="overlayText">
-    <div class="ebp">{{overlayText}}</div>
-</div>
 
 <!-- Compiled Game Files -->
 <% for(var i=0; i<scripts.length; i++) {%>

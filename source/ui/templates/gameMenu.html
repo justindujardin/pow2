@@ -1,7 +1,7 @@
 <div class="bt-container">
     <nav id="bt-menu" class="bt-menu" ng-class="open">
         <a href="#" class="bt-menu-trigger" ng-click="open = (open == 'bt-menu-open' ? 'bt-menu-close' : 'bt-menu-open')"><span>Menu</span></a>
-        <ul>
+        <ul ng-show="open == 'bt-menu-open'">
             <li ng-class="{active:page=='party'}">
                 <a href="#" class="glyphicon glyphicon-user" ng-click="page='party'">Party</a>
             </li>
@@ -19,7 +19,8 @@
             <inventory-view></inventory-view>
         </div>
         <div class="row party" ng-show="open != 'bt-menu-close' && page == 'settings'">
-            <h1>Settings</h1>
+            <h1>Level Stats (debug)</h1>
+            <level-stats-view></level-stats-view>
         </div>
     </nav>
 </div>

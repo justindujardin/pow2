@@ -16,6 +16,7 @@
     <li class="row" ng-repeat="h in party">
         <div class="col-xs-4">
             <h2>{{h.attributes.name}}</h2>
+            <div class="image" icon-render icon="h.attributes.icon"></div>
         </div>
         <span class="col-xs-7">
             <span class="icon" icon-render icon="h.weapon.attributes.icon" ng-click="unequipItem(h.weapon,h)" ng-show="h.weapon"></span>

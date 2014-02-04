@@ -28,7 +28,18 @@
 @import "./style/menu";
 
 // Import template styles
+//  TODO: This might get _really_ old and possible error prone.
+//  If so, just concat all the less files then compile the concat.
 @import "./templates/inventoryView";
+@import "./templates/dialogView";
+@import "./templates/storeView";
+@import "./templates/templeView";
+@import "./templates/heroCard";
+@import "./templates/levelStatsView";
+@import "./templates/partyView";
+@import "./templates/combatView";
+@import "./templates/heroView";
+
 
 
 * {
@@ -85,27 +96,6 @@ canvas {
   padding: 0 15px;
 }
 
-.hero-view {
-  text-align: center;
-  .character{
-    text-align: left;
-  }
-  .name, .image {
-    display: inline-block;
-  }
-  .stats {
-    text-align:right;
-
-    .progress {
-      margin:0;
-      width:100%;
-    }
-  }
-  h1, h2, h3, h4 {
-    margin:5px 10px;
-  }
-
-}
 
 .drop-overlay {
   padding: 0;
@@ -128,25 +118,6 @@ canvas {
 }
 
 
-.menu-overlay {
-  padding:5px;
-  position: absolute;
-  top: 0;
-  right:0;
-  margin:5px;
-  z-index: 150;
-  > span {
-    .opacity(0.8);
-    color: #ffffff;
-    text-align: center;
-    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
-    font-size:42px;
-    cursor: pointer;
-    &:hover {
-      .opacity(1);
-    }
-  }
-}
 .container {
   z-index: 100;
 
@@ -167,45 +138,6 @@ canvas {
   }
 }
 
-.hero-card {
-  > * {
-    font-size: 16px;
-//    font-smooth: never;
-//    -webkit-font-smoothing : none;
-//    -moz-font-smoothing : none;
-  }
-
-  &.dead {
-    color:#aaa;
-  }
-
-  hr {
-    margin-bottom:5px;
-    margin-top:5px;
-  }
-
-  > .row:first-child {
-    padding:0 10px;
-  }
-  padding: 0 15px;
-  h1, .image {
-    margin-top:5px;
-    text-align: center;
-  }
-  .progress {
-    border-radius: 0;
-    margin-bottom:5px;
-    height:10px;
-  }
-
-  .hero-stat {
-    text-align: right;
-    strong {
-      float:left;
-    }
-  }
-}
-
 .ui-container {
   position: absolute;
   top:0;
@@ -215,148 +147,6 @@ canvas {
   pointer-events:none;
   > * {
     pointer-events:auto;
-  }
-
-  // Combat View
-  // --------------------------------------------------------------------------
-  .combat-view{
-    position: fixed;
-    bottom: 0;
-    left:0;
-    right:0;
-    .progress {
-      margin-bottom:0;
-    }
-    .menu {
-      .clearfix;
-      height:180px;
-      margin-left:auto;
-      margin-right:auto;
-      width:95%;
-      padding: 0 15px;
-      .enemies, .party, .actions, .ebp {
-        height:100%;
-        min-height:100%;
-      }
-    }
-  }
-
-  // Dialog
-  // --------------------------------------------------------------------------
-  .message {
-    text-align: center;
-    .dialog {
-      margin-top:15px;
-      padding:10px 10px;
-    }
-    .content {
-      line-height: normal;
-      text-align: center;
-      display: table;
-      width: 100%;
-    }
-    .character {
-      padding:0;
-      p {
-        margin:0;
-      }
-    }
-    .text {
-      display: table-cell;
-      text-align: center;
-      vertical-align: middle;
-      line-height: normal;
-      font-size: 14px;
-    }
-  }
-
-  // Party View
-  .party {
-    .ebp {
-      width:95%;
-    }
-    .hero-view;
-  }
-
-  .temple-view {
-    .row {
-      margin-bottom:10px;
-    }
-  }
-
-  .level-stats-view {
-    //    position: absolute;
-    //    left: 0;
-    //    right: 0;
-    //    top: 0;
-    //    bottom: 0;
-    display:none;
-    //    .opacity(.8);
-    max-height:500px;
-    overflow: auto;
-    overflow-x: hidden;
-  }
-
-  // Stores
-  // --------------------------------------------------------------------------
-  .title {
-    text-align: center;
-    margin-bottom: 20px;
-    .ebp {
-      padding:0 25px;
-    }
-  }
-  .store {
-    text-align:center;
-    .name {
-      h1 {
-        margin:10px;
-        font-size: 24px;
-      }
-    }
-    .inventory {
-      width:90%;
-      padding:0;
-      .item-price {
-        color: #E8C627;
-        text-align: right;
-        padding-right:10px;
-      }
-
-    }
-    ul {
-      padding:0;
-      margin:0;
-      text-align: left;
-      list-style-type: none;
-      max-width: 100%;
-      li {
-        cursor: pointer;
-        border:1px solid transparent;
-        padding:5px;
-        font-size: 16px;
-        margin-left:0;
-        margin-right:0;
-        .icon {
-          line-height: 28px;
-          img {
-            width:32px;
-          }
-          .item-name {
-            display: inline-block;
-            min-width: 150px;
-            max-width: 160px;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-          }
-        }
-        &:hover {
-          * {
-            color:#0FF !important;
-          }
-        }
-      }
-    }
   }
 }
 
