@@ -21,7 +21,6 @@
 module pow2.ui {
    export var app = angular.module('pow2', [
       'ngAnimate',
-      'ngLettering',
       'mgcrea.ngStrap',
       'ngSanitize'
    ]);
