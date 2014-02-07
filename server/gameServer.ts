@@ -1,20 +1,15 @@
 ///<reference path="../types/node/node.d.ts"/>
 ///<reference path="../types/express/express.d.ts"/>
 ///<reference path="../types/underscore/underscore.d.ts"/>
-///<reference path="../types/q/Q.d.ts"/>
 "use strict";
 import express = require('express');
 var fs = require('graceful-fs');
 import _ = require('underscore');
 var path = require('path');
-import Q = require('q');
-var fb:any = require('./facebook');
 var grunt:any = require("grunt");
 var server = express();
 var serverPort = process.env.PORT || 5215;
-function getProp(propName){
-  return process.env[propName] || require('../.env.json')[propName];
-};
+
 server.use(express.bodyParser());
 server.use(express.cookieParser());
 server.use(express.compress());
@@ -48,34 +43,10 @@ function getPageScripts(){
 }
 
 server.get('/', function(req,res){
-   res.render('../web/index.html',{
+   res.render('../source/ui/index.html',{
       scripts:getPageScripts()
    });
 });
-
-
-server.all('/fbcanvas/', function (req, res) {
-   var props = {
-      fbAppId:getProp("FB_APPID"),
-      mixpanelToken:getProp("MIXPANEL_POW2")
-   };
-   var data = _.extend(<any>{},props,{
-      pageContext: JSON.stringify(props)
-   });
-   var session = <any>req.session;
-   if(session && session.fbToken){
-      fb.graph.setAccessToken(session.fbToken);
-      fb.graph.get('/me',function(err,user){
-         data.user = fb.parseUser(req,user);
-         res.render('../web/facebook.html',data);
-      });
-   }
-   else {
-      res.render('../web/facebook.html',data);
-   }
-});
-
-
 
 server.use(express.static(path.resolve(__dirname + "/../web")));
 server.use('/data', express.static(path.resolve(__dirname + "/../data")));
@@ -85,8 +56,6 @@ server.use('/fonts', express.static(path.resolve(__dirname + "/../data/fonts")))
 
 // Path for Angular UI templates
 server.use('/templates', express.static(path.resolve(__dirname + "/../source/ui/templates")));
-
-fb.routes(server);
 
 // Use EJS templating with Express, and assign .html as the default extension.
 server.engine('.html', require('ejs').__express);
