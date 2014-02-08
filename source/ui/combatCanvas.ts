@@ -13,11 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-/// <reference path="services/gameFactory.ts"/>
+/// <reference path="services/gameService.ts"/>
 /// <reference path="../game/gameCombatView.ts"/>
 
 module pow2.ui {
-   app.directive('combatCanvas', function ($compile, game:AngularGameFactory) {
+   app.directive('combatCanvas', function ($compile, game:PowGameService) {
       return {
          restrict: 'A',
          link: function ($scope, element, attrs) {

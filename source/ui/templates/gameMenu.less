@@ -1,4 +1,147 @@
 
+@-webkit-keyframes moveFromRight {
+  from { -webkit-transform: translateX(100%); }
+}
+@-moz-keyframes moveFromRight {
+  from { -moz-transform: translateX(100%); }
+}
+@keyframes moveFromRight {
+  from { transform: translateX(100%); }
+}
+
+@-webkit-keyframes moveToRight {
+  to { -webkit-transform: translateX(100%); }
+}
+@-moz-keyframes moveToRight {
+  to { -moz-transform: translateX(100%); }
+}
+@keyframes moveToRight {
+  to { transform: translateX(100%); }
+}
+
+@-webkit-keyframes fadeOut {
+  to { opacity: 0.0; }
+}
+@-moz-keyframes fadeOut {
+  to { opacity: 0.0; }
+}
+@keyframes fadeOut {
+  to { opacity: 0.0; }
+}
+
+@-webkit-keyframes fadeIn {
+  from { opacity: 0.0; }
+  to { opacity: 1.0; }
+}
+@-moz-keyframes fadeIn {
+  from { opacity: 0.0; }
+  to { opacity: 1.0; }
+}
+@keyframes fadeIn {
+  from { opacity: 0.0; }
+  to { opacity: 1.0; }
+}
+
+.fadeOut {
+  -webkit-animation: fadeOut .6s ease both;
+  -moz-animation: fadeOut .6s ease both;
+  animation: fadeOut .6s ease both;
+}
+
+.fadeIn {
+  -webkit-animation: fadeIn .6s ease both;
+  -moz-animation: fadeIn .6s ease both;
+  animation: fadeIn .6s ease both;
+}
+
+
+.moveFromRight {
+  -webkit-animation: moveFromRight .6s ease both;
+  -moz-animation: moveFromRight .6s ease both;
+  animation: moveFromRight .6s ease both;
+}
+
+.moveToRight {
+  -webkit-animation: moveToRight .6s ease both;
+  -moz-animation: moveToRight .6s ease both;
+  animation: moveToRight .6s ease both;
+}
+
+.menu-enter-right {}
+.menu-enter-right.ng-hide {}
+.menu-enter-right.ng-hide-add {
+  .moveToRight;
+  display:block!important;
+}
+.menu-enter-right.ng-hide-remove {
+  .moveFromRight;
+  display:block!important;
+}
+
+.menu-fade {}
+.menu-fade.ng-hide {}
+.menu-fade.ng-hide-add {
+  .fadeOut;
+  display:block!important;
+}
+.menu-fade.ng-hide-remove {
+  .fadeIn;
+  display:block!important;
+}
+
+
+
+
+.game-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  font-size: 36px;
+  .trigger {
+    position: static;
+    top: 0;
+    left:0;
+
+  }
+  a {
+    color:#fff;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .navigation {
+    position: fixed;
+    left: -10px;
+    top: 0;
+    bottom: 0;
+    min-width: 50px;
+    ul.options {
+      list-style-type: none;
+      padding:10px;
+    }
+  }
+
+  .views {
+    display: none;
+    overflow: auto;
+    overflow-x:hidden;
+    &.open{
+      display: block;
+    }
+
+    > * {
+      position: fixed;
+      top:0;
+      left:75px;
+      bottom:0;
+      right:0;
+    }
+  }
+}
+
 .menu-overlay {
   padding:5px;
   position: absolute;

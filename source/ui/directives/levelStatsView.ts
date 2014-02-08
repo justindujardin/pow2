@@ -13,12 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-/// <reference path="../services/gameFactory.ts"/>
+/// <reference path="../services/gameService.ts"/>
 module pow2.ui {
 
 // LevelStatsView directive
 // ----------------------------------------------------------------------------
-   app.directive('levelStatsView', function (game) {
+   app.directive('levelStatsView', function (game:PowGameService) {
       return {
          restrict: 'E',
          templateUrl: '/templates/levelStatsView.html',

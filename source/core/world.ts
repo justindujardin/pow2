@@ -37,8 +37,8 @@ module pow2 {
    }
    export interface IWorldObject {
       world:IWorld;
-      onAddToWorld(world:IWorld);
-      onRemoveFromWorld(world:IWorld);
+      onAddToWorld?(world:IWorld);
+      onRemoveFromWorld?(world:IWorld);
    }
 
 

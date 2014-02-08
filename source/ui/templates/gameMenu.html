@@ -1,26 +1,37 @@
-<div class="bt-container">
-    <nav id="bt-menu" class="bt-menu" ng-class="open">
-        <a href="#" class="bt-menu-trigger" ng-click="open = (open == 'bt-menu-open' ? 'bt-menu-close' : 'bt-menu-open')"><span>Menu</span></a>
-        <ul ng-show="open == 'bt-menu-open'">
+<div class="game-menu container">
+    <a href="#" class="trigger glyphicon glyphicon-user" ng-click="open=true" ng-hide="open"></a>
+    <div class="navigation ebp menu-fade" ng-show="open">
+        <ul class="options">
+            <li>
+                <a href="#" class="glyphicon glyphicon-remove" ng-click="open=false"></a>
+            </li>
             <li ng-class="{active:page=='party'}">
-                <a href="#" class="glyphicon glyphicon-user" ng-click="page='party'">Party</a>
+                <a href="#" class="glyphicon glyphicon-user" ng-click="page='party'"></a>
             </li>
             <li ng-class="{active:page=='inventory'}">
-                <a href="#" class="glyphicon glyphicon-briefcase" ng-click="page='inventory'">Inventory</a>
+                <a href="#" class="glyphicon glyphicon-briefcase" ng-click="page='inventory'"></a>
             </li>
             <li ng-class="{active:page=='settings'}">
-                <a href="#" class="glyphicon glyphicon-cog" ng-click="page='settings'">Settings</a>
+                <a href="#" class="glyphicon glyphicon-cog" ng-click="page='settings'"></a>
+            </li>
+            <li ng-class="{active:page=='save'}">
+                <a href="#" class="glyphicon glyphicon-floppy-disk" ng-click="page='save'"></a>
             </li>
         </ul>
-        <div class="row party" ng-show="open != 'bt-menu-close' && page == 'party'">
+    </div>
+    <div class="views menu-enter-right" ng-show="open" ng-class="{open:open}">
+        <div class="party menu-enter-right" ng-show="page == 'party'">
             <hero-card class="col-sm-6" hero="member" ng-repeat="member in party"></hero-card>
         </div>
-        <div class="row party" ng-show="open != 'bt-menu-close' && page == 'inventory'">
+        <div class="inventory menu-enter-right" ng-show="page == 'inventory'">
             <inventory-view></inventory-view>
         </div>
-        <div class="row party" ng-show="open != 'bt-menu-close' && page == 'settings'">
-            <h1>Level Stats (debug)</h1>
+        <div class="settings menu-enter-right" ng-show="page == 'settings'">
             <level-stats-view></level-stats-view>
         </div>
-    </nav>
+        <div class="save menu-enter-right" ng-show="page == 'save'">
+            <button class="btn btn-default btn-large" ng-click="saveGame()">Save Game</button>
+        </div>
+    </div>
+
 </div>

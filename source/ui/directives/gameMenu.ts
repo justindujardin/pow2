@@ -13,14 +13,14 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-/// <reference path="../services/gameFactory.ts"/>
+/// <reference path="../services/gameService.ts"/>
 module pow2.ui {
 
 // Game Menu overlay directive
 // ----------------------------------------------------------------------------
    app.directive('gameMenu', [
       'game',
-      function (game) {
+      function (game:PowGameService) {
          return {
             restrict: 'E',
             replace:true,

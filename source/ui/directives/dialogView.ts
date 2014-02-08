@@ -13,12 +13,12 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-/// <reference path="../services/gameFactory.ts"/>
+/// <reference path="../services/gameService.ts"/>
 module pow2.ui {
 
 // DialogBubble directive
 // ----------------------------------------------------------------------------
-   app.directive('dialogView', function (game) {
+   app.directive('dialogView', function (game:PowGameService) {
       return {
          restrict: 'E',
          replace:true,

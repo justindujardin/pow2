@@ -21,7 +21,7 @@
 /// <reference path="../../../types/angularjs/angular.d.ts"/>
 /// <reference path="../index.ts"/>
 module pow2.ui {
-   export class AngularGameFactory {
+   export class PowGameService {
       loader:ResourceLoader;
       world:GameWorld;
       tileMap:GameTileMap;
@@ -71,6 +71,6 @@ module pow2.ui {
       }
    }
    app.factory('game', () => {
-      return new AngularGameFactory();
+      return new PowGameService();
    });
 }

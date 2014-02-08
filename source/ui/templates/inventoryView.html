@@ -1,26 +1,39 @@
-<h1>Inventory</h1>
-<ul class="unequipped row" ng-init="setPartyMember=false">
-    <li class="item slide-anim col-xs-4" ng-repeat="item in inventory" ng-show="!item.equippedBy" ng-click="selectPartyMember=!selectPartyMember">
-        <div class="icon" icon-render icon="item.attributes.icon"></div>
-        <div class=""><span class="item-name">{{item.attributes.name}}</span></div>
-        <ul class="party-select" ng-show="selectPartyMember">
-            <li ng-repeat="hero in party">
-                <div class="image" icon-render icon="hero.attributes.icon" ng-click="equipItem(item,hero)"></div>
-            </li>
-        </ul>
-    </li>
-</ul>
-
-<h1>Equipped</h1>
-<ul class="equipped row">
-    <li class="row" ng-repeat="h in party">
-        <div class="col-xs-4">
-            <h2>{{h.attributes.name}}</h2>
-            <div class="image" icon-render icon="h.attributes.icon"></div>
-        </div>
+<div class="ebp">
+    <h1>Equipped</h1>
+    <ul class="equipped row">
+        <li class="row" ng-repeat="h in party">
+            <div class="col-xs-4">
+                <h2>{{h.attributes.name}}</h2>
+                <div class="image" icon-render icon="h.attributes.icon"></div>
+                <ul class="character-equipment-map">
+                    <li class="head"></li>
+                    <li class="body"></li>
+                    <li class="arms"></li>
+                    <li class="legs"></li>
+                    <li class="feet"></li>
+                    <li class="jewelry"></li>
+                    <li class="weapon"></li>
+                </ul>
+            </div>
         <span class="col-xs-7">
             <span class="icon" icon-render icon="h.weapon.attributes.icon" ng-click="unequipItem(h.weapon,h)" ng-show="h.weapon"></span>
             <span class="icon" icon-render icon="i.attributes.icon" ng-repeat="i in h.armor" ng-click="unequipItem(i,h)"></span>
         </span>
-    </li>
-</ul>
+        </li>
+    </ul>
+</div>
+
+<div class="ebp">
+    <h1>Inventory</h1>
+    <ul class="unequipped row" ng-init="setPartyMember=false">
+        <li class="item slide-anim col-xs-4" ng-repeat="item in inventory" ng-show="!item.equippedBy" ng-click="selectPartyMember=!selectPartyMember">
+            <div class="icon" icon-render icon="item.attributes.icon"></div>
+            <div class=""><span class="item-name">{{item.attributes.name}}</span></div>
+            <ul class="party-select" ng-show="selectPartyMember">
+                <li ng-repeat="hero in party">
+                    <div class="image" icon-render icon="hero.attributes.icon" ng-click="equipItem(item,hero)"></div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

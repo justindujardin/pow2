@@ -13,9 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-/// <reference path="services/gameFactory.ts"/>
+/// <reference path="services/gameService.ts"/>
 module pow2.ui {
-   app.directive('gameCanvas', function ($compile, game) {
+   app.directive('gameCanvas', function ($compile, game:PowGameService) {
       return {
          restrict: 'A',
          link: function ($scope, element, attrs) {
@@ -32,17 +32,11 @@ module pow2.ui {
                context.webkitImageSmoothingEnabled = false;
                context.mozImageSmoothingEnabled = false;
             }
-
-            game.tileView = new GameMapView(element[0], game.loader);
-            game.tileView.camera.extent.set(10, 10);
-            game.tileView.setTileMap(game.tileMap);
-            game.world.scene.addView(game.tileView);
-            if(game.sprite){
-               game.tileView.trackObject(game.sprite);
-            }
-
+            var tileView:GameMapView = new GameMapView(element[0], game.loader);
+            tileView.camera.extent.set(10, 10);
+            tileView.setTileMap(game.tileMap);
+            game.world.scene.addView(tileView);
             onResize();
-            console.log("READY TO GO!");
          }
       };
    });
