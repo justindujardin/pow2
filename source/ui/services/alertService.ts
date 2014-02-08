@@ -22,17 +22,21 @@ module pow2.ui {
    export interface IPowAlertObject {
       message:string;
       duration?:number;
+      enter?(done:() => void);
+      entered?(done:() => void);
+      exit?(done:() => void);
+      exited?(done:() => void);
+   }
+
+   export interface IAlertScopeService extends ng.IRootScopeService {
+      powAlert:IPowAlertObject;
    }
 
    /**
     * Provide a basic service for queuing and showing messages to the user.
-    *
-    * Clicking/Tapping will either:
-    *  - Dismiss a message if it is fully displayed and waiting to timeout
-    *  - Fully display a message if it is during an enter animation.
     */
    export class PowAlertService extends pow2.Events implements pow2.IWorldObject, pow2.IProcessObject {
-      scope:ng.IRootScopeService;
+      scope:IAlertScopeService;
       timeout:ng.ITimeoutService;
       game:PowGameService;
       world:pow2.GameWorld;
@@ -40,14 +44,15 @@ module pow2.ui {
 
       private _current:IPowAlertObject = null;
       private _queue:IPowAlertObject[] = [];
-      constructor(scope:ng.IRootScopeService,timeout:ng.ITimeoutService,game:PowGameService){
+      constructor(scope:IAlertScopeService,timeout:ng.ITimeoutService,game:PowGameService){
          super();
+         _.bindAll(this,"_defaultEnter","_defaultEntered","_defaultExit","_defaultExited");
          this.scope = scope;
          this.timeout = timeout;
          this.game = game;
 
          game.world.mark(this);
-         //game.world.time.addObject(this);
+         game.world.time.addObject(this);
       }
 
       destroy() {
@@ -55,25 +60,62 @@ module pow2.ui {
          this.game.world.erase(this);
       }
 
-      /**
-       * Update current message, and manage event generation for transitions
-       * between messages.
-       * @param elapsed number The elapsed time since the last invocation, in milliseconds.
-       */
-      processFrame(elapsed:number) {
-         if(!this._current && this._queue.length === 0){
-            return;
-         }
-
-      }
-
-
       show(message:string){
          this._queue.push({
             message:message,
             duration: 1000
          });
       }
+
+      /*
+       * Update current message, and manage event generation for transitions
+       * between messages.
+       * @param elapsed number The elapsed time since the last invocation, in milliseconds.
+       */
+      processFrame(elapsed:number) {
+         if(this._current || this._queue.length === 0){
+            return;
+         }
+         this._current = this._queue.shift();
+         this.scope.$apply(() => {
+            this.scope.powAlert = this._current;
+
+            var steps = [
+               (this._current.enter   || this._defaultEnter),
+               (this._current.entered || this._defaultEntered),
+               (this._current.exit    || this._defaultExit),
+               (this._current.exited  || this._defaultExited)
+            ];
+            var nextStep = () => {
+               var currentStep:Function = steps.shift();
+               if(!currentStep){
+                  this.scope.$apply(() => {
+                     this.scope.powAlert = this._current = null;
+                  });
+               }
+               else {
+                  currentStep(nextStep);
+               }
+            };
+            nextStep();
+
+         });
+      }
+
+      private _defaultEnter(done:() => void){
+         done();
+      }
+      private _defaultEntered(done:() => void){
+         var delay:number = this._current.duration;
+         this.timeout(done,delay);
+      }
+      private _defaultExit(done:() => void){
+         done();
+      }
+      private _defaultExited(done:() => void){
+         done();
+      }
+
    }
    app.factory('powAlert', ['$rootScope','$timeout','game',($rootScope,$timeout,game) => {
       return new PowAlertService($rootScope,$timeout,game);
