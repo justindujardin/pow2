@@ -25,7 +25,7 @@ module pow2 {
       _elapsed: number = 0;
       targetPoint: pow2.Point;
       path:Point[] = [];
-      tickRateMS: number = 300;
+      tickRateMS: number = 250;
       velocity: pow2.Point = new pow2.Point(0, 0);
       workPoint: Point = new Point(0,0);
       host: SceneObject;
