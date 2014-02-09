@@ -40,16 +40,21 @@ module pow2.ui {
       timeout:ng.ITimeoutService;
       game:PowGameService;
       world:pow2.GameWorld;
+      element:ng.IAugmentedJQuery;
+      container:ng.IAugmentedJQuery;
+      animate:any;
       id:number = _.uniqueId();
 
       private _current:IPowAlertObject = null;
       private _queue:IPowAlertObject[] = [];
-      constructor(scope:IAlertScopeService,timeout:ng.ITimeoutService,game:PowGameService){
+      constructor(element,container,scope:IAlertScopeService,timeout:ng.ITimeoutService,game:PowGameService,animate:any){
          super();
-         _.bindAll(this,"_defaultEnter","_defaultEntered","_defaultExit","_defaultExited");
          this.scope = scope;
          this.timeout = timeout;
          this.game = game;
+         this.element = element;
+         this.container = container;
+         this.animate = animate;
 
          game.world.mark(this);
          game.world.time.addObject(this);
@@ -79,45 +84,26 @@ module pow2.ui {
          this._current = this._queue.shift();
          this.scope.$apply(() => {
             this.scope.powAlert = this._current;
-
-            var steps = [
-               (this._current.enter   || this._defaultEnter),
-               (this._current.entered || this._defaultEntered),
-               (this._current.exit    || this._defaultExit),
-               (this._current.exited  || this._defaultExited)
-            ];
-            var nextStep = () => {
-               var currentStep:Function = steps.shift();
-               if(!currentStep){
-                  this.scope.$apply(() => {
+            this.animate.enter(this.element, this.container, null,() => {
+               this.timeout(() => {
+                  this.animate.leave(this.element, () => {
                      this.scope.powAlert = this._current = null;
                   });
-               }
-               else {
-                  currentStep(nextStep);
-               }
-            };
-            nextStep();
-
+               },this._current.duration);
+            });
          });
       }
-
-      private _defaultEnter(done:() => void){
-         done();
-      }
-      private _defaultEntered(done:() => void){
-         var delay:number = this._current.duration;
-         this.timeout(done,delay);
-      }
-      private _defaultExit(done:() => void){
-         done();
-      }
-      private _defaultExited(done:() => void){
-         done();
-      }
-
    }
-   app.factory('powAlert', ['$rootScope','$timeout','game',($rootScope,$timeout,game) => {
-      return new PowAlertService($rootScope,$timeout,game);
-   }]);
+   app.factory('powAlert', [
+      '$rootScope',
+      '$timeout',
+      'game',
+      '$compile',
+      '$document',
+      '$animate',
+      ($rootScope,$timeout,game,$compile,$document,$animate) => {
+         var alertElement = $compile('<div class="drop-overlay fade"><div class="ebp">{{powAlert.message}}</div></div>')($rootScope);
+         return new PowAlertService(alertElement,$document.find('body'),$rootScope,$timeout,game,$animate);
+      }
+   ]);
 }

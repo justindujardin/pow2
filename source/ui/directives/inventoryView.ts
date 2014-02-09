@@ -37,7 +37,7 @@ module pow2.ui {
                   return i.cid === item.cid;
                });
                item.equippedBy = hero;
-               $scope.displayMessage("Equipped " + item.attributes.name + " to " + hero.attributes.name,null,2500);
+               powAlert.show("Equipped " + item.attributes.name + " to " + hero.attributes.name);
             };
 
             $scope.unequipItem = (item:ItemModel,hero:HeroModel) => {
@@ -54,7 +54,7 @@ module pow2.ui {
                }
                game.model.inventory.push(item);
                item.equippedBy = null;
-               $scope.displayMessage("Unequipped " + item.attributes.name + " from " + hero.attributes.name,null,2500);
+               powAlert.show("Unequipped " + item.attributes.name + " from " + hero.attributes.name);
             };
          }
       };
