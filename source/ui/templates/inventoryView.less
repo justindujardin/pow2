@@ -31,66 +31,34 @@ inventory-view {
     margin:0;
     padding:10px;
     > li {
+      clear:both;
+      display: inline-block;
       position: relative;
-    }
-    .party-select {
-      list-style-type: none;
-      margin:0;
-      padding:10px;
-      position: absolute;
-      bottom:0;
-      li {
-        display: inline-block;
+      width:128px;
+      height:128px;
+      .icon, .compare {
+        position: absolute;
+      }
+      .icon {
+        height:64px;
+        top:20px;
+        left:0;
+        right:0;
+        margin:auto;
+      }
+      .compare {
+        color: #0f0;
       }
     }
+
   }
-
-  @eqMapSlotSize:64px;
-  @eqMapSlotOffset: -(@eqMapSlotSize / 2);
-
   .character-equipment-map {
-    width:400px;
-    height:400px;
-    background-color: #000011;
     padding:10px;
     margin:0;
     position: relative;
     > li {
-      position: absolute;
-      width:@eqMapSlotSize;
-      height:@eqMapSlotSize;
-      background-color: #aaa;
-      margin-left:@eqMapSlotOffset;
-      margin-top:@eqMapSlotOffset;
-    }
-
-    .head {
-      top:15%;
-      left:50%;
-    }
-    .jewelry {
-      top:30%;
-      left:30%;
-    }
-    .body {
-      top:40%;
-      left:50%;
-    }
-    .arms {
-      top:40%;
-      left:30%;
-    }
-    .weapon {
-      top:70%;
-      left:30%;
-    }
-    .legs {
-      top:60%;
-      left:50%;
-    }
-    .feet {
-      top:80%;
-      left:50%;
+      display: inline-block;
+      font-size: 16px;
     }
   }
 }

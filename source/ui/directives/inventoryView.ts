@@ -23,7 +23,24 @@ module pow2.ui {
          restrict: 'E',
          templateUrl: '/templates/inventoryView.html',
          controller : function($scope,$element){
-            $scope.equipItem = (item:ItemModel,hero:HeroModel) => {
+            var currentIndex:number = 0;
+            $scope.character = $scope.party[currentIndex];
+            $scope.nextCharacter = () => {
+               currentIndex++;
+               if(currentIndex >= $scope.party.length){
+                  currentIndex = 0;
+               }
+               $scope.character = $scope.party[currentIndex];
+            };
+            $scope.previousCharacter = () => {
+               currentIndex--;
+               if(currentIndex < 0){
+                  currentIndex = $scope.party.length - 1;
+               }
+               $scope.character = $scope.party[currentIndex];
+            };
+            $scope.equipItem = (item:ItemModel) => {
+               var hero:HeroModel = $scope.character;
                if(!$scope.inventory || !item || !hero){
                   return;
                }
@@ -40,20 +57,21 @@ module pow2.ui {
                powAlert.show("Equipped " + item.attributes.name + " to " + hero.attributes.name);
             };
 
-            $scope.unequipItem = (item:ItemModel,hero:HeroModel) => {
+            $scope.unequipItem = (item:ItemModel) => {
+               var hero:HeroModel = $scope.character;
                if(!$scope.inventory || !item || !hero){
                   return;
                }
                if(item instanceof ArmorModel){
                   hero.armor = _.filter(hero.armor,(i) => {
-                     return i.cid === item.cid;
+                     return i.cid !== item.cid;
                   });
                }
                else if(item instanceof WeaponModel){
                   hero.weapon = null;
                }
-               game.model.inventory.push(item);
                item.equippedBy = null;
+               game.model.inventory.push(item);
                powAlert.show("Unequipped " + item.attributes.name + " from " + hero.attributes.name);
             };
          }
