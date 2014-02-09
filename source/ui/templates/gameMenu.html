@@ -19,17 +19,17 @@
             </li>
         </ul>
     </div>
-    <div class="views menu-enter-right" ng-show="open" ng-class="{open:open}">
-        <div class="party menu-enter-right" ng-show="page == 'party'">
+    <div class="views slide-from-right" ng-show="open" ng-class="{open:open}">
+        <div class="party slide-from-right" ng-show="page == 'party'">
             <hero-card class="col-sm-6" hero="member" ng-repeat="member in party"></hero-card>
         </div>
-        <div class="inventory menu-enter-right" ng-show="page == 'inventory'">
+        <div class="inventory slide-from-right" ng-show="page == 'inventory'">
             <inventory-view></inventory-view>
         </div>
-        <div class="settings menu-enter-right" ng-show="page == 'settings'">
+        <div class="settings slide-from-right" ng-show="page == 'settings'">
             <level-stats-view></level-stats-view>
         </div>
-        <div class="save menu-enter-right" ng-show="page == 'save'">
+        <div class="save slide-from-right" ng-show="page == 'save'">
             <button class="btn btn-default btn-large" ng-click="saveGame()">Save Game</button>
         </div>
     </div>

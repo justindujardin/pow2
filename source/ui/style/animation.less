@@ -72,14 +72,6 @@
 }
 
 @fadeTime:0.3s;
-.fadeOut {
-  .animation(fadeOut @fadeTime ease both);
-}
-
-.fadeIn {
-  .animation(fadeIn @fadeTime ease both);
-}
-
 .moveFromRight {
   -webkit-animation: moveFromRight .6s ease both;
   -moz-animation: moveFromRight .6s ease both;
@@ -92,15 +84,23 @@
   animation: moveToRight .6s ease both;
 }
 
-.menu-enter-right {}
-.menu-enter-right.ng-hide {}
-.menu-enter-right.ng-hide-add {
+.slide-from-right {}
+.slide-from-right.ng-hide {}
+.slide-from-right.ng-hide-add {
   .moveToRight;
   display:block!important;
 }
-.menu-enter-right.ng-hide-remove {
+.slide-from-right.ng-hide-remove {
   .moveFromRight;
   display:block!important;
+}
+
+.fadeOut {
+  .animation(fadeOut @fadeTime ease both);
+}
+
+.fadeIn {
+  .animation(fadeIn @fadeTime ease both);
 }
 
 .menu-fade {}
