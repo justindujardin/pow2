@@ -25,9 +25,9 @@ module pow2 {
          name:"",
          icon:"",
          cost:0,
-         hero:null
+         hero:null,
+         usedBy:null
       };
-      equippedBy:HeroModel = null;
       defaults():any {
          return _.extend({},ItemModel.DEFAULTS);
       }

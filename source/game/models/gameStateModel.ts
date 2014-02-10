@@ -46,6 +46,23 @@ module pow2 {
       }
 
 
+      addInventory(item:ItemModel):ItemModel {
+         this.inventory.push(item);
+         return item;
+      }
+      // Remove an inventory item.  Return true if the item was removed, or false
+      // if it was not found.
+      removeInventory(item:ItemModel):boolean{
+         for(var i = 0; i < this.inventory.length; i++) {
+            if(this.inventory[i].cid === item.cid){
+               this.inventory.splice(i, 1);
+               return true;
+            }
+         }
+         return false;
+      }
+
+
       addHero(model:HeroModel){
          this.party.push(model);
          model.game = this;

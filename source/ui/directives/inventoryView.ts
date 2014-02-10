@@ -45,15 +45,22 @@ module pow2.ui {
                   return;
                }
                if(item instanceof ArmorModel){
-                  hero.armor.push(item);
+                  var users = item.get('usedBy');
+                  if(users && _.indexOf(users,hero.get('type')) === -1) {
+                     powAlert.show(hero.get('name') + " cannot equip this item");
+                     return;
+                  }
+                  else {
+                     var old:ArmorModel = hero.equipArmor(item);
+                     if(old){
+                        game.model.addInventory(old);
+                     }
+                  }
                }
                else if(item instanceof WeaponModel){
                   hero.weapon = item;
                }
-               game.model.inventory = _.filter(game.model.inventory,(i:ItemModel) => {
-                  return i.cid === item.cid;
-               });
-               item.equippedBy = hero;
+               game.model.removeInventory(item);
                powAlert.show("Equipped " + item.attributes.name + " to " + hero.attributes.name);
             };
 
@@ -63,15 +70,12 @@ module pow2.ui {
                   return;
                }
                if(item instanceof ArmorModel){
-                  hero.armor = _.filter(hero.armor,(i) => {
-                     return i.cid !== item.cid;
-                  });
+                  hero.unequipArmor(item);
                }
                else if(item instanceof WeaponModel){
                   hero.weapon = null;
                }
-               item.equippedBy = null;
-               game.model.inventory.push(item);
+               game.model.addInventory(item);
                powAlert.show("Unequipped " + item.attributes.name + " from " + hero.attributes.name);
             };
          }

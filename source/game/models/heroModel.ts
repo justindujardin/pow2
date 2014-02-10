@@ -64,8 +64,15 @@ module pow2 {
 
       static MAX_LEVEL:number = 50;
       static MAX_ATTR:number = 50;
+      static ARMOR_TYPES:string[] = [
+         'head','body','arms','feet','accessory'
+      ];
       weapon:WeaponModel;
-      armor:ArmorModel[];
+      head:ArmorModel;
+      body:ArmorModel;
+      arms:ArmorModel;
+      feet:ArmorModel;
+      accessory:ArmorModel;
       game:GameStateModel;
       static DEFAULTS:HeroModelOptions = {
          name: "Hero",
@@ -91,15 +98,34 @@ module pow2 {
          return _.extend(super.defaults(), HeroModel.DEFAULTS);
       }
 
-      initialize(options?:any) {
-         super.initialize(options);
-         if(typeof this.armor === 'undefined'){
-            this.armor = [];
+      // Equip a new piece of armor, and return any existing armor
+      // that has been replaced by it.
+      equipArmor(item:ArmorModel):ArmorModel {
+         var slot:string = item.get('type');
+         var oldArmor:ArmorModel;
+         if(_.indexOf(HeroModel.ARMOR_TYPES,slot) !== -1){
+            oldArmor = this[slot];
+            this[slot] = item;
          }
+         return oldArmor;
+      }
+      // Remove a piece of armor.  Returns false if the armor is not equipped.
+      unequipArmor(item:ArmorModel):boolean {
+         var slot:string = item.get('type');
+         var oldArmor:ArmorModel = this[slot];
+         if(!oldArmor || !slot){
+            return false;
+         }
+         this[slot] = null;
+         return true;
       }
 
       getEvasion():number {
-         var armorWeight:number = _.reduce<ArmorModel,number>(this.armor,(val:number,item) => {
+         var armorWeight:number = _.reduce(HeroModel.ARMOR_TYPES,(val:number,type) => {
+            var item:ArmorModel = this[type];
+            if(!item){
+               return val;
+            }
             return val + item.attributes.evade;
          },0);
          return EntityModel.BASE_EVASION + this.attributes.agility - armorWeight;
@@ -127,7 +153,11 @@ module pow2 {
 
 
       getDefense():number {
-         return _.reduce(this.armor,(val:number,item) => {
+         return _.reduce(HeroModel.ARMOR_TYPES,(val:number,type) => {
+            var item:ArmorModel = this[type];
+            if(!item){
+               return val;
+            }
             return val + item.attributes.defense;
          },0);
       }
@@ -178,16 +208,19 @@ module pow2 {
          if(!data){
             return {};
          }
+         _.each(HeroModel.ARMOR_TYPES,(type:string) => {
+            if(data[type]){
+               var piece = _.where(pow2.data.armor,{name:data[type]})[0];
+               if(piece){
+                  this[type] = new ArmorModel(piece);
+               }
+            }
+         });
          if(data.weapon){
             var weapon = _.where(pow2.data.weapons,{name:data.weapon})[0];
             this.weapon = new WeaponModel(weapon);
          }
-         this.armor = _.map(data.armor,(item) => {
-            var armor = _.where(pow2.data.armor,{name:item})[0];
-            return new ArmorModel(armor);
-         });
-         return _.omit(data,'armor','weapon');
-
+         return _.omit(data, _.flatten(['weapon',HeroModel.ARMOR_TYPES]));
       }
 
       toJSON() {
@@ -195,8 +228,10 @@ module pow2 {
          if(this.weapon){
             result.weapon = this.weapon.get('name');
          }
-         result.armor = _.map(this.armor,(p) => {
-            return p.get('name');
+         _.each(HeroModel.ARMOR_TYPES,(type:string) => {
+            if(this[type]){
+               result[type] = this[type].get('name');
+            }
          });
          return result;
       }

@@ -1,4 +1,5 @@
 ///<reference path="../source/core/api.ts"/>
+///<reference path="../source/game/models/heroModel.ts"/>
 
 pow2.registerWeapons(1,[
    //// Level 1
@@ -68,53 +69,77 @@ pow2.registerWeapons(1,[
 
 pow2.registerArmor(1,[
    {
-      name : "Leather Armor",
-      type : "armor",
-      icon : "leatherArmor.png",
+      name : "Clothes",
+      type : "body",
+      icon : "clothes.png",
       groups : ["default", "armor"],
-      usedBy : ["warrior", "archer"],
-      defense:4,
-      evade:-8,
-      cost:70
-   },
-   {
-      name : "Cloak",
-      type : "armor",
-      icon : "cloak.png",
-      groups : ["default", "armor"],
-      usedBy : ["mage"],
       defense:1,
       evade:-2,
       cost:10
+   },
+   {
+      name : "Leather Armor",
+      type : "body",
+      icon : "leatherArmor.png",
+      groups : ["default", "armor"],
+      usedBy : [
+         pow2.HeroType.Warrior,
+         pow2.HeroType.Ranger
+      ],
+      defense:4,
+      evade:-8,
+      cost:50
+   },
+   {
+      name : "Cloak",
+      type : "body",
+      icon : "cloak.png",
+      groups : ["default", "armor"],
+      usedBy : [
+         pow2.HeroType.Wizard
+      ],
+      defense:1,
+      evade:-2,
+      cost:10
+   },
+   {
+      name : "Leather Shield",
+      type : "arms",
+      icon : "leatherShield.png",
+      groups : ["default", "armor"],
+      usedBy : [
+         pow2.HeroType.Warrior
+      ],
+      defense:2,
+      evade:-2,
+      cost:40
+   },
+   {
+      name : "Leather Helm",
+      type : "head",
+      icon : "leatherHelm.png",
+      groups : ["default", "armor"],
+      usedBy : [
+         pow2.HeroType.Warrior,
+         pow2.HeroType.Ranger,
+         pow2.HeroType.Thief
+      ],
+      defense:1,
+      evade:-1,
+      cost:20
+   },
+   {
+      name : "Leather Boots",
+      type : "feet",
+      icon : "leatherBoots2.png",
+      groups : ["default", "armor"],
+      usedBy : [
+         pow2.HeroType.Warrior,
+         pow2.HeroType.Thief,
+         pow2.HeroType.Ranger
+      ],
+      defense:1,
+      evade:-1,
+      cost:20
    }
-//   {
-//      name : "Leather Shield",
-//      type : "shield",
-//      icon : "leatherShield.png",
-//      groups : ["default", "armor"],
-//      usedBy : ["warrior"],
-//      defense:2,
-//      evade:0,
-//      cost:40
-//   },
-//   {
-//      name : "Leather Helm",
-//      type : "hat",
-//      icon : "leatherHelm.png",
-//      groups : ["default", "armor"],
-//      usedBy : ["warrior", "archer"],
-//      defense:1,
-//      evade:-1,
-//      cost:20
-//   },
-//   {
-//      name : "Leather Boots",
-//      type : "boots",
-//      icon : "leatherBoots2.png",
-//      groups : ["default", "armor"],
-//      usedBy : ["warrior", "archer", "mage"],
-//      defense:1,
-//      evade:-1,
-//      cost:20
-//   }
 ]);
