@@ -14,6 +14,7 @@
  limitations under the License.
  */
 /// <reference path="../services/gameService.ts"/>
+/// <reference path="../services/alertService.ts"/>
 
 module pow2.ui {
    var stateKey = "_testPow2State";
@@ -24,7 +25,8 @@ module pow2.ui {
       '$scope',
       '$timeout',
       'game',
-      function($scope,$timeout,game:PowGameService){
+      'powAlert',
+      function($scope,$timeout,game:PowGameService,powAlert:PowAlertService){
          $scope.overlayText = null;
          $scope.saveState = function(data){
             localStorage.setItem(stateKey,data);
@@ -69,7 +71,7 @@ module pow2.ui {
                      state.machine.paused = true;
                      $scope.$apply(function(){
                         var msg = attacker.model.get('name') + " attacked " + defender.model.get('name') + " for " + damage + " damage!";
-                        $scope.displayMessage(msg,function(){
+                        powAlert.show(msg,function(){
                            state.machine.paused = false;
                         });
                      });
@@ -78,7 +80,7 @@ module pow2.ui {
                      state.machine.paused = true;
                      $scope.$apply(function(){
                         var msg = "Enemies Defeated!";
-                        $scope.displayMessage(msg,function(){
+                        powAlert.show(msg,function(){
                            state.machine.paused = false;
                            var data = game.model.toJSON();
                            //console.log(data);

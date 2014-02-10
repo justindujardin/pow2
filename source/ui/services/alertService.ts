@@ -22,20 +22,22 @@ module pow2.ui {
    export interface IPowAlertObject {
       message:string;
       duration?:number;
-      enter?(done:() => void);
-      entered?(done:() => void);
-      exit?(done:() => void);
-      exited?(done:() => void);
+      done?(message:IPowAlertObject);
    }
 
    export interface IAlertScopeService extends ng.IRootScopeService {
       powAlert:IPowAlertObject;
    }
 
+   export interface IPowAlertService {
+      show(message:string):IPowAlertObject;
+      queue(config:IPowAlertObject);
+   }
+
    /**
     * Provide a basic service for queuing and showing messages to the user.
     */
-   export class PowAlertService extends pow2.Events implements pow2.IWorldObject, pow2.IProcessObject {
+   export class PowAlertService extends pow2.Events implements pow2.IWorldObject, pow2.IProcessObject, IPowAlertService {
       scope:IAlertScopeService;
       timeout:ng.ITimeoutService;
       game:PowGameService;
@@ -65,11 +67,18 @@ module pow2.ui {
          this.game.world.erase(this);
       }
 
-      show(message:string){
-         this._queue.push({
+      show(message:string,done?:() => void,duration?:number):IPowAlertObject{
+         var obj:IPowAlertObject = {
             message:message,
-            duration: 1000
-         });
+            duration: typeof duration === 'undefined' ? 1000 : duration,
+            done:done
+         };
+         this._queue.push(obj);
+         return obj;
+      }
+
+      queue(config:IPowAlertObject){
+         this._queue.push(config);
       }
 
       /*
@@ -87,6 +96,7 @@ module pow2.ui {
             this.animate.enter(this.element, this.container, null,() => {
                this.timeout(() => {
                   this.animate.leave(this.element, () => {
+                     this._current.done && this._current.done(this._current);
                      this.scope.powAlert = this._current = null;
                   });
                },this._current.duration);
