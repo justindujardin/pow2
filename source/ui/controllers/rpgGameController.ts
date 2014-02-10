@@ -69,11 +69,17 @@ module pow2.ui {
                   $scope.displayMessage(state.name);
                   state.machine.on('combat:attack',function(damage,attacker,defender){
                      state.machine.paused = true;
-                     $scope.$apply(function(){
-                        var msg = attacker.model.get('name') + " attacked " + defender.model.get('name') + " for " + damage + " damage!";
-                        powAlert.show(msg,function(){
-                           state.machine.paused = false;
-                        });
+                     var msg:string = '';
+                     var a = attacker.model.get('name');
+                     var b = defender.model.get('name');
+                     if(damage > 0){
+                        msg = a + " attacked " + b + " for " + damage + " damage!";
+                     }
+                     else {
+                        msg = a + " attacked " + b + ", and MISSED!";
+                     }
+                     powAlert.show(msg,function(){
+                        state.machine.paused = false;
                      });
                   });
                   state.machine.on('combat:victory',function(data:CombatVictorySummary) {

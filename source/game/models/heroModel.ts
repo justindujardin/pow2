@@ -109,8 +109,11 @@ module pow2 {
          var halfStrength = this.attributes.strength / 2;
          var weaponAttack = this.weapon ? this.weapon.attributes.attack : 0;
          var amount = halfStrength + weaponAttack;
+         var max = amount * 1.2;
+         var min = amount * 0.8;
+         var damage = Math.max(1,Math.floor(Math.random() * (max - min + 1)) + min);
          if(this.rollHit(defender)){
-            return defender.damage(amount);
+            return defender.damage(damage);
          }
          return 0;
       }
