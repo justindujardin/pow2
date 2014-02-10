@@ -49,6 +49,7 @@ module pow2.ui {
       container:ng.IAugmentedJQuery;
       animate:any;
       id:number = _.uniqueId();
+      paused:boolean = false;
 
       private _current:IPowAlertObject = null;
       private _queue:IPowAlertObject[] = [];
@@ -100,7 +101,7 @@ module pow2.ui {
        * @param elapsed number The elapsed time since the last invocation, in milliseconds.
        */
       processFrame(elapsed:number) {
-         if(this._current && this._current.busy !== true){
+         if(this._current && this.paused !== true){
             var c = this._current;
             var timeout:boolean = c.duration && c.elapsed > c.duration;
             var dismissed:boolean = c.dismissed === true;
@@ -108,22 +109,23 @@ module pow2.ui {
                c.elapsed += elapsed;
                return;
             }
-            c.busy = true;
+            this.paused = true;
             this.scope.$apply(() => {
                this.animate.leave(this.element, () => {
                   this._current.done && this._current.done(this._current);
                   this.scope.powAlert = this._current = null;
+                  this.paused = false;
                });
             });
          }
-         if(this._queue.length === 0){
+         if(this.paused || this._queue.length === 0){
             return;
          }
-         var newAlert = this._queue.shift();
+         this._current = this._queue.shift();
          this.scope.$apply(() => {
-            this.scope.powAlert = newAlert;
+            this.scope.powAlert = this._current;
             this.animate.enter(this.element, this.container, null,() => {
-               this._current = newAlert;
+               this.paused = false;
             });
          });
       }
