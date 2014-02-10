@@ -18,6 +18,15 @@
 /// <reference path="../../../core/state.ts" />
 
 module pow2 {
+
+   export interface CombatVictorySummary {
+      party:GameEntityObject[];
+      enemies:GameEntityObject[];
+      levels:HeroModel[];
+      gold:number;
+      exp:number;
+   }
+
    export class CombatVictoryState extends CombatState {
       static NAME:string = "Combat Victory";
       name:string = CombatVictoryState.NAME;
@@ -43,7 +52,15 @@ module pow2 {
                leveledHeros.push(heroModel);
             }
          });
-         machine.trigger("combat:victory",machine.party,machine.enemies,leveledHeros);
+
+         var summary:CombatVictorySummary = {
+            party:machine.party,
+            enemies:machine.enemies,
+            levels:leveledHeros,
+            gold:gold,
+            exp:exp
+         };
+         machine.trigger("combat:victory",summary);
       }
 
       tick(machine:CombatStateMachine){

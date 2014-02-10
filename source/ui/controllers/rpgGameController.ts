@@ -76,16 +76,15 @@ module pow2.ui {
                         });
                      });
                   });
-                  state.machine.on('combat:victory',function(winner,loser,leveled) {
+                  state.machine.on('combat:victory',function(data:CombatVictorySummary) {
                      state.machine.paused = true;
-                     $scope.$apply(function(){
-                        var msg = "Enemies Defeated!";
-                        powAlert.show(msg,function(){
-                           state.machine.paused = false;
-                           var data = game.model.toJSON();
-                           //console.log(data);
-                           $scope.saveState(JSON.stringify(data));
-                        });
+                     powAlert.show("Found " + data.gold + " gold!",null,0);
+                     powAlert.show("Gained " + data.exp + " experience!",null,0);
+                     angular.forEach(data.levels,(hero:HeroModel) => {
+                        powAlert.show(hero.get('name') + " reached level " + hero.get('level') + "!",null,0);
+                     });
+                     powAlert.show("Enemies Defeated!",function(){
+                        state.machine.paused = false;
                      });
                   });
                });
