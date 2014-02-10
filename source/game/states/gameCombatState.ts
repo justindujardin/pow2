@@ -117,7 +117,7 @@ module pow2 {
       enter(machine:CombatStateMachine){
          super.enter(machine);
          machine.keyListener = (e) => {
-            if(this.keyPress(machine,e.keyCode) === false){
+            if(machine.paused === false && this.keyPress(machine,e.keyCode) === false){
                e.preventDefault();
                return false;
             }
