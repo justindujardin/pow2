@@ -20,9 +20,12 @@
 module pow2.ui {
 
    export interface IPowAlertObject {
-      message:string;
-      duration?:number;
-      done?(message:IPowAlertObject);
+      message:string; // The message to display.
+      duration?:number; // The duration the message should be displayed after shown.
+      elapsed?:number; // Elapsed time since the alert has been full shown (after any enter animations)
+      dismissed?:boolean; // Set to dismiss.
+      busy?:boolean; // Set to ignore all processing for this alert.
+      done?(message:IPowAlertObject); // A callback for after this alert has been issued and dismissed.
    }
 
    export interface IAlertScopeService extends ng.IRootScopeService {
@@ -58,6 +61,10 @@ module pow2.ui {
          this.container = container;
          this.animate = animate;
 
+         this.container.on('click',(e) => {
+            this.dismiss();
+         });
+
          game.world.mark(this);
          game.world.time.addObject(this);
       }
@@ -67,18 +74,24 @@ module pow2.ui {
          this.game.world.erase(this);
       }
 
+      dismiss() {
+         if(this._current){
+            this._current.dismissed = true;
+         }
+      }
       show(message:string,done?:() => void,duration?:number):IPowAlertObject{
          var obj:IPowAlertObject = {
             message:message,
             duration: typeof duration === 'undefined' ? 1000 : duration,
             done:done
          };
-         this._queue.push(obj);
-         return obj;
+         return this.queue(obj);
       }
 
       queue(config:IPowAlertObject){
+         config.elapsed = 0;
          this._queue.push(config);
+         return config;
       }
 
       /*
@@ -87,19 +100,30 @@ module pow2.ui {
        * @param elapsed number The elapsed time since the last invocation, in milliseconds.
        */
       processFrame(elapsed:number) {
-         if(this._current || this._queue.length === 0){
+         if(this._current && this._current.busy !== true){
+            var c = this._current;
+            var timeout:boolean = c.duration && c.elapsed > c.duration;
+            var dismissed:boolean = c.dismissed === true;
+            if(!timeout && !dismissed){
+               c.elapsed += elapsed;
+               return;
+            }
+            c.busy = true;
+            this.scope.$apply(() => {
+               this.animate.leave(this.element, () => {
+                  this._current.done && this._current.done(this._current);
+                  this.scope.powAlert = this._current = null;
+               });
+            });
+         }
+         if(this._queue.length === 0){
             return;
          }
-         this._current = this._queue.shift();
+         var newAlert = this._queue.shift();
          this.scope.$apply(() => {
-            this.scope.powAlert = this._current;
+            this.scope.powAlert = newAlert;
             this.animate.enter(this.element, this.container, null,() => {
-               this.timeout(() => {
-                  this.animate.leave(this.element, () => {
-                     this._current.done && this._current.done(this._current);
-                     this.scope.powAlert = this._current = null;
-                  });
-               },this._current.duration);
+               this._current = newAlert;
             });
          });
       }
