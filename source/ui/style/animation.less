@@ -119,7 +119,8 @@
   opacity:0;
   display:block!important;
 }
-.fade.ng-enter, .fade.ng-enter.ng-enter-active {
+.fade.ng-enter,
+.fade.ng-enter.ng-enter-active {
   .animation(fadeIn @fadeTime ease both);
   display:block!important;
 }
@@ -127,7 +128,38 @@
   opacity:1;
   display:block!important;
 }
-.fade.ng-leave, .fade.ng-leave-active {
+.fade.ng-leave,
+.fade.ng-leave-active {
   .animation(fadeOut @fadeTime ease both);
   display:block!important;
 }
+
+.fade.ng-hide-add,
+.fade.ng-hide-remove {
+  display:block!important;
+}
+.fade.ng-hide-add-active,
+.fade.ng-hide-remove-active {
+  display:block!important;
+}
+.fade.ng-hide-add {
+  opacity:1;
+  .fadeOut;
+}
+.fade.ng-hide-remove {
+  opacity:0;
+  .fadeIn;
+}
+//
+//.fade.ng-hide {
+//  display: block !important;
+//  opacity: 0;
+//}
+//.fade.ng-hide-remove {
+//  .animation(fadeOut @fadeTime ease both);
+//  display: block !important;
+//}
+//.fade.ng-hide-add {
+//  .animation(fadeIn @fadeTime ease both);
+//  display: block !important;
+//}
