@@ -57,9 +57,9 @@ module pow2 {
          var defense = hero.getDefense();
          var min = this.attributes.attackLow;
          var max = this.attributes.attackHigh;
-         var damage = Math.max(1,Math.floor(Math.random() * (max - min + 1)) + min);
+         var damage = Math.floor(Math.random() * (max - min + 1)) + min;
          if(this.rollHit(defender)){
-            return defender.damage(damage - defense);
+            return defender.damage(Math.max(1,damage - defense));
          }
          return 0;
       }

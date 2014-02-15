@@ -121,14 +121,14 @@ module pow2 {
       }
 
       getEvasion():number {
-         var armorWeight:number = _.reduce(HeroModel.ARMOR_TYPES,(val:number,type) => {
+         var evasionPenalty:number = _.reduce(HeroModel.ARMOR_TYPES,(val:number,type) => {
             var item:ArmorModel = this[type];
             if(!item){
                return val;
             }
             return val + item.attributes.evade;
          },0);
-         return EntityModel.BASE_EVASION + this.attributes.agility - armorWeight;
+         return EntityModel.BASE_EVASION + this.attributes.agility + evasionPenalty;
       }
 
       attack(defender:EntityModel):number{
@@ -240,7 +240,7 @@ module pow2 {
          return Math.floor(this.attributes.vitality * Math.pow(level,1.1)) + (this.attributes.baseVitality * 2);
       }
       getStrengthForLevel(level:number=this.attributes.level){
-         return Math.floor(this.attributes.baseStrength * Math.pow(level,0.95));
+         return Math.floor(this.attributes.baseStrength * Math.pow(level,0.65));
       }
       getAgilityForLevel(level:number=this.attributes.level){
          return Math.floor(this.attributes.baseAgility * Math.pow(level,0.95));

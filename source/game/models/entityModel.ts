@@ -63,7 +63,8 @@ module pow2 {
       // Chance to hit = (BASE_CHANCE_TO_HIT + PLAYER_HIT_PERCENT) - EVASION
       rollHit(defender:EntityModel):boolean {
          var roll:number = _.random(0,200);
-         var chance:number = EntityModel.BASE_CHANCE_TO_HIT + this.attributes.hitPercent - defender.getEvasion();
+         var evasion:number = defender.getEvasion();
+         var chance:number = EntityModel.BASE_CHANCE_TO_HIT + this.attributes.hitPercent - evasion;
          if(roll === 200){
             return false;
          }
