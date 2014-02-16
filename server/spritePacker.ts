@@ -52,19 +52,46 @@ function scalePng(png:any,scale){
 function readPngData(file,scale){
    var deferred = <any>Q.defer();
    var readFile = (<any>Q).denodeify(fs.readFile);
-   return readFile(file).then(function(data){
-      var stream = new PNG();
-      stream.on('parsed', function() {
-         var png = scale > 1 ? scalePng(this,scale) : this;
-         stream.end();
-         deferred.resolve({
-            png: png,
-            file: file
+   Q.all([
+         readFile(file),
+         readPngMetaData(file,scale)
+      ]).spread(function(data,meta){
+         var stream = new PNG();
+         stream.on('parsed', function() {
+            var png = scale > 1 ? scalePng(this,scale) : this;
+            stream.end();
+            deferred.resolve({
+               png: png,
+               meta: meta,
+               file: file
+            });
          });
+         stream.write(data);
       });
-      stream.write(data);
-      return deferred.promise;
+   return deferred.promise;
+}
+
+
+/**
+ * Read PNG JSON metadata and resolve with its object or null.
+ */
+function readPngMetaData(file,scale){
+   var deferred = <any>Q.defer();
+   var file = file.replace(/\.[^\.]+$/, '.json');
+   fs.readFile(file,'utf-8',function(err,data){
+      if(err){
+         deferred.resolve(null);
+         return;
+      }
+      try {
+         var obj = JSON.parse(data.toString());
+         deferred.resolve(obj);
+      }
+      catch(e){
+         deferred.reject(e);
+      }
    });
+   return deferred.promise;
 }
 
 function clearFillPng(png) {
@@ -103,7 +130,8 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
          var index = (cell.x / (spriteSize * scale)) + (cell.y / (spriteSize * scale)) * (width / spriteSize);
          var width = cell.png.width * scale;
          var height = cell.png.height * scale;
-         metaData[fileName] = {
+         // TODO: Interface this.
+         var metaObj:any = {
             width: width,
             height: height,
             frames: cell.png.width / (spriteSize * scale) * cell.png.height / (spriteSize * scale),
@@ -112,6 +140,16 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
             x: cell.x,
             y: cell.y
          };
+         // If the cell meta file specifies cellWidth/Height calculate frames based on that.
+         if(cell.meta){
+            _.extend(metaObj,cell.meta);
+            var hasWidth = typeof metaObj.cellWidth !== 'undefined';
+            var hasHeight = typeof metaObj.cellHeight !== 'undefined';
+            if(hasWidth && hasHeight){
+               metaObj.frames = (cell.png.width / metaObj.cellHeight) * (cell.png.height / metaObj.cellHeight);
+            }
+         }
+         metaData[fileName] = metaObj;
          // Clean up the png stream.
          cell.png.end();
       });
@@ -154,6 +192,11 @@ module.exports = function(files,options){
             data: d
          };
       });
+
+      // Need to sort by width/height to ensure binpacking doesn't have trouble growing.
+      blocks = blocks.sort((a:any,b:any) => {
+         return a.w - b.w;
+      });
       var packer = new boxPacker();
       packer.fit(blocks);
       var cells = _.map(blocks,function(b:any){
@@ -163,6 +206,7 @@ module.exports = function(files,options){
             x: b.fit.x,
             y: b.fit.y,
             png: b.data.png,
+            meta: b.data.meta,
             file: b.data.file
          };
       });
