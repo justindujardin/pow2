@@ -160,10 +160,16 @@ module pow2 {
 
          // Build party
          _.each(machine.model.party,(hero:HeroModel,index:number) => {
-            var heroEntity:GameEntityObject = GameStateMachine.createHeroEntity(hero.attributes.name,hero);
+
+            var heroEntity:GameEntityObject = new GameEntityObject({
+               name:hero.attributes.name,
+               icon: hero.attributes.icon,
+               model:hero
+            });
+            heroEntity.addComponent(new combat.PlayerCombatRenderComponent());
             if(heroEntity.isDefeated()){
                return;
-            } 
+            }
             heroEntity.icon = hero.get('combatSprite');
             this.machine.party.push(heroEntity);
             this.scene.addObject(heroEntity);

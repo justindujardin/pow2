@@ -50,17 +50,6 @@ module pow2 {
       ];
       private _elapsed: number = 0;
 
-
-      static createHeroEntity(name:string,model:HeroModel){
-         var result = new GameEntityObject({
-            name:name,
-            icon: model.attributes.icon,
-            model:model
-         });
-         result.addComponent(new PlayerRenderComponent());
-         return result;
-      }
-
       updatePlayer(){
          if(this.world && this.world.scene){
             var scene:Scene = this.world.scene;
