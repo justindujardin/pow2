@@ -24,7 +24,7 @@ module pow2 {
       name:string;
       enter(machine:IStateMachine);
       exit(machine:IStateMachine);
-      tick(machine:IStateMachine);
+      update(machine:IStateMachine);
    }
    export interface IStateTransition {
       targetState:string;
@@ -39,7 +39,7 @@ module pow2 {
       transitions:IStateTransition[] = [];
       enter(machine:IStateMachine){}
       exit(machine:IStateMachine){}
-      tick(machine:IStateMachine){
+      update(machine:IStateMachine){
          _.any(this.transitions,(t:IStateTransition) => {
             return t.evaluate(machine) && machine.setCurrentState(t.targetState);
          });

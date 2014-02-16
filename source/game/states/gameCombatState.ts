@@ -33,7 +33,7 @@ module pow2 {
 
    // Combat State Machine
    //--------------------------------------------------------------------------
-   export class CombatStateMachine extends StateMachine {
+   export class CombatStateMachine extends TickedStateMachine {
       parent:GameStateMachine;
       defaultState:string = CombatStartState.NAME;
       states:IState[] = [
@@ -127,6 +127,7 @@ module pow2 {
       }
       exit(machine:CombatStateMachine){
          $(window).off('keypress',machine.keyListener);
+         machine.keyListener = null;
          super.exit(machine);
       }
 

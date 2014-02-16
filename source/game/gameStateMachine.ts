@@ -36,7 +36,7 @@ module pow2 {
 
    // Implementation
    // -------------------------------------------------------------------------
-   export class GameStateMachine extends StateMachine {
+   export class GameStateMachine extends TickedStateMachine {
       model:GameStateModel = new GameStateModel();
       defaultState:string = GameDefaultState.NAME;
       player:TileObject = null;
