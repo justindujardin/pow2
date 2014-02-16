@@ -16,6 +16,7 @@
 
 /// <reference path="../tile/tileMapView.ts"/>
 /// <reference path="./components/combatCameraComponent.ts"/>
+/// <reference path="./components/playerCombatRenderComponent.ts"/>
 
 module pow2{
    export class GameCombatView extends TileMapView {
@@ -59,7 +60,7 @@ module pow2{
        */
       renderFrame(elapsed) {
          super.renderFrame(elapsed);
-         var players = this.scene.objectsByComponent(pow2.PlayerRenderComponent);
+         var players = this.scene.objectsByComponent(pow2.combat.PlayerCombatRenderComponent);
          _.each(players, (player) => {
             this.objectRenderer.render(player,player,this);
          });

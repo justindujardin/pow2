@@ -103,8 +103,9 @@ module pow2 {
       }
    }
 
-   // A state machine that updates every game tick.
-   // -------------------------------------------------------------------------
+   /**
+    * A state machine that updates with every game tick.
+    */
    export class TickedStateMachine extends StateMachine implements IWorldObject {
       // IWorldObject interface
       world:IWorld;
@@ -114,7 +115,6 @@ module pow2 {
       onRemoveFromWorld(world){
          world.time.removeObject(this);
       }
-
       tick(elapsed:number){
          this.update(elapsed);
       }

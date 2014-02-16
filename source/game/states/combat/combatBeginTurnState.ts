@@ -16,6 +16,7 @@
 
 /// <reference path="../gameCombatState.ts" />
 /// <reference path="../../components/damageComponent.ts" />
+/// <reference path="../../components/playerCombatRenderComponent.ts" />
 /// <reference path="../../../core/state.ts" />
 
 module pow2 {
@@ -95,6 +96,7 @@ module pow2 {
             var hit:boolean = damage > 0;
             var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? "hit" : "miss"));
             var defenderSprite:SpriteComponent = <any>defender.findComponent(SpriteComponent);
+            var attackerPlayer:combat.PlayerCombatRenderComponent = <any>attacker.findComponent(combat.PlayerCombatRenderComponent);
             var components = {
                animation: new pow2.AnimatedSpriteComponent({
                   spriteName:"attack",
@@ -111,16 +113,19 @@ module pow2 {
             };
             var animDamage:boolean = machine.isFriendlyTurn() && !!defenderSprite;
             if(animDamage) { defenderSprite.frame = 1; }
+            if(!!attackerPlayer){
+               attackerPlayer.setState("Moving");
+            }
             defender.addComponentDictionary(components);
             components.damage.once('damage:done',() => {
-               if(didKill){
-                  defender.visible = false;
+               if(!!attackerPlayer){
+                  attackerPlayer.setState();
                }
+
                if(animDamage) {
                   _.delay(function(){
                      defenderSprite.frame = 0;
                   },500);
-
                }
                defender.removeComponentDictionary(components);
                machine.currentDone = true;

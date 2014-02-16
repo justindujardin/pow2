@@ -236,7 +236,7 @@ module pow2 {
             machine.combatant.destroy();
          }
       }
-      tick(machine:IStateMachine){
+      update(machine:IStateMachine){
          if(this.machine){
             this.machine.update(machine);
          }
