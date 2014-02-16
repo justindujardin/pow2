@@ -96,7 +96,8 @@ pow2.registerArmor(1,[
       icon : "cloak.png",
       groups : ["default", "armor"],
       usedBy : [
-         pow2.HeroType.Wizard
+         pow2.HeroType.DeathMage,
+         pow2.HeroType.LifeMage
       ],
       defense:1,
       evade:-2,
@@ -121,8 +122,7 @@ pow2.registerArmor(1,[
       groups : ["default", "armor"],
       usedBy : [
          pow2.HeroType.Warrior,
-         pow2.HeroType.Ranger,
-         pow2.HeroType.Thief
+         pow2.HeroType.Ranger
       ],
       defense:1,
       evade:-1,
@@ -135,7 +135,6 @@ pow2.registerArmor(1,[
       groups : ["default", "armor"],
       usedBy : [
          pow2.HeroType.Warrior,
-         pow2.HeroType.Thief,
          pow2.HeroType.Ranger
       ],
       defense:1,

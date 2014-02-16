@@ -39,13 +39,15 @@ module pow2 {
 
    export enum HeroType {
       Warrior = 1,
-      Wizard = 2,
-      Ranger = 3,
-      Thief = 4
+      LifeMage = 2,
+      DeathMage = 3,
+      Ranger = 4
    }
    export interface HeroModelOptions extends EntityModelOptions {
       type:HeroType;
       description:string; // An description of the hero.
+
+      combatSprite:string;
 
       // Hidden attributes.
       baseStrength:number; // Strength = damage
@@ -77,6 +79,7 @@ module pow2 {
       static DEFAULTS:HeroModelOptions = {
          name: "Hero",
          icon: "warrior.png",
+         combatSprite:"warriorCombat.png",
          type: HeroType.Warrior,
          level: 1,
          exp:0,
@@ -262,6 +265,7 @@ module pow2 {
                   level:0,
                   name:name,
                   icon: "warrior.png",
+                  combatSprite:"warriorCombat.png",
                   baseStrength:10,
                   baseAgility:2,
                   baseIntelligence:1,
@@ -270,12 +274,13 @@ module pow2 {
                   hitPercentPerLevel:3
                });
                break;
-            case HeroType.Wizard:
+            case HeroType.DeathMage:
                character = new HeroModel({
                   type:type,
                   name:name,
                   level:0,
                   icon: "girlWizard.png",
+                  combatSprite:"lifeMageCombat.png",
                   baseStrength:1,
                   baseAgility:6,
                   baseIntelligence:9,
@@ -290,6 +295,7 @@ module pow2 {
                   name:name,
                   level:0,
                   icon: "girlArcher.png",
+                  combatSprite:"archerCombat.png",
                   baseStrength:3,
                   baseAgility:10,
                   baseIntelligence:2,
@@ -298,11 +304,12 @@ module pow2 {
                   hitPercentPerLevel:2
                });
                break;
-            case HeroType.Thief:
+            case HeroType.LifeMage:
                character = new HeroModel({
                   type:type,
                   name:name,
                   level:0,
+                  combatSprite:"deathMageCombat.png",
                   icon: "assassin.png",
                   baseStrength:2,
                   baseAgility:10,

@@ -34,7 +34,12 @@ module pow2 {
          super.enter(machine);
          machine.currentDone = false;
          this.attacksLeft = 1;
-         machine.current.scale = 1.5;
+         if(machine.isFriendlyTurn()){
+            machine.current.point.x -= 1.5;
+         }
+         else {
+            machine.current.scale = 1.5;
+         }
          this.current = machine.current;
 
          machine.current.scene.on('click',(mouse,hits) => {
@@ -46,7 +51,13 @@ module pow2 {
          }
       }
       exit(machine:CombatStateMachine){
-         this.current.scale = 1;
+         if(machine.isFriendlyTurn()){
+            this.current.point.x += 1.5;
+         }
+         else {
+            this.current.scale = 1;
+         }
+
          super.exit(machine);
       }
       keyPress(machine:CombatStateMachine,keyCode:KeyCode):boolean {
@@ -83,6 +94,7 @@ module pow2 {
             var didKill:boolean = defender.model.get('hp') <= 0;
             var hit:boolean = damage > 0;
             var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? "hit" : "miss"));
+            var defenderSprite:SpriteComponent = <any>defender.findComponent(SpriteComponent);
             var components = {
                animation: new pow2.AnimatedSpriteComponent({
                   spriteName:"attack",
@@ -97,10 +109,18 @@ module pow2 {
                   url: hitSound
                })
             };
+            var animDamage:boolean = machine.isFriendlyTurn() && !!defenderSprite;
+            if(animDamage) { defenderSprite.frame = 1; }
             defender.addComponentDictionary(components);
             components.damage.once('damage:done',() => {
                if(didKill){
                   defender.visible = false;
+               }
+               if(animDamage) {
+                  _.delay(function(){
+                     defenderSprite.frame = 0;
+                  },500);
+
                }
                defender.removeComponentDictionary(components);
                machine.currentDone = true;
