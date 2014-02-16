@@ -30,29 +30,37 @@ module pow2 {
             return;
          }
 
+         // Build render data.
          var point = (object.renderPoint || object.point).clone();
-         point.x -= object.size.x * object.scale / 2;
-         point.y -= object.size.y * object.scale / 2;
+         var c = data.meta; // TODO: interface this
+         var sourceWidth:number = view.unitSize;
+         var sourceHeight:number = view.unitSize;
+         if(c && typeof c.cellWidth !== 'undefined' && typeof c.cellHeight !== 'undefined') {
+            sourceWidth = c.cellWidth;
+            sourceHeight = c.cellHeight;
+         }
+         var objWidth = view.screenToWorld(sourceWidth);
+         var objHeight = view.screenToWorld(sourceHeight);
+         point.x -= objWidth * object.scale / 2;
+         point.y -= objHeight * object.scale / 2;
          point = view.worldToScreen(point);
 
          if (data.icon && data.meta) {
-            var c = data.meta;
             var cx = c.x;
             var cy = c.y;
-            var cwidth = c.width / view.unitSize;
             if(data.meta.frames > 1){
+               if(data.frame > 4){
+                  var bar = "baz";
+               }
+               var cwidth = c.width / view.unitSize;
                var fx = (data.frame % (cwidth));
                var fy = Math.floor((data.frame - fx) / cwidth);
-               cx += fx * view.unitSize;
-               cy += fy * view.unitSize;
+               cx += fx * sourceWidth;
+               cy += fy * sourceHeight;
             }
-            var sourceWidth:number = typeof c.cellWidth === 'undefined' ? view.unitSize : c.cellWidth;
-            var sourceHeight:number = typeof c.cellHeight === 'undefined' ? view.unitSize : c.cellHeight;
             view.context.drawImage(data.image, cx, cy, sourceWidth, sourceHeight, point.x, point.y, sourceWidth * object.scale, sourceHeight * object.scale);
          } else {
-            var width = view.unitSize;
-            var height = view.unitSize;
-            view.context.drawImage(data.image, point.x, point.y, width * object.scale, height * object.scale);
+            view.context.drawImage(data.image, point.x, point.y, sourceWidth * object.scale, sourceHeight * object.scale);
          }
       }
    }
