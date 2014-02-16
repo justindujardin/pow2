@@ -52,7 +52,7 @@ module pow2 {
                if(data.frame > 4){
                   var bar = "baz";
                }
-               var cwidth = c.width / view.unitSize;
+               var cwidth = c.width / sourceWidth;
                var fx = (data.frame % (cwidth));
                var fy = Math.floor((data.frame - fx) / cwidth);
                cx += fx * sourceWidth;
