@@ -29,7 +29,7 @@ module pow2 {
       constructor() {
          this._objects = [];
       }
-      addSpatialObject(obj: any) { // TODO: should be pow2.SceneObject, but it doesn't have .point
+      addSpatialObject(obj: pow2.SceneObject) {
          if (obj && obj.point instanceof pow2.Point) {
             this._objects.push(obj);
          }
