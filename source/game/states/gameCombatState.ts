@@ -15,6 +15,7 @@
  */
 
 /// <reference path="../objects/gameEntityObject.ts" />
+/// <reference path="../components/animatedComponent.ts" />
 /// <reference path="../../tile/components/animatedSpriteComponent.ts" />
 /// <reference path="../gameStateMachine.ts" />
 /// <reference path="./gameMapState.ts" />
@@ -167,6 +168,7 @@ module pow2 {
                model:hero
             });
             heroEntity.addComponent(new combat.PlayerCombatRenderComponent());
+            heroEntity.addComponent(new AnimatedComponent());
             if(heroEntity.isDefeated()){
                return;
             }

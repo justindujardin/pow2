@@ -90,6 +90,7 @@ module.exports = function(grunt) {
          core: {
             src: [
                "source/core/api.ts",
+               "source/core/events.ts",
                "source/core/*.ts",
                "source/core/resources/*.ts"
             ],
@@ -190,12 +191,14 @@ module.exports = function(grunt) {
                indexFiles: true
             },
             files: [
+               {src: 'data/textures/creatures/*.png', dest: 'web/images/creatures'},
                {src: 'data/textures/vehicles/*.png', dest: 'web/images/vehicles'},
+               {src: 'data/textures/ui/*.png', dest: 'web/images/ui'},
                {src: 'data/textures/characters/*.png', dest: 'web/images/characters'},
                {src: 'data/textures/animation/*.png', dest: 'web/images/animation'},
-               {src: 'data/textures/creatures/*.png', dest: 'web/images/creatures'},
                {src: 'data/textures/environment/*.png', dest: 'web/images/environment'},
                {src: 'data/textures/equipment/*.png', dest: 'web/images/equipment'},
+               {src: 'data/textures/basictiles/*.png', dest: 'web/images/basictiles'},
                {src: 'data/textures/items/*.png', dest: 'web/images/items'}
             ]
          }
@@ -249,7 +252,7 @@ module.exports = function(grunt) {
             files: [
                '<%= typescript.core.src %>'
             ],
-            tasks: ['clean:core', 'typescript:core', 'notify:code']
+            tasks: ['typescript:core', 'notify:code']
          },
          data: {
             files: [
@@ -261,19 +264,19 @@ module.exports = function(grunt) {
             files: [
                '<%= typescript.scene.src %>'
             ],
-            tasks: ['clean:scene', 'typescript:scene', 'notify:code']
+            tasks: ['typescript:scene', 'notify:code']
          },
          tile: {
             files: [
                '<%= typescript.tile.src %>'
             ],
-            tasks: ['clean:tile', 'typescript:tile', 'notify:code']
+            tasks: ['typescript:tile', 'notify:code']
          },
          game: {
             files: [
                '<%= typescript.game.src %>'
             ],
-            tasks: ['clean:game', 'typescript:game', 'notify:code']
+            tasks: ['typescript:game', 'notify:code']
          },
          ui: {
             files: [

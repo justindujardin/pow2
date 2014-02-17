@@ -35,12 +35,7 @@ module pow2 {
          super.enter(machine);
          machine.currentDone = false;
          this.attacksLeft = 1;
-         if(machine.isFriendlyTurn()){
-            machine.current.point.x -= 1.5;
-         }
-         else {
-            machine.current.scale = 1.5;
-         }
+         machine.current.scale = 1.25;
          this.current = machine.current;
 
          machine.current.scene.on('click',(mouse,hits) => {
@@ -52,13 +47,7 @@ module pow2 {
          }
       }
       exit(machine:CombatStateMachine){
-         if(machine.isFriendlyTurn()){
-            this.current.point.x += 1.5;
-         }
-         else {
-            this.current.scale = 1;
-         }
-
+         this.current.scale = 1;
          super.exit(machine);
       }
       keyPress(machine:CombatStateMachine,keyCode:KeyCode):boolean {
@@ -90,13 +79,13 @@ module pow2 {
             attacker = machine.current;
             defender = defender || machine.getRandomPartyMember();
          }
-         _.delay(() => {
+         var attackerPlayer:combat.PlayerCombatRenderComponent = <any>attacker.findComponent(combat.PlayerCombatRenderComponent);
+         var done = () => {
             var damage:number = attacker.model.attack(defender.model);
             var didKill:boolean = defender.model.get('hp') <= 0;
             var hit:boolean = damage > 0;
             var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? "hit" : "miss"));
             var defenderSprite:SpriteComponent = <any>defender.findComponent(SpriteComponent);
-            var attackerPlayer:combat.PlayerCombatRenderComponent = <any>attacker.findComponent(combat.PlayerCombatRenderComponent);
             var components = {
                animation: new pow2.AnimatedSpriteComponent({
                   spriteName:"attack",
@@ -134,7 +123,14 @@ module pow2 {
                machine.currentDone = true;
             });
             machine.trigger("combat:attack",damage,attacker,defender);
-         },150);
+         };
+
+         if(!!attackerPlayer){
+            attackerPlayer.attack(done);
+         }
+         else {
+            _.delay(done,150);
+         }
       }
    }
 
