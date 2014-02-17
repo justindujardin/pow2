@@ -274,7 +274,7 @@ module pow2 {
                   hitPercentPerLevel:3
                });
                break;
-            case HeroType.DeathMage:
+            case HeroType.LifeMage:
                character = new HeroModel({
                   type:type,
                   name:name,
@@ -304,7 +304,7 @@ module pow2 {
                   hitPercentPerLevel:2
                });
                break;
-            case HeroType.LifeMage:
+            case HeroType.DeathMage:
                character = new HeroModel({
                   type:type,
                   name:name,

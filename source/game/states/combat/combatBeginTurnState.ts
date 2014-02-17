@@ -121,6 +121,9 @@ module pow2 {
                if(!!attackerPlayer){
                   attackerPlayer.setState();
                }
+               if(didKill && defender.model instanceof CreatureModel){
+                  defender.destroy();
+               }
 
                if(animDamage) {
                   _.delay(function(){

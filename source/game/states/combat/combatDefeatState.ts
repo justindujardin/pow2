@@ -28,7 +28,7 @@ module pow2 {
          // callback(winner,loser);
          machine.trigger("combat:defeat",machine.enemies,machine.party);
       }
-      tick(machine:CombatStateMachine){
+      update(machine:CombatStateMachine){
          if(machine.paused){
             return;
          }

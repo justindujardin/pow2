@@ -63,7 +63,7 @@ module pow2 {
          machine.trigger("combat:victory",summary);
       }
 
-      tick(machine:CombatStateMachine){
+      update(machine:CombatStateMachine){
          if(machine.paused){
             return;
          }
