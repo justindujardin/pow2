@@ -44,20 +44,8 @@ module.exports = function(grunt) {
       },
 
       clean: {
-         core: {
-            src: ["build/core"]
-         },
-         scene: {
-            src: ["build/scene"]
-         },
-         tile: {
-            src: ["build/tile"]
-         },
-         game: {
-            src: ["build/game"]
-         },
-         ui: {
-            src: ["build/ui"]
+         pow2: {
+            src: ["build/"]
          },
          server: {
             src: [
@@ -87,35 +75,20 @@ module.exports = function(grunt) {
             dest: 'web/<%= pkg.name %>.data.js'
          },
 
-         core: {
+         pow2: {
             src: [
                "source/core/api.ts",
                "source/core/events.ts",
                "source/core/*.ts",
-               "source/core/resources/*.ts"
-            ],
-            dest: 'build'
-         },
-         scene: {
-            src: [
+               "source/core/resources/*.ts",
                "source/scene/*.ts",
-               "source/scene/components/*.ts"
-            ],
-            dest: 'build'
-         },
-         tile: {
-            src: [
+               "source/scene/components/*.ts",
                "source/tile/*.ts",
                "source/tile/components/*.ts",
                "source/tile/objects/*.ts",
                "source/tile/resources/*.ts",
                "source/tile/features/*.ts",
-               "source/tile/render/*.ts"
-            ],
-            dest: 'build'
-         },
-         game: {
-            src: [
+               "source/tile/render/*.ts",
                "source/game/*.ts",
                "source/game/objects/*.ts",
                "source/game/models/entityModel.ts",
@@ -124,17 +97,12 @@ module.exports = function(grunt) {
                "source/game/states/*.ts",
                "source/game/states/combat/*.ts",
                "source/game/components/*.ts",
-               "source/game/components/features/*.ts"
-            ],
-            dest: 'build'
-         },
-         ui: {
-            src: [
+               "source/game/components/features/*.ts",
                "source/ui/index.ts",
                "source/ui/*.ts",
                "source/ui/**/*.ts"
             ],
-            dest:'build'
+            dest: 'build'
          },
          server: {
             options: {
@@ -248,41 +216,17 @@ module.exports = function(grunt) {
 
          // Game Source outputs
          //--------------------------------------------------------------------
-         core: {
+         pow2: {
             files: [
-               '<%= typescript.core.src %>'
+               '<%= typescript.pow2.src %>'
             ],
-            tasks: ['typescript:core', 'notify:code']
+            tasks: ['typescript:pow2', 'notify:code']
          },
          data: {
             files: [
                '<%= typescript.data.src %>'
             ],
             tasks: ['typescript:data', 'notify:data']
-         },
-         scene: {
-            files: [
-               '<%= typescript.scene.src %>'
-            ],
-            tasks: ['typescript:scene', 'notify:code']
-         },
-         tile: {
-            files: [
-               '<%= typescript.tile.src %>'
-            ],
-            tasks: ['typescript:tile', 'notify:code']
-         },
-         game: {
-            files: [
-               '<%= typescript.game.src %>'
-            ],
-            tasks: ['typescript:game', 'notify:code']
-         },
-         ui: {
-            files: [
-               '<%= typescript.ui.src %>'
-            ],
-            tasks: ['typescript:ui']
          },
          typedefs: {
             files: [
