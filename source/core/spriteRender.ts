@@ -31,8 +31,12 @@ module pow2 {
 
       constructor() {
          this.canvas = document.createElement('canvas');
-         this.canvas.width = this.canvas.height = 16;
+         this.sizeCanvas(16,16);
+      }
 
+      sizeCanvas(width:number,height:number){
+         this.canvas.width = width;
+         this.canvas.height = height;
          this.context = this.canvas.getContext('2d');
          (<any>this.context).webkitImageSmoothingEnabled = false;
          (<any>this.context).mozImageSmoothingEnabled = false;
@@ -50,6 +54,7 @@ module pow2 {
          if(!coords){
             throw new Error("Unable to find sprite by name: " + spriteName);
          }
+         this.sizeCanvas(coords.width,coords.height);
          return this.getSpriteSheet(coords.source,(image:ImageResource)=>{
             this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
             this.context.drawImage(image.data,coords.x,coords.y,this.canvas.width,this.canvas.height,0,0,this.canvas.width,this.canvas.height);
