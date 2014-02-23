@@ -29,26 +29,9 @@ module pow2 {
             super.process(view);
             return;
          }
-         view.camera = new Rect(1000000,1000000,-1000000,-1000000);
-         // TODO: Do this feature lookup in syncComponent rather than each frame.
-         for(var i = 0; i < 4; i++){
-            var battleSpawn = this.host.getFeature('p' + (i + 1));
-            if(!battleSpawn){
-               continue;
-            }
-            view.camera.addPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
-         }
-         for(var i = 0; i < 9; i++){
-            var battleSpawn = this.host.getFeature('e' + (i + 1));
-            if(!battleSpawn){
-               continue;
-            }
-            view.camera.addPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
-         }
-         var center = view.camera.getCenter();
          view.cameraScale = view.context.canvas.width > 768 ? 4 : 2;
          view.camera = view.screenToWorld(new Rect(0,0,view.context.canvas.width,view.context.canvas.height),view.cameraScale);
-         view.camera.setCenter(center);
+         view.camera.point.zero();
       }
    }
 }

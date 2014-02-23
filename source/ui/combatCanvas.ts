@@ -28,10 +28,10 @@ module pow2.ui {
             window.addEventListener('resize',onResize,false);
             var $window = $(window);
             function onResize(){
-               context.canvas.width = $window.width();
-               context.canvas.height = $window.height();
-               context.webkitImageSmoothingEnabled = false;
-               context.mozImageSmoothingEnabled = false;
+//               context.canvas.width = $window.width();
+//               context.canvas.height = $window.height();
+//               context.webkitImageSmoothingEnabled = false;
+//               context.mozImageSmoothingEnabled = false;
             }
             var tileView = new GameCombatView(element[0], game.loader);
             game.machine.on('combat:begin',(state:GameCombatState) => {
@@ -40,9 +40,9 @@ module pow2.ui {
                state.scene.addView(tileView);
                game.tileMap.scene.paused = true;
 
-               tileView.camera.extent.set(state.tileMap.bounds.extent.x,state.tileMap.bounds.extent.y);
-               tileView.camera.setCenter(state.tileMap.bounds.getCenter());
-               tileView.setTileMap(<any>state.tileMap);
+               //tileView.camera.extent.set(state.tileMap.bounds.extent.x,state.tileMap.bounds.extent.y);
+               //tileView.camera.setCenter(state.tileMap.bounds.getCenter());
+               //tileView.setTileMap(<any>state.tileMap);
 
                state.machine.on('combat:beginTurn',(player:GameEntityObject) => {
                   $scope.$apply(function() {
