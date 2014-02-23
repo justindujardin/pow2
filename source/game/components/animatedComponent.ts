@@ -32,6 +32,9 @@ module pow2 {
       frames? : any[];
       // Move translation
       move?: Point;
+
+      // callback
+      callback?:(config:IAnimationConfig) => void;
    }
 
    export interface IAnimationTask extends IAnimationConfig {
@@ -49,12 +52,15 @@ module pow2 {
    // -------------------------------------------------------------------------
    export class AnimatedComponent extends TickedComponent {
       host:TileObject;
+
       static EVENTS = {
          Started: "start",
          Stopped: "stop",
          Repeated: "repeat"
       };
       private _tasks:IAnimationTask[] = [];
+      private _animationKeys:any[] = [];
+      private _currentAnim:any = null;
       play(config:IAnimationConfig) {
          var task:IAnimationTask = <any>config;
          task.elapsed = 0;
@@ -82,6 +88,7 @@ module pow2 {
             if(task.complete === true){
                this._tasks.splice(i, 1);
                task.done && task.done(task);
+               task.callback && task.callback(task);
                //this.host.frame = task.startFrame;
                this.trigger(AnimatedComponent.EVENTS.Stopped,{
                   task:task,
@@ -128,5 +135,36 @@ module pow2 {
          factor = Math.min(Math.max(factor,0),1);
          return (from * (1.0 - factor)) + (to * factor);
       }
+
+      playChain(animations:IAnimationConfig[], cb:() => void) {
+         // Inject a 0 duration animation on the end of the list
+         // if a callback is desired.  This is a convenience for
+         // certain coding styles, and you could easily add your
+         // own animation as a callback before invoking this.
+         if(typeof cb !== 'undefined'){
+            animations.push({
+               name:"Chain Callback",
+               duration:0,
+               callback: cb
+            });
+         }
+         // TODO: Need a list of these for multiple animations on
+         // the same component. !!!!!!!!!!!!!!!!!!!!
+         this._animationKeys = animations;
+         this._animateNext();
+      }
+      private _animateNext() {
+         if(this._animationKeys.length === 0){
+            return;
+         }
+         this._currentAnim = this._animationKeys.shift();
+         this._currentAnim.done = () => {
+            _.defer(() => {
+               this._animateNext();
+            });
+         };
+         this.play(this._currentAnim);
+      }
+
    }
 }

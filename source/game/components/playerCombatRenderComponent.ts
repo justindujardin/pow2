@@ -59,8 +59,7 @@ module pow2.combat {
       _elapsed: number = 0;
       private _renderFrame:number = 3;
       state:string = "";
-      private _animationKeys:any[] = [];
-      private _currentAnim:any = null;
+      animating:boolean = false;
       private _animator:AnimatedComponent = null;
 
       syncComponent():boolean {
@@ -95,43 +94,27 @@ module pow2.combat {
          this.state = name;
       }
 
-      private _cb:any;
       attack(cb:() => void) {
-         this._animationKeys = _.map(attackAnimation,(anim) => {
+         if(!this._animator || this.animating){
+            return;
+         }
+         var animations:IAnimationConfig[] = _.map(attackAnimation,(anim:IAnimationConfig) => {
             var result = _.extend({},anim);
             if(typeof result.move !== 'undefined'){
                result.move = result.move.clone();
             }
             return result;
          });
-         this._cb = cb;
-         this.animNext();
+         this.animating = true;
+         this._animator.playChain(animations,() => {
+            this.animating = false;
+            cb && cb();
+         });
       }
-      animNext() {
-         if(!this._animator){
-            return;
-         }
-         if(this._animationKeys.length === 0){
-            this._cb && this._cb();
-            this._cb = null;
-            return;
-         }
-         this._currentAnim = this._animationKeys.shift();
-         this._currentAnim.done = () => {
-            _.defer(() => {
-               this.animNext();
-            });
-         };
-         this._animator.play(this._currentAnim);
-      }
-
       interpolateTick(elapsed:number) {
          super.interpolateTick(elapsed);
 
-         if(this._animator && this._animationKeys.length > 0){
-            this._animator.update(elapsed);
-         }
-         else {
+         if(!this.animating) {
             // Choose frame for interpolated position
             var factor = this._elapsed / this.tickRateMS;
             var altFrame = !!((factor > 0.0 && factor < 0.5));
