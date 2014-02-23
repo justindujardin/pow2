@@ -20,6 +20,7 @@
 /// <reference path="./components/combatCameraComponent.ts"/>
 /// <reference path="./components/playerCameraComponent.ts"/>
 /// <reference path="../tile/components/spriteComponent.ts"/>
+/// <reference path="../scene/components/movableComponent.ts"/>
 
 module pow2{
    export class GameMapView extends TileMapView {
@@ -83,6 +84,27 @@ module pow2{
          _.each(sprites, (sprite:SpriteComponent) => {
             this.objectRenderer.render(sprite.host,sprite, this);
          });
+
+         var targets = <MovableComponent[]>this.scene.componentsByType(pow2.MovableComponent);
+         _.each(targets, (target:MovableComponent) => {
+            if(target.path.length > 0){
+               this.context.save();
+               var destination:Point = target.path[target.path.length -1].clone();
+               destination.x -= 0.5;
+               destination.y -= 0.5;
+
+               var screenTile = this.worldToScreen(new Rect(destination, new Point(1,1)));
+               this.context.fillStyle = "rgba(10,255,10,0.3)";
+               this.context.fillRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
+               this.context.strokeStyle = "rgba(10,255,10,0.9)";
+               this.context.lineWidth = 1.5;
+               this.context.strokeRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
+
+               this.context.restore();
+            }
+         });
+
+
          return this;
       }
 
