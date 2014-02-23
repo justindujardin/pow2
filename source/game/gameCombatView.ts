@@ -19,9 +19,10 @@
 /// <reference path="./components/playerCombatRenderComponent.ts"/>
 
 module pow2{
-   export class GameCombatView extends TileMapView {
-      tileMap:GameTileMap = null;
+   export class GameCombatView extends SceneView {
+      objectRenderer:TileObjectRenderer = new TileObjectRenderer;
       mouse:NamedMouseElement = null;
+      backgroundSprite:HTMLImageElement = null;
 
       constructor(canvas: HTMLCanvasElement, loader: any) {
          super(canvas,loader);
@@ -30,6 +31,11 @@ module pow2{
       onAddToScene(scene:Scene) {
          this.mouse = scene.world.input.mouseHook(this,"combat");
          this.$el.on('click',this.mouseClick);
+
+         this.world.sprites.getSingleSprite("plains.png",(sprite) => {
+            this.backgroundSprite = sprite;
+         });
+
       }
       onRemoveFromScene(scene:Scene) {
          scene.world.input.mouseUnhook("combat");
@@ -60,6 +66,11 @@ module pow2{
        */
       renderFrame(elapsed) {
          super.renderFrame(elapsed);
+
+         if(this.backgroundSprite){
+            var drawExtent:Point = new Point(this.context.canvas.width,this.context.canvas.height).multiply(1/this.cameraScale);
+            this.context.drawImage(this.backgroundSprite, 0, 0, 480, 320, 0, 0, drawExtent.x,drawExtent.y);
+         }
          var players = this.scene.objectsByComponent(pow2.combat.PlayerCombatRenderComponent);
          _.each(players, (player) => {
             this.objectRenderer.render(player,player,this);

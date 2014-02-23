@@ -167,6 +167,7 @@ module.exports = function(grunt) {
                {src: 'data/textures/environment/*.png', dest: 'web/images/environment'},
                {src: 'data/textures/equipment/*.png', dest: 'web/images/equipment'},
                {src: 'data/textures/basictiles/*.png', dest: 'web/images/basictiles'},
+               {src: 'data/textures/combat/*.png', dest: 'web/images/combat'},
                {src: 'data/textures/items/*.png', dest: 'web/images/items'}
             ]
          }
