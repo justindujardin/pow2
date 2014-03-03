@@ -1,33 +1,17 @@
 <div class="combat-view" ng-show="combat">
-    <div class="menu">
-        <div class="col-xs-4 ebp">
-            <div class="" ng-repeat="enemy in combat.enemies">
-                {{enemy.model.attributes.name}}
+    <div class="menu ebp">
+        <div class="col-xs-12">
+            <div class="col-xs-6">
+                <strong class="name">{{combat.current.model.attributes.name}}</strong>
             </div>
-        </div>
-        <div class="col-xs-5 ebp">
-            <div class="col-xs-12" ng-repeat="hero in combat.party">
-                <div class="col-xs-6">
-                    <strong class="name">{{hero.model.attributes.name}}</strong>
-                </div>
-                <div class="col-xs-6">
-                    <div>HP {{hero.model.attributes.hp}} / {{hero.model.attributes.maxHP}}</div>
-                    <div class="progress">
-                        <div class="progress-bar" style="width:{{hero.model.attributes.hp / hero.model.attributes.maxHP * 100}}%;">
-                            <span class="sr-only">60% Complete</span>
-                        </div>
+            <div class="col-xs-6">
+                <div>HP {{combat.current.model.attributes.hp}} / {{combat.current.model.attributes.maxHP}}</div>
+                <div class="progress">
+                    <div class="progress-bar" style="width:{{combat.current.model.attributes.hp / combat.current.model.attributes.maxHP * 100}}%;">
+                        <span class="sr-only">60% Complete</span>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xs-3 ebp">
-            <ul>
-                <li>Attack</li>
-                <li>Run</li>
-                <li>Defend</li>
-                <li>Magic</li>
-                <li>Item</li>
-            </ul>
         </div>
     </div>
 </div>
