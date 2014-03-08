@@ -2,12 +2,12 @@
     <div class="menu ebp">
         <div class="col-xs-12">
             <div class="col-xs-6">
-                <strong class="name">{{combat.current.model.attributes.name}}</strong>
+                <strong class="name">{{combat.focus.model.attributes.name}}</strong>
             </div>
             <div class="col-xs-6">
-                <div>HP {{combat.current.model.attributes.hp}} / {{combat.current.model.attributes.maxHP}}</div>
+                <div>HP {{combat.focus.model.attributes.hp}} / {{combat.focus.model.attributes.maxHP}}</div>
                 <div class="progress">
-                    <div class="progress-bar" style="width:{{combat.current.model.attributes.hp / combat.current.model.attributes.maxHP * 100}}%;">
+                    <div class="progress-bar" style="width:{{combat.focus.model.attributes.hp / combat.focus.model.attributes.maxHP * 100}}%;">
                         <span class="sr-only">60% Complete</span>
                     </div>
                 </div>

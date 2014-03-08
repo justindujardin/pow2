@@ -47,6 +47,7 @@ module pow2 {
       enemies:GameEntityObject[] = [];
       turnList:GameEntityObject[] = [];
 
+      focus:GameEntityObject;
       current:GameEntityObject;
       currentDone:boolean = false;
 

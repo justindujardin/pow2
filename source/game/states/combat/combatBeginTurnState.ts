@@ -15,6 +15,7 @@
  */
 
 /// <reference path="../gameCombatState.ts" />
+/// <reference path="../gameCombatStateMachine.ts" />
 /// <reference path="../../components/damageComponent.ts" />
 /// <reference path="../../components/playerCombatRenderComponent.ts" />
 /// <reference path="../../../../lib/pow2.d.ts" />
@@ -37,6 +38,10 @@ module pow2 {
          this.attacksLeft = 1;
          machine.current.scale = 1.25;
          this.current = machine.current;
+
+         if(machine.isFriendlyTurn()){
+            machine.focus = machine.current;
+         }
 
          machine.current.scene.on('click',(mouse,hits) => {
             this.attack(machine,hits[0]);
@@ -78,6 +83,7 @@ module pow2 {
          else {
             attacker = machine.current;
             defender = defender || machine.getRandomPartyMember();
+            machine.focus = defender;
          }
          var attackerPlayer:combat.PlayerCombatRenderComponent = <any>attacker.findComponent(combat.PlayerCombatRenderComponent);
          var done = () => {
