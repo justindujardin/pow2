@@ -15,7 +15,7 @@
  */
 
 /// <reference path="../sceneComponent.ts" />
-/// <reference path="../../core/resources/audio.ts" />
+/// <reference path="../../resources/audio.ts" />
 
 module pow2 {
 

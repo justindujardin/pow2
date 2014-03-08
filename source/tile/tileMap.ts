@@ -15,10 +15,7 @@
  */
 
 /// <reference path="../../types/underscore/underscore.d.ts" />
-/// <reference path="../core/point.ts" />
-/// <reference path="../core/rect.ts" />
-/// <reference path="../core/resources/json.ts" />
-/// <reference path="../scene/sceneObject.ts" />
+/// <reference path="../../lib/pow2.d.ts"/>
 /// <reference path="./tileObject.ts" />
 /// <reference path="./components/tileMapCameraComponent.ts" />
 /// <reference path="./resources/tiledTmx.ts" />

@@ -16,7 +16,7 @@
 
 /// <reference path="../tile/tileMap.ts" />
 /// <reference path="../tile/resources/tiled.ts" />
-/// <reference path="../scene/components/soundComponent.ts" />
+/// <reference path="../../lib/pow2.d.ts" />
 /// <reference path="./components/features/dialogFeatureComponent.ts" />
 /// <reference path="./components/features/combatFeatureComponent.ts" />
 /// <reference path="./components/features/portalFeatureComponent.ts" />

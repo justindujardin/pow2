@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-/// <reference path="../../types/underscore/underscore.d.ts" />
-/// <reference path="../core/time.ts"/>
-/// <reference path="../core/world.ts"/>
+/// <reference path="../../../types/underscore/underscore.d.ts" />
+/// <reference path="../time.ts"/>
+/// <reference path="../world.ts"/>
 /// <reference path="./sceneObject.ts"/>
 /// <reference path="./sceneView.ts"/>
 /// <reference path="./sceneSpatialDatabase.ts"/>

@@ -14,8 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../../scene/components/movableComponent.ts" />
-/// <reference path="../../scene/sceneComponent.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../../tile/tileObject.ts" />
 /// <reference path="./animatedComponent.ts" />
 /// <reference path="../objects/gameEntityObject.ts" />

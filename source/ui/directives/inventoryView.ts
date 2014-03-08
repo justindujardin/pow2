@@ -13,10 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+/// <reference path="../../../lib/pow2.game.d.ts"/>
 /// <reference path="../services/gameService.ts"/>
 /// <reference path="../services/alertService.ts"/>
-/// <reference path="../../game/models/itemModel.ts"/>
-/// <reference path="../../game/models/heroModel.ts"/>
 module pow2.ui {
    app.directive('inventoryView',['game','powAlert', function (game:PowGameService,powAlert:PowAlertService) {
       return {

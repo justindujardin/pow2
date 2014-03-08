@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-/// <reference path="../../core/point.ts" />
-/// <reference path="../../core/rect.ts" />
-/// <reference path="../../scene/sceneObject.ts" />
+/// <reference path="../../point.ts" />
+/// <reference path="../../rect.ts" />
+/// <reference path="../sceneObject.ts" />
 /// <reference path="../../scene/sceneComponent.ts" />
 
 module pow2 {

@@ -14,8 +14,8 @@
  limitations under the License.
  */
 
-/// <reference path="../../types/underscore/underscore.d.ts" />
-/// <reference path="../core/events.ts" />
+/// <reference path="../../../types/underscore/underscore.d.ts" />
+/// <reference path="../events.ts" />
 /// <reference path="./scene.ts" />
 
 // An object that may exist in a `Scene`, has a unique `id` and receives ticked updates.

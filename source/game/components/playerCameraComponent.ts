@@ -15,7 +15,7 @@
  */
 
 /// <reference path="../../tile/tileObject.ts" />
-/// <reference path="../../scene/components/cameraComponent.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="./playerComponent.ts" />
 
 module pow2 {

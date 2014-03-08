@@ -65,45 +65,9 @@ module.exports = function(grunt) {
             target: 'es5', //or es3
             base_path: 'source',
             sourcemap: true,
-            declaration: false
-         },
-         data: {
-            src: [
-               "data/*.ts",
-               "data/creatures/*.ts"
-            ],
-            dest: 'web/<%= pkg.name %>.data.js'
+            declaration: true
          },
 
-         pow2: {
-            src: [
-               "source/core/api.ts",
-               "source/core/events.ts",
-               "source/core/*.ts",
-               "source/core/resources/*.ts",
-               "source/scene/*.ts",
-               "source/scene/components/*.ts",
-               "source/tile/*.ts",
-               "source/tile/components/*.ts",
-               "source/tile/objects/*.ts",
-               "source/tile/resources/*.ts",
-               "source/tile/features/*.ts",
-               "source/tile/render/*.ts",
-               "source/game/*.ts",
-               "source/game/objects/*.ts",
-               "source/game/models/entityModel.ts",
-               "source/game/models/itemModel.ts",
-               "source/game/models/*.ts",
-               "source/game/states/*.ts",
-               "source/game/states/combat/*.ts",
-               "source/game/components/*.ts",
-               "source/game/components/features/*.ts",
-               "source/ui/index.ts",
-               "source/ui/*.ts",
-               "source/ui/**/*.ts"
-            ],
-            dest: 'build'
-         },
          server: {
             options: {
                module: 'commonjs', //or commonjs
@@ -114,7 +78,56 @@ module.exports = function(grunt) {
             src: [
                "server/*.ts"
             ]
+         },
+
+         pow2: {
+            src: [
+               "source/core/api.ts",
+               "source/core/events.ts",
+               "source/core/*.ts",
+               "source/core/resources/*.ts",
+               "source/core/scene/*.ts",
+               "source/core/scene/components/*.ts"
+            ],
+            dest: 'lib/<%= pkg.name %>.js'
+         },
+         game: {
+            src: [
+               "source/tile/*.ts",
+               "source/tile/components/*.ts",
+               "source/tile/objects/*.ts",
+               "source/tile/resources/*.ts",
+               "source/tile/features/*.ts",
+               "source/tile/render/*.ts",
+               "source/game/*.ts",
+               "source/game/states/gameCombatState.ts",
+               "source/game/models/entityModel.ts",
+               "source/game/models/itemModel.ts",
+               "source/game/models/*.ts",
+               "source/game/states/*.ts",
+               "source/game/states/combat/*.ts",
+               "source/game/objects/*.ts",
+               "source/game/components/*.ts",
+               "source/game/components/features/*.ts"
+            ],
+            dest: 'lib/<%= pkg.name %>.game.js'
+         },
+         ui: {
+            src: [
+               "source/ui/index.ts",
+               "source/ui/*.ts",
+               "source/ui/**/*.ts"
+            ],
+            dest: 'lib/<%= pkg.name %>.ui.js'
+         },
+         data: {
+            src: [
+               "data/*.ts",
+               "data/creatures/*.ts"
+            ],
+            dest: 'lib/<%= pkg.name %>.data.js'
          }
+
       },
 
       /**
@@ -155,7 +168,7 @@ module.exports = function(grunt) {
       sprites: {
          game: {
             options: {
-               metaFile: 'web/<%= pkg.name %>.sprites.js',
+               metaFile: 'lib/<%= pkg.name %>.sprites.js',
                indexFiles: true
             },
             files: [
@@ -222,6 +235,18 @@ module.exports = function(grunt) {
                '<%= typescript.pow2.src %>'
             ],
             tasks: ['typescript:pow2', 'notify:code']
+         },
+         game: {
+            files: [
+               '<%= typescript.game.src %>'
+            ],
+            tasks: ['typescript:game', 'notify:code']
+         },
+         ui: {
+            files: [
+               '<%= typescript.ui.src %>'
+            ],
+            tasks: ['typescript:ui', 'notify:code']
          },
          data: {
             files: [

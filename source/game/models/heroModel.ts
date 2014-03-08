@@ -16,7 +16,7 @@
 
 /// <reference path="../../../types/backbone/backbone.d.ts" />
 /// <reference path="../../../types/underscore/underscore.d.ts" />
-/// <reference path="../../core/api.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="./entityModel.ts" />
 /// <reference path="./creatureModel.ts" />
 /// <reference path="./gameStateModel.ts" />
@@ -213,14 +213,14 @@ module pow2 {
          }
          _.each(HeroModel.ARMOR_TYPES,(type:string) => {
             if(data[type]){
-               var piece = _.where(pow2.data.armor,{name:data[type]})[0];
+               var piece = _.where(pow2.getData('armor'),{name:data[type]})[0];
                if(piece){
                   this[type] = new ArmorModel(piece);
                }
             }
          });
          if(data.weapon){
-            var weapon = _.where(pow2.data.weapons,{name:data.weapon})[0];
+            var weapon = _.where(pow2.getData('weapons'),{name:data.weapon})[0];
             this.weapon = new WeaponModel(weapon);
          }
          return _.omit(data, _.flatten(['weapon',HeroModel.ARMOR_TYPES]));

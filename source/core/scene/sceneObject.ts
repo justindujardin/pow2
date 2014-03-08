@@ -14,8 +14,8 @@
  limitations under the License.
  */
 
-/// <reference path="../../types/underscore/underscore.d.ts" />
-/// <reference path="../core/events.ts" />
+/// <reference path="../../../types/underscore/underscore.d.ts" />
+/// <reference path="../events.ts" />
 /// <reference path="./scene.ts" />
 /// <reference path="./sceneComponent.ts" />
 

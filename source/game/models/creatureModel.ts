@@ -16,7 +16,7 @@
 
 /// <reference path="../../../types/backbone/backbone.d.ts" />
 /// <reference path="../../../types/underscore/underscore.d.ts" />
-/// <reference path="../../core/api.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="./entityModel.ts" />
 /// <reference path="./heroModel.ts" />
 module pow2 {
@@ -66,13 +66,13 @@ module pow2 {
 
 
       static fromName(name:string){
-         var creatures = pow2.data.creatures;
+         var creatures = pow2.getData('creatures');
          var cData:CreatureModelOptions = <CreatureModelOptions>_.where(creatures,{name:name})[0];
          return new CreatureModel(cData);
 
       }
       static fromLevel(level:number){
-         var creatures = pow2.data.creatures;
+         var creatures = pow2.getData('creatures');
          if(!creatures){
             throw new Error("Creature data set is missing.");
          }

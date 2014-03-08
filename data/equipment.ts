@@ -1,5 +1,4 @@
-///<reference path="../source/core/api.ts"/>
-///<reference path="../source/game/models/heroModel.ts"/>
+///<reference path="../lib/pow2.game.d.ts"/>
 
 pow2.registerWeapons(1,[
    //// Level 1

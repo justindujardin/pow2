@@ -14,8 +14,8 @@
  limitations under the License.
  */
 
-/// <reference path="../../core/point.ts" />
-/// <reference path="../../core/rect.ts" />
+/// <reference path="../../point.ts" />
+/// <reference path="../../rect.ts" />
 /// <reference path="../sceneObject.ts" />
 /// <reference path="../sceneComponent.ts" />
 /// <reference path="./collisionComponent.ts" />

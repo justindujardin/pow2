@@ -1,4 +1,5 @@
-///<reference path="../../source/core/api.ts"/>
+///<reference path="../../lib/pow2.d.ts"/>
+
 //// Creatures
 pow2.registerCreatures(1,[
    //// LEVEL 1

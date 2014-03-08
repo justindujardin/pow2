@@ -14,7 +14,6 @@
  limitations under the License.
  */
 /// <reference path="services/gameService.ts"/>
-/// <reference path="../game/gameCombatView.ts"/>
 
 module pow2.ui {
    app.directive('combatCanvas', function ($compile, game:PowGameService) {

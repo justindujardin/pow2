@@ -15,7 +15,7 @@
  */
 /// <reference path="./point.ts"/>
 /// <reference path="../../types/jquery/jquery.d.ts"/>
-/// <reference path="../scene/sceneView.ts"/>
+/// <reference path="./scene/sceneView.ts"/>
 module pow2 {
    export enum KeyCode {
       UP = 38,

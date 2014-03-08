@@ -14,8 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-/// <reference path="../../scene/sceneComponent.ts" />
-/// <reference path="../../scene/components/soundComponent.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../../tile/components/animatedSpriteComponent.ts" />
 /// <reference path="../../tile/components/spriteComponent.ts" />
 /// <reference path="./playerComponent.ts" />

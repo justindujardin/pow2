@@ -14,13 +14,13 @@
  limitations under the License.
  */
 
+/// <reference path="../../lib/pow2.d.ts" />
 /// <reference path="../tile/tileMapView.ts"/>
 /// <reference path="../tile/render/tileObjectRenderer.ts"/>
 /// <reference path="./components/playerComponent.ts"/>
 /// <reference path="./components/combatCameraComponent.ts"/>
 /// <reference path="./components/playerCameraComponent.ts"/>
 /// <reference path="../tile/components/spriteComponent.ts"/>
-/// <reference path="../scene/components/movableComponent.ts"/>
 
 module pow2{
    export class GameMapView extends TileMapView {
@@ -33,7 +33,7 @@ module pow2{
          this.mouseClick = _.bind(this.mouseClick,this);
       }
       onAddToScene(scene:Scene) {
-         this.mouse = scene.world.input.mouseHook(this,"world");
+         this.mouse = scene.world.input.mouseHook(<SceneView>this,"world");
          // TODO: Move this elsewhere.
          this.$el.on('click',this.mouseClick);
       }

@@ -14,12 +14,12 @@
  limitations under the License.
  */
 
-/// <reference path="../../types/underscore/underscore.d.ts" />
-/// <reference path="../../types/jquery/jquery.d.ts" />
-/// <reference path="../core/rect.ts" />
-/// <reference path="../core/point.ts" />
-/// <reference path="../core/world.ts" />
-/// <reference path="../core/resourceLoader.ts" />
+/// <reference path="../../../types/underscore/underscore.d.ts" />
+/// <reference path="../../../types/jquery/jquery.d.ts" />
+/// <reference path="../rect.ts" />
+/// <reference path="../point.ts" />
+/// <reference path="../world.ts" />
+/// <reference path="../resourceLoader.ts" />
 /// <reference path="./scene.ts" />
 /// <reference path="./components/cameraComponent.ts" />
 

@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../core/stateMachine.ts" />
+/// <reference path="../../lib/pow2.d.ts" />
 /// <reference path="./gameMapView.ts" />
 /// <reference path="./components/playerComponent.ts" />
 /// <reference path="./components/playerTouchComponent.ts" />

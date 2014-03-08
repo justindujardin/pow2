@@ -15,8 +15,7 @@
  */
 
 /// <reference path="../../../types/underscore/underscore.d.ts" />
-/// <reference path="../../core/events.ts" />
-/// <reference path="../../core/world.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../../tile/tileObject.ts" />
 module pow2 {
 
@@ -122,7 +121,7 @@ module pow2 {
                if(task.frames && task.frames.length) {
                   var index = Math.round(this.interpolate(0,task.frames.length-1,factor));
                   var frame = task.frames[index];
-                  console.log("Interp frame = " + frame);
+                  //console.log("Interp frame = " + frame);
                   this.host.frame = frame;
                }
             }

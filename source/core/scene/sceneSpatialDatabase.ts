@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-/// <reference path="../../types/underscore/underscore.d.ts" />
-/// <reference path="../core/point.ts" />
-/// <reference path="../core/rect.ts" />
+/// <reference path="../../../types/underscore/underscore.d.ts" />
+/// <reference path="../point.ts" />
+/// <reference path="../rect.ts" />
 /// <reference path="./sceneObject.ts" />
 
 // Very, very simple spatial database.  Because all the game objects have

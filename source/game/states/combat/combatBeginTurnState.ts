@@ -17,7 +17,7 @@
 /// <reference path="../gameCombatState.ts" />
 /// <reference path="../../components/damageComponent.ts" />
 /// <reference path="../../components/playerCombatRenderComponent.ts" />
-/// <reference path="../../../core/state.ts" />
+/// <reference path="../../../../lib/pow2.d.ts" />
 
 module pow2 {
 

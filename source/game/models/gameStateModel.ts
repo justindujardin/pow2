@@ -16,7 +16,7 @@
 
 /// <reference path="../../../types/backbone/backbone.d.ts" />
 /// <reference path="../../../types/underscore/underscore.d.ts" />
-/// <reference path="../../core/api.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="./entityModel.ts" />
 /// <reference path="./heroModel.ts" />
 /// <reference path="./itemModel.ts" />
@@ -85,11 +85,11 @@ module pow2 {
          this.inventory = _.map(data.inventory,(item:any) => {
             switch(item.itemType){
                case "armor":
-                  var armor = _.where(pow2.data.armor,{name:item.name})[0];
+                  var armor = _.where(pow2.getData('armor'),{name:item.name})[0];
                   return new ArmorModel(armor);
                   break;
                case "weapon":
-                  var armor = _.where(pow2.data.weapons,{name:item.name})[0];
+                  var armor = _.where(pow2.getData('weapons'),{name:item.name})[0];
                   return new WeaponModel(armor);
                   break;
             }

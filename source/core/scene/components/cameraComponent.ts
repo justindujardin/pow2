@@ -14,20 +14,15 @@
  limitations under the License.
  */
 
-/// <reference path="../../core/state.ts" />
-/// <reference path="../../scene/sceneComponent.ts" />
+/// <reference path="../sceneComponent.ts" />
 
 module pow2 {
-   export class StateMachineComponent extends TickedComponent {
-      machine: IStateMachine = null;
-      paused:boolean = false;
-      tick(elapsed:number) {
-         if(this.paused){
-            return;
-         }
-         if(this.machine){
-            this.machine.update(this);
-         }
+   export class CameraComponent extends SceneComponent {
+      process(view:SceneView) {
+         view.camera.point.set(this.host.point);
+         view.cameraScale = 4;
+         var canvasSize = view.screenToWorld(new Point(view.context.canvas.width,view.context.canvas.height),view.cameraScale);
+         view.camera.extent.set(canvasSize);
       }
   }
 }

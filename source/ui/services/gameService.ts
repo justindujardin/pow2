@@ -13,12 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-/// <reference path="../../game/gameStateMachine.ts"/>
-/// <reference path="../../../source/game/gameWorld.ts"/>
-/// <reference path="../../../source/game/models/heroModel.ts"/>
 /// <reference path="../../../types/underscore/underscore.d.ts"/>
 /// <reference path="../../../types/backbone/backbone.d.ts"/>
 /// <reference path="../../../types/angularjs/angular.d.ts"/>
+/// <reference path="../../../lib/pow2.game.d.ts"/>
 /// <reference path="../index.ts"/>
 module pow2.ui {
    export class PowGameService {
@@ -71,7 +69,6 @@ module pow2.ui {
          if(this.model.party.length === 0){
             this.model.addHero(HeroModel.create(HeroType.Warrior,"Warrior"));
             this.model.addHero(HeroModel.create(HeroType.DeathMage,"DeathMage"));
-            this.model.addHero(HeroModel.create(HeroType.LifeMage,"LifeMage"));
             this.model.addHero(HeroModel.create(HeroType.Ranger,"Ranger"));
          }
 

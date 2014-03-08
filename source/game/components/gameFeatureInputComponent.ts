@@ -14,10 +14,9 @@
  limitations under the License.
  */
 
-/// <reference path="../../scene/sceneComponent.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../../tile/tileObject.ts" />
 /// <reference path="../objects/gameFeatureObject.ts" />
-/// <reference path="../../core/stateMachine.ts" />
 /// <reference path="./playerComponent.ts" />
 
 module pow2 {
