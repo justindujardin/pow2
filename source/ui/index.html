@@ -25,10 +25,10 @@
 <game-menu></game-menu>
 
 <div class="game-container">
-    <canvas class="game-view map scale-down ebp ng-hide" width="960" height="640" game-canvas ng-hide="inCombat">
+    <canvas class="game-view map scale-down drop-panel ng-hide" width="960" height="640" game-canvas ng-hide="inCombat">
         Your browser doesn't support this.
     </canvas>
-    <canvas class="game-view combat scale-down ebp ng-hide" width="960" height="640" combat-canvas ng-hide="!inCombat">
+    <canvas class="game-view combat scale-down drop-panel ng-hide" width="960" height="640" combat-canvas ng-hide="!inCombat">
         Your browser doesn't support this.
     </canvas>
 </div>
@@ -39,9 +39,6 @@
     <combat-view ng-show="inCombat"></combat-view>
     <temple-view ng-show="temple"></temple-view>
 </div>
-
-
-<!-- Image drop screen overlay -->
 
 <!-- Compiled Game Files -->
 
