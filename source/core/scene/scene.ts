@@ -28,7 +28,7 @@ module pow2 {
       name:string = _.uniqueId('scene');
       db:SceneSpatialDatabase = new SceneSpatialDatabase;
       options:any = {};
-      private _objects = [];
+      private _objects:SceneObject[] = [];
       private _views:SceneView[] = [];
       world:IWorld = null;
       fps:number = 0;
@@ -184,7 +184,7 @@ module pow2 {
       }
 
       componentByType(type):ISceneComponent {
-         var obj:ISceneComponentHost = _.find(this._objects, (o) => {
+         var obj:SceneObject = <SceneObject>_.find(this._objects, (o:SceneObject) => {
             return !!o.findComponent(type);
          });
          if(!obj){
@@ -204,33 +204,33 @@ module pow2 {
       }
 
 
-      objectsByName(name:string) {
-         return _.filter(this._objects, (o) => {
+      objectsByName(name:string):SceneObject[] {
+         return _.filter(this._objects, (o:SceneObject) => {
             return o.name === name;
          });
       }
-      objectByName(name:string) {
-         return _.find(this._objects, (o) => {
+      objectByName(name:string):SceneObject {
+         return _.find(this._objects, (o:SceneObject) => {
             return o.name === name;
          });
       }
-      objectsByType(type) {
-         return _.filter(this._objects, (o) => {
+      objectsByType(type):SceneObject[] {
+         return _.filter(this._objects, (o:SceneObject) => {
             return o instanceof type;
          });
       }
-      objectByType(type) {
-         return _.find(this._objects, (o) => {
+      objectByType(type):SceneObject {
+         return _.find(this._objects, (o:SceneObject) => {
             return o instanceof type;
          });
       }
-      objectsByComponent(type) {
-         return _.filter(this._objects, (o) => {
+      objectsByComponent(type):SceneObject[] {
+         return _.filter(this._objects, (o:SceneObject) => {
             return !!o.findComponent(type);
          });
       }
-      objectByComponent(type) {
-         return _.find(this._objects, (o) => {
+      objectByComponent(type):SceneObject {
+         return _.find(this._objects, (o:SceneObject) => {
             return !!o.findComponent(type);
          });
       }

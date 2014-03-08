@@ -21,7 +21,7 @@
 /// <reference path="./components/combatEncounterComponent.ts" />
 /// <reference path="./states/gameMapState.ts"/>
 /// <reference path="./models/heroModel.ts"/>
-/// <reference path="./states/gameCombatState.ts"/>
+/// <reference path="./states/gameCombatStateMachine.ts"/>
 /// <reference path="./models/gameStateModel.ts"/>
 
 module pow2 {
@@ -53,7 +53,7 @@ module pow2 {
       updatePlayer(){
          if(this.world && this.world.scene){
             var scene:Scene = this.world.scene;
-            this.player = scene.objectByComponent(PlayerComponent);
+            this.player = <TileObject>scene.objectByComponent(PlayerComponent);
             this.encounter = <CombatEncounterComponent>this.world.scene.componentByType(CombatEncounterComponent);
          }
       }

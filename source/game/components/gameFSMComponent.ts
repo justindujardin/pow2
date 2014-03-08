@@ -30,7 +30,7 @@ module pow2 {
          if(!this.host || !this.host.scene || !super.syncComponent()){
             return false;
          }
-         this.player = this.host.scene.objectByComponent(PlayerComponent);
+         this.player = <TileObject>this.host.scene.objectByComponent(PlayerComponent);
          return !!this.player;
       }
       tick(elapsed:number) {
@@ -50,7 +50,7 @@ module pow2 {
          // collision objects.  We do this here so that state components and
          // transitions don't have to.
          if(!this.player){
-            this.player = scene.objectByComponent(PlayerComponent);
+            this.player = <TileObject>scene.objectByComponent(PlayerComponent);
          }
          if(this.player){
             this.hitBox.point.set(this.player.point);

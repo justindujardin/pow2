@@ -15,6 +15,7 @@
  */
 
 /// <reference path="../gameCombatState.ts" />
+/// <reference path="../gameCombatStateMachine.ts" />
 /// <reference path="../../../../lib/pow2.d.ts" />
 
 module pow2 {
@@ -31,7 +32,7 @@ module pow2 {
       enter(machine:CombatStateMachine){
          super.enter(machine);
 
-         machine.turnList = _.shuffle(_.union(machine.getLiveParty(),machine.getLiveEnemies()));
+         machine.turnList = <GameEntityObject[]>_.shuffle(_.union(machine.getLiveParty(),machine.getLiveEnemies()));
          machine.current = machine.turnList.shift();
          machine.currentDone = true;
       }

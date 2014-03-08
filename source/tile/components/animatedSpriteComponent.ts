@@ -53,7 +53,7 @@ module pow2 {
             return false;
          }
          var sprites = <SpriteComponent[]>this.host.findComponents(SpriteComponent);
-         this.spriteComponent = _.where(sprites,{name:this.spriteName})[0];
+         this.spriteComponent = <SpriteComponent>_.where(sprites,{name:this.spriteName})[0];
          return !!this.spriteComponent;
       }
       tick(elapsed:number){

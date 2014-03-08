@@ -21,7 +21,7 @@
     "underscore": "~1.5.2",
     "binpacking": "0.0.1",
     "grunt-contrib-uglify": "~0.3.0",
-    "grunt-typescript": "~0.2.7",
+    "grunt-typescript": "~0.2.8",
     "grunt-contrib-copy": "0.5.0",
     "graceful-fs": "~2.0.1",
     "grunt-recess": "0.5.0",

@@ -36,7 +36,7 @@ module pow2 {
       }
 
       removeSpatialObject(obj: pow2.SceneObject) {
-         this._objects = _.filter(this._objects, function(o) {
+         this._objects = <SceneObject[]>_.filter(this._objects, function(o:SceneObject) {
             return o.id !== obj.id;
          });
       }

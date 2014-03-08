@@ -100,7 +100,7 @@ module pow2 {
                }
             }
          }
-         var map = this.host.scene.objectByType(pow2.TileMap);
+         var map:TileMap = <TileMap>this.host.scene.objectByType(TileMap);
          if (map) {
             var terrain = map.getTerrain(x,y);
             if (!terrain) {

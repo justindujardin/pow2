@@ -24,20 +24,20 @@ module pow2.combat {
    var attackAnimation = [
       {
          name : "Move Forward for Attack",
-         duration : 300,
+         duration : 150,
          repeats: 4,
          frames : [StateFrames.DEFAULT,StateFrames.WALK],
          move: new Point(-1,0)
       },
       {
          name : "Strike at Opponent",
-         duration : 1500,
+         duration : 400,
          repeats: 4,
          frames : [StateFrames.SWING,StateFrames.STRIKE]
       },
       {
          name : "Return to Party",
-         duration : 300,
+         duration : 150,
          repeats: 4,
          frames : [StateFrames.DEFAULT,StateFrames.WALK],
          move: new Point(1,0)

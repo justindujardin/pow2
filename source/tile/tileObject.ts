@@ -87,7 +87,7 @@ module pow2 {
             this.setSprite(this.icon);
          }
          if(!this.tileMap){
-            this.tileMap = this.scene.objectByType(TileMap);
+            this.tileMap = <TileMap>this.scene.objectByType(TileMap);
          }
       }
 

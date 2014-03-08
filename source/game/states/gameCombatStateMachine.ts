@@ -53,7 +53,7 @@ module pow2 {
 
 
       isFriendlyTurn():boolean {
-         return this.current && !!_.find(this.party,(h) => {
+         return this.current && !!_.find(this.party,(h:GameEntityObject) => {
             return h.id === this.current.id;
          });
       }
@@ -70,7 +70,7 @@ module pow2 {
       }
 
       getRandomPartyMember():GameEntityObject {
-         var players:GameEntityObject[] = _.shuffle(this.party);
+         var players = <GameEntityObject[]>_.shuffle(this.party);
          while(players.length > 0){
             var p = players.shift();
             if(!p.isDefeated()){
@@ -81,7 +81,7 @@ module pow2 {
       }
 
       getRandomEnemy():GameEntityObject {
-         var players:GameEntityObject[] = _.shuffle(this.enemies);
+         var players = <GameEntityObject[]>_.shuffle(this.enemies);
          while(players.length > 0){
             var p = players.shift();
             if(!p.isDefeated()){

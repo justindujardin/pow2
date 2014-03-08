@@ -255,7 +255,7 @@ module pow2 {
                animation.time = this.scene.time + animation.rate;
             }
          }
-         return this.animations = _.filter(this.animations, (a) => {
+         return this.animations = _.filter(this.animations, (a:any) => {
             return a.done !== true;
          });
       }
