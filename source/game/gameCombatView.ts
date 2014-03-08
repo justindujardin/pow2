@@ -32,7 +32,7 @@ module pow2{
          this.mouse = scene.world.input.mouseHook(this,"combat");
          this.$el.on('click',this.mouseClick);
 
-         this.world.sprites.getSingleSprite("plains.png",(sprite) => {
+         this.world.sprites.getSingleSprite("plains.png",0,(sprite) => {
             this.backgroundSprite = sprite;
          });
 

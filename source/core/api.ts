@@ -16,9 +16,6 @@
  limitations under the License.
  */
 
-// Tell the typescript compiler that mixpanel is defined elsewhere.
-declare var mixpanel: any;
-
 module pow2 {
 
    export interface IGameItem {
@@ -36,6 +33,17 @@ module pow2 {
    export interface IGameArmor extends IGameItem {
       defense:number; // Defensive value
       evade:number; // Value to add to evasion <= 0
+   }
+
+   export interface ISpriteMeta {
+      width: number;// Pixel width
+      height: number;// Pixel height
+      cellWidth?:number; // Optional frame width (defaults to 16px)
+      cellHeight?:number; // Optional frame height (defaults to 16px)
+      frames: number;// The number of frames the sprite has.
+      source: string; // The spritesheet source map
+      x: number; // Pixel offset x in the sprite sheet.
+      y: number; // Pixel offset y in the sprite sheet.
    }
 
 
@@ -88,6 +96,11 @@ module pow2 {
          }
       }
    }
+
+   export function getSpriteMeta(name:string):ISpriteMeta {
+      return <ISpriteMeta>data.sprites[name];
+   }
+
    export function registerCreatures(level,creatures){
       _.each(creatures,(c) => {
          data.creatures.push(_.extend(c,{level:level}));
@@ -115,10 +128,5 @@ module pow2 {
    }
    export function getMaps(){
       return data.maps;
-   }
-   export function track(name:string,properties:Object){
-      if(typeof mixpanel !== 'undefined'){
-         mixpanel.track(name,properties);
-      }
    }
 }
