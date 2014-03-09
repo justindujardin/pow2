@@ -149,6 +149,7 @@ module.exports = function(grunt) {
        */
       uglify: {
          options: {
+            sourceMap:true,
             banner: '\n/*!\n  <%= pkg.name %> - v<%= pkg.version %>\n  built: <%= grunt.template.today("yyyy-mm-dd") %>\n */\n'
          },
          game: {
