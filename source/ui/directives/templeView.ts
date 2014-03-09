@@ -21,7 +21,7 @@ module pow2.ui {
       return {
          restrict: 'E',
          templateUrl: '/templates/templeView.html',
-         controller: function($scope, $element) {
+         controller: function($scope) {
             $scope.heal = () => {
                if(!$scope.temple){
                   return;
@@ -53,7 +53,7 @@ module pow2.ui {
             };
 
          },
-         link: function ($scope, element, attrs) {
+         link: function ($scope) {
             game.world.scene.on('temple:entered',function(feature){
                $scope.$apply(function(){
                   $scope.temple = feature;

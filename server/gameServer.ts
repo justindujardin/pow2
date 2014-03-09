@@ -34,6 +34,9 @@ function getPageScripts(){
          return;
       }
       var outputFile:string = grunt.file.expand(app.dest)[0];
+      if(process.env.NODE_ENV === 'production'){
+         outputFile = outputFile.replace(/.js/,'.min.js');
+      }
       scripts.push(outputFile);
    });
    return scripts;

@@ -154,11 +154,11 @@ module.exports = function(grunt) {
          },
          game: {
             files: {
-               'lib/<%= pkg.name %>.js'    : ['lib/<%= pkg.name %>.js'],
-               'lib/<%= pkg.name %>.game.js'    : ['lib/<%= pkg.name %>.game.js'],
-               'lib/<%= pkg.name %>.data.js'    : ['lib/<%= pkg.name %>.data.js'],
-               'lib/<%= pkg.name %>.ui.js'    : ['lib/<%= pkg.name %>.ui.js'],
-               'lib/<%= pkg.name %>.sprites.js' : ['lib/<%= pkg.name %>.sprites.js']
+               'lib/<%= pkg.name %>.min.js'    : ['lib/<%= pkg.name %>.js'],
+               'lib/<%= pkg.name %>.min.game.js'    : ['lib/<%= pkg.name %>.game.js'],
+               'lib/<%= pkg.name %>.min.data.js'    : ['lib/<%= pkg.name %>.data.js'],
+               'lib/<%= pkg.name %>.min.ui.js'    : ['lib/<%= pkg.name %>.ui.js'],
+               'lib/<%= pkg.name %>.min.sprites.js' : ['lib/<%= pkg.name %>.sprites.js']
             }
          }
       },
