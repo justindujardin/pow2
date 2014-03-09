@@ -16,7 +16,7 @@ module.exports = function(grunt) {
                message: 'Sprite Sheets built.'
             }
          },
-         recess:{
+         less:{
             options: {
                message: 'CSS styles built.'
             }
@@ -208,18 +208,16 @@ module.exports = function(grunt) {
       /**
        * Compile game LESS styles to CSS
        */
-      recess: {
-         options: {
-            compile: true,
-            includePath: ["source/ui/"]
-         },
+      less: {
          game: {
-            files: [
-               {src: 'source/ui/index.less', dest: 'web/css/index.css'}
-            ]
+            options: {
+               paths: ["source/ui/"]
+            },
+            files: {
+               'web/css/index.css':'source/ui/index.less'
+            }
          }
       },
-
 
       /**
        * Trigger a new build when files change
@@ -276,7 +274,7 @@ module.exports = function(grunt) {
                'source/ui/*.less',
                'source/ui/**/*.less'
             ],
-            tasks: ['recess', 'notify:recess']
+            tasks: ['less', 'notify:less']
          },
          expressts: {
             files:  [ 'server/*.ts' ],
@@ -287,7 +285,7 @@ module.exports = function(grunt) {
             }
          },
          express: {
-            files:  [ 'web/*.html', 'server/*.js' ],
+            files:  [ 'source/**/*.html', 'server/*.js' ],
             tasks:  [ 'express', 'notify:server' ],
             options: {
                nospawn: true //Without this option specified express won't be reloaded
@@ -340,17 +338,17 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-contrib-uglify');
    grunt.loadNpmTasks('grunt-contrib-clean');
    grunt.loadNpmTasks('grunt-typescript');
-   grunt.loadNpmTasks('grunt-recess');
+   grunt.loadNpmTasks('grunt-contrib-less');
    grunt.loadNpmTasks('grunt-contrib-copy');
    // Support system notifications in non-production environments
    if(process && process.env && process.env.NODE_ENV !== 'production'){
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-notify');
-      grunt.registerTask('default', ['typescript', 'copy','recess','sprites']);
+      grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
    }
    else {
-      grunt.registerTask('default', ['typescript', 'copy','recess','sprites']);
-      grunt.registerTask('heroku:production', ['typescript', 'copy','recess','sprites','uglify']);
+      grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
+      grunt.registerTask('heroku:production', ['typescript', 'copy','less','sprites','uglify']);
    }
 };
