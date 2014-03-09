@@ -45,7 +45,7 @@ module.exports = function(grunt) {
 
       clean: {
          pow2: {
-            src: ["build/"]
+            src: ["lib/"]
          },
          server: {
             src: [
@@ -153,11 +153,11 @@ module.exports = function(grunt) {
          },
          game: {
             files: {
-               'web/<%= pkg.name %>.core.js'    : ['web/<%= pkg.name %>.core.js'],
-               'web/<%= pkg.name %>.typescript.js'    : ['web/<%= pkg.name %>.typescript.js'],
-               'web/<%= pkg.name %>.data.js'    : ['web/<%= pkg.name %>.data.js'],
-               'web/<%= pkg.name %>.maps.js'    : ['web/<%= pkg.name %>.maps.js'],
-               'web/<%= pkg.name %>.sprites.js' : ['web/<%= pkg.name %>.sprites.js']
+               'lib/<%= pkg.name %>.js'    : ['lib/<%= pkg.name %>.js'],
+               'lib/<%= pkg.name %>.game.js'    : ['lib/<%= pkg.name %>.game.js'],
+               'lib/<%= pkg.name %>.data.js'    : ['lib/<%= pkg.name %>.data.js'],
+               'lib/<%= pkg.name %>.ui.js'    : ['lib/<%= pkg.name %>.ui.js'],
+               'lib/<%= pkg.name %>.sprites.js' : ['lib/<%= pkg.name %>.sprites.js']
             }
          }
       },
