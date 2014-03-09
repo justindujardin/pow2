@@ -248,8 +248,8 @@ canvas {
     pointer-events:auto;
   }
 }
-
-@media(max-width:@screen-phone){
+@landscape-max:(@screen-phone - 1);
+@media(max-width:@landscape-max) and (orientation:portrait) {
   body > * {
     display: none !important;
   }
@@ -257,6 +257,16 @@ canvas {
     z-index:9999;
     display: block !important;
     background-color: #004c62;
+    .stroke-text(1px,#000);
+    h2 {
+      .extrude-stroke-text(2px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+      font-size: 10em;
+    }
+    span {
+      .extrude-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+      color:#fff;
+      font-size: 2em;
+    }
   }
 }
 
