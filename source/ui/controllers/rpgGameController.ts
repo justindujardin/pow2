@@ -28,7 +28,7 @@ module pow2.ui {
       'powAlert',
       function($scope,$timeout,game:PowGameService,powAlert:PowAlertService){
          $scope.loadingTitle = "Pow2!";
-         $scope.loadingMessage = "Almost there..";
+         $scope.loadingMessage = "Loading the things...";
          $scope.loading = true;
          $scope.overlayText = null;
          $scope.saveState = function(data){

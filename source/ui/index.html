@@ -17,6 +17,18 @@
 </head>
 <body ng-controller="RPGGameController">
 
+
+<div class="landscape-notice loading ng-hide">
+    <div class="loading-wrapper">
+        <div class="loading-wrapper-inner">
+            <div class="loading-container">
+                <h2 class="pow2-tablet-landscape"></h2>
+                <span>Please rotate your device.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
 <game-menu class="ng-hide" ng-show="loaded"></game-menu>
 
 <div class="loading fade" ng-show="loading">
@@ -24,17 +36,7 @@
         <div class="loading-wrapper-inner">
             <div class="loading-container">
                 <h1 ng-bind="loadingTitle">Pow2!</h1>
-                <p ng-bind="loadingMessage">Loading the things...</p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="landscape-notice loading ng-hide">
-    <div class="loading-wrapper">
-        <div class="loading-wrapper-inner">
-            <div class="loading-container">
-                <h2 class="pow2-tablet-landscape"></h2>
-                <span>Please rotate your device.</span>
+                <p ng-bind="loadingMessage">Waking up...</p>
             </div>
         </div>
     </div>
@@ -58,13 +60,13 @@
 
 <!-- Compiled Game Files -->
 <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="/js/underscore.js"></script>
-<script type="text/javascript" src="/js/backbone.js"></script>
+<script type="text/javascript" src="/js/underscore-min.js"></script>
+<script type="text/javascript" src="/js/backbone-min.js"></script>
 <script type="text/javascript" src="/js/astar-min.js"></script>
-<script type="text/javascript" src="/js/angular-1.2.9/angular.js"></script>
-<script type="text/javascript" src="/js/angular-1.2.9/angular-sanitize.js"></script>
-<script type="text/javascript" src="/js/angular-1.2.9/angular-touch.js"></script>
-<script type="text/javascript" src="/js/angular-1.2.9/angular-animate.js"></script>
+<script type="text/javascript" src="/js/angular-1.2.9/angular.min.js"></script>
+<script type="text/javascript" src="/js/angular-1.2.9/angular-sanitize.min.js"></script>
+<script type="text/javascript" src="/js/angular-1.2.9/angular-touch.min.js"></script>
+<script type="text/javascript" src="/js/angular-1.2.9/angular-animate.min.js"></script>
 <script type="text/javascript" src="/lib/pow2.js"></script>
 <script type="text/javascript" src="/lib/pow2.game.js"></script>
 <script type="text/javascript" src="/lib/pow2.data.js"></script>
