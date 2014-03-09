@@ -96,13 +96,19 @@ body {
     }
     p {
       font-size: 1.8em;
-      .extrude-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+      .inset-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
       color:@contrastFontColor;
-
     }
-
   }
+}
 
+.loading .loading-wrapper .loading-wrapper-inner .loading-container {
+  h1 {
+    font-size: 4em;
+  }
+  p {
+    font-size:1em;
+  }
 }
 
 canvas {
@@ -255,6 +261,14 @@ canvas {
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: @screen-sm-min) {
+  .loading .loading-wrapper .loading-wrapper-inner .loading-container {
+    h1 {
+      font-size: 8em;
+    }
+    p {
+      font-size:1.4em;
+    }
+  }
   .menu-overlay {
     > span {
       font-size:24px;
@@ -286,6 +300,14 @@ canvas {
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: @screen-md-min) {
+  .loading .loading-wrapper .loading-wrapper-inner .loading-container {
+    h1 {
+      font-size: 12em;
+    }
+    p {
+      font-size:1.6em;
+    }
+  }
   .game-container{
     .message {
       .text {
@@ -312,6 +334,14 @@ canvas {
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: @screen-lg-min) {
+  .loading .loading-wrapper .loading-wrapper-inner .loading-container {
+    h1 {
+      font-size: 16em;
+    }
+    p {
+      font-size:1.8em;
+    }
+  }
   .game-container{
     .message {
       .text {
