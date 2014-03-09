@@ -11,9 +11,6 @@
 @import "./style/bootstrap/scaffolding";
 @import "./style/bootstrap/type";
 @import "./style/bootstrap/code";
-@import "./style/bootstrap/grid";
-@import "./style/bootstrap/tables";
-@import "./style/bootstrap/forms";
 @import "./style/bootstrap/buttons";
 @import "./style/bootstrap/progress-bars";
 @import "./style/bootstrap/glyphicons";
@@ -105,10 +102,10 @@ body {
 
 .loading .loading-wrapper .loading-wrapper-inner .loading-container {
   h1 {
-    font-size: 4em;
+    font-size: 8em;
   }
   p {
-    font-size:1em;
+    font-size:1.2em;
   }
 }
 
@@ -252,19 +249,25 @@ canvas {
   }
 }
 
-
-
-/* Extra small devices (phones, less than 768px) */
-/* No media query since this is the default in Bootstrap */
+@media(max-width:@screen-phone){
+  body > * {
+    display: none !important;
+  }
+  .landscape-notice {
+    z-index:9999;
+    display: block !important;
+    background-color: #004c62;
+  }
+}
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: @screen-sm-min) {
   .loading .loading-wrapper .loading-wrapper-inner .loading-container {
     h1 {
-      font-size: 8em;
+      font-size: 12em;
     }
     p {
-      font-size:1.4em;
+      font-size:1.8em;
     }
   }
   .menu-overlay {
@@ -298,14 +301,6 @@ canvas {
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: @screen-md-min) {
-  .loading .loading-wrapper .loading-wrapper-inner .loading-container {
-    h1 {
-      font-size: 12em;
-    }
-    p {
-      font-size:1.6em;
-    }
-  }
   .game-container{
     .message {
       .text {

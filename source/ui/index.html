@@ -19,12 +19,21 @@
 
 <game-menu class="ng-hide" ng-show="loaded"></game-menu>
 
-<div class="loading fade" ng-hide="loaded">
+<div class="loading fade" ng-show="loading">
     <div class="loading-wrapper">
         <div class="loading-wrapper-inner">
             <div class="loading-container">
-                <h1>Pow2!</h1>
-                <p>Loading the things...</p>
+                <h1 ng-bind="loadingTitle">Pow2!</h1>
+                <p ng-bind="loadingMessage">Loading the things...</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="landscape-notice loading ng-hide">
+    <div class="loading-wrapper">
+        <div class="loading-wrapper-inner">
+            <div class="loading-container">
+                <h1><span class="pow2-tablet-portrait"><span class="pow2-arrow-right"><span class="pow2-tablet-landscape"></span></h1>
             </div>
         </div>
     </div>

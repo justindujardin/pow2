@@ -128,3 +128,21 @@
 .pow2-ice-bolt:before {
   content: "D";
 }
+.pow2-list:before {
+  content: "E";
+}
+.pow2-social-github:before {
+  content: "F";
+}
+.pow2-tablet-landscape:before {
+  content: "G";
+}
+.pow2-tablet-portrait:before {
+  content: "H";
+}
+.pow2-comment:before {
+  content: "I";
+}
+.pow2-arrow-right:before {
+  content: "J";
+}
