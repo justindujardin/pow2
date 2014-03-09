@@ -29,7 +29,7 @@
 @import "./style/animation";
 
 // Import template styles
-//  TODO: This might get _really_ old and possible error prone.
+//  TODO: This might get _really_ old.
 //  If so, just concat all the less files then compile the concat.
 @import "./templates/inventoryView";
 @import "./templates/dialogView";
@@ -50,11 +50,59 @@
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   -webkit-user-select: none;
 }
-
+html,
 body {
   background-color:#004c62;
   margin:0;
   overflow: hidden;
+  height:100%;
+}
+
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.loading {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  .loading-wrapper {
+    display: table;
+    width: 100%;
+    height: 100%; /* For at least Firefox */
+    min-height: 100%;
+  }
+  .loading-wrapper-inner {
+    display: table-cell;
+    vertical-align: middle;
+    text-align:center;
+  }
+  .loading-container {
+    margin-right: auto;
+    margin-left: auto;
+
+    > * {
+      font-family: 'GraphicPixel', sans-serif;
+      text-align: center;
+      color:#fff;
+    }
+
+    > h1 {
+      margin-top:10px;
+      margin-bottom:25px;
+      font-size: 16em;
+      .extrude-stroke-text(4px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+
+    }
+    p {
+      font-size: 1.8em;
+      .extrude-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+      color:@contrastFontColor;
+
+    }
+
+  }
+
 }
 
 canvas {
@@ -95,6 +143,28 @@ canvas {
   font-family: 'GraphicPixel', sans-serif;
   font-size: 20px;
 }
+
+/* Stroke Text Effect */
+@contrastFontColorA:rgba(244, 255, 0, 0.5);
+@contrastFontColor:#eeaa13;
+@contrastHighlight:#E8C627;
+@contrastShadow:#E85627;
+.extrude-stroke-text(@width:2px,@lightColor:@contrastHighlight,@shadowColor:@contrastShadow){
+  text-shadow: @width  @width 0 @shadowColor,
+  -@width -@width 0 @lightColor,
+  @width -@width 0 @shadowColor,
+  -@width  @width 0 @lightColor;
+}
+.inset-stroke-text(@width:2px,@lightColor:@contrastHighlight,@shadowColor:@contrastShadow){
+  text-shadow:-@width -@width 0 @lightColor,
+  @width  @width 0 @shadowColor,
+  -@width  @width 0 @lightColor,
+  @width -@width 0 @shadowColor;
+}
+.stroke-text(@width:2px,@color:@contrastShadow){
+  .extrude-stroke-text(@width,@color,@color);
+}
+
 
 .scale-down {
 }

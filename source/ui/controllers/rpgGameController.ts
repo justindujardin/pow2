@@ -62,6 +62,11 @@ module pow2.ui {
 
          // TODO: A better system for game event handling.
          game.machine.on('enter',function(state){
+            if(state.name === GameMapState.NAME){
+               $scope.$apply(function(){
+                  $scope.loaded = true;
+               });
+            }
             if(state.name === GameCombatState.NAME){
                $scope.$apply(function(){
                   $scope.combat = state.machine;

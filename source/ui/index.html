@@ -11,20 +11,23 @@
 
     <link rel="stylesheet" type="text/css" href="/css/index.css" media="all" />
     <link rel="stylesheet" type="text/css" href="/fonts/pow2.css" media="all" />
-    <script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="/js/underscore.js"></script>
-    <script type="text/javascript" src="/js/backbone.js"></script>
-    <script type="text/javascript" src="/js/astar-min.js"></script>
-    <script type="text/javascript" src="/js/angular-1.2.9/angular.js"></script>
-    <script type="text/javascript" src="/js/angular-1.2.9/angular-sanitize.js"></script>
-    <script type="text/javascript" src="/js/angular-1.2.9/angular-touch.js"></script>
-    <script type="text/javascript" src="/js/angular-1.2.9/angular-animate.js"></script>
 </head>
 <body ng-controller="RPGGameController">
 
-<game-menu></game-menu>
+<game-menu class="ng-hide" ng-show="loaded"></game-menu>
 
-<div class="game-container">
+<div class="loading fade" ng-hide="loaded">
+    <div class="loading-wrapper">
+        <div class="loading-wrapper-inner">
+            <div class="loading-container">
+                <h1>Pow2!</h1>
+                <p>Loading the things...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="game-container ng-hide fade" ng-show="loaded">
     <canvas class="game-view map scale-down drop-panel ng-hide" width="960" height="640" game-canvas ng-hide="inCombat">
         Your browser doesn't support this.
     </canvas>
@@ -33,7 +36,7 @@
     </canvas>
 </div>
 
-<div class="ui-container container">
+<div class="ui-container container ng-hide fade" ng-show="loaded">
     <dialog-view ng-show="dialog"></dialog-view>
     <store-view ng-show="store"></store-view>
     <combat-view ng-show="inCombat"></combat-view>
@@ -41,7 +44,14 @@
 </div>
 
 <!-- Compiled Game Files -->
-
+<script type="text/javascript" src="/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/js/underscore.js"></script>
+<script type="text/javascript" src="/js/backbone.js"></script>
+<script type="text/javascript" src="/js/astar-min.js"></script>
+<script type="text/javascript" src="/js/angular-1.2.9/angular.js"></script>
+<script type="text/javascript" src="/js/angular-1.2.9/angular-sanitize.js"></script>
+<script type="text/javascript" src="/js/angular-1.2.9/angular-touch.js"></script>
+<script type="text/javascript" src="/js/angular-1.2.9/angular-animate.js"></script>
 <script type="text/javascript" src="/lib/pow2.js"></script>
 <script type="text/javascript" src="/lib/pow2.game.js"></script>
 <script type="text/javascript" src="/lib/pow2.data.js"></script>
