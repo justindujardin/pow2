@@ -42,7 +42,8 @@
 @import "./templates/heroView";
 @import "./templates/gameMenu";
 
-
+@pixelFont:'GraphicPixel', 'AdvoCut',sans-serif;
+@pixelFontAlt:'AdvoCut','GraphicPixel', sans-serif;
 
 * {
   -webkit-touch-callout: none;
@@ -82,7 +83,7 @@ body {
     margin-left: auto;
 
     > * {
-      font-family: 'GraphicPixel', sans-serif;
+      font-family: @pixelFont;
       text-align: center;
       color:#fff;
     }

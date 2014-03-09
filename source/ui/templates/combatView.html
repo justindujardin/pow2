@@ -1,17 +1,11 @@
 <div class="combat-view" ng-show="combat">
-    <div class="menu drop-panel">
-        <div class="col-xs-12">
-            <div class="col-xs-6">
-                <strong class="name">{{combat.focus.model.attributes.name}}</strong>
+    <div class="status drop-panel">
+        <span class="name">{{combat.focus.model.attributes.name}}</span>
+        <span class="hp">HP {{combat.focus.model.attributes.hp}} / {{combat.focus.model.attributes.maxHP}}</span>
+        <span class="progress">
+            <div class="progress-bar" style="width:{{combat.focus.model.attributes.hp / combat.focus.model.attributes.maxHP * 100}}%;">
+                <span class="sr-only">60% Complete</span>
             </div>
-            <div class="col-xs-6">
-                <div>HP {{combat.focus.model.attributes.hp}} / {{combat.focus.model.attributes.maxHP}}</div>
-                <div class="progress">
-                    <div class="progress-bar" style="width:{{combat.focus.model.attributes.hp / combat.focus.model.attributes.maxHP * 100}}%;">
-                        <span class="sr-only">60% Complete</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </span>
     </div>
 </div>
