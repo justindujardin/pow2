@@ -134,7 +134,7 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
          var metaObj:any = {
             width: width,
             height: height,
-            frames: cell.png.width / (spriteSize * scale) * cell.png.height / (spriteSize * scale),
+            frames: 1,
             source: baseName,
             index: index,
             x: cell.x,

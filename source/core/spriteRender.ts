@@ -76,20 +76,24 @@ module pow2 {
 
       getSpriteRect(name:string,frame:number=0){
          var c:ISpriteMeta = this.getSpriteMeta(name);
-         var sourceWidth:number = SpriteRender.SIZE;
-         var sourceHeight:number = SpriteRender.SIZE;
-         if(c && typeof c.cellWidth !== 'undefined' && typeof c.cellHeight !== 'undefined') {
-            sourceWidth = c.cellWidth;
-            sourceHeight = c.cellHeight;
-         }
          var cx = c.x;
          var cy = c.y;
          if(c.frames > 1){
+            var sourceWidth:number = SpriteRender.SIZE;
+            var sourceHeight:number = SpriteRender.SIZE;
+            if(c && typeof c.cellWidth !== 'undefined' && typeof c.cellHeight !== 'undefined') {
+               sourceWidth = c.cellWidth;
+               sourceHeight = c.cellHeight;
+            }
             var cwidth = c.width / sourceWidth;
             var fx = (frame % (cwidth));
             var fy = Math.floor((frame - fx) / cwidth);
             cx += fx * sourceWidth;
             cy += fy * sourceHeight;
+         }
+         else {
+            sourceWidth = c.width;
+            sourceHeight = c.height;
          }
          return new Rect(cx,cy,sourceWidth,sourceHeight);
       }
