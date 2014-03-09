@@ -15,7 +15,7 @@
  */
 /// <reference path="services/gameService.ts"/>
 module pow2.ui {
-   app.directive('gameCanvas', function ($compile, game:PowGameService) {
+   app.directive('gameCanvas', ['$compile','game',function ($compile, game:PowGameService) {
       return {
          restrict: 'A',
          link: function ($scope, element, attrs) {
@@ -39,5 +39,5 @@ module pow2.ui {
             onResize();
          }
       };
-   });
+   }]);
 }

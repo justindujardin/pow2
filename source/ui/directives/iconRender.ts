@@ -18,7 +18,7 @@
 module pow2.ui {
 // IconRender directive
 // ----------------------------------------------------------------------------
-   app.directive('iconRender', function ($compile, game) {
+   app.directive('iconRender', ['$compile','game',function ($compile, game) {
       return {
          restrict: 'A',
          link: function ($scope, element, attrs) {
@@ -47,5 +47,5 @@ module pow2.ui {
             });
          }
       };
-   });
+   }]);
 }

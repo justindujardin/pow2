@@ -17,7 +17,7 @@
 module pow2.ui {
 // TempleView directive
 // ----------------------------------------------------------------------------
-   app.directive('templeView', function (game:PowGameService) {
+   app.directive('templeView', ['game', function (game:PowGameService) {
       return {
          restrict: 'E',
          templateUrl: '/templates/templeView.html',
@@ -66,6 +66,6 @@ module pow2.ui {
             });
          }
       };
-   });
+   }]);
 }
 

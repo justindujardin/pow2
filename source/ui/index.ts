@@ -43,7 +43,7 @@ module pow2.ui {
    });
 // HeroView directive
 // ----------------------------------------------------------------------------
-   app.directive('heroView', function ($compile) {
+   app.directive('heroView', function () {
       return {
          restrict: 'E',
          scope:true,
@@ -59,7 +59,7 @@ module pow2.ui {
 
 // HeroView directive
 // ----------------------------------------------------------------------------
-   app.directive('heroCard', function ($compile) {
+   app.directive('heroCard', function () {
       return {
          restrict: 'E',
          scope:true,
