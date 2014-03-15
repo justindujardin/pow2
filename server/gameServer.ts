@@ -19,12 +19,12 @@ server.use(express.session({
 }));
 
 /**
- * Enumerate js files produced by grunt that a page should include.
+ * Enumerate output files for page inclusion.
  */
 function getPageScripts(){
    require("../Gruntfile")(grunt);
    var ts = grunt.config.get('typescript');
-   var names = ['core','scene','tile','game','ui'];
+   var names = ['pow2','game','data','ui'];
    var src = grunt.config.get('typescript.options.base_path');
    var scripts:string[] = [];
    _.each(names, (name:string) => {
@@ -33,11 +33,11 @@ function getPageScripts(){
          console.log("Failed to include specified app: " + name);
          return;
       }
-      var sourceFiles:any = grunt.file.expand(app.src);
-      sourceFiles = _.map(sourceFiles,function(f:string){
-         return f.replace(src + '/',app.dest + '/').replace('.ts','.js');
-      });
-      scripts = scripts.concat(sourceFiles)
+      var outputFile:string = grunt.file.expand(app.dest)[0];
+      if(process.env.NODE_ENV === 'production'){
+         outputFile = outputFile.replace(/.js/,'.min.js');
+      }
+      scripts.push(outputFile);
    });
    return scripts;
 }
@@ -49,6 +49,7 @@ server.get('/', function(req,res){
 });
 
 server.use(express.static(path.resolve(__dirname + "/../web")));
+server.use('/lib',express.static(path.resolve(__dirname + "/../lib")));
 server.use('/data', express.static(path.resolve(__dirname + "/../data")));
 server.use('/source', express.static(path.resolve(__dirname + "/../source")));
 server.use('/build', express.static(path.resolve(__dirname + "/../build")));

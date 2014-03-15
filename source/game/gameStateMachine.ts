@@ -14,14 +14,14 @@
  limitations under the License.
  */
 
-/// <reference path="../core/stateMachine.ts" />
+/// <reference path="../../lib/pow2.d.ts" />
 /// <reference path="./gameMapView.ts" />
 /// <reference path="./components/playerComponent.ts" />
 /// <reference path="./components/playerTouchComponent.ts" />
 /// <reference path="./components/combatEncounterComponent.ts" />
 /// <reference path="./states/gameMapState.ts"/>
 /// <reference path="./models/heroModel.ts"/>
-/// <reference path="./states/gameCombatState.ts"/>
+/// <reference path="./states/gameCombatStateMachine.ts"/>
 /// <reference path="./models/gameStateModel.ts"/>
 
 module pow2 {
@@ -36,7 +36,7 @@ module pow2 {
 
    // Implementation
    // -------------------------------------------------------------------------
-   export class GameStateMachine extends StateMachine {
+   export class GameStateMachine extends TickedStateMachine {
       model:GameStateModel = new GameStateModel();
       defaultState:string = GameDefaultState.NAME;
       player:TileObject = null;
@@ -50,21 +50,10 @@ module pow2 {
       ];
       private _elapsed: number = 0;
 
-
-      static createHeroEntity(name:string,model:HeroModel){
-         var result = new GameEntityObject({
-            name:name,
-            icon: model.attributes.icon,
-            model:model
-         });
-         result.addComponent(new PlayerRenderComponent());
-         return result;
-      }
-
       updatePlayer(){
          if(this.world && this.world.scene){
             var scene:Scene = this.world.scene;
-            this.player = scene.objectByComponent(PlayerComponent);
+            this.player = <TileObject>scene.objectByComponent(PlayerComponent);
             this.encounter = <CombatEncounterComponent>this.world.scene.componentByType(CombatEncounterComponent);
          }
       }

@@ -14,6 +14,7 @@
  limitations under the License.
  */
 
+/// <reference path="../../lib/pow2.d.ts" />
 /// <reference path="../tile/tileMapView.ts"/>
 /// <reference path="../tile/render/tileObjectRenderer.ts"/>
 /// <reference path="./components/playerComponent.ts"/>
@@ -32,7 +33,7 @@ module pow2{
          this.mouseClick = _.bind(this.mouseClick,this);
       }
       onAddToScene(scene:Scene) {
-         this.mouse = scene.world.input.mouseHook(this,"world");
+         this.mouse = scene.world.input.mouseHook(<SceneView>this,"world");
          // TODO: Move this elsewhere.
          this.$el.on('click',this.mouseClick);
       }
@@ -83,6 +84,27 @@ module pow2{
          _.each(sprites, (sprite:SpriteComponent) => {
             this.objectRenderer.render(sprite.host,sprite, this);
          });
+
+         var targets = <MovableComponent[]>this.scene.componentsByType(pow2.MovableComponent);
+         _.each(targets, (target:MovableComponent) => {
+            if(target.path.length > 0){
+               this.context.save();
+               var destination:Point = target.path[target.path.length -1].clone();
+               destination.x -= 0.5;
+               destination.y -= 0.5;
+
+               var screenTile = this.worldToScreen(new Rect(destination, new Point(1,1)));
+               this.context.fillStyle = "rgba(10,255,10,0.3)";
+               this.context.fillRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
+               this.context.strokeStyle = "rgba(10,255,10,0.9)";
+               this.context.lineWidth = 1.5;
+               this.context.strokeRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
+
+               this.context.restore();
+            }
+         });
+
+
          return this;
       }
 

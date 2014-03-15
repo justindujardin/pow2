@@ -14,8 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../core/point.ts" />
-/// <reference path="../scene/sceneComponent.ts" />
+/// <reference path="../../lib/pow2.d.ts"/>
 /// <reference path="./tileObject.ts" />
 /// <reference path="./tileMap.ts" />
 

@@ -15,7 +15,7 @@
  */
 /// <reference path="services/gameService.ts"/>
 module pow2.ui {
-   app.directive('gameCanvas', function ($compile, game:PowGameService) {
+   app.directive('gameCanvas', ['$compile','game',function ($compile, game:PowGameService) {
       return {
          restrict: 'A',
          link: function ($scope, element, attrs) {
@@ -27,10 +27,10 @@ module pow2.ui {
             window.addEventListener('resize',onResize,false);
             var $window = $(window);
             function onResize(){
-               context.canvas.width = $window.width();
-               context.canvas.height = $window.height();
-               context.webkitImageSmoothingEnabled = false;
-               context.mozImageSmoothingEnabled = false;
+//               context.canvas.width = $window.width();
+//               context.canvas.height = $window.height();
+//               context.webkitImageSmoothingEnabled = false;
+//               context.mozImageSmoothingEnabled = false;
             }
             var tileView:GameMapView = new GameMapView(element[0], game.loader);
             tileView.camera.extent.set(10, 10);
@@ -39,5 +39,5 @@ module pow2.ui {
             onResize();
          }
       };
-   });
+   }]);
 }

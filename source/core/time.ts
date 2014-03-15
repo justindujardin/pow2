@@ -65,7 +65,7 @@ module pow2 {
       }
 
       removeObject(object:IProcessObject){
-         this.objects = _.filter(this.objects,function (o){
+         this.objects = <IProcessObject[]>_.filter(this.objects,function (o:IProcessObject){
             return o.id != object.id;
          });
       }

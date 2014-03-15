@@ -13,12 +13,10 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-/// <reference path="../../game/gameStateMachine.ts"/>
-/// <reference path="../../../source/game/gameWorld.ts"/>
-/// <reference path="../../../source/game/models/heroModel.ts"/>
 /// <reference path="../../../types/underscore/underscore.d.ts"/>
 /// <reference path="../../../types/backbone/backbone.d.ts"/>
 /// <reference path="../../../types/angularjs/angular.d.ts"/>
+/// <reference path="../../../lib/pow2.game.d.ts"/>
 /// <reference path="../index.ts"/>
 module pow2.ui {
    export class PowGameService {
@@ -41,7 +39,14 @@ module pow2.ui {
          this.model = this.world.state.model;
          this.world.scene.once('map:loaded',() => {
             // Create a movable character with basic components.
-            this.sprite = GameStateMachine.createHeroEntity("Hero!", this.model.party[0]);
+
+            var model:HeroModel = this.model.party[0];
+            this.sprite = new GameEntityObject({
+               name:"Hero!",
+               icon: model.attributes.icon,
+               model:model
+            });
+            this.sprite.addComponent(new PlayerRenderComponent());
             this.sprite.setPoint(this.tileMap.bounds.getCenter());
             this.sprite.addComponent(new CollisionComponent());
             this.sprite.addComponent(new PlayerComponent());
@@ -63,8 +68,7 @@ module pow2.ui {
          //
          if(this.model.party.length === 0){
             this.model.addHero(HeroModel.create(HeroType.Warrior,"Warrior"));
-            this.model.addHero(HeroModel.create(HeroType.Wizard,"Wizard"));
-            this.model.addHero(HeroModel.create(HeroType.Thief,"Thief"));
+            this.model.addHero(HeroModel.create(HeroType.DeathMage,"DeathMage"));
             this.model.addHero(HeroModel.create(HeroType.Ranger,"Ranger"));
          }
 

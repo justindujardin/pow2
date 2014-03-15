@@ -6,8 +6,18 @@
   width: 100%;
   z-index: 10;
 
+  [class^="pow2-"],
+  [class*=" pow2-"] {
+    .extrude-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+    color:#fff;
+    font-size:1.5em;
+    &:hover {
+      color:@contrastFontColor;
+    }
+  }
+
   .options, .trigger {
-    font-size: 36px;
+    font-size: 42px;
   }
   .trigger {
     position: static;
@@ -63,8 +73,8 @@
     .opacity(0.8);
     color: #ffffff;
     text-align: center;
-    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.7);
-    font-size:42px;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+    font-size:48px;
     cursor: pointer;
     &:hover {
       .opacity(1);

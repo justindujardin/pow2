@@ -18,7 +18,7 @@ module pow2.ui {
 
 // DialogBubble directive
 // ----------------------------------------------------------------------------
-   app.directive('dialogView', function (game:PowGameService) {
+   app.directive('dialogView', ['game',function (game:PowGameService) {
       return {
          restrict: 'E',
          replace:true,
@@ -39,7 +39,7 @@ module pow2.ui {
 
          }
       };
-   });
+   }]);
 
 }
 

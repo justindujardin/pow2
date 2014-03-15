@@ -18,7 +18,7 @@ module pow2.ui {
 
 // LevelStatsView directive
 // ----------------------------------------------------------------------------
-   app.directive('levelStatsView', function (game:PowGameService) {
+   app.directive('levelStatsView', ['game',function (game:PowGameService) {
       return {
          restrict: 'E',
          templateUrl: '/templates/levelStatsView.html',
@@ -47,7 +47,7 @@ module pow2.ui {
             $scope.calculateStats(game.model.party[0]);
          }
       };
-   });
+   }]);
 
 }
 

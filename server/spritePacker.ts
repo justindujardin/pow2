@@ -48,21 +48,27 @@ function scalePng(png:any,scale){
 /**
  * Read PNG data for a file, and resolve with an object containing the file name
  * and the PNG object instance representing its data.
+ *
+ * This can associate meta-data with a png file if it has an accompanying .json file
+ * of the same name, in the same directory.  The system will also look for a defaults
+ * file that will be applied to all sprites in the directory.
  */
 function readPngData(file,scale){
+   var defaultsFile = "spriteDefaults.json";
    var deferred = <any>Q.defer();
    var readFile = (<any>Q).denodeify(fs.readFile);
    Q.all([
          readFile(file),
+         readPngMetaData(path.join(path.dirname(file),defaultsFile),scale),
          readPngMetaData(file,scale)
-      ]).spread(function(data,meta){
+      ]).spread(function(data,defaultMeta,meta){
          var stream = new PNG();
          stream.on('parsed', function() {
             var png = scale > 1 ? scalePng(this,scale) : this;
             stream.end();
             deferred.resolve({
                png: png,
-               meta: meta,
+               meta: _.extend({},defaultMeta || {},meta || {}),
                file: file
             });
          });
@@ -134,7 +140,7 @@ function writePackedImage(name,cells,width,height,spriteSize,scale){
          var metaObj:any = {
             width: width,
             height: height,
-            frames: cell.png.width / (spriteSize * scale) * cell.png.height / (spriteSize * scale),
+            frames: 1,
             source: baseName,
             index: index,
             x: cell.x,

@@ -1,19 +1,19 @@
-///<reference path="../../source/core/api.ts"/>
+///<reference path="../../lib/pow2.d.ts"/>
+
 //// Creatures
 pow2.registerCreatures(1,[
    //// LEVEL 1
    {
-      name : "Imp",
-      icon : "imp.png",
-      groups : ["dungeon", "outdoor", "kobold"],
+      name : "Snake",
+      icon : "greensnake.png",
+      groups : ["dungeon", "outdoor"],
       hp: 8,
       attackLow:1,
       attackHigh:4,
       exp: 6,
       gold: 6,
       evade:6,
-      hitPercent:2,
-      description : "Small but mean, the Imp can attack very quickly, doing considerable damage before an opponent can counter-attack."
+      hitPercent:2
    },
    {
       name : "Kobold",

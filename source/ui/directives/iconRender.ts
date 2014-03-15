@@ -14,10 +14,11 @@
  limitations under the License.
  */
 /// <reference path="../index.ts"/>
+/// <reference path="../../../lib/pow2.game.d.ts"/>
 module pow2.ui {
 // IconRender directive
 // ----------------------------------------------------------------------------
-   app.directive('iconRender', function ($compile, game) {
+   app.directive('iconRender', ['$compile','game',function ($compile, game) {
       return {
          restrict: 'A',
          link: function ($scope, element, attrs) {
@@ -36,7 +37,7 @@ module pow2.ui {
                if(!icon){
                   return;
                }
-               game.world.sprites.getSingleSprite(icon,function(sprite){
+               game.world.sprites.getSingleSprite(icon,attrs.frame || 0,function(sprite){
                   renderContext.clearRect(0, 0, 64, 64);
                   renderContext.drawImage(sprite, 0, 0, 64, 64);
                   $scope.$apply(function(){
@@ -46,5 +47,5 @@ module pow2.ui {
             });
          }
       };
-   });
+   }]);
 }

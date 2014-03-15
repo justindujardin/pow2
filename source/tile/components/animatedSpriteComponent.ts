@@ -15,8 +15,7 @@
  */
 
 /// <reference path="../../../types/backbone/backbone.d.ts" />
-/// <reference path="../../scene/components/movableComponent.ts" />
-/// <reference path="../../scene/sceneComponent.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../../tile/tileObject.ts" />
 /// <reference path="./spriteComponent.ts" />
 
@@ -54,7 +53,7 @@ module pow2 {
             return false;
          }
          var sprites = <SpriteComponent[]>this.host.findComponents(SpriteComponent);
-         this.spriteComponent = _.where(sprites,{name:this.spriteName})[0];
+         this.spriteComponent = <SpriteComponent>_.where(sprites,{name:this.spriteName})[0];
          return !!this.spriteComponent;
       }
       tick(elapsed:number){

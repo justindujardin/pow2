@@ -20,7 +20,9 @@
 ///<reference path="./resourceLoader.ts"/>
 ///<reference path="./world.ts"/>
 module pow2 {
+
    export class SpriteRender implements IWorldObject {
+      static SIZE:number = 16;
       canvas:HTMLCanvasElement = null;
       context:CanvasRenderingContext2D = null;
 
@@ -31,8 +33,12 @@ module pow2 {
 
       constructor() {
          this.canvas = document.createElement('canvas');
-         this.canvas.width = this.canvas.height = 16;
+         this.sizeCanvas(SpriteRender.SIZE,SpriteRender.SIZE);
+      }
 
+      sizeCanvas(width:number,height:number){
+         this.canvas.width = width;
+         this.canvas.height = height;
          this.context = this.canvas.getContext('2d');
          (<any>this.context).webkitImageSmoothingEnabled = false;
          (<any>this.context).mozImageSmoothingEnabled = false;
@@ -45,27 +51,54 @@ module pow2 {
          return null;
       }
 
-      getSingleSprite(spriteName:string,done:Function=(result:any)=>{}):ImageResource{
+      getSingleSprite(spriteName:string,frame:number=0,done:Function=(result:any)=>{}):ImageResource{
          var coords:any = pow2.data.sprites[spriteName];
          if(!coords){
             throw new Error("Unable to find sprite by name: " + spriteName);
          }
          return this.getSpriteSheet(coords.source,(image:ImageResource)=>{
+            var cell:Rect = this.getSpriteRect(spriteName,frame);
+
+            this.sizeCanvas(cell.extent.x,cell.extent.y);
             this.context.clearRect(0,0,this.canvas.width,this.canvas.height);
-            this.context.drawImage(image.data,coords.x,coords.y,this.canvas.width,this.canvas.height,0,0,this.canvas.width,this.canvas.height);
+            this.context.drawImage(image.data,cell.point.x,cell.point.y,cell.extent.x,cell.extent.y,0,0,this.canvas.width,this.canvas.height);
             var src:string = this.canvas.toDataURL();
             var result:HTMLImageElement = new Image();
             result.src = src;
             result.onload = function() {
-               done(result);
+               done && done(result);
             };
             result.onerror = function(err){
-               done(err);
+               done && done(err);
             };
          });
       }
 
-      getSpriteMeta(name:string) {
+      getSpriteRect(name:string,frame:number=0){
+         var c:ISpriteMeta = this.getSpriteMeta(name);
+         var cx = c.x;
+         var cy = c.y;
+         if(c.frames > 1){
+            var sourceWidth:number = SpriteRender.SIZE;
+            var sourceHeight:number = SpriteRender.SIZE;
+            if(c && typeof c.cellWidth !== 'undefined' && typeof c.cellHeight !== 'undefined') {
+               sourceWidth = c.cellWidth;
+               sourceHeight = c.cellHeight;
+            }
+            var cwidth = c.width / sourceWidth;
+            var fx = (frame % (cwidth));
+            var fy = Math.floor((frame - fx) / cwidth);
+            cx += fx * sourceWidth;
+            cy += fy * sourceHeight;
+         }
+         else {
+            sourceWidth = c.width;
+            sourceHeight = c.height;
+         }
+         return new Rect(cx,cy,sourceWidth,sourceHeight);
+      }
+
+      getSpriteMeta(name:string):ISpriteMeta {
          var desc = pow2.data.sprites[name];
          if(!desc){
             throw new Error("Missing sprite data for: " + name);

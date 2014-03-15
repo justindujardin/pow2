@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../../scene/components/movableComponent.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../objects/gameFeatureObject.ts" />
 /// <reference path="../../tile/tileComponent.ts" />
 /// <reference path="./playerRenderComponent.ts" />
@@ -100,7 +100,7 @@ module pow2 {
                }
             }
          }
-         var map = this.host.scene.objectByType(pow2.TileMap);
+         var map:TileMap = <TileMap>this.host.scene.objectByType(TileMap);
          if (map) {
             var terrain = map.getTerrain(x,y);
             if (!terrain) {

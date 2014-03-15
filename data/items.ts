@@ -1,4 +1,4 @@
-///<reference path="../source/core/api.ts"/>
+///<reference path="../lib/pow2.d.ts"/>
 
 //// Items
 pow2.registerData("items",[

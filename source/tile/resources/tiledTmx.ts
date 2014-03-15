@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../../core/resources/xml.ts"/>
+/// <reference path="../../../lib/pow2.d.ts"/>
 /// <reference path="./tiled.ts"/>
 /// <reference path="./tiledTsx.ts"/>
 

@@ -15,7 +15,7 @@
  */
 /// <reference path="./point.ts"/>
 /// <reference path="../../types/jquery/jquery.d.ts"/>
-/// <reference path="../scene/sceneView.ts"/>
+/// <reference path="./scene/sceneView.ts"/>
 module pow2 {
    export enum KeyCode {
       UP = 38,
@@ -73,8 +73,8 @@ module pow2 {
          });
       }
 
-      mouseHook(view:SceneView,name:string){
-         var hooks = _.where(this._mouseElements,{name:name});
+      mouseHook(view:SceneView,name:string):NamedMouseElement{
+         var hooks = <NamedMouseElement[]>_.where(this._mouseElements,{name:name});
          if(hooks.length > 0){
             return hooks[0];
          }
@@ -96,10 +96,10 @@ module pow2 {
          });
       }
 
-      getMouseHook(name:string);
-      getMouseHook(view:SceneView);
-      getMouseHook(nameOrView:any){
-         return _.find(this._mouseElements,(hook:NamedMouseElement) => {
+      getMouseHook(name:string):NamedMouseElement;
+      getMouseHook(view:SceneView):NamedMouseElement;
+      getMouseHook(nameOrView:any):NamedMouseElement{
+         return <NamedMouseElement>_.find(this._mouseElements,(hook:NamedMouseElement) => {
             return hook.name === nameOrView || hook.view.id === nameOrView.id;
          });
       }

@@ -11,9 +11,6 @@
 @import "./style/bootstrap/scaffolding";
 @import "./style/bootstrap/type";
 @import "./style/bootstrap/code";
-@import "./style/bootstrap/grid";
-@import "./style/bootstrap/tables";
-@import "./style/bootstrap/forms";
 @import "./style/bootstrap/buttons";
 @import "./style/bootstrap/progress-bars";
 @import "./style/bootstrap/glyphicons";
@@ -29,7 +26,7 @@
 @import "./style/animation";
 
 // Import template styles
-//  TODO: This might get _really_ old and possible error prone.
+//  TODO: This might get _really_ old.
 //  If so, just concat all the less files then compile the concat.
 @import "./templates/inventoryView";
 @import "./templates/dialogView";
@@ -42,7 +39,8 @@
 @import "./templates/heroView";
 @import "./templates/gameMenu";
 
-
+@pixelFont:'GraphicPixel', 'AdvoCut',sans-serif;
+@pixelFontAlt:'AdvoCut','GraphicPixel', sans-serif;
 
 * {
   -webkit-touch-callout: none;
@@ -50,11 +48,65 @@
   -webkit-tap-highlight-color: rgba(0,0,0,0);
   -webkit-user-select: none;
 }
-
+html,
 body {
-  background-color: darken(#212121,5%);
+  background-color:#004c62;
   margin:0;
   overflow: hidden;
+  height:100%;
+}
+
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.loading {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  .loading-wrapper {
+    display: table;
+    width: 100%;
+    height: 100%; /* For at least Firefox */
+    min-height: 100%;
+  }
+  .loading-wrapper-inner {
+    display: table-cell;
+    vertical-align: middle;
+    text-align:center;
+  }
+  .loading-container {
+    margin-right: auto;
+    margin-left: auto;
+
+    > * {
+      font-family: @pixelFont;
+      text-align: center;
+      color:#fff;
+    }
+
+    > h1 {
+      margin-top:10px;
+      margin-bottom:25px;
+      font-size: 16em;
+      .extrude-stroke-text(4px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+
+    }
+    p {
+      font-size: 1.8em;
+      .inset-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+      color:@contrastFontColor;
+    }
+  }
+}
+
+.loading .loading-wrapper .loading-wrapper-inner .loading-container {
+  h1 {
+    font-size: 8em;
+  }
+  p {
+    font-size:1.2em;
+  }
 }
 
 canvas {
@@ -64,6 +116,59 @@ canvas {
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
 }
+
+
+
+
+@font-face {
+  font-family: 'GraphicPixel';
+  src: url('/fonts/bq/graphicpixel-webfont.eot');
+  src: url('/fonts/bq/graphicpixel-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/fonts/bq/graphicpixel-webfont.woff') format('woff'),
+  url('/fonts/bq/graphicpixel-webfont.ttf') format('truetype'),
+  url('/fonts/bq/graphicpixel-webfont.svg#GraphicPixelRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'AdvoCut';
+  src: url('/fonts/bq/advocut-webfont.eot');
+  src: url('/fonts/bq/advocut-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/fonts/bq/advocut-webfont.woff') format('woff'),
+  url('/fonts/bq/advocut-webfont.ttf') format('truetype'),
+  url('/fonts/bq/advocut-webfont.svg#AndinaRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+.ebp {
+  font-family: 'GraphicPixel', sans-serif;
+  font-size: 20px;
+}
+
+/* Stroke Text Effect */
+@contrastFontColorA:rgba(244, 255, 0, 0.5);
+@contrastFontColor:#eeaa13;
+@contrastHighlight:#E8C627;
+@contrastShadow:#E85627;
+.extrude-stroke-text(@width:2px,@lightColor:@contrastHighlight,@shadowColor:@contrastShadow){
+  text-shadow: @width  @width 0 @shadowColor,
+  -@width -@width 0 @lightColor,
+  @width -@width 0 @shadowColor,
+  -@width  @width 0 @lightColor;
+}
+.inset-stroke-text(@width:2px,@lightColor:@contrastHighlight,@shadowColor:@contrastShadow){
+  text-shadow:-@width -@width 0 @lightColor,
+  @width  @width 0 @shadowColor,
+  -@width  @width 0 @lightColor,
+  @width -@width 0 @shadowColor;
+}
+.stroke-text(@width:2px,@color:@contrastShadow){
+  .extrude-stroke-text(@width,@color,@color);
+}
+
 
 .scale-down {
 }
@@ -126,6 +231,9 @@ canvas {
     left:0;
     right:0;
     bottom:0;
+    margin:auto;
+    width:960px;
+    height:640px;
   }
 }
 
@@ -140,14 +248,38 @@ canvas {
     pointer-events:auto;
   }
 }
-
-
-
-/* Extra small devices (phones, less than 768px) */
-/* No media query since this is the default in Bootstrap */
+@landscape-max:(@screen-phone - 1);
+@media(max-width:@landscape-max) and (orientation:portrait) {
+  body > * {
+    display: none !important;
+  }
+  .landscape-notice {
+    z-index:9999;
+    display: block !important;
+    background-color: #004c62;
+    .stroke-text(1px,#000);
+    h2 {
+      .extrude-stroke-text(2px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+      font-size: 10em;
+    }
+    span {
+      .extrude-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+      color:#fff;
+      font-size: 2em;
+    }
+  }
+}
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: @screen-sm-min) {
+  .loading .loading-wrapper .loading-wrapper-inner .loading-container {
+    h1 {
+      font-size: 12em;
+    }
+    p {
+      font-size:1.8em;
+    }
+  }
   .menu-overlay {
     > span {
       font-size:24px;
@@ -205,6 +337,14 @@ canvas {
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: @screen-lg-min) {
+  .loading .loading-wrapper .loading-wrapper-inner .loading-container {
+    h1 {
+      font-size: 16em;
+    }
+    p {
+      font-size:1.8em;
+    }
+  }
   .game-container{
     .message {
       .text {

@@ -15,8 +15,10 @@
  */
 
 /// <reference path="../gameCombatState.ts" />
+/// <reference path="../gameCombatStateMachine.ts" />
 /// <reference path="../../components/damageComponent.ts" />
-/// <reference path="../../../core/state.ts" />
+/// <reference path="../../components/playerCombatRenderComponent.ts" />
+/// <reference path="../../../../lib/pow2.d.ts" />
 
 module pow2 {
 
@@ -34,8 +36,12 @@ module pow2 {
          super.enter(machine);
          machine.currentDone = false;
          this.attacksLeft = 1;
-         machine.current.scale = 1.5;
+         machine.current.scale = 1.25;
          this.current = machine.current;
+
+         if(machine.isFriendlyTurn()){
+            machine.focus = machine.current;
+         }
 
          machine.current.scene.on('click',(mouse,hits) => {
             this.attack(machine,hits[0]);
@@ -77,12 +83,15 @@ module pow2 {
          else {
             attacker = machine.current;
             defender = defender || machine.getRandomPartyMember();
+            machine.focus = defender;
          }
-         _.delay(() => {
+         var attackerPlayer:combat.PlayerCombatRenderComponent = <any>attacker.findComponent(combat.PlayerCombatRenderComponent);
+         var done = () => {
             var damage:number = attacker.model.attack(defender.model);
             var didKill:boolean = defender.model.get('hp') <= 0;
             var hit:boolean = damage > 0;
             var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? "hit" : "miss"));
+            var defenderSprite:SpriteComponent = <any>defender.findComponent(SpriteComponent);
             var components = {
                animation: new pow2.AnimatedSpriteComponent({
                   spriteName:"attack",
@@ -97,16 +106,37 @@ module pow2 {
                   url: hitSound
                })
             };
+            var animDamage:boolean = machine.isFriendlyTurn() && !!defenderSprite;
+            if(animDamage) { defenderSprite.frame = 1; }
+            if(!!attackerPlayer){
+               attackerPlayer.setState("Moving");
+            }
             defender.addComponentDictionary(components);
             components.damage.once('damage:done',() => {
-               if(didKill){
-                  defender.visible = false;
+               if(!!attackerPlayer){
+                  attackerPlayer.setState();
+               }
+               if(didKill && defender.model instanceof CreatureModel){
+                  defender.destroy();
+               }
+
+               if(animDamage) {
+                  _.delay(function(){
+                     defenderSprite.frame = 0;
+                  },500);
                }
                defender.removeComponentDictionary(components);
                machine.currentDone = true;
             });
             machine.trigger("combat:attack",damage,attacker,defender);
-         },150);
+         };
+
+         if(!!attackerPlayer){
+            attackerPlayer.attack(done);
+         }
+         else {
+            _.delay(done,150);
+         }
       }
    }
 

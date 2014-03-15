@@ -14,8 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../../core/resources/image.ts"/>
-/// <reference path="../../core/resources/xml.ts"/>
+/// <reference path="../../../lib/pow2.d.ts"/>
 /// <reference path="./tiled.ts"/>
 module pow2 {
 

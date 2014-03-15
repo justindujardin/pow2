@@ -14,7 +14,7 @@
  limitations under the License.
  */
 /// <reference path="../../../types/angularjs/angular.d.ts"/>
-/// <reference path="../../../source/game/gameWorld.ts"/>
+/// <reference path="../../../lib/pow2.game.d.ts"/>
 /// <reference path="./gameService.ts"/>
 
 module pow2.ui {

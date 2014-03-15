@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../../scene/sceneObjectRenderer.ts" />
+/// <reference path="../../../lib/pow2.d.ts"/>
 /// <reference path="../tileObject.ts" />
 /// <reference path="../tileMapView.ts" />
 /// <reference path="../tileMap.ts" />
@@ -54,8 +54,8 @@ module pow2 {
                            if (texture) {
                               // Keep this inline to avoid more function calls.
                               var desc, dstH, dstW, dstX, dstY, srcH, srcW, srcX, srcY;
-                              desc = pow2.data.sprites[texture];
-                              var image = sheets[desc.source] = sheets[desc.source] || view.getSpriteSheet(desc.source);
+                              desc = pow2.getData('sprites')[texture];
+                              var image:ImageResource = sheets[desc.source] = sheets[desc.source] || view.getSpriteSheet(desc.source);
                               if (!image || !image.isReady()) {
                                  this.bufferComplete = false;
                                  continue;

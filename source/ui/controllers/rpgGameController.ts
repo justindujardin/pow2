@@ -27,6 +27,9 @@ module pow2.ui {
       'game',
       'powAlert',
       function($scope,$timeout,game:PowGameService,powAlert:PowAlertService){
+         $scope.loadingTitle = "Pow2!";
+         $scope.loadingMessage = "Loading the things...";
+         $scope.loading = true;
          $scope.overlayText = null;
          $scope.saveState = function(data){
             localStorage.setItem(stateKey,data);
@@ -62,6 +65,12 @@ module pow2.ui {
 
          // TODO: A better system for game event handling.
          game.machine.on('enter',function(state){
+            if(state.name === GameMapState.NAME){
+               $scope.$apply(function(){
+                  $scope.loading = false;
+                  $scope.loaded = true;
+               });
+            }
             if(state.name === GameCombatState.NAME){
                $scope.$apply(function(){
                   $scope.combat = state.machine;

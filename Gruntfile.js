@@ -16,7 +16,7 @@ module.exports = function(grunt) {
                message: 'Sprite Sheets built.'
             }
          },
-         recess:{
+         less:{
             options: {
                message: 'CSS styles built.'
             }
@@ -44,20 +44,8 @@ module.exports = function(grunt) {
       },
 
       clean: {
-         core: {
-            src: ["build/core"]
-         },
-         scene: {
-            src: ["build/scene"]
-         },
-         tile: {
-            src: ["build/tile"]
-         },
-         game: {
-            src: ["build/game"]
-         },
-         ui: {
-            src: ["build/ui"]
+         pow2: {
+            src: ["lib/"]
          },
          server: {
             src: [
@@ -77,64 +65,9 @@ module.exports = function(grunt) {
             target: 'es5', //or es3
             base_path: 'source',
             sourcemap: true,
-            declaration: false
-         },
-         data: {
-            src: [
-               "data/*.ts",
-               "data/creatures/*.ts"
-            ],
-            dest: 'web/<%= pkg.name %>.data.js'
+            declaration: true
          },
 
-         core: {
-            src: [
-               "source/core/api.ts",
-               "source/core/*.ts",
-               "source/core/resources/*.ts"
-            ],
-            dest: 'build'
-         },
-         scene: {
-            src: [
-               "source/scene/*.ts",
-               "source/scene/components/*.ts"
-            ],
-            dest: 'build'
-         },
-         tile: {
-            src: [
-               "source/tile/*.ts",
-               "source/tile/components/*.ts",
-               "source/tile/objects/*.ts",
-               "source/tile/resources/*.ts",
-               "source/tile/features/*.ts",
-               "source/tile/render/*.ts"
-            ],
-            dest: 'build'
-         },
-         game: {
-            src: [
-               "source/game/*.ts",
-               "source/game/objects/*.ts",
-               "source/game/models/entityModel.ts",
-               "source/game/models/itemModel.ts",
-               "source/game/models/*.ts",
-               "source/game/states/*.ts",
-               "source/game/states/combat/*.ts",
-               "source/game/components/*.ts",
-               "source/game/components/features/*.ts"
-            ],
-            dest: 'build'
-         },
-         ui: {
-            src: [
-               "source/ui/index.ts",
-               "source/ui/*.ts",
-               "source/ui/**/*.ts"
-            ],
-            dest:'build'
-         },
          server: {
             options: {
                module: 'commonjs', //or commonjs
@@ -145,7 +78,56 @@ module.exports = function(grunt) {
             src: [
                "server/*.ts"
             ]
+         },
+
+         pow2: {
+            src: [
+               "source/core/api.ts",
+               "source/core/events.ts",
+               "source/core/*.ts",
+               "source/core/resources/*.ts",
+               "source/core/scene/*.ts",
+               "source/core/scene/components/*.ts"
+            ],
+            dest: 'lib/<%= pkg.name %>.js'
+         },
+         game: {
+            src: [
+               "source/tile/*.ts",
+               "source/tile/components/*.ts",
+               "source/tile/objects/*.ts",
+               "source/tile/resources/*.ts",
+               "source/tile/features/*.ts",
+               "source/tile/render/*.ts",
+               "source/game/*.ts",
+               "source/game/states/gameCombatState.ts",
+               "source/game/models/entityModel.ts",
+               "source/game/models/itemModel.ts",
+               "source/game/models/*.ts",
+               "source/game/states/*.ts",
+               "source/game/states/combat/*.ts",
+               "source/game/objects/*.ts",
+               "source/game/components/*.ts",
+               "source/game/components/features/*.ts"
+            ],
+            dest: 'lib/<%= pkg.name %>.game.js'
+         },
+         ui: {
+            src: [
+               "source/ui/index.ts",
+               "source/ui/*.ts",
+               "source/ui/**/*.ts"
+            ],
+            dest: 'lib/<%= pkg.name %>.ui.js'
+         },
+         data: {
+            src: [
+               "data/*.ts",
+               "data/creatures/*.ts"
+            ],
+            dest: 'lib/<%= pkg.name %>.data.js'
          }
+
       },
 
       /**
@@ -167,15 +149,16 @@ module.exports = function(grunt) {
        */
       uglify: {
          options: {
+            sourceMap:true,
             banner: '\n/*!\n  <%= pkg.name %> - v<%= pkg.version %>\n  built: <%= grunt.template.today("yyyy-mm-dd") %>\n */\n'
          },
          game: {
             files: {
-               'web/<%= pkg.name %>.core.js'    : ['web/<%= pkg.name %>.core.js'],
-               'web/<%= pkg.name %>.typescript.js'    : ['web/<%= pkg.name %>.typescript.js'],
-               'web/<%= pkg.name %>.data.js'    : ['web/<%= pkg.name %>.data.js'],
-               'web/<%= pkg.name %>.maps.js'    : ['web/<%= pkg.name %>.maps.js'],
-               'web/<%= pkg.name %>.sprites.js' : ['web/<%= pkg.name %>.sprites.js']
+               'lib/<%= pkg.name %>.min.js'    : ['lib/<%= pkg.name %>.js'],
+               'lib/<%= pkg.name %>.min.game.js'    : ['lib/<%= pkg.name %>.game.js'],
+               'lib/<%= pkg.name %>.min.data.js'    : ['lib/<%= pkg.name %>.data.js'],
+               'lib/<%= pkg.name %>.min.ui.js'    : ['lib/<%= pkg.name %>.ui.js'],
+               'lib/<%= pkg.name %>.min.sprites.js' : ['lib/<%= pkg.name %>.sprites.js']
             }
          }
       },
@@ -186,16 +169,19 @@ module.exports = function(grunt) {
       sprites: {
          game: {
             options: {
-               metaFile: 'web/<%= pkg.name %>.sprites.js',
+               metaFile: 'lib/<%= pkg.name %>.sprites.js',
                indexFiles: true
             },
             files: [
+               {src: 'data/textures/creatures/*.png', dest: 'web/images/creatures'},
                {src: 'data/textures/vehicles/*.png', dest: 'web/images/vehicles'},
+               {src: 'data/textures/ui/*.png', dest: 'web/images/ui'},
                {src: 'data/textures/characters/*.png', dest: 'web/images/characters'},
                {src: 'data/textures/animation/*.png', dest: 'web/images/animation'},
-               {src: 'data/textures/creatures/*.png', dest: 'web/images/creatures'},
                {src: 'data/textures/environment/*.png', dest: 'web/images/environment'},
                {src: 'data/textures/equipment/*.png', dest: 'web/images/equipment'},
+               {src: 'data/textures/basictiles/*.png', dest: 'web/images/basictiles'},
+               {src: 'data/textures/combat/*.png', dest: 'web/images/combat'},
                {src: 'data/textures/items/*.png', dest: 'web/images/items'}
             ]
          }
@@ -222,18 +208,16 @@ module.exports = function(grunt) {
       /**
        * Compile game LESS styles to CSS
        */
-      recess: {
-         options: {
-            compile: true,
-            includePath: ["source/ui/"]
-         },
+      less: {
          game: {
-            files: [
-               {src: 'source/ui/index.less', dest: 'web/css/index.css'}
-            ]
+            options: {
+               paths: ["source/ui/"]
+            },
+            files: {
+               'web/css/index.css':'source/ui/index.less'
+            }
          }
       },
-
 
       /**
        * Trigger a new build when files change
@@ -245,41 +229,29 @@ module.exports = function(grunt) {
 
          // Game Source outputs
          //--------------------------------------------------------------------
-         core: {
+         pow2: {
             files: [
-               '<%= typescript.core.src %>'
+               '<%= typescript.pow2.src %>'
             ],
-            tasks: ['clean:core', 'typescript:core', 'notify:code']
+            tasks: ['typescript:pow2', 'notify:code']
+         },
+         game: {
+            files: [
+               '<%= typescript.game.src %>'
+            ],
+            tasks: ['typescript:game', 'notify:code']
+         },
+         ui: {
+            files: [
+               '<%= typescript.ui.src %>'
+            ],
+            tasks: ['typescript:ui', 'notify:code']
          },
          data: {
             files: [
                '<%= typescript.data.src %>'
             ],
             tasks: ['typescript:data', 'notify:data']
-         },
-         scene: {
-            files: [
-               '<%= typescript.scene.src %>'
-            ],
-            tasks: ['clean:scene', 'typescript:scene', 'notify:code']
-         },
-         tile: {
-            files: [
-               '<%= typescript.tile.src %>'
-            ],
-            tasks: ['clean:tile', 'typescript:tile', 'notify:code']
-         },
-         game: {
-            files: [
-               '<%= typescript.game.src %>'
-            ],
-            tasks: ['clean:game', 'typescript:game', 'notify:code']
-         },
-         ui: {
-            files: [
-               '<%= typescript.ui.src %>'
-            ],
-            tasks: ['typescript:ui']
          },
          typedefs: {
             files: [
@@ -302,7 +274,7 @@ module.exports = function(grunt) {
                'source/ui/*.less',
                'source/ui/**/*.less'
             ],
-            tasks: ['recess', 'notify:recess']
+            tasks: ['less', 'notify:less']
          },
          expressts: {
             files:  [ 'server/*.ts' ],
@@ -313,7 +285,7 @@ module.exports = function(grunt) {
             }
          },
          express: {
-            files:  [ 'web/*.html', 'server/*.js' ],
+            files:  [ 'source/**/*.html', 'server/*.js' ],
             tasks:  [ 'express', 'notify:server' ],
             options: {
                nospawn: true //Without this option specified express won't be reloaded
@@ -366,17 +338,17 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-contrib-uglify');
    grunt.loadNpmTasks('grunt-contrib-clean');
    grunt.loadNpmTasks('grunt-typescript');
-   grunt.loadNpmTasks('grunt-recess');
+   grunt.loadNpmTasks('grunt-contrib-less');
    grunt.loadNpmTasks('grunt-contrib-copy');
    // Support system notifications in non-production environments
    if(process && process.env && process.env.NODE_ENV !== 'production'){
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
       grunt.loadNpmTasks('grunt-notify');
-      grunt.registerTask('default', ['typescript', 'copy','recess','sprites']);
+      grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
    }
    else {
-      grunt.registerTask('default', ['typescript', 'copy','recess','sprites']);
-      grunt.registerTask('heroku:production', ['typescript', 'copy','recess','sprites','uglify']);
+      grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
+      grunt.registerTask('heroku:production', ['typescript', 'copy','less','sprites','uglify']);
    }
 };

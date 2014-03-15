@@ -15,7 +15,7 @@
  */
 
 /// <reference path="../gameCombatState.ts" />
-/// <reference path="../../../core/state.ts" />
+/// <reference path="../../../../lib/pow2.d.ts" />
 
 module pow2 {
 
@@ -63,7 +63,7 @@ module pow2 {
          machine.trigger("combat:victory",summary);
       }
 
-      tick(machine:CombatStateMachine){
+      update(machine:CombatStateMachine){
          if(machine.paused){
             return;
          }

@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../core/world.ts" />
+/// <reference path="../../lib/pow2.d.ts" />
 /// <reference path="./gameStateMachine.ts" />
 
 module pow2 {

@@ -15,9 +15,7 @@
  */
 
 /// <reference path="../../types/underscore/underscore.d.ts" />
-/// <reference path="../core/point.ts" />
-/// <reference path="../scene/sceneObject.ts" />
-/// <reference path="../scene/components/movableComponent.ts" />
+/// <reference path="../../lib/pow2.d.ts"/>
 /// <reference path="./tileMap.ts" />
 
 module pow2 {
@@ -89,7 +87,7 @@ module pow2 {
             this.setSprite(this.icon);
          }
          if(!this.tileMap){
-            this.tileMap = this.scene.objectByType(TileMap);
+            this.tileMap = <TileMap>this.scene.objectByType(TileMap);
          }
       }
 
@@ -103,7 +101,7 @@ module pow2 {
          }
          else{
             this.meta = this.world.sprites.getSpriteMeta(name);
-            this.world.sprites.getSpriteSheet(this.meta.source, (image) => {
+            this.world.sprites.getSpriteSheet(this.meta.source, (image:ImageResource) => {
                return this.image = image.data;
             });
          }

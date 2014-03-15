@@ -15,15 +15,12 @@
  */
 
 /// <reference path="../../../types/underscore/underscore.d.ts" />
-/// <reference path="../../core/point.ts" />
-/// <reference path="../../core/rect.ts" />
-/// <reference path="../../scene/sceneObject.ts" />
-/// <reference path="../../scene/sceneObjectRenderer.ts" />
+/// <reference path="../../../lib/pow2.d.ts"/>
 /// <reference path="../tileObject.ts" />
 /// <reference path="../tileMap.ts" />
 
 module pow2 {
-   export class TileObjectRenderer extends pow2.SceneObjectRenderer {
+   export class TileObjectRenderer extends SceneObjectRenderer {
       render(object:any, data:any, view:pow2.SceneView) { // TODO: typedef
 
          if (!data.image || !object.visible) {
@@ -52,7 +49,7 @@ module pow2 {
                if(data.frame > 4){
                   var bar = "baz";
                }
-               var cwidth = c.width / view.unitSize;
+               var cwidth = c.width / sourceWidth;
                var fx = (data.frame % (cwidth));
                var fy = Math.floor((data.frame - fx) / cwidth);
                cx += fx * sourceWidth;
