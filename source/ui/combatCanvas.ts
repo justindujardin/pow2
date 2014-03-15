@@ -16,7 +16,7 @@
 /// <reference path="services/gameService.ts"/>
 
 module pow2.ui {
-   app.directive('combatCanvas', ['$compile','game',function ($compile, game:PowGameService) {
+   app.directive('combatCanvas', ['$compile','game','$animate',function ($compile, game:PowGameService,$animate:any) {
       return {
          restrict: 'A',
          link: function ($scope, element, attrs) {
@@ -33,6 +33,25 @@ module pow2.ui {
 //               context.mozImageSmoothingEnabled = false;
             }
             var tileView = new GameCombatView(element[0], game.loader);
+
+            // Support showing damage on character with fading animation.
+            game.machine.on('enter',function(state){
+               if(state.name !== GameCombatState.NAME){
+                  return;
+               }
+               state.machine.on('combat:attack',function(damage,attacker,defender:pow2.GameEntityObject){
+                  var targetPos:pow2.Point = defender.point.clone();
+                  targetPos.y -= 1.25;
+                  var screenPos:pow2.Point = tileView.worldToScreen(targetPos,4);
+                  var damageValue = $compile('<span class="damage-value' + (damage === 0 ? ' miss' : '') + '" style="position:absolute;left:' + screenPos.x + 'px;top:' + screenPos.y + 'px;">' + damage + '</span>')($scope);
+                  $scope.$apply(() => {
+                     $animate.enter(damageValue, element.parent(),null,() => {
+                        damageValue.remove();
+                     });
+                  });
+               });
+            });
+
             game.machine.on('combat:begin',(state:GameCombatState) => {
                // Scope apply?
                // Transition canvas views, and such

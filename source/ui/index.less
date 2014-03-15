@@ -225,15 +225,26 @@ canvas {
   left:0;
   right:0;
   bottom:0;
+  margin:auto;
+  width:960px;
+  height:640px;
+
+  .damage-value {
+    font-family: 'GraphicPixel', sans-serif;
+    font-size:60px;
+    color:#F00;
+    .stroke-text(2px, rgba(255, 255, 255, 0.9));
+    &.miss {
+      color:#ccc;
+      .stroke-text(1px,#222);
+    }
+  }
   canvas{
     position: absolute;
     top:0;
     left:0;
     right:0;
     bottom:0;
-    margin:auto;
-    width:960px;
-    height:640px;
   }
 }
 
