@@ -88,6 +88,7 @@ module pow2 {
 
 
       collideMove(x:number,y:number,results:GameFeatureObject[]=[]){
+         return false;
          var collision:boolean = this.collider.collide(x,y,GameFeatureObject,results);
          if(collision){
             for (var i = 0; i < results.length; i++) {
@@ -102,7 +103,7 @@ module pow2 {
          }
          var map:TileMap = <TileMap>this.host.scene.objectByType(TileMap);
          if (map) {
-            var terrain = map.getTerrain(x,y);
+            var terrain = map.getTerrain("Terrain",x,y);
             if (!terrain) {
                return true;
             }

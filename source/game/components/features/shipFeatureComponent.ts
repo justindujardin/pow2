@@ -55,8 +55,8 @@ module pow2 {
          this.host.enabled = false;
          // If we're moving from shipPassable to passable, disembark the ship.
          this.party.setMoveFilter((from:Point,to:Point) => {
-            var fromTerrain = this.tileMap.getTerrain(from.x,from.y);
-            var toTerrain = this.tileMap.getTerrain(to.x,to.y);
+            var fromTerrain = this.tileMap.getTerrain("Terrain",from.x,from.y);
+            var toTerrain = this.tileMap.getTerrain("Terrain",to.x,to.y);
             if(!fromTerrain || !toTerrain){
                return;
             }

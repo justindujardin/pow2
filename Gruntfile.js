@@ -178,7 +178,6 @@ module.exports = function(grunt) {
                {src: 'data/textures/ui/*.png', dest: 'web/images/ui'},
                {src: 'data/textures/characters/*.png', dest: 'web/images/characters'},
                {src: 'data/textures/animation/*.png', dest: 'web/images/animation'},
-               {src: 'data/textures/environment/*.png', dest: 'web/images/environment'},
                {src: 'data/textures/equipment/*.png', dest: 'web/images/equipment'},
                {src: 'data/textures/basictiles/*.png', dest: 'web/images/basictiles'},
                {src: 'data/textures/combat/*.png', dest: 'web/images/combat'},
@@ -224,7 +223,7 @@ module.exports = function(grunt) {
        */
       watch: {
          options:{
-            spawn: false
+            spawn: true
          },
 
          // Game Source outputs

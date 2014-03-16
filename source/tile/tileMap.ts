@@ -18,15 +18,18 @@
 /// <reference path="../../lib/pow2.d.ts"/>
 /// <reference path="./tileObject.ts" />
 /// <reference path="./components/tileMapCameraComponent.ts" />
+/// <reference path="./resources/tiled.ts" />
 /// <reference path="./resources/tiledTmx.ts" />
 /// <reference path="./resources/tiledTsx.ts" />
 
 module pow2 {
+
+
    export class TileMap extends SceneObject {
       map: TiledTMXResource;
-      tileSet:any; // TODO: Tileset
-      tiles:any; // TODO: TilesetProperties
-      terrain:any;
+//      tileSet:any; // TODO: Tileset
+      tiles:any = []; // TODO: TilesetProperties
+//      terrain:any;
       features:any;
       mapName: string;
       bounds: pow2.Rect;
@@ -81,35 +84,64 @@ module pow2 {
          }
          this.map = map;
          this.bounds = new pow2.Rect(0, 0, this.map.width, this.map.height);
-         this.terrain = _.where(this.map.layers,{name:"Terrain"})[0];
-         if(!this.terrain){
-            throw new Error("Terrain layer must be present");
-         }
+         var idSortedSets = _.sortBy(this.map.tilesets, (o:TiledTSXResource) => {
+            return o.firstgid;
+         });
+         this.tiles.length = 0;
+         _.each(idSortedSets,(tiles:TiledTSXResource) => {
+            while(this.tiles.length < tiles.firstgid){
+               this.tiles.push(null);
+            }
+            this.tiles = this.tiles.concat(tiles.tiles);
+         });
          this.features = _.where(this.map.objectGroups,{name:"Features"})[0] || [];
-         this.tileSet = _.where(this.map.tilesets,{name:"Environment"})[0];
-         if(!this.tileSet){
-            throw new Error("Environment tile set must be present");
-         }
-         this.tiles = this.tileSet.tiles;
-         if(!this.tiles){
-            throw new Error("Environment tileset must have properties for tile types");
-         }
          this.loaded();
          return true;
       }
 
-      getTerrain(x, y) {
-         if (!this.map || !this.tiles || !this.bounds.pointInRect(x, y)) {
+      getLayers():tiled.ITiledLayer[] {
+         return this.map ? this.map.layers : [];
+      }
+
+      getLayer(name:string):tiled.ITiledLayer{
+         return <tiled.ITiledLayer>_.where(this.map.layers,{name:name})[0];
+      }
+
+      getTerrain(layer:string, x:number, y:number) {
+         var terrain:tiled.ITiledLayer = this.getLayer(layer);
+         if (!this.map || !terrain || !this.bounds.pointInRect(x, y)) {
             return null;
          }
          var terrainIndex = y * this.map.width + x;
-         var tileIndex = this.terrain.data[terrainIndex];
+         var tileIndex = terrain.data[terrainIndex];
          return this.tiles[tileIndex];
+      }
+
+      getTileGid(layer:string, x:number, y:number):number {
+         var terrain:tiled.ITiledLayer = this.getLayer(layer);
+         if (!this.map || !terrain || !this.bounds.pointInRect(x, y)) {
+            return null;
+         }
+         var terrainIndex = y * this.map.width + x;
+         return terrain.data[terrainIndex];
+      }
+
+      getTileMeta(gid:number):ITileMeta {
+         if(this.tiles.length <= gid){
+            return null;
+         }
+         var source = _.find(this.map.tilesets,(t:TiledTSXResource) => {
+            return t.hasGid(gid);
+         });
+         if(!source){
+            return null;
+         }
+         return source.getTileMeta(gid);
       }
 
       // TODO: Calculate texture with two array index lookups like in getTerrain.  No need for FN call here.
       getTerrainTexture(x, y) {
-         var terrain = this.getTerrain(x, y);
+         var terrain = this.getTerrain("Terrain", x, y);
          if (terrain) {
             return terrain.icon;
          } else {

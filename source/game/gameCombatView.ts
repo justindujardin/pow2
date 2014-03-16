@@ -19,7 +19,7 @@
 /// <reference path="./components/playerCombatRenderComponent.ts"/>
 
 module pow2{
-   export class GameCombatView extends SceneView {
+   export class GameCombatView extends TileMapView {
       objectRenderer:TileObjectRenderer = new TileObjectRenderer;
       mouse:NamedMouseElement = null;
       backgroundSprite:HTMLImageElement = null;
@@ -33,7 +33,7 @@ module pow2{
          this.$el.on('click',this.mouseClick);
 
          this.world.sprites.getSingleSprite("plains.png",0,(sprite) => {
-            this.backgroundSprite = sprite;
+            //this.backgroundSprite = sprite;
          });
 
       }

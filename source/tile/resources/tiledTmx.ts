@@ -49,7 +49,10 @@ module pow2 {
          _.each(tileSets,(ts) => {
             var source:string = this.getElAttribute(ts,'source');
             if(source){
-               tileSetDeps.push('/maps/' + source);
+               tileSetDeps.push({
+                  source:'/maps/' + source,
+                  firstgid:parseInt(this.getElAttribute(ts,'firstgid') || "-1")
+               });
             }
             // TODO: IF no source then create a resource with the given data.
          });
@@ -97,8 +100,9 @@ module pow2 {
                return this.ready();
             }
             var dep = tileSetDeps.shift();
-            return this.loader.load(dep,(tsr:TiledTSXResource) => {
+            return this.loader.load(dep.source,(tsr:TiledTSXResource) => {
                this.tilesets[tsr.name] = tsr;
+               tsr.firstgid = dep.firstgid;
                _next();
             });
          };
