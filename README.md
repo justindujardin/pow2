@@ -2,8 +2,6 @@ Pow2
 ================
 [![Build Status](https://secure.travis-ci.org/justindujardin/pow2.png)](http://travis-ci.org/justindujardin/pow2)
 
-This is originally based on the "[Eight-Bit Universal Role Playing](https://github.com/pents90/eburp)".  All of the tooling and core game classes are under construction.  It is built using Node.JS and a mix of CoffeeScript/TypeScript, with the latter being the eventual target language.  The developer tools require only Node.JS and a text editor, and the game deploys with little effort to Heroku and integrates with Facebook.
-
 ## Build Instructions
 
 You need to have Node.JS and Grunt.JS installed, and a basic familiarity with executing commands in your system terminal.
@@ -50,3 +48,4 @@ Once this happens, just open your browser to that page and you're ready to go.
 
 While the grunt watch task is running the game assets will be rebuilt if a file (Sprites, Maps, Code) changes.  This means you
 can edit your files and refresh your webpage a few moments later when the new build is done.  No muss, no fuss, just game stuff.
+
