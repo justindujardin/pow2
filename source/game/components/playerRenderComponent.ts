@@ -19,14 +19,14 @@
 
 module pow2 {
    export enum MoveFrames {
-      LEFT = 0,
-      RIGHT = 1,
-      DOWN = 2,
-      UP = 3,
-      LEFTALT = 4,
+      LEFT = 10,
+      RIGHT = 4,
+      DOWN = 7,
+      UP = 1,
+      LEFTALT = 11,
       RIGHTALT = 5,
-      DOWNALT = 6,
-      UPALT = 7
+      DOWNALT = 8,
+      UPALT = 2
    }
 
    // The order here maps to the first four frames in MoveFrames above.
@@ -41,8 +41,8 @@ module pow2 {
       host:TileObject;
       _elapsed: number = 0;
 
-      private _lastFrame:number = 3;
-      private _renderFrame:number = 3;
+      private _lastFrame:number = 6;
+      private _renderFrame:number = 6;
       heading:Headings = Headings.WEST;
       animating:boolean = false;
       tick(elapsed:number){
@@ -57,7 +57,7 @@ module pow2 {
 
          // There are four states and two rows.  The second row is all alt states, so mod it out
          // when a move ends.
-         this._lastFrame = this._renderFrame > 3 ? this._renderFrame - 4 : this._renderFrame;
+         this._lastFrame = this._renderFrame;// > 3 ? this._renderFrame - 4 : this._renderFrame;
          super.tick(elapsed);
       }
 
@@ -80,7 +80,7 @@ module pow2 {
 
          frame = this.heading;
          if(altFrame && this.animating){
-            frame += 4;
+            frame += 1;
          }
          this.host.frame = this._renderFrame = frame;
       }

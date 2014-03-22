@@ -176,6 +176,7 @@ module.exports = function(grunt) {
                {src: 'data/textures/creatures/*.png', dest: 'web/images/creatures'},
                {src: 'data/textures/vehicles/*.png', dest: 'web/images/vehicles'},
                {src: 'data/textures/ui/*.png', dest: 'web/images/ui'},
+               {src: 'data/textures/oga/*.png', dest: 'web/images/oga'},
                {src: 'data/textures/characters/*.png', dest: 'web/images/characters'},
                {src: 'data/textures/animation/*.png', dest: 'web/images/animation'},
                {src: 'data/textures/equipment/*.png', dest: 'web/images/equipment'},
@@ -264,7 +265,8 @@ module.exports = function(grunt) {
          //--------------------------------------------------------------------
          sprites: {
             files: [
-               'data/textures/**/*.png'
+               'data/textures/**/*.png',
+               'data/textures/**/*.json'
             ],
             tasks: ['sprites', 'notify:sprites']
          },
