@@ -11,9 +11,7 @@
 @import "./style/bootstrap/scaffolding";
 @import "./style/bootstrap/type";
 @import "./style/bootstrap/code";
-@import "./style/bootstrap/buttons";
 @import "./style/bootstrap/progress-bars";
-@import "./style/bootstrap/glyphicons";
 
 // Utility classes
 @import "./style/bootstrap/utilities";
@@ -22,7 +20,6 @@
 // Other
 @import "./style/eightBitPanel";
 @import "./style/pageTransitions";
-@import "./style/menu";
 @import "./style/animation";
 
 // Import template styles
@@ -33,7 +30,6 @@
 @import "./templates/storeView";
 @import "./templates/templeView";
 @import "./templates/heroCard";
-@import "./templates/levelStatsView";
 @import "./templates/partyView";
 @import "./templates/combatView";
 @import "./templates/heroView";
@@ -41,6 +37,7 @@
 
 @pixelFont:'GraphicPixel', 'AdvoCut',sans-serif;
 @pixelFontAlt:'AdvoCut','GraphicPixel', sans-serif;
+@gameBlue:#004c62;
 
 * {
   -webkit-touch-callout: none;
@@ -186,12 +183,6 @@ canvas {
   .pt-page-scaleUp;
   display:block!important;
 }
-
-
-.bt-menu-open {
-  padding: 0 15px;
-}
-
 
 .drop-overlay {
   padding: 0;
