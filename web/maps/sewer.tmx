@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="32" height="32" tilewidth="16" tileheight="16">
  <properties>
-  <property name="combat" value="true"/>
+  <property name="combat" value="false"/>
  </properties>
  <tileset firstgid="1" source="tiles/underground.tsx"/>
  <tileset firstgid="353" source="tiles/underground-objects.tsx"/>
