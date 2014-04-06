@@ -1,0 +1,23 @@
+{
+   "cellWidth":16,
+   "cellHeight":18,
+   "frames":12,
+   "animations":{
+      "up": {
+         "duration":1500,
+         "frames":[0,1,2]
+      },
+      "right": {
+         "duration":1500,
+         "frames":[3,4,5]
+      },
+      "down": {
+         "duration":1500,
+         "frames":[6,7,8]
+      },
+      "left": {
+         "duration":1500,
+         "frames":[9,10,11]
+      }
+   }
+}
