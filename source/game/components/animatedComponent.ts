@@ -98,6 +98,7 @@ module pow2 {
          }
       }
       interpolateTick(elapsed:number) {
+         super.interpolateTick(elapsed);
          this.update(elapsed);
          this.removeCompleteTasks();
       }
