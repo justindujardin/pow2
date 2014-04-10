@@ -76,7 +76,9 @@ module pow2 {
 
       interpolateTick(elapsed:number) {
          super.interpolateTick(elapsed);
-         this._animator.updateTime(elapsed);
+         if(this.animating){
+            this._animator.updateTime(elapsed);
+         }
          this.host.frame = this._animator.getFrame();
       }
    }
