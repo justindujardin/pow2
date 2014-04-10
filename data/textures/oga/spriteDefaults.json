@@ -4,20 +4,20 @@
    "frames":12,
    "animations":{
       "up": {
-         "duration":1500,
-         "frames":[0,1,2]
+         "duration":500,
+         "frames":[0,2]
       },
       "right": {
-         "duration":1500,
-         "frames":[3,4,5]
+         "duration":500,
+         "frames":[3,5]
       },
       "down": {
-         "duration":1500,
-         "frames":[6,7,8]
+         "duration":500,
+         "frames":[6,8]
       },
       "left": {
-         "duration":1500,
-         "frames":[9,10,11]
+         "duration":500,
+         "frames":[9,11]
       }
    }
 }
