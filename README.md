@@ -39,6 +39,7 @@ run your game!
 Now that you have `node`, `npm`, and `grunt` installed--you're good to go.  Let's install the npm dependencies and start up the developer workflow:
 
 > npm install
+
 > grunt watch
 
 This command should print information about executing some tasks, and eventually settle down and say that it's run a server at http://localhost:5215/.
