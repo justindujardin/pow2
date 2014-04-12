@@ -41,11 +41,11 @@
     </div>
 </div>
 
-<div class="game-container fade" ng-if="loaded">
-    <canvas class="game-view map fade drop-panel" width="960" height="640" game-canvas ng-if="!inCombat">
+<div class="game-container fade" ng-if="loaded" id="alertContainer">
+    <canvas class="game-view map fade drop-panel" width="960" height="640" game-canvas ng-hide="inCombat">
         Your browser doesn't support this.
     </canvas>
-    <canvas class="game-view combat fade drop-panel" width="960" height="640" combat-canvas ng-if="inCombat">
+    <canvas class="game-view combat fade drop-panel" width="960" height="640" combat-canvas ng-hide="!inCombat">
         Your browser doesn't support this.
     </canvas>
     <combat-view ng-if="inCombat"></combat-view>
@@ -56,6 +56,8 @@
     <store-view ng-if="store"></store-view>
     <temple-view ng-if="temple"></temple-view>
 </div>
+
+
 
 <!-- Compiled Game Files -->
 <script type="text/javascript" src="/bower/jquery/jquery.min.js"></script>

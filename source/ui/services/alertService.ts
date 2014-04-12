@@ -41,34 +41,28 @@ module pow2.ui {
     * Provide a basic service for queuing and showing messages to the user.
     */
    export class PowAlertService extends pow2.Events implements pow2.IWorldObject, pow2.IProcessObject, IPowAlertService {
-      scope:IAlertScopeService;
-      timeout:ng.ITimeoutService;
-      game:PowGameService;
       world:pow2.GameWorld;
-      element:ng.IAugmentedJQuery;
-      container:ng.IAugmentedJQuery;
-      animate:any;
       id:number = _.uniqueId();
       paused:boolean = false;
+      public containerSearch:string = '.game-container';
 
       private _current:IPowAlertObject = null;
       private _queue:IPowAlertObject[] = [];
-      constructor(element,container,scope:IAlertScopeService,timeout:ng.ITimeoutService,game:PowGameService,animate:any){
+      constructor(
+         public element:ng.IAugmentedJQuery,
+         public document:any,
+         public scope:IAlertScopeService,
+         public timeout:ng.ITimeoutService,
+         public game:PowGameService,
+         public animate:any){
          super();
-         this.scope = scope;
-         this.timeout = timeout;
-         this.game = game;
-         this.element = element;
-         this.container = container;
-         this.animate = animate;
-
-         this.container.on('click',(e) => {
-            this.dismiss();
-         });
-
          game.world.mark(this);
          game.world.time.addObject(this);
       }
+
+      onAddToWorld(world:pow2.IWorld) {}
+      onRemoveFromWorld(world:pow2.IWorld) {}
+      tick(elapsed:number) {}
 
       destroy() {
          this.game.world.time.removeObject(this);
@@ -112,8 +106,11 @@ module pow2.ui {
             this.paused = true;
             this.scope.$apply(() => {
                this.animate.leave(this.element, () => {
-                  this._current.done && this._current.done(this._current);
-                  this.scope.powAlert = this._current = null;
+                  if(this._current){
+                     this._current.done && this._current.done(this._current);
+                     this._current = null;
+                  }
+                  this.scope.powAlert = null;
                   this.paused = false;
                });
             });
@@ -124,7 +121,11 @@ module pow2.ui {
          this._current = this._queue.shift();
          this.scope.$apply(() => {
             this.scope.powAlert = this._current;
-            this.animate.enter(this.element, this.container, null,() => {
+            var container = this.document.find(this.containerSearch);
+            container.on('click',(e) => {
+               this.dismiss();
+            });
+            this.animate.enter(this.element, container, null,() => {
                this.paused = false;
             });
          });
@@ -138,8 +139,8 @@ module pow2.ui {
       '$document',
       '$animate',
       ($rootScope,$timeout,game,$compile,$document,$animate) => {
-         var alertElement = $compile('<div class="drop-overlay fade"><div class="ebp">{{powAlert.message}}</div></div>')($rootScope);
-         return new PowAlertService(alertElement,$document.find('body'),$rootScope,$timeout,game,$animate);
+         var alertElement = $compile('<div class="drop-overlay fade"><div class="message">{{powAlert.message}}</div></div>')($rootScope);
+         return new PowAlertService(alertElement,$document,$rootScope,$timeout,game,$animate);
       }
    ]);
 }

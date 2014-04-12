@@ -197,17 +197,24 @@ canvas {
   left: 0;
   width: 100%;
   min-height: 100%;
-  position: fixed;
+  position: absolute;
   background-color: transparent;
-  z-index: 500;
-  .ebp {
+  z-index: @zCanvasGui;
+  text-align: center;
+  font-family: @pixelFont;
+
+  .message {
+
     top:0;
-    left: 20px;
-    right:20px;
+    left: 0;
+    right:0;
+    .drop-panel;
     margin:auto;
     position: absolute;
     padding:25px;
-    font-size: 32px;
+    color:#fff;
+    .stroke-text(1px,#000);
+    font-size: 40px;
   }
 }
 
