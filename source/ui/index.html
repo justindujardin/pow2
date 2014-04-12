@@ -42,18 +42,18 @@
 </div>
 
 <div class="game-container fade" ng-if="loaded">
-    <canvas class="game-view map fade drop-panel ng-hide" width="960" height="640" game-canvas ng-hide="inCombat">
+    <canvas class="game-view map fade drop-panel" width="960" height="640" game-canvas ng-if="!inCombat">
         Your browser doesn't support this.
     </canvas>
-    <canvas class="game-view combat fade drop-panel ng-hide" width="960" height="640" combat-canvas ng-hide="!inCombat">
+    <canvas class="game-view combat fade drop-panel" width="960" height="640" combat-canvas ng-if="inCombat">
         Your browser doesn't support this.
     </canvas>
+    <combat-view ng-if="inCombat"></combat-view>
 </div>
 
 <div class="ui-container container ng-hide fade" ng-show="loaded">
     <dialog-view ng-if="dialog"></dialog-view>
     <store-view ng-if="store"></store-view>
-    <combat-view ng-if="inCombat"></combat-view>
     <temple-view ng-if="temple"></temple-view>
 </div>
 

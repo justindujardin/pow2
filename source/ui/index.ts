@@ -29,6 +29,7 @@ module pow2.ui {
    app.directive('combatView', function () {
       return {
          restrict: 'E',
+         replace:true,
          templateUrl: '/templates/combatView.html'
       };
    });

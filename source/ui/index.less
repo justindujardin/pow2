@@ -22,6 +22,12 @@
 @import "./style/pageTransitions";
 @import "./style/animation";
 
+
+
+@zCanvas: 10;
+@zCanvasGui: 20;
+
+
 // Import template styles
 //  TODO: This might get _really_ old.
 //  If so, just concat all the less files then compile the concat.
@@ -112,6 +118,7 @@ canvas {
   image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+  z-index: auto;
 }
 
 
@@ -216,6 +223,7 @@ canvas {
   left:0;
   right:0;
   bottom:0;
+  border:none;
   margin:auto;
   width:960px;
   height:640px;
