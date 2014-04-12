@@ -204,17 +204,19 @@ canvas {
   font-family: @pixelFont;
 
   .message {
-
     top:0;
     left: 0;
     right:0;
-    .drop-panel;
+    background-color: rgba(0, 0, 0, 0.50);
+    border: none;
+    box-shadow: none;
+    .border-top-radius(6px);
     margin:auto;
     position: absolute;
     padding:25px;
     color:#fff;
     .stroke-text(1px,#000);
-    font-size: 40px;
+    font-size:3em;
   }
 }
 
@@ -251,6 +253,8 @@ canvas {
     left:0;
     right:0;
     bottom:0;
+    border-right: none;
+    border-left: none;
   }
 }
 

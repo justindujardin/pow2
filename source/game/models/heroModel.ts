@@ -78,8 +78,8 @@ module pow2 {
       game:GameStateModel;
       static DEFAULTS:HeroModelOptions = {
          name: "Hero",
-         icon: "ninja-female.png",
-         combatSprite:"warriorCombat.png",
+         icon: "",
+         combatSprite:"",
          type: HeroType.Warrior,
          level: 1,
          exp:0,
@@ -264,7 +264,7 @@ module pow2 {
                   type:type,
                   level:0,
                   name:name,
-                  icon: "warrior-male.png",
+                  icon: "ninja-female.png",
                   combatSprite:"warriorCombat.png",
                   baseStrength:10,
                   baseAgility:2,

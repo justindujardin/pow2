@@ -36,18 +36,18 @@
 </data>
  </layer>
  <objectgroup draworder="topdown" name="Features" width="16" height="11">
-  <object name="e8" type="combatant" x="112" y="106" width="16" height="16"/>
-  <object name="p2" type="combatant" x="204" y="87" width="16" height="16"/>
-  <object name="e9" type="combatant" x="112" y="146" width="16" height="16"/>
-  <object name="e7" type="combatant" x="112" y="66" width="16" height="16"/>
-  <object name="e4" type="combatant" x="72" y="66" width="16" height="16"/>
+  <object name="e8" type="combatant" x="96" y="106" width="16" height="16"/>
+  <object name="p2" type="combatant" x="176" y="87" width="16" height="16"/>
+  <object name="e9" type="combatant" x="96" y="146" width="16" height="16"/>
+  <object name="e7" type="combatant" x="96" y="66" width="16" height="16"/>
+  <object name="e4" type="combatant" x="64" y="66" width="16" height="16"/>
   <object name="e1" type="combatant" x="32" y="66" width="16" height="16"/>
   <object name="e2" type="combatant" x="32" y="106" width="16" height="16"/>
   <object name="e3" type="combatant" x="32" y="146" width="16" height="16"/>
-  <object name="e5" type="combatant" x="72" y="106" width="16" height="16"/>
-  <object name="e6" type="combatant" x="72" y="146" width="16" height="16"/>
-  <object name="p3" type="combatant" x="204" y="119" width="16" height="16"/>
-  <object name="p4" type="combatant" x="204" y="151" width="16" height="16"/>
-  <object name="p1" type="combatant" x="204" y="55" width="16" height="16"/>
+  <object name="e5" type="combatant" x="64" y="106" width="16" height="16"/>
+  <object name="e6" type="combatant" x="64" y="146" width="16" height="16"/>
+  <object name="p3" type="combatant" x="176" y="119" width="16" height="16"/>
+  <object name="p4" type="combatant" x="176" y="151" width="16" height="16"/>
+  <object name="p1" type="combatant" x="176" y="55" width="16" height="16"/>
  </objectgroup>
 </map>
