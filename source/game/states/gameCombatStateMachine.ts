@@ -143,7 +143,7 @@ module pow2 {
             if(heroEntity.isDefeated()){
                return;
             }
-            heroEntity.icon = hero.get('combatSprite');
+            heroEntity.icon = hero.get('icon');
             this.machine.party.push(heroEntity);
             this.scene.addObject(heroEntity);
          });

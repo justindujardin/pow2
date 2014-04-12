@@ -86,7 +86,7 @@ module pow2 {
             machine.focus = defender;
          }
          var attackerPlayer:combat.PlayerCombatRenderComponent = <any>attacker.findComponent(combat.PlayerCombatRenderComponent);
-         var done = () => {
+         var attack = () => {
             var damage:number = attacker.model.attack(defender.model);
             var didKill:boolean = defender.model.get('hp') <= 0;
             var hit:boolean = damage > 0;
@@ -126,16 +126,24 @@ module pow2 {
                   },500);
                }
                defender.removeComponentDictionary(components);
-               machine.currentDone = true;
+               machine.trigger("combat:attack",damage,attacker,defender);
             });
-            machine.trigger("combat:attack",damage,attacker,defender);
+         };
+
+         var next = () => {
+            machine.currentDone = true;
          };
 
          if(!!attackerPlayer){
-            attackerPlayer.attack(done);
+            attackerPlayer.attack(attack,() => {
+               next();
+            });
          }
          else {
-            _.delay(done,150);
+            _.delay(() => {
+               attack();
+               next();
+            },150);
          }
       }
    }

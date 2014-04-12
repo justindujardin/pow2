@@ -20,32 +20,8 @@
 /// <reference path="../objects/gameEntityObject.ts" />
 
 module pow2.combat {
-   // TODO: Figure out serialization strategy.
-   var attackAnimation = [
-      {
-         name : "Move Forward for Attack",
-         duration : 150,
-         repeats: 4,
-         frames : [StateFrames.DEFAULT,StateFrames.WALK],
-         move: new Point(-1,0)
-      },
-      {
-         name : "Strike at Opponent",
-         duration : 400,
-         repeats: 4,
-         frames : [StateFrames.SWING,StateFrames.STRIKE]
-      },
-      {
-         name : "Return to Party",
-         duration : 150,
-         repeats: 4,
-         frames : [StateFrames.DEFAULT,StateFrames.WALK],
-         move: new Point(1,0)
-      }
-   ];
-
    export enum StateFrames {
-      DEFAULT = 0,
+      DEFAULT = 10,
       SWING = 1,
       INJURED = 2,
       WALK = 3,
@@ -93,10 +69,40 @@ module pow2.combat {
          this.state = name;
       }
 
-      attack(cb:() => void) {
+      attack(attackCb:() => any, cb:() => void) {
          if(!this._animator || this.animating){
             return;
          }
+         var attackAnimation = [
+            {
+               name : "Move Forward for Attack",
+               repeats : 0,
+               duration:250,
+               frames : [9,11,10],
+               move: new Point(-1,0),
+               callback: () => {
+                  this.host.setSprite(this.host.icon.replace(".png","-attack.png"),12);
+               }
+            },
+            {
+               name : "Strike at Opponent",
+               repeats: 1,
+               duration:500,
+               frames : [12,13,14,15,14,13,12],
+               callback: () => {
+                  this.host.setSprite(this.host.icon.replace("-attack.png",".png"),10);
+                  attackCb && attackCb();
+               }
+            },
+            {
+               name : "Return to Party",
+               duration : 250,
+               repeats: 0,
+               frames : [10,11,9],
+               move: new Point(1,0)
+            }
+         ];
+
          var animations:IAnimationConfig[] = _.map(attackAnimation,(anim:IAnimationConfig) => {
             var result = _.extend({},anim);
             if(typeof result.move !== 'undefined'){
@@ -114,6 +120,7 @@ module pow2.combat {
          super.interpolateTick(elapsed);
 
          if(!this.animating) {
+
             // Choose frame for interpolated position
             var factor = this._elapsed / this.tickRateMS;
             var altFrame = !!((factor > 0.0 && factor < 0.5));

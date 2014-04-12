@@ -100,8 +100,9 @@ module pow2 {
             this.meta = null;
          }
          else{
-            this.meta = this.world.sprites.getSpriteMeta(name);
-            this.world.sprites.getSpriteSheet(this.meta.source, (image:ImageResource) => {
+            var meta = this.world.sprites.getSpriteMeta(name);
+            this.world.sprites.getSpriteSheet(meta.source, (image:ImageResource) => {
+               this.meta = meta;
                return this.image = image.data;
             });
          }

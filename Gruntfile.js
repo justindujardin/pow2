@@ -176,12 +176,10 @@ module.exports = function(grunt) {
                {src: 'data/textures/creatures/*.png', dest: 'web/images/creatures'},
                {src: 'data/textures/vehicles/*.png', dest: 'web/images/vehicles'},
                {src: 'data/textures/ui/*.png', dest: 'web/images/ui'},
-               {src: 'data/textures/oga/*.png', dest: 'web/images/oga'},
+               {src: 'data/textures/characters/punch/*.png', dest: 'web/images/punch'},
                {src: 'data/textures/characters/*.png', dest: 'web/images/characters'},
                {src: 'data/textures/animation/*.png', dest: 'web/images/animation'},
                {src: 'data/textures/equipment/*.png', dest: 'web/images/equipment'},
-               {src: 'data/textures/basictiles/*.png', dest: 'web/images/basictiles'},
-               {src: 'data/textures/combat/*.png', dest: 'web/images/combat'},
                {src: 'data/textures/items/*.png', dest: 'web/images/items'}
             ]
          }
