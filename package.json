@@ -25,12 +25,13 @@
     "grunt-contrib-copy": "0.5.0",
     "graceful-fs": "~2.0.1",
     "grunt-contrib-less": "0.10.0",
-    "fbgraph": "~0.2.8",
     "ejs": "~0.8.4",
-    "xml2js": "~0.4.0"
+    "xml2js": "~0.4.0",
+    "bower": "~1.3.2"
   },
   "scripts": {
-    "test": "npm install && ./node_modules/.bin/grunt"
+    "test": "npm install && ./node_modules/.bin/grunt",
+    "postinstall": "./node_modules/.bin/bower install && ./node_modules/.bin/grunt"
   },
   "devDependencies": {
     "grunt-contrib-watch": "~0.5.3",

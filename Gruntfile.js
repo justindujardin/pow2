@@ -63,8 +63,8 @@ module.exports = function(grunt) {
          options: {
             module: 'amd', //or commonjs
             target: 'es5', //or es3
-            base_path: 'source',
-            sourcemap: true,
+            basePath: 'source',
+            sourceMap: true,
             declaration: true
          },
 
@@ -72,7 +72,7 @@ module.exports = function(grunt) {
             options: {
                module: 'commonjs', //or commonjs
                target: 'es5', //or es3
-               sourcemap: true,
+               sourceMap: true,
                declaration: false
             },
             src: [
@@ -286,7 +286,7 @@ module.exports = function(grunt) {
             }
          },
          express: {
-            files:  [ 'source/**/*.html', 'server/*.js' ],
+            files:  [ 'source/**/*.html' ],
             tasks:  [ 'express', 'notify:server' ],
             options: {
                nospawn: true //Without this option specified express won't be reloaded
@@ -348,6 +348,7 @@ module.exports = function(grunt) {
       grunt.loadNpmTasks('grunt-contrib-watch');
 
       grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
+      grunt.registerTask('develop', ['default', 'watch']);
    }
    else {
       grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
