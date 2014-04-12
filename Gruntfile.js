@@ -211,7 +211,10 @@ module.exports = function(grunt) {
       less: {
          game: {
             options: {
-               paths: ["source/ui/"]
+               paths: [
+                  "source/ui/",
+                  "web/bower/bootstrap/less/"
+               ]
             },
             files: {
                'web/css/index.css':'source/ui/index.less'
