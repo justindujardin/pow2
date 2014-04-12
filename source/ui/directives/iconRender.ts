@@ -22,26 +22,23 @@ module pow2.ui {
       return {
          restrict: 'A',
          link: function ($scope, element, attrs) {
+            var width:number = parseInt(attrs.width || "64");
+            var height:number = parseInt(attrs.height || "64");
             // A rendering canvas
-            var renderCanvas = $compile('<canvas style="position:absolute;left:-9000px;top:-9000px;" width="64" height="64"></canvas>')($scope);
-            var renderImage = $compile('<img src="" width="64"/>')($scope);
-            element.append(renderCanvas);
+            var renderImage = $compile('<img src="" width="' + width + '"/>')($scope);
             element.append(renderImage);
-
-            // Get the context for drawing
-            var renderContext = renderCanvas[0].getContext("2d");
-            renderContext.webkitImageSmoothingEnabled = false;
-            renderContext.mozImageSmoothingEnabled = false;
-
             $scope.$watch(attrs.icon, function(icon) {
                if(!icon){
                   return;
                }
                game.world.sprites.getSingleSprite(icon,attrs.frame || 0,function(sprite){
-                  renderContext.clearRect(0, 0, 64, 64);
-                  renderContext.drawImage(sprite, 0, 0, 64, 64);
+                  // Get the context for drawing
+                  var renderContext:any = game.getRenderContext(width,height);
+                  renderContext.clearRect(0, 0, width, height);
+                  renderContext.drawImage(sprite, 0, 0, width, height);
+                  var data = game.releaseRenderContext();
                   $scope.$apply(function(){
-                     renderImage[0].src = renderCanvas[0].toDataURL();
+                     renderImage[0].src = data;
                   });
                });
             });

@@ -26,7 +26,13 @@ module pow2.ui {
       sprite:GameEntityObject;
       machine:GameStateMachine;
       model:GameStateModel;
-      constructor(){
+      private _renderCanvas:HTMLCanvasElement;
+      private _canvasAcquired:boolean = false;
+      constructor(
+         public compile:ng.ICompileService,
+         public scope:ng.IRootScopeService){
+         this._renderCanvas = <HTMLCanvasElement>compile('<canvas style="position:absolute;left:-9000px;top:-9000px;" width="64" height="64"></canvas>')(scope)[0];
+
          this.loader = new ResourceLoader();
          this.world = new GameWorld({
             scene:new Scene({
@@ -73,8 +79,39 @@ module pow2.ui {
          }
 
       }
+
+      /**
+       * Returns a canvas rendering context that may be drawn to.  A corresponding
+       * call to releaseRenderContext will return the drawn content of the context.
+       */
+      getRenderContext(width:number,height:number):CanvasRenderingContext2D{
+         if(this._canvasAcquired){
+            throw new Error("Only one rendering canvas is available at a time.  Check for calls to this function without corresponding releaseCanvas() calls.");
+         }
+         this._canvasAcquired = true;
+         this._renderCanvas.width = width;
+         this._renderCanvas.height = height;
+         var context:any = this._renderCanvas.getContext('2d');
+         context.webkitImageSmoothingEnabled = false;
+         context.mozImageSmoothingEnabled = false;
+         return context;
+      }
+
+
+      /**
+       * Call this after getRenderContext to finish rendering and have the source
+       * of the canvas content returned as a data url string.
+       */
+      releaseRenderContext():string{
+         this._canvasAcquired = false;
+         return this._renderCanvas.toDataURL();
+      }
    }
-   app.factory('game', () => {
-      return new PowGameService();
-   });
+   app.factory('game', [
+      '$compile',
+      '$rootScope',
+      ($compile:ng.ICompileService,$rootScope:ng.IRootScopeService) => {
+         return new PowGameService($compile,$rootScope);
+      }
+   ]);
 }
