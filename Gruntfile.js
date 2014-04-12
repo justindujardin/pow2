@@ -63,8 +63,8 @@ module.exports = function(grunt) {
          options: {
             module: 'amd', //or commonjs
             target: 'es5', //or es3
-            base_path: 'source',
-            sourcemap: true,
+            basePath: 'source',
+            sourceMap: true,
             declaration: true
          },
 
@@ -72,7 +72,7 @@ module.exports = function(grunt) {
             options: {
                module: 'commonjs', //or commonjs
                target: 'es5', //or es3
-               sourcemap: true,
+               sourceMap: true,
                declaration: false
             },
             src: [
@@ -176,9 +176,9 @@ module.exports = function(grunt) {
                {src: 'data/textures/creatures/*.png', dest: 'web/images/creatures'},
                {src: 'data/textures/vehicles/*.png', dest: 'web/images/vehicles'},
                {src: 'data/textures/ui/*.png', dest: 'web/images/ui'},
+               {src: 'data/textures/oga/*.png', dest: 'web/images/oga'},
                {src: 'data/textures/characters/*.png', dest: 'web/images/characters'},
                {src: 'data/textures/animation/*.png', dest: 'web/images/animation'},
-               {src: 'data/textures/environment/*.png', dest: 'web/images/environment'},
                {src: 'data/textures/equipment/*.png', dest: 'web/images/equipment'},
                {src: 'data/textures/basictiles/*.png', dest: 'web/images/basictiles'},
                {src: 'data/textures/combat/*.png', dest: 'web/images/combat'},
@@ -224,7 +224,7 @@ module.exports = function(grunt) {
        */
       watch: {
          options:{
-            spawn: false
+            spawn: true
          },
 
          // Game Source outputs
@@ -265,7 +265,8 @@ module.exports = function(grunt) {
          //--------------------------------------------------------------------
          sprites: {
             files: [
-               'data/textures/**/*.png'
+               'data/textures/**/*.png',
+               'data/textures/**/*.json'
             ],
             tasks: ['sprites', 'notify:sprites']
          },
@@ -285,7 +286,7 @@ module.exports = function(grunt) {
             }
          },
          express: {
-            files:  [ 'source/**/*.html', 'server/*.js' ],
+            files:  [ 'source/**/*.html' ],
             tasks:  [ 'express', 'notify:server' ],
             options: {
                nospawn: true //Without this option specified express won't be reloaded
@@ -340,12 +341,14 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-typescript');
    grunt.loadNpmTasks('grunt-contrib-less');
    grunt.loadNpmTasks('grunt-contrib-copy');
+   grunt.loadNpmTasks('grunt-notify');
    // Support system notifications in non-production environments
    if(process && process.env && process.env.NODE_ENV !== 'production'){
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
-      grunt.loadNpmTasks('grunt-notify');
+
       grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
+      grunt.registerTask('develop', ['default', 'watch']);
    }
    else {
       grunt.registerTask('default', ['typescript', 'copy','less','sprites']);

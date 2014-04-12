@@ -18,6 +18,16 @@
 /// <reference path="./tiled.ts"/>
 module pow2 {
 
+
+   export interface ITileMeta {
+      image:ImageResource;
+      x:number;
+      y:number;
+      width:number;
+      height:number;
+      data?:any;
+   }
+
    export class TilesetTile {
       id:number;
       properties:any = {};
@@ -35,6 +45,7 @@ module pow2 {
       imageWidth:number = 0;
       imageHeight:number = 0;
       image:ImageResource = null;
+      firstgid:number = -1;
       tiles:any[] = [];
       prepare(data) {
          var tileSet = this.getRootNode('tileset');
@@ -83,6 +94,28 @@ module pow2 {
          else {
             this.ready();
          }
+      }
+
+      hasGid(gid:number):boolean {
+         return this.firstgid !== -1
+            && gid >= this.firstgid
+            && gid < this.firstgid + this.tiles.length;
+      }
+
+      getTileMeta(gidOrIndex:number):ITileMeta {
+         var index:number = this.firstgid !== -1 ? (gidOrIndex - (this.firstgid)): gidOrIndex;
+         var tilesX = this.imageWidth / this.tilewidth;
+         var tilesY = this.imageHeight / this.tileheight;
+         var tileCount = tilesX * tilesY;
+         var x = index % tilesX;
+         var y = Math.floor((index - x) / tilesX);
+         return _.extend(this.tiles[index] || {},{
+            image: this.image,
+            x:x * this.tilewidth,
+            y:y * this.tileheight,
+            width:this.tilewidth,
+            height:this.tileheight
+         });
       }
    }
 }

@@ -45,7 +45,7 @@ module pow2 {
       tickRateMS:number = 300;
       states:IState[] = [
          new GameDefaultState(),
-         new GameMapState("town"),
+         new GameMapState("sewer"),
          new GameCombatState()
       ];
       private _elapsed: number = 0;

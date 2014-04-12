@@ -41,6 +41,7 @@ module pow2 {
                this.buffer[col] = new Array(rows);
             }
             this.bufferComplete = true;
+            var layers:tiled.ITiledLayer[] = object.getLayers();
             for(var col:number = 0; col < columns; col++){
                for(var row:number = 0; row < rows; row++){
                   var xOffset = col * tileUnitSize;
@@ -50,24 +51,29 @@ module pow2 {
                   this.buffer[col][row] = view.renderToCanvas(squareSize,squareSize,(ctx) => {
                      for(var x = xOffset; x < xEnd; x++){
                         for(var y = yOffset; y < yEnd; y++){
-                           var texture = object.getTerrainTexture(x, y);
-                           if (texture) {
-                              // Keep this inline to avoid more function calls.
-                              var desc, dstH, dstW, dstX, dstY, srcH, srcW, srcX, srcY;
-                              desc = pow2.getData('sprites')[texture];
-                              var image:ImageResource = sheets[desc.source] = sheets[desc.source] || view.getSpriteSheet(desc.source);
-                              if (!image || !image.isReady()) {
-                                 this.bufferComplete = false;
-                                 continue;
+
+                           // Each layer
+                           _.each(layers,(l:tiled.ITiledLayer) => {
+                              var gid:number = object.getTileGid(l.name,x, y);
+                              var meta:ITileMeta = object.getTileMeta(gid);
+                              if (meta) {
+                                 var image = meta.image;
+                                 // Keep this inline to avoid more function calls.
+                                 var dstH, dstW, dstX, dstY, srcH, srcW, srcX, srcY;
+                                 if (!image || !image.isReady()) {
+                                    this.bufferComplete = false;
+                                    return;
+                                 }
+                                 srcX = meta.x;
+                                 srcY = meta.y;
+                                 srcW = meta.width;
+                                 srcH = meta.height;
+                                 dstX = (x - xOffset) * view.unitSize;
+                                 dstY = (y - yOffset) * view.unitSize;
+                                 dstW = dstH = view.unitSize;
+                                 ctx.drawImage(image.data, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
                               }
-                              srcX = desc.x;
-                              srcY = desc.y;
-                              srcW = srcH = view.unitSize;
-                              dstX = (x - xOffset) * view.unitSize;
-                              dstY = (y - yOffset) * view.unitSize;
-                              dstW = dstH = view.unitSize;
-                              ctx.drawImage(image.data, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
-                           }
+                           });
                         }
                      }
                      // Append chunks to body (DEBUG HACKS)

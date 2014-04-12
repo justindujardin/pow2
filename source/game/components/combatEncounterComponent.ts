@@ -58,7 +58,7 @@ module pow2 {
       moveProcess(player:PlayerComponent,from:Point,to:Point) {
          var map = this.host.scene.objectByType(pow2.TileMap);
          if (map) {
-            var terrain = this.host.getTerrain(to.x,to.y);
+            var terrain = this.host.getTerrain("Terrain",to.x,to.y);
             if (!terrain) {
             }
          }

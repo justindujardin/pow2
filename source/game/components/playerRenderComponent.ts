@@ -18,15 +18,16 @@
 /// <reference path="../../tile/tileObject.ts" />
 
 module pow2 {
+
    export enum MoveFrames {
-      LEFT = 0,
-      RIGHT = 1,
-      DOWN = 2,
-      UP = 3,
-      LEFTALT = 4,
+      LEFT = 10,
+      RIGHT = 4,
+      DOWN = 7,
+      UP = 1,
+      LEFTALT = 11,
       RIGHTALT = 5,
-      DOWNALT = 6,
-      UPALT = 7
+      DOWNALT = 8,
+      UPALT = 2
    }
 
    // The order here maps to the first four frames in MoveFrames above.
@@ -39,30 +40,33 @@ module pow2 {
    }
    export class PlayerRenderComponent extends TickedComponent {
       host:TileObject;
-      _elapsed: number = 0;
-
-      private _lastFrame:number = 3;
-      private _renderFrame:number = 3;
+      private _animator:Animator = new Animator();
       heading:Headings = Headings.WEST;
       animating:boolean = false;
-      tick(elapsed:number){
-         this._elapsed += elapsed;
-         if (this._elapsed < this.tickRateMS) {
-            return;
+      connectComponent():boolean{
+         if(!super.connectComponent()){
+            return false;
          }
-         // Don't subtract elapsed here, but take the modulus so that
-         // if for some reason we get a HUGE elapsed, it just does one
-         // tick and keeps the remainder toward the next.
-         this._elapsed = this._elapsed % this.tickRateMS;
-
-         // There are four states and two rows.  The second row is all alt states, so mod it out
-         // when a move ends.
-         this._lastFrame = this._renderFrame > 3 ? this._renderFrame - 4 : this._renderFrame;
-         super.tick(elapsed);
+         this._animator.setAnimationSource(this.host.icon);
+         return true;
       }
 
       setHeading(direction:Headings,animating:boolean){
          this.heading = direction;
+         switch(this.heading){
+            case Headings.SOUTH:
+               this._animator.setAnimation('down');
+               break;
+            case Headings.NORTH:
+               this._animator.setAnimation('up');
+               break;
+            case Headings.EAST:
+               this._animator.setAnimation('right');
+               break;
+            case Headings.WEST:
+               this._animator.setAnimation('left');
+               break;
+         }
          this.animating = animating;
       }
 
@@ -72,17 +76,10 @@ module pow2 {
 
       interpolateTick(elapsed:number) {
          super.interpolateTick(elapsed);
-
-         // Choose frame for interpolated position
-         var factor = this._elapsed / this.tickRateMS;
-         var altFrame = !!((factor > 0.0 && factor < 0.5));
-         var frame = this._lastFrame;
-
-         frame = this.heading;
-         if(altFrame && this.animating){
-            frame += 4;
+         if(this.animating){
+            this._animator.updateTime(elapsed);
          }
-         this.host.frame = this._renderFrame = frame;
+         this.host.frame = this._animator.getFrame();
       }
    }
 }

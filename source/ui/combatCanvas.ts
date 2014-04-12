@@ -58,6 +58,9 @@ module pow2.ui {
                state.scene.addView(tileView);
                game.tileMap.scene.paused = true;
 
+               tileView.setTileMap(state.tileMap);
+
+
                //tileView.camera.extent.set(state.tileMap.bounds.extent.x,state.tileMap.bounds.extent.y);
                //tileView.camera.setCenter(state.tileMap.bounds.getCenter());
                //tileView.setTileMap(<any>state.tileMap);
