@@ -22,9 +22,7 @@ If those commands both return a value, and no error message, you're ready to go.
 
 ### Grunt.JS
 
-Once you have Node.JS installed you can install Grunt.JS via NPM, and be one step closer to working on your game!
-
-Enter these commands in your terminal to install the `grunt` utility.
+Once you have Node.JS installed you can install Grunt.JS via NPM.  Enter these commands in your terminal to install the `grunt` utility.
 
 > npm install -g grunt-cli
 >
@@ -33,14 +31,14 @@ Enter these commands in your terminal to install the `grunt` utility.
 If you receive errors, you may need to run this command as an administrator on your OS.  For more detailed information, see
 the grunt [Getting Started Guide](http://gruntjs.com/getting-started#installing-the-cli).
 
-Once you've installed grunt and it echos its version back without error, you're ready to install npm dependencies and then
+Once you've installed grunt and it echos its version back without error, you're ready to install npm dependencies and then 
 run your game!
 
 ### Build it!
 
-Now that you have `node`, `npm`, and `grunt` installed--you're good to go.  Let's start up the developer workflow and test
-out the game.  Type the following command in to your terminal:
+Now that you have `node`, `npm`, and `grunt` installed--you're good to go.  Let's install the npm dependencies and start up the developer workflow:
 
+> npm install
 > grunt watch
 
 This command should print information about executing some tasks, and eventually settle down and say that it's run a server at http://localhost:5215/.
