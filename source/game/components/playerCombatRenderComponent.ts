@@ -116,6 +116,46 @@ module pow2.combat {
             cb && cb();
          });
       }
+
+      magic(attackCb:() => any, cb:() => void) {
+         if(!this._animator || this.animating){
+            return;
+         }
+         var magicAnimation = [
+            {
+               name : "Magic cast",
+               repeats: 0,
+               duration:1000,
+               frames : [19,18,17,16,15],
+               callback: () => {
+                  attackCb && attackCb();
+               }
+            },
+            {
+               name : "Back to rest",
+               repeats: 0,
+               duration:1000,
+               frames : [15,16,17,18,19],
+               callback: () => {
+                  this.host.setSprite(this.host.icon.replace("-magic.png",".png"),10);
+               }
+            }
+
+         ];
+         var animations:IAnimationConfig[] = _.map(magicAnimation,(anim:IAnimationConfig) => {
+            var result = _.extend({},anim);
+            if(typeof result.move !== 'undefined'){
+               result.move = result.move.clone();
+            }
+            return result;
+         });
+         this.animating = true;
+         this.host.setSprite(this.host.icon.replace(".png","-magic.png"),19);
+         this._animator.playChain(animations,() => {
+            this.animating = false;
+            cb && cb();
+         });
+      }
       interpolateTick(elapsed:number) {
          super.interpolateTick(elapsed);
 
