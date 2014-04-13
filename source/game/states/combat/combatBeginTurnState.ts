@@ -112,6 +112,7 @@ module pow2 {
                attackerPlayer.setState("Moving");
             }
             defender.addComponentDictionary(components);
+            machine.trigger("combat:attack",damage,attacker,defender);
             components.damage.once('damage:done',() => {
                if(!!attackerPlayer){
                   attackerPlayer.setState();
@@ -126,7 +127,6 @@ module pow2 {
                   },500);
                }
                defender.removeComponentDictionary(components);
-               machine.trigger("combat:attack",damage,attacker,defender);
             });
          };
 
