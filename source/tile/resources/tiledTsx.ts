@@ -68,7 +68,12 @@ module pow2 {
             this.imageWidth = parseInt(this.getElAttribute(image,'width') || "0");
             this.imageHeight = parseInt(this.getElAttribute(image,'height') || "0");
             console.log("Tileset source: " + source);
-            this.image = this.loader.load('/maps/' + source,() => {
+            this.loader.load('/maps/' + source,(res:ImageResource) => {
+               this.image = res;
+               if(!res.isReady()){
+                  throw new Error("Failed to load required TileMap image: " + source)
+               }
+
                this.imageWidth = this.image.data.width;
                this.imageHeight = this.image.data.height;
 
@@ -84,7 +89,7 @@ module pow2 {
                _.each(this.tiles,(tile) => {
                   tileLookup[tile.id] = tile.properties;
                });
-               // TODO: uh-oh overwriting tiles....
+               // TODO: uh-oh overwriting tiles...?
                this.tiles = tileLookup;
 
                this.ready();
@@ -105,8 +110,6 @@ module pow2 {
       getTileMeta(gidOrIndex:number):ITileMeta {
          var index:number = this.firstgid !== -1 ? (gidOrIndex - (this.firstgid)): gidOrIndex;
          var tilesX = this.imageWidth / this.tilewidth;
-         var tilesY = this.imageHeight / this.tileheight;
-         var tileCount = tilesX * tilesY;
          var x = index % tilesX;
          var y = Math.floor((index - x) / tilesX);
          return _.extend(this.tiles[index] || {},{
