@@ -100,15 +100,17 @@ module.exports = function(grunt) {
                "source/tile/features/*.ts",
                "source/tile/render/*.ts",
                "source/game/*.ts",
-               "source/game/states/gameCombatState.ts",
+               "source/game/components/gameComponent.ts",
                "source/game/models/entityModel.ts",
                "source/game/models/itemModel.ts",
                "source/game/models/*.ts",
                "source/game/states/*.ts",
-               "source/game/states/combat/*.ts",
                "source/game/objects/*.ts",
                "source/game/components/*.ts",
-               "source/game/components/features/*.ts"
+               "source/game/components/features/*.ts",
+               "source/combat/*.ts",
+               "source/combat/states/*.ts",
+               "source/combat/components/*.ts"
             ],
             dest: 'lib/<%= pkg.name %>.game.js'
          },

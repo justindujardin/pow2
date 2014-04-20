@@ -14,7 +14,6 @@
  limitations under the License.
  */
 
-/// <reference path="./objects/gameFeatureObject.ts" />
 /// <reference path="../tile/tileComponent.ts" />
 /// <reference path="./gameTileMap.ts" />
 module pow2 {

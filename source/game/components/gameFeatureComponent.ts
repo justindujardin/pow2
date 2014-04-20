@@ -15,7 +15,6 @@ limitations under the License.
 */
 
 /// <reference path="../../../lib/pow2.d.ts" />
-/// <reference path="./playerComponent.ts" />
 /// <reference path="../gameComponent.ts" />
 
 module pow2 {

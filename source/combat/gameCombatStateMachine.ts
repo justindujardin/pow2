@@ -24,7 +24,7 @@
 /// <reference path="./states/combatVictoryState.ts" />
 /// <reference path="./states/combatDefeatState.ts" />
 /// <reference path="./states/combatStartState.ts" />
-/// <reference path="../game/components/combatCameraComponent.ts" />
+/// <reference path="./components/combatCameraComponent.ts" />
 /// <reference path="../game/models/entityModel.ts" />
 /// <reference path="../game/models/creatureModel.ts" />
 

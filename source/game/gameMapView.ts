@@ -18,7 +18,6 @@
 /// <reference path="../tile/tileMapView.ts"/>
 /// <reference path="../tile/render/tileObjectRenderer.ts"/>
 /// <reference path="./components/playerComponent.ts"/>
-/// <reference path="./components/combatCameraComponent.ts"/>
 /// <reference path="./components/playerCameraComponent.ts"/>
 /// <reference path="../tile/components/spriteComponent.ts"/>
 

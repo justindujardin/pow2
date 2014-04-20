@@ -18,7 +18,6 @@
 /// <reference path="./gameMapView.ts" />
 /// <reference path="./components/playerComponent.ts" />
 /// <reference path="./components/playerTouchComponent.ts" />
-/// <reference path="./components/combatEncounterComponent.ts" />
 /// <reference path="./states/gameMapState.ts"/>
 /// <reference path="./models/heroModel.ts"/>
 /// <reference path="./models/gameStateModel.ts"/>

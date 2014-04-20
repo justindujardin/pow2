@@ -17,13 +17,6 @@
 /// <reference path="../tile/tileMap.ts" />
 /// <reference path="../tile/resources/tiled.ts" />
 /// <reference path="../../lib/pow2.d.ts" />
-/// <reference path="./components/features/dialogFeatureComponent.ts" />
-/// <reference path="./components/features/combatFeatureComponent.ts" />
-/// <reference path="./components/features/portalFeatureComponent.ts" />
-/// <reference path="./components/features/shipFeatureComponent.ts" />
-/// <reference path="./components/features/storeFeatureComponent.ts" />
-/// <reference path="./components/features/templeFeatureComponent.ts" />
-/// <reference path="./components/gameFeatureInputComponent.ts" />
 
 module pow2 {
    declare var astar:any;

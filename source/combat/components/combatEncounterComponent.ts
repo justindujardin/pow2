@@ -15,7 +15,8 @@ limitations under the License.
 */
 
 /// <reference path="../../tile/tileComponent.ts" />
-/// <reference path="../objects/gameEntityObject.ts" />
+
+/// <reference path="../../game/objects/gameEntityObject.ts" />
 
 module pow2 {
 

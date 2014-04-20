@@ -16,8 +16,8 @@
 
 /// <reference path="../../game/states/gameCombatState.ts" />
 /// <reference path="../../game/components/damageComponent.ts" />
-/// <reference path="../../game/components/playerCombatRenderComponent.ts" />
 
+/// <reference path="../components/playerCombatRenderComponent.ts" />
 /// <reference path="../gameCombatStateMachine.ts" />
 
 /// <reference path="../../../lib/pow2.d.ts" />

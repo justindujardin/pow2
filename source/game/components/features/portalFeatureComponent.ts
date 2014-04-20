@@ -17,7 +17,6 @@
 /// <reference path="../../../../lib/pow2.d.ts" />
 /// <reference path="../../../tile/tileComponent.ts" />
 /// <reference path="../gameFeatureComponent.ts" />
-/// <reference path="../combatEncounterComponent.ts" />
 module pow2 {
    export class PortalFeatureComponent extends GameFeatureComponent {
       map:string;

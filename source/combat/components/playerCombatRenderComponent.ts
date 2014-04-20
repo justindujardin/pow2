@@ -16,8 +16,9 @@
 
 /// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../../tile/tileObject.ts" />
-/// <reference path="./animatedComponent.ts" />
-/// <reference path="../objects/gameEntityObject.ts" />
+
+/// <reference path="../../game/components/animatedComponent.ts" />
+/// <reference path="../../game/objects/gameEntityObject.ts" />
 
 module pow2.combat {
    export enum StateFrames {

@@ -14,9 +14,10 @@
  limitations under the License.
  */
 
-/// <reference path="../gameTileMap.ts" />
 /// <reference path="../../../lib/pow2.d.ts" />
-/// <reference path="./playerComponent.ts" />
+
+/// <reference path="../../game/gameTileMap.ts" />
+/// <reference path="../../game/components/playerComponent.ts" />
 
 module pow2 {
    export class CombatCameraComponent extends CameraComponent {
