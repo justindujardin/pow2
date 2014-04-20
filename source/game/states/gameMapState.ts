@@ -16,7 +16,6 @@
 
 /// <reference path="../gameStateMachine.ts" />
 /// <reference path="./gameCombatState.ts" />
-
 module pow2 {
 
    export class GameMapState extends State {

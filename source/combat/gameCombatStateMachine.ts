@@ -14,20 +14,19 @@
  limitations under the License.
  */
 
-/// <reference path="../objects/gameEntityObject.ts" />
-/// <reference path="../components/animatedComponent.ts" />
-/// <reference path="../../tile/components/animatedSpriteComponent.ts" />
-/// <reference path="../gameStateMachine.ts" />
-/// <reference path="./gameMapState.ts" />
-/// <reference path="./combat/combatBeginTurnState.ts" />
-/// <reference path="./combat/combatEndTurnState.ts" />
-/// <reference path="./combat/combatVictoryState.ts" />
-/// <reference path="./combat/combatDefeatState.ts" />
-/// <reference path="./combat/combatStartState.ts" />
-/// <reference path="../components/combatCameraComponent.ts" />
-/// <reference path="../models/entityModel.ts" />
-/// <reference path="../models/creatureModel.ts" />
-
+/// <reference path="../game/objects/gameEntityObject.ts" />
+/// <reference path="../game/components/animatedComponent.ts" />
+/// <reference path="../tile/components/animatedSpriteComponent.ts" />
+/// <reference path="../game/gameStateMachine.ts" />
+/// <reference path="../game/states/gameMapState.ts" />
+/// <reference path="./states/combatBeginTurnState.ts" />
+/// <reference path="./states/combatEndTurnState.ts" />
+/// <reference path="./states/combatVictoryState.ts" />
+/// <reference path="./states/combatDefeatState.ts" />
+/// <reference path="./states/combatStartState.ts" />
+/// <reference path="../game/components/combatCameraComponent.ts" />
+/// <reference path="../game/models/entityModel.ts" />
+/// <reference path="../game/models/creatureModel.ts" />
 
 module pow2 {
    // Combat State Machine

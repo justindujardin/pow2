@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-/// <reference path="../gameCombatState.ts" />
+/// <reference path="../../game/states/gameCombatState.ts" />
 /// <reference path="../gameCombatStateMachine.ts" />
-/// <reference path="../../../../lib/pow2.d.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 
 module pow2 {
 

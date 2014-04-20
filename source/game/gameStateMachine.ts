@@ -21,9 +21,9 @@
 /// <reference path="./components/combatEncounterComponent.ts" />
 /// <reference path="./states/gameMapState.ts"/>
 /// <reference path="./models/heroModel.ts"/>
-/// <reference path="./states/gameCombatStateMachine.ts"/>
 /// <reference path="./models/gameStateModel.ts"/>
 
+/// <reference path="../combat/gameCombatStateMachine.ts"/>
 module pow2 {
 
    export class GameDefaultState extends State {
