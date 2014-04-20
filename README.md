@@ -48,3 +48,8 @@ Once this happens, just open your browser to that page and you're ready to go.
 While the grunt watch task is running the game assets will be rebuilt if a file (Sprites, Maps, Code) changes.  This means you
 can edit your files and refresh your webpage a few moments later when the new build is done.  No muss, no fuss, just game stuff.
 
+### Developing
+
+Use the `grunt develop` command to start the game server and automatically build new versions as art/code files are changed.
+
+Commit messages should [follow conventions](https://github.com/justindujardin/pow2/blob/master/CONVENTIONS.md)
