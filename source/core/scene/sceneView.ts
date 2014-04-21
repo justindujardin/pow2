@@ -21,17 +21,17 @@
 /// <reference path="../world.ts" />
 /// <reference path="../resourceLoader.ts" />
 /// <reference path="./scene.ts" />
+/// <reference path="./sceneObject.ts" />
 /// <reference path="./components/cameraComponent.ts" />
 
 // A view that renders a `Scene`.
 //
 // You should probably only have one of these per Canvas that you render to.
 module pow2 {
-   export class SceneView implements IWorldObject {
+   export class SceneView extends SceneObject implements IWorldObject {
       static UNIT: number = 16;
 
       animations: any[];
-      id: string;
       $el: JQuery;
       canvas:HTMLCanvasElement;
       context: CanvasRenderingContext2D;
@@ -45,8 +45,8 @@ module pow2 {
       world:IWorld;
 
       constructor(canvas: HTMLCanvasElement, loader: any) {
+         super();
          this.animations = [];
-         this.id = _.uniqueId('view');
          this.canvas = canvas;
          if (!canvas) {
             throw new Error("A Canvas is required");
@@ -231,16 +231,6 @@ module pow2 {
             return new Point(value).multiply(1 / (this.unitSize * scale));
          }
          return value * (1 / (this.unitSize * scale));
-      }
-
-      // Convert a mouse event on the canvas into coordinates that are relative
-      // to it, rather than to the DOM.
-      canvasMousePosition(event: MouseEvent): Point {
-         var canoffset, x, y;
-         canoffset = $(event.currentTarget).offset();
-         x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
-         y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
-         return new Point(x, y);
       }
 
       // Animations

@@ -55,7 +55,10 @@ module pow2{
        * Update the camera for this frame.
        */
       processCamera() {
-         this.cameraComponent = <CameraComponent>this.scene.componentByType(PlayerCameraComponent);
+         this.cameraComponent = <CameraComponent>this.findComponent(CameraComponent);
+         if(!this.cameraComponent){
+            this.cameraComponent = <CameraComponent>this.scene.componentByType(PlayerCameraComponent);
+         }
          super.processCamera();
       }
 
