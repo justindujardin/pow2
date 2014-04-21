@@ -33,16 +33,35 @@ module pow2 {
       TAB = 9
    }
 
-   export interface NamedMouseElement {
-      name:string;
-      view:SceneView;
+   export interface CanvasMouseCoords {
       point:Point; // Point on the canvas in pixels.
       world:Point; // Point in the world, accounting for camera scale and offset.
+   }
+
+   export interface NamedMouseElement extends CanvasMouseCoords {
+      name:string;
+      view:SceneView;
    }
 
    export class Input {
       _keysDown:Object = {};
       _mouseElements:NamedMouseElement[] = [];
+
+      static mouseOnView(ev:MouseEvent,view:pow2.SceneView,coords?:CanvasMouseCoords) {
+         var result:CanvasMouseCoords = coords || {
+            point: new pow2.Point(),
+            world: new pow2.Point()
+         };
+         var canoffset = $(ev.srcElement).offset();
+         var x = ev.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
+         var y = ev.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
+         result.point.set(x,y);
+         // Generate world mouse position
+         var worldMouse = view.screenToWorld(result.point,view.cameraScale).add(view.camera.point).round();
+         result.world.set(worldMouse.x,worldMouse.y);
+         return result;
+      }
+
 
       constructor() {
          window.addEventListener(<string>"keydown", (ev:KeyboardEvent) => {
@@ -55,18 +74,11 @@ module pow2 {
          window.addEventListener(<string>'mousemove', (ev:MouseEvent) => {
             _.each(hooks,(hook:NamedMouseElement) => {
                if(ev.srcElement === hook.view.canvas){
-                  var canoffset = $(event.srcElement).offset();
-                  var x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
-                  var y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
-                  hook.point.set(x,y);
-                  // Generate world mouse position
-                  var worldMouse = hook.view.screenToWorld(hook.point,hook.view.cameraScale).add(hook.view.camera.point).round();
-                  hook.world.set(worldMouse.x,worldMouse.y);
+                  Input.mouseOnView(ev,hook.view,hook);
                }
                else {
                   hook.point.set(-1,-1);
                   hook.world.set(-1,-1);
-
                }
                return false;
             });
