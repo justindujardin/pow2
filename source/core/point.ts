@@ -15,20 +15,24 @@
  */
 module pow2{
    export class Point {
-      x:number=0;
-      y:number=0;
+      x:number;
+      y:number;
+      constructor();
       constructor(point:Point);
       constructor(x:number,y:number);
       constructor(x:string,y:string);
-      constructor(pointOrX:any,y?:any){
+      constructor(pointOrX?:any,y?:any){
          if(pointOrX instanceof Point){
             this.set(pointOrX.x,pointOrX.y);
          }
          else if(typeof pointOrX === 'string' && typeof y === 'string'){
             this.set(parseFloat(pointOrX),parseFloat(y));
          }
-         else{
+         else if(typeof pointOrX == 'number' && typeof y === 'number') {
             this.set(pointOrX,y);
+         }
+         else {
+            this.zero();
          }
       }
 
