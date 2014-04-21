@@ -16,6 +16,7 @@
 
 /// <reference path="../game/objects/gameEntityObject.ts" />
 /// <reference path="../game/components/animatedComponent.ts" />
+/// <reference path="../game/components/features/combatFeatureComponent.ts" />
 /// <reference path="../tile/components/animatedSpriteComponent.ts" />
 /// <reference path="../game/gameStateMachine.ts" />
 /// <reference path="../game/states/gameMapState.ts" />

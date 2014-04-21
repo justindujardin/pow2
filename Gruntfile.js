@@ -1,6 +1,5 @@
 module.exports = function(grunt) {
 
-   grunt.option('force', true);
    grunt.initConfig({
       pkg: grunt.file.readJSON('package.json'),
 
