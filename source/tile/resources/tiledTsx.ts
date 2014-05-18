@@ -45,6 +45,7 @@ module pow2 {
       imageWidth:number = 0;
       imageHeight:number = 0;
       image:ImageResource = null;
+      url:string;
       firstgid:number = -1;
       tiles:any[] = [];
       prepare(data) {
@@ -68,7 +69,8 @@ module pow2 {
             this.imageWidth = parseInt(this.getElAttribute(image,'width') || "0");
             this.imageHeight = parseInt(this.getElAttribute(image,'height') || "0");
             console.log("Tileset source: " + source);
-            this.loader.load('/maps/' + source,(res:ImageResource) => {
+            this.url = '/maps/' + source;
+            this.loader.load(this.url,(res:ImageResource) => {
                this.image = res;
                if(!res.isReady()){
                   throw new Error("Failed to load required TileMap image: " + source)
@@ -114,6 +116,7 @@ module pow2 {
          var y = Math.floor((index - x) / tilesX);
          return _.extend(this.tiles[index] || {},{
             image: this.image,
+            url:this.url,
             x:x * this.tilewidth,
             y:y * this.tileheight,
             width:this.tilewidth,

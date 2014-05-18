@@ -54,6 +54,16 @@ module pow2 {
                   firstgid:parseInt(this.getElAttribute(ts,'firstgid') || "-1")
                });
             }
+            // Tileset element is inline, load from the existing XML and
+            // assign the source (used for relative image loading) to be
+            // the .tmx file.
+            else {
+               tileSetDeps.push({
+                  data:ts,
+                  source:this.url,
+                  firstgid:parseInt(this.getElAttribute(ts,'firstgid') || "-1")
+               })
+            }
             // TODO: IF no source then create a resource with the given data.
          });
 
@@ -100,11 +110,27 @@ module pow2 {
                return this.ready();
             }
             var dep = tileSetDeps.shift();
-            return this.loader.load(dep.source,(tsr:TiledTSXResource) => {
-               this.tilesets[tsr.name] = tsr;
-               tsr.firstgid = dep.firstgid;
-               _next();
-            });
+            if(dep.data) {
+
+               var tsr = <TiledTSXResource>this.loader.create(TiledTSXResource,dep.data);
+               tsr.url = dep.source;
+               tsr.once('ready',()=>{
+                  this.tilesets[tsr.name] = tsr;
+                  tsr.firstgid = dep.firstgid;
+                  _next();
+               });
+               tsr.prepare(data);
+            }
+            else if(dep.source){
+               this.loader.load(dep.source,(tsr:TiledTSXResource) => {
+                  this.tilesets[tsr.name] = tsr;
+                  tsr.firstgid = dep.firstgid;
+                  _next();
+               });
+            }
+            else {
+               throw new Error("Unknown type of tile set data");
+            }
          };
          _next();
       }
