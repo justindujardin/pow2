@@ -26,6 +26,7 @@ module pow2.ui {
       sprite:GameEntityObject;
       machine:GameStateMachine;
       model:GameStateModel;
+      currentScene:Scene;
       private _renderCanvas:HTMLCanvasElement;
       private _canvasAcquired:boolean = false;
       constructor(
@@ -34,11 +35,12 @@ module pow2.ui {
          this._renderCanvas = <HTMLCanvasElement>compile('<canvas style="position:absolute;left:-9000px;top:-9000px;" width="64" height="64"></canvas>')(scope)[0];
 
          this.loader = new ResourceLoader();
+         this.currentScene = new Scene({
+            autoStart: true,
+            debugRender:false
+         });
          this.world = new GameWorld({
-            scene:new Scene({
-               autoStart: true,
-               debugRender:false
-            }),
+            scene:this.currentScene,
             state:new GameStateMachine()
          });
          this.machine = this.world.state;
