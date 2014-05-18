@@ -24,6 +24,8 @@
 
 module pow2 {
 
+   // TODO: TileMap isn't getting added to Spatial DB properly.  Can't query for it!
+   // Scene assuming something about the spatial properties on objects?
 
    export class TileMap extends SceneObject {
       map: TiledTMXResource;
