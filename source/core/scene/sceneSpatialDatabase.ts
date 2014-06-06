@@ -61,7 +61,7 @@ module pow2 {
             if(o.enabled === false){
                continue;
             }
-            if (o.point && this.pointInRect(rect, o.point)) {
+            if (o.point && pow2.SceneSpatialDatabase.pointInRect(rect, o.point)) {
                results.push(o);
                foundAny = true;
             }
@@ -69,14 +69,14 @@ module pow2 {
          return foundAny;
       }
 
-      pointInRect(rect: pow2.Rect, point: pow2.Point):boolean {
+      /**
+       * Determine if the given rect contains the given point.
+       */
+      static pointInRect(rect: pow2.Rect, point: pow2.Point):boolean {
          if (point.x < rect.point.x || point.y < rect.point.y) {
             return false;
          }
-         if (point.x >= rect.point.x + rect.extent.x || point.y >= rect.point.y + rect.extent.y) {
-            return false;
-         }
-         return true;
+         return !(point.x >= rect.point.x + rect.extent.x || point.y >= rect.point.y + rect.extent.y);
       }
    }
 }
