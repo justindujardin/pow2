@@ -23,9 +23,6 @@ limitations under the License.
 
 module pow2 {
 
-   /**
-    * A component that defines the functionality of a map feature.
-    */
    export class DamageComponent extends SceneComponent {
       host:GameEntityObject;
       animation:AnimatedSpriteComponent;
