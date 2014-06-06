@@ -43,7 +43,17 @@ module pow2 {
       findComponents(type:Function):ISceneComponent[];
    }
 
-   export class SceneObject extends Events implements ISceneComponentHost {
+   /**
+    * SceneObject interface
+    */
+   export interface ISceneObject extends IObject {
+      scene: Scene;
+      enabled:boolean;
+      point:Point;
+      size:Point;
+   }
+
+   export class SceneObject extends Events implements ISceneObject, ISceneComponentHost {
       id:number = _.uniqueId();
       name:string;
       scene: Scene;
