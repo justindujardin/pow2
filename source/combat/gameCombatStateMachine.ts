@@ -123,6 +123,9 @@ module pow2 {
       scene:Scene;
       tileMap:GameTileMap;
       finished:boolean = false; // Trigger state to exit when true.
+
+      public googSpreadsheetId:string = "1IAQbt_-Zq1BUwRNiJorvt4iPEYb5HmZrpyMOkb-OuJo";
+
       enter(machine:GameStateMachine){
          super.enter(machine);
          this.parent = machine;
@@ -148,23 +151,6 @@ module pow2 {
             this.scene.addObject(heroEntity);
          });
 
-         // Create the enemy
-         var max = 3;
-         var min = 1;
-         var enemyCount = Math.floor(Math.random() * (max - min + 1)) + min;
-         for(var i = 0; i < enemyCount; i++){
-            var nme = new pow2.GameEntityObject({
-               model: CreatureModel.fromName("Snake")
-            });
-            this.scene.addObject(nme);
-            nme.addComponent(new pow2.SpriteComponent({
-               name:"enemy",
-               icon:nme.model.get('icon')
-            }));
-            this.machine.enemies.push(nme);
-
-         }
-
          machine.world.loader.load("/data/sounds/summon",(res:AudioResource) => {
             if(res.isReady()){
                res.data.play();
@@ -177,21 +163,97 @@ module pow2 {
             this.scene.once('map:loaded',() => {
                // Position Party/Enemies
 
-               _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
-                  var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
-                  heroEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
-               });
 
-               _.each(this.machine.enemies,(enemyEntity:GameEntityObject,index:number) => {
-                  var battleSpawn = this.tileMap.getFeature('e' + (index + 1));
-                  if(battleSpawn){
-                     enemyEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+               this.scene.world.loader.loadAsType(this.googSpreadsheetId,pow2.GoogleSpreadsheetResource,(enemiesSpreadsheet:pow2.GoogleSpreadsheetResource) => {
+
+                  //-----------------------------------------------------------------------------------
+                  // TERRIBLE INLINE GOOGLE SPREADSHEET PARSING HACKS OMG WAT THE HECK?
+
+
+                  var enemies = [];
+                  if(enemiesSpreadsheet && enemiesSpreadsheet.isReady()){
+
+                     console.log("Loading enemies data from custom spreadsheet: " + enemiesSpreadsheet.url);
+                     var json:any = enemiesSpreadsheet.data;
+                     if(!json || json.version !== "1.0"){
+                        throw new Error("I'm not smart enough to parse this.  I expect version 1.0");
+                     }
+                     json = json.feed;
+
+                     // This is bad, we really need to associate this prefix with the xmlns definitions.
+                     var keyExtractor = /gsx\$(.+)/;
+                     var numberMatcher = /\d+/;
+                     enemies = _.map(json.entry,(entry:any) => {
+                        var enemyData = {};
+                        _.each(entry,(value:any,key:string)=>{
+                           var matches = key.match(keyExtractor);
+                           if(matches && matches.length == 2 && value && value.hasOwnProperty('$t')){
+                              var data = value['$t'];
+                              if(typeof data === 'string' && data.match(numberMatcher)){
+                                 data = parseInt(data);
+                              }
+                              var finalKey = matches[1];
+                              if(finalKey === 'attacklow'){
+                                 finalKey = 'attackLow';
+                              }
+                              else if(finalKey === 'attackhigh'){
+                                 finalKey = 'attackHigh';
+                              }
+                              else if(finalKey === 'hitpercent'){
+                                 finalKey = 'hitPercent';
+                              }
+                              else if(finalKey === 'groups'){
+                                 data = data.split('|');
+                              }
+                              enemyData[finalKey] = data;
+                           }
+                        });
+                        return enemyData;
+                     });
+                     console.log(enemies);
                   }
-               });
+
+                  // YOU CAN OPEN YOUR EYES AGAIN ...
+                  //-----------------------------------------------------------------------------------
+                  // Create the enemy
+                  var max = 3;
+                  var min = 1;
+                  var enemyCount = Math.floor(Math.random() * (max - min + 1)) + min;
+                  for(var i = 0; i < enemyCount; i++){
+
+                     var rndEnemy = Math.floor(Math.random() * ((enemies.length - 1) - 0 + 1)) + 0;
+                     //
+                     var nmeModel = enemies.length > 0 ? new CreatureModel(enemies[rndEnemy]) : CreatureModel.fromName("Snake");
+
+                     var nme = new pow2.GameEntityObject({
+                        model: nmeModel
+                     });
+                     this.scene.addObject(nme);
+                     nme.addComponent(new pow2.SpriteComponent({
+                        name:"enemy",
+                        icon:nme.model.get('icon')
+                     }));
+                     this.machine.enemies.push(nme);
+
+                  }
+
+                  _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
+                     var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
+                     heroEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+                  });
+
+                  _.each(this.machine.enemies,(enemyEntity:GameEntityObject,index:number) => {
+                     var battleSpawn = this.tileMap.getFeature('e' + (index + 1));
+                     if(battleSpawn){
+                        enemyEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+                     }
+                  });
 //
 //               var enemy = this.tileMap.getFeature('e1');
 //               this.machine.enemies[0].point = new Point(enemy.x / 16, enemy.y / 16);
-               machine.trigger('combat:begin',this);
+                  machine.trigger('combat:begin',this);
+
+               });
             });
          });
 
