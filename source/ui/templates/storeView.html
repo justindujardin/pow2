@@ -1,26 +1,18 @@
-<div class="row title" ng-show="store">
-    <div class="col-xs-12">
-        <div class="name ebp">
-            <h1>{{store.name}}</h1> <span>Gold: {{gameModel.attributes.gold}}</span>
-        </div>
+<div class="title" ng-show="store">
+    <div class="name ebp">
+        <h1>{{store.name}}</h1> <span>Gold: {{gameModel.attributes.gold}}</span>
     </div>
 </div>
 
-<div class="row store" ng-show="store">
-    <div class="col-xs-12">
-        <div class="inventory ebp">
-            <ul class="container">
-                <li class="item row" ng-repeat="item in store.inventory" ng-click="buyItem(item)">
-                    <div class="col-xs-1 icon" icon-render icon="item.icon">
-                    </div>
-                    <div class="col-xs-8">
-                        <span class="item-name">{{item.name}}</span>
-                    </div>
-                    <div class="col-xs-3 item-price">
-                        <strong>{{item.cost}}</strong>
-                    </div>
-                </li>
-            </ul>
-        </div>
+<div class="store" ng-show="store">
+    <div class="inventory ebp">
+        <ul class="container">
+            <li class="item" ng-repeat="item in store.inventory" ng-click="buyItem(item)">
+                <span class="icon" icon-render icon="item.icon">
+                </span>
+                <span class="item-name">{{item.name}}</span>
+                <span class="item-price">{{item.cost}}</span>
+            </li>
+        </ul>
     </div>
 </div>

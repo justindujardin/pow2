@@ -1,32 +1,21 @@
 
 .temple-view {
-  .row {
-    margin-bottom:10px;
-    width:100%;
+  .hero-view {
+    padding: 0.5em;
+    margin: 0.5em;
   }
   .prompt {
     text-align: center;
-    margin-bottom:0;
-    border-bottom:none;
-    .border-bottom-radius(0);
-  }
-  .confirm {
-    min-height: 60px;
-    text-align: center;
-    margin-top:0;
-    border-top:none;
-    .border-top-radius(0);
-
     > button {
       width: 50%;
       position: absolute;
       bottom: 0;
-      &:first-child {
+      &:first-of-type {
         border-radius:0;
         border-bottom-left-radius: 3px;
         left: 0;
       }
-      &:last-child {
+      &:last-of-type {
         border-radius:0;
         border-bottom-right-radius: 3px;
         right: 0;

@@ -1,25 +1,19 @@
 <div class="temple-view">
-    <div class="row title">
-        <div class="col-xs-12">
-            <div class="name ebp">
-                <div icon-render icon="temple.icon"></div>
-                <h1>{{temple.name}}</h1>
-            </div>
+    <div class="title">
+        <div class="name ebp">
+            <div icon-render icon="temple.icon"></div>
+            <h1>{{temple.name}}</h1>
         </div>
     </div>
 
-    <div class="row prompt ebp">
+    <div class="prompt ebp">
         <h1>It will cost you {{temple.cost}} of your {{gameModel.attributes.gold}} monies to heal here.</h1>
         <p>Would you like to heal your party members?</p>
-    </div>
-    <div class="row confirm ebp">
         <button class="btn btn-primary btn-lg" ng-click="heal()">Yes</button>
         <button class="btn btn-default btn-lg" ng-click="cancel()">No</button>
     </div>
 
-    <div class="row party">
-        <div class="col-xs-12 member" ng-repeat="member in party">
-            <hero-view hero="member"></hero-view>
-        </div>
+    <div class="party">
+        <hero-view hero="member" class="member" ng-repeat="member in party"></hero-view>
     </div>
 </div>

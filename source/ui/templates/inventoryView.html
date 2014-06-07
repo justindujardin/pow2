@@ -2,24 +2,20 @@
     <button class="btn btn-primary btn-lg" ng-click="previousCharacter()">Previous</button>
     <button class="btn btn-default btn-lg" ng-click="nextCharacter()">Next</button>
     <h2>{{character.attributes.name}} <div class="image" icon-render icon="character.attributes.icon"></div></h2>
-    <div class="equipped row">
-        <div class="col-xs-4">
+    <div class="equipped">
+        <div class="">
             <div class="weapon">Weapon:
                 <span class="icon" icon-render icon="character.weapon.attributes.icon" ng-click="unequipItem(character.weapon)" ng-show="character.weapon"></span>
             </div>
             <div class="jewelry">Accessory:
                 <span class="icon" icon-render icon="character.accessory.attributes.icon" ng-click="unequipItem(character.accessory)" ng-show="character.accessory"></span>
             </div>
-        </div>
-        <div class="col-xs-4">
             <div class="head">Head:
                 <span class="icon" icon-render icon="character.head.attributes.icon" ng-click="unequipItem(character.head)" ng-show="character.head"></span>
             </div>
             <div class="body">Body:
                 <span class="icon" icon-render icon="character.body.attributes.icon" ng-click="unequipItem(character.body)" ng-show="character.body"></span>
             </div>
-        </div>
-        <div class="col-xs-4">
             <div class="arms">Arms:
                 <span class="icon" icon-render icon="character.arms.attributes.icon" ng-click="unequipItem(character.arms)" ng-show="character.arms"></span>
             </div>
