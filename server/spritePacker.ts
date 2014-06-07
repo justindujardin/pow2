@@ -7,7 +7,7 @@
 
 import path = require('path');
 import Q = require('q');
-import _ = require('underscore');
+var _ = require('underscore');
 var fs = require('graceful-fs');
 var PNG = require('pngjs').PNG;
 var boxPacker = require('binpacking').GrowingPacker;
@@ -199,10 +199,32 @@ module.exports = function(files,options){
          };
       });
 
-      // Need to sort by width/height to ensure binpacking doesn't have trouble growing.
-      blocks = blocks.sort((a:any,b:any) => {
-         return a.w - b.w;
+      // If blocks are not a consistent size, we need to sort them by extent to keep
+      // the binpacking algorithm from puking.
+      //
+      // TODO: Pick a better packing library that can handle varied block sizes
+      var needSort:boolean = false;
+      var blockW:number = -1;
+      var blockH:number = -1;
+      blocks.forEach((block) => {
+         if((blockW !== -1 && block.w !== blockW) || (block.h !== blockH && blockH !== -1)){
+            needSort = true;
+         }
+         blockW = block.w;
+         blockH = block.h;
       });
+      if(needSort){
+         console.log("Sorting " + options.outName + " by size, because it contains sprites of varying sizes.");
+         blocks = blocks.sort((a:any,b:any) => {
+            return a.w - b.w;
+         });
+      }
+      else {
+         blocks = blocks.sort((a:any,b:any) => {
+            return path.basename(a.data.file).localeCompare(path.basename(b.data.file));
+         });
+      }
+
       var packer = new boxPacker();
       packer.fit(blocks);
       var cells = _.map(blocks,function(b:any){
