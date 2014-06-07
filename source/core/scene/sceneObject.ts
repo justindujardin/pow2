@@ -210,5 +210,20 @@ module pow2 {
          }
          return change;
       }
+
+
+      // Debugging
+      // -----------------------------------------------------------------------------
+      toString():string {
+         var ctor:any = this.constructor;
+         var name:string = this.name;
+         if (ctor && ctor.name != "Function") {
+            name = ctor.name || (this.toString().match(/function (.+?)\(/) || [, ''])[1];
+         }
+         _.each(this._components,(comp:ISceneComponent) => {
+            name += ', ' + comp;
+         });
+         return name;
+      }
    }
 }

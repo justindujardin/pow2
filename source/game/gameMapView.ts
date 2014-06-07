@@ -130,7 +130,7 @@ module pow2{
             var hit = this.scene.db.queryRect(tileRect,SceneObject,results);
             if(hit){
                _.each(results,(obj:any) => {
-                  debugStrings.push("Hit: " + obj.type || obj.name);
+                  debugStrings.push("Hit: " + obj);
                });
                this.context.fillStyle = "rgba(10,255,10,0.3)";
                this.context.fillRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
