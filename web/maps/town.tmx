@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="27" height="22" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="music" value="/data/music/TownThemeOFF"/>
+ </properties>
+ <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <layer name="Terrain" width="27" height="22">
+  <data encoding="csv">
+46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,
+46,46,46,46,46,46,46,46,46,46,46,69,46,69,46,46,46,46,46,46,46,46,46,18,18,18,18,
+46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,46,18,18,18,18,
+46,46,46,46,46,46,46,46,46,46,69,69,46,69,69,46,46,46,46,46,46,46,46,18,18,18,18,
+46,46,46,9,9,9,9,9,9,9,9,9,6,9,9,9,9,9,9,9,9,9,9,18,18,18,18,
+46,46,46,9,46,46,46,69,46,46,46,9,33,9,46,46,46,69,69,69,69,69,69,18,18,18,18,
+46,46,46,9,46,69,46,69,46,69,46,33,33,33,46,46,46,46,46,69,69,69,69,18,18,18,18,
+46,46,46,9,66,46,46,46,46,46,46,46,33,46,46,46,46,46,46,46,69,69,18,18,18,18,18,
+46,46,46,9,46,69,33,46,46,46,46,33,33,33,46,46,46,69,46,46,69,69,18,18,18,18,18,
+46,46,46,9,46,46,33,33,33,33,33,33,17,33,33,33,33,33,46,46,46,69,18,18,18,18,18,
+46,46,46,9,69,46,33,46,46,46,46,33,33,33,46,46,46,69,46,46,46,18,18,18,18,18,18,
+46,46,46,9,46,69,46,46,46,46,46,46,46,46,69,69,18,46,46,46,46,18,18,18,18,18,18,
+46,46,46,9,46,46,46,69,46,69,46,46,69,69,69,18,18,18,46,46,46,46,18,18,18,18,18,
+46,46,46,9,46,69,46,46,46,46,46,69,69,18,18,18,46,18,18,46,69,69,18,18,18,18,18,
+46,46,46,9,46,46,46,46,46,69,46,46,69,46,18,18,12,18,46,46,69,18,18,18,18,18,18,
+46,46,46,9,46,46,46,46,46,46,46,46,46,46,46,18,12,18,18,18,18,18,18,18,18,18,18,
+46,46,46,9,69,18,18,69,46,46,46,46,46,46,69,46,69,69,46,46,46,18,18,18,18,18,18,
+46,18,18,9,18,18,18,18,18,46,46,18,18,46,46,46,46,46,69,18,18,18,18,18,18,18,18,
+18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,
+18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,
+18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,
+18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18
+</data>
+ </layer>
+ <objectgroup draworder="topdown" name="Features" width="27" height="22">
+  <object name="wilderness" type="transition" x="192" y="64" width="16" height="16">
+   <properties>
+    <property name="icon" value="doorInWall.png"/>
+    <property name="target" value="wilderness"/>
+    <property name="targetX" value="16"/>
+    <property name="targetY" value="51"/>
+    <property name="text" value="Will you exit the safety of Bryarlake and explore the great Wildernesse?"/>
+    <property name="transitionType" value="outdoor"/>
+    <property name="type" value="transition"/>
+   </properties>
+  </object>
+  <object type="block" x="192" y="48" width="16" height="16" visible="0">
+   <properties>
+    <property name="type" value="block"/>
+   </properties>
+  </object>
+  <object name="Guard" type="sign" x="176" y="96" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="icon" value="soldier.png"/>
+    <property name="text" value="May you find glory on your noble quest!"/>
+    <property name="title" value="Guard"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="Guard" type="sign" x="208" y="96" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="icon" value="soldier.png"/>
+    <property name="text" value="Be sure to avoid the forests at first, there are some really dangerous creatures lurking amongst the trees."/>
+    <property name="title" value="Guard"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="Citizen" type="sign" x="128" y="256" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="icon" value="man.png"/>
+    <property name="text" value="Ever since the volcano erupted up North, things have taken an awful turn. Monsters lurk everywhere, preventing regular folk from travelling or trading."/>
+    <property name="title" value="Citizen"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="temple.png" type="temple" x="256" y="208" width="16" height="16">
+   <properties>
+    <property name="cost" value="15"/>
+    <property name="icon" value="temple.png"/>
+    <property name="type" value="temple"/>
+   </properties>
+  </object>
+  <object name="Weapons" type="store" x="96" y="112" width="16" height="16">
+   <properties>
+    <property name="buyRate" value="100"/>
+    <property name="groups" value="[&quot;weapon&quot;]"/>
+    <property name="icon" value="shop.png"/>
+    <property name="level" value="1"/>
+    <property name="name" value="Weapons"/>
+    <property name="sellRate" value="35"/>
+    <property name="type" value="store"/>
+   </properties>
+  </object>
+  <object name="Armors" type="store" x="96" y="176" width="16" height="16">
+   <properties>
+    <property name="buyRate" value="100"/>
+    <property name="groups" value="[&quot;armor&quot;]"/>
+    <property name="icon" value="shop.png"/>
+    <property name="level" value="1"/>
+    <property name="name" value="Armors"/>
+    <property name="sellRate" value="35"/>
+    <property name="type" value="store"/>
+   </properties>
+  </object>
+  <object name="Lord of Bryarlake" type="dispatch" x="288" y="144" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="altIcon" value="silverKey.png"/>
+    <property name="icon" value="oldMan.png"/>
+    <property name="sets" value="ruinsStart"/>
+    <property name="text" value="Our sister city, Kinstown Harbor, lies in ruins. We hear that they were overrun by creatures that emerged from their sewers! Will you three brave heroes enter the city with this key and regain Kinstown from the clutches of evil?"/>
+    <property name="title" value="Lord of Bryarlake"/>
+    <property name="type" value="dispatch"/>
+    <property name="until" value="ruinsStart"/>
+   </properties>
+  </object>
+  <object name="Lord of Bryarlake" type="sign" x="288" y="144" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="after" value="ruinsStart"/>
+    <property name="icon" value="oldMan.png"/>
+    <property name="text" value="Please, liberate Kinstown Harbor so that we may rebuild her docks and resume trading by sea!"/>
+    <property name="title" value="Lord of Bryarlake"/>
+    <property name="type" value="sign"/>
+    <property name="until" value="ruinsDone"/>
+   </properties>
+  </object>
+  <object name="Lord of Bryarlake" type="dispatch" x="288" y="144" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="after" value="ruinsDone"/>
+    <property name="icon" value="oldMan.png"/>
+    <property name="sets" value="portStart"/>
+    <property name="text" value="Thank you, noble heroes for your brave efforts in Kinstown! We have received word that the elves of the North are in danger! Will you travel to Port Artha and meet with the Elvish Council?"/>
+    <property name="title" value="Lord of Bryarlake"/>
+    <property name="type" value="dispatch"/>
+    <property name="until" value="portStart"/>
+   </properties>
+  </object>
+  <object name="Lord of Bryarlake" type="sign" x="288" y="144" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="after" value="portStart"/>
+    <property name="icon" value="oldMan.png"/>
+    <property name="text" value="The Elves of Nothian Forest are in dire need of your bravery! Head North and visit the Elvish Council in Port Artha."/>
+    <property name="title" value="Lord of Bryarlake"/>
+    <property name="type" value="sign"/>
+    <property name="until" value="portDone"/>
+   </properties>
+  </object>
+  <object name="Lord of Bryarlake" type="sign" x="288" y="144" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="after" value="portDone"/>
+    <property name="icon" value="oldMan.png"/>
+    <property name="text" value="As long as the town of Bryarlake still stands, your bravery will never be forgotten!"/>
+    <property name="title" value="Lord of Bryarlake"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="chest.png" type="encounter" x="272" y="144" width="16" height="16">
+   <properties>
+    <property name="after" value="ruinsDone"/>
+    <property name="creatures" value=""/>
+    <property name="gold" value="20"/>
+    <property name="icon" value="chest.png"/>
+    <property name="id" value="ruinsReward"/>
+    <property name="items" value=""/>
+    <property name="text" value="The town has presented you with a reward for liberating Kinstown Harbor!"/>
+    <property name="type" value="encounter"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

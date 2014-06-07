@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="25" height="25" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="combat" value="true"/>
+ </properties>
+ <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <layer name="Terrain" width="25" height="25">
+  <data encoding="csv">
+9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,33,33,33,33,33,33,33,33,33,33,33,33,33,9,9,9,9,9,9,9,
+9,9,9,9,9,33,9,9,9,9,9,9,9,9,9,9,9,33,9,9,9,9,9,9,9,
+9,9,9,9,33,33,33,9,9,9,9,9,9,9,9,9,33,33,9,9,9,9,9,9,9,
+9,9,33,33,33,33,33,33,33,9,9,9,33,33,33,6,33,9,9,9,9,9,9,9,9,
+9,9,9,33,33,33,33,33,9,9,9,9,33,33,33,9,33,9,9,9,9,9,9,9,9,
+9,9,9,9,9,33,9,9,9,9,9,9,33,33,33,9,33,33,33,33,33,9,9,9,9,
+9,9,9,9,9,33,9,9,9,9,9,9,9,9,9,9,6,9,9,9,33,9,9,9,9,
+9,9,9,9,9,33,9,9,9,9,9,9,9,9,33,33,33,33,9,9,33,9,9,9,9,
+9,9,9,9,9,33,9,9,33,33,33,9,9,9,33,33,33,33,9,9,33,9,9,9,9,
+9,9,9,9,9,33,6,33,33,33,33,9,9,9,33,33,33,33,9,9,33,9,9,9,9,
+9,9,9,9,9,33,9,9,33,33,33,9,9,9,33,33,33,33,9,9,33,9,33,33,9,
+9,9,9,9,9,33,9,9,9,6,9,9,9,9,9,6,9,9,9,9,33,6,33,33,9,
+9,9,33,33,33,33,9,9,9,33,9,9,9,9,9,33,9,9,9,9,9,9,33,33,9,
+9,9,33,9,9,33,9,33,33,33,9,9,9,9,9,33,9,9,9,9,9,9,9,9,9,
+9,9,33,9,9,9,9,9,33,9,9,9,9,33,33,33,9,9,9,9,9,9,9,9,9,
+9,9,33,9,9,9,9,9,24,9,9,9,9,33,9,9,9,9,9,9,9,9,9,9,9,
+9,33,33,9,9,9,9,33,33,33,9,9,9,33,9,9,9,33,33,33,9,9,9,9,9,
+9,33,9,9,9,9,9,33,33,33,9,9,9,33,9,9,33,33,33,33,33,9,9,9,9,
+9,33,9,9,9,9,9,9,33,9,9,9,9,33,9,33,33,17,33,17,33,33,9,9,9,
+9,33,9,9,9,9,33,33,33,33,33,9,9,33,24,33,33,33,33,33,33,33,9,9,9,
+9,6,9,9,9,9,9,9,33,9,9,9,9,9,9,33,33,17,33,17,33,33,9,9,9,
+9,33,33,9,9,9,33,33,33,33,33,9,9,9,9,9,33,33,33,33,33,9,9,9,9,
+9,33,33,9,9,9,9,33,33,33,9,9,9,9,9,9,9,33,33,33,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9
+</data>
+ </layer>
+ <objectgroup draworder="topdown" name="Features" width="25" height="25">
+  <object name="goblinArcher.png" type="encounter" x="256" y="48" width="16" height="16">
+   <properties>
+    <property name="creatures" value=""/>
+    <property name="gold" value="7"/>
+    <property name="icon" value="goblinArcher.png"/>
+    <property name="id" value="goblinArchers"/>
+    <property name="items" value=""/>
+    <property name="text" value="You are targeted by skilled Goblin archers!"/>
+    <property name="type" value="encounter"/>
+   </properties>
+  </object>
+  <object name="chest.png" type="encounter" x="288" y="320" width="16" height="16">
+   <properties>
+    <property name="ambushed" value="true"/>
+    <property name="creatures" value=""/>
+    <property name="gold" value="15"/>
+    <property name="icon" value="chest.png"/>
+    <property name="id" value="goblinPotion"/>
+    <property name="items" value=""/>
+    <property name="text" value="You find here a small cache of potions."/>
+    <property name="type" value="encounter"/>
+   </properties>
+  </object>
+  <object name="carpetS.png" type="sign" x="128" y="288" width="16" height="16">
+   <properties>
+    <property name="icon" value="carpetS.png"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="carpetNS.png" type="sign" x="128" y="304" width="16" height="16">
+   <properties>
+    <property name="icon" value="carpetNS.png"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="carpetNS.png" type="sign" x="128" y="320" width="16" height="16">
+   <properties>
+    <property name="icon" value="carpetNS.png"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="carpetNS.png" type="sign" x="128" y="336" width="16" height="16">
+   <properties>
+    <property name="icon" value="carpetNS.png"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="carpetN.png" type="sign" x="128" y="352" width="16" height="16">
+   <properties>
+    <property name="icon" value="carpetN.png"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="goblinKing.png" type="encounter" x="128" y="368" width="16" height="16">
+   <properties>
+    <property name="creatures" value=""/>
+    <property name="gold" value="23"/>
+    <property name="icon" value="goblinKing.png"/>
+    <property name="id" value="pitsKing2"/>
+    <property name="items" value=""/>
+    <property name="sets" value="goblinDone"/>
+    <property name="text" value="You face your enemy, the King of the Goblins! He is enormous and flanked by well-equipped soldiers."/>
+    <property name="type" value="encounter"/>
+   </properties>
+  </object>
+  <object name="fortress1" type="transition" x="368" y="192" width="16" height="16">
+   <properties>
+    <property name="icon" value="doorway.png"/>
+    <property name="target" value="fortress1"/>
+    <property name="targetX" value="3"/>
+    <property name="targetY" value="3"/>
+    <property name="text" value="Return to the lower level of the fortess?"/>
+    <property name="transitionType" value="down"/>
+    <property name="type" value="transition"/>
+    <property name="y" value="12"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
