@@ -26,7 +26,7 @@ module pow2 {
       bufferComplete:boolean = false; // True if the entire map was rendered with all textures loaded and ready.
       render(object:TileMap, view:TileMapView) {
          var sheets = {};
-         var squareUnits = 16;
+         var squareUnits = 8;
          var squareSize = squareUnits * view.unitSize;
          if(!object.isLoaded()){
             return;
