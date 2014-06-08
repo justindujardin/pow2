@@ -80,7 +80,8 @@ module pow2 {
             return;
          }
          var values:any[] = this._components;
-         for (var i:number = values.length - 1; i >= 0; --i) {
+         var l:number = this._components.length;
+         for(var i = 0; i < l; i++){
             values[i].tick && values[i].tick(elapsed);
          }
       }
@@ -91,7 +92,8 @@ module pow2 {
             return;
          }
          var values:any[] = this._components;
-         for (var i:number = values.length - 1; i >= 0; --i) {
+         var l:number = this._components.length;
+         for(var i = 0; i < l; i++){
             values[i].interpolateTick && values[i].interpolateTick(elapsed);
          }
       }
@@ -109,19 +111,33 @@ module pow2 {
       // -----------------------------------------------------------------------------
 
       findComponent(type:Function):ISceneComponent {
-         return _.find(this._components,(comp:ISceneComponent) => {
-            return comp instanceof type;
-         });
+         var values:any[] = this._components;
+         var l:number = this._components.length;
+         for(var i = 0; i < l; i++){
+            var o:ISceneComponent = values[i];
+            if(o instanceof type){
+               return o;
+            }
+         }
+         return null;
       }
       findComponents(type:Function):ISceneComponent[] {
-         return _.filter(this._components,(comp:ISceneComponent) => {
-            return comp instanceof type;
-         });
+         var values:any[] = this._components;
+         var results:ISceneComponent[] = [];
+         var l:number = this._components.length;
+         for(var i = 0; i < l; i++){
+            var o:ISceneComponent = values[i];
+            if(o instanceof type){
+               results.push(o);
+            }
+         }
+         return results;
       }
 
       syncComponents(){
          var values:any[] = this._components;
-         for (var i:number = values.length - 1; i >= 0; --i) {
+         var l:number = this._components.length;
+         for(var i = 0; i < l; i++){
             values[i].syncComponent();
          }
       }
