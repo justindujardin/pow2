@@ -17,10 +17,10 @@
 module pow2.ui {
 // StoreBubble directive
 // ----------------------------------------------------------------------------
-   app.directive('storeView',['game',function (game:PowGameService) {
+   app.directive('storeView',['game','powAlert',function (game:PowGameService,powAlert:PowAlertService) {
       return {
          restrict: 'E',
-         templateUrl: '/templates/storeView.html',
+         templateUrl: '/source/ui/directives/storeView.html',
          controller : function($scope,$element){
             $scope.buyItem = (item) => {
                if(!$scope.store || !item){
@@ -30,7 +30,7 @@ module pow2.ui {
                var money:number = model.get('gold');
                var cost:number = parseInt(item.cost);
                if(cost > money){
-                  $scope.displayMessage("You don't have enough money");
+                  powAlert.show("You don't have enough money");
                }
                else {
                   model.set({
@@ -43,7 +43,7 @@ module pow2.ui {
                   else if(item.itemType === 'weapon'){
                      inventoryModel = new WeaponModel(item);
                   }
-                  $scope.displayMessage("Purchased " + item.name + ".",null,1500);
+                  powAlert.show("Purchased " + item.name + ".",null,1500);
                   model.inventory.push(inventoryModel);
 
                }

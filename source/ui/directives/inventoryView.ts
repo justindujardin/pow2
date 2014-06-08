@@ -20,7 +20,7 @@ module pow2.ui {
    app.directive('inventoryView',['game','powAlert', function (game:PowGameService,powAlert:PowAlertService) {
       return {
          restrict: 'E',
-         templateUrl: '/templates/inventoryView.html',
+         templateUrl: '/source/ui/directives/inventoryView.html',
          controller : function($scope,$element){
             var currentIndex:number = 0;
             $scope.character = $scope.party[currentIndex];
@@ -57,6 +57,10 @@ module pow2.ui {
                   }
                }
                else if(item instanceof WeaponModel){
+                  // Remove any existing weapon first
+                  if(hero.weapon){
+                     game.model.addInventory(hero.weapon);
+                  }
                   hero.weapon = item;
                }
                game.model.removeInventory(item);

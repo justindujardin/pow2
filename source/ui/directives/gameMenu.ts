@@ -24,7 +24,7 @@ module pow2.ui {
          return {
             restrict: 'E',
             replace:true,
-            templateUrl: '/templates/gameMenu.html',
+            templateUrl: '/source/ui/directives/gameMenu.html',
             controller: function($scope) {
                $scope.showParty = function(){
                   alert("Show party");

@@ -30,7 +30,7 @@ module pow2.ui {
       return {
          restrict: 'E',
          replace:true,
-         templateUrl: '/templates/combatView.html'
+         templateUrl: '/source/ui/directives/combatView.html'
       };
    });
 
@@ -39,7 +39,7 @@ module pow2.ui {
    app.directive('partyView', function () {
       return {
          restrict: 'E',
-         templateUrl: '/templates/partyView.html'
+         templateUrl: '/source/ui/directives/partyView.html'
       };
    });
 // HeroView directive
@@ -48,7 +48,7 @@ module pow2.ui {
       return {
          restrict: 'E',
          scope:true,
-         templateUrl: '/templates/heroView.html',
+         templateUrl: '/source/ui/directives/heroView.html',
          link: function ($scope, element, attrs) {
             $scope.hero = attrs.hero;
             $scope.$watch(attrs.hero, function(hero) {
@@ -64,7 +64,7 @@ module pow2.ui {
       return {
          restrict: 'E',
          scope:true,
-         templateUrl: '/templates/heroCard.html',
+         templateUrl: '/source/ui/directives/heroCard.html',
          link: function ($scope, element, attrs) {
             $scope.hero = attrs.hero;
             $scope.$watch(attrs.hero, function(hero) {
