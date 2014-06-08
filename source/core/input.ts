@@ -72,7 +72,9 @@ module pow2 {
          });
          var hooks = this._mouseElements;
          window.addEventListener(<string>'mousemove', (ev:MouseEvent) => {
-            _.each(hooks,(hook:NamedMouseElement) => {
+            var l:number = hooks.length;
+            for(var i = 0; i < l; i++){
+               var hook:NamedMouseElement = hooks[i];
                if(ev.srcElement === hook.view.canvas){
                   Input.mouseOnView(ev,hook.view,hook);
                }
@@ -80,8 +82,7 @@ module pow2 {
                   hook.point.set(-1,-1);
                   hook.world.set(-1,-1);
                }
-               return false;
-            });
+            }
          });
       }
 
