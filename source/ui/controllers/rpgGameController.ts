@@ -45,6 +45,7 @@ module pow2.ui {
          $scope.saveGame = function(){
             var data = JSON.stringify(game.model.toJSON());
             $scope.saveState(data);
+            powAlert.show("Game Saved!");
          };
          // TODO: Resets state every page load.  Remove when persistence is desired.
          //resetGame();
