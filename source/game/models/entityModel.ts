@@ -18,78 +18,85 @@
 /// <reference path="../../../types/underscore/underscore.d.ts" />
 module pow2 {
    var maxLevel = 50;
-   var maxAttr = 255;
-   var baseExperience = 3;
-   var experienceFactor = 1.75;
-   export function getXPForLevel(character,level){
-      if(level === undefined){
-         level = character.level;
-      }
 
-      // TODO: Need to add all previous levels to this.
-      return Math.floor(baseExperience * Math.pow(level,experienceFactor));
-   }
-
-   export function getHPForLevel(character:EntityModel,level?:number){
-      if(typeof level === 'undefined') {
-         level = character.get('level');
-      }
-      var vitality = level * character.get('vitality');
-      return Math.floor(vitality * Math.pow(level,1)) + 15;
-      //return vitality * (maxAttr / maxLevel) + 30;
-   }
-
-   export function enemyPlayer(level){
-      var vitality:number = 3;
-      return new EntityModel({
-         strength:3,
-         vitality:vitality,
-         intelligence:1,
-         agility:3,
-         name:"Slime",
-         level:level,
-         hp:Math.floor(Math.pow(level + vitality,1.95)),
-         exp:level * 2
-      });
-   }
-
-   export function friendlyPlayer(level) {
-      var tpl:EntityModel = new EntityModel({
-         name:"Hero",
-         level:level,
-         exp: 0
-      });
-      tpl.set({hp: getHPForLevel(tpl)});
-      return tpl;
+   export interface EntityModelOptions {
+      name:string;
+      icon:string; // The file name of a sprite source file
+      level?:number;
+      hp?:number;
+      maxHP?:number;
+      exp?:number;
+      strength?:number;
+      vitality?:number;
+      intelligence?:number;
+      agility?:number;
+      dead?:boolean;
+      evade:number; // The evasion of the creature.
+      hitPercent:number; // The accuracy of the creature.
    }
 
    export class EntityModel extends Backbone.Model {
-      static DEFAULTS:any = {
+      // Base chance to hit number.
+      static BASE_CHANCE_TO_HIT:number = 168;
+      static BASE_EVASION:number = 48;
+
+      // Evasion = BASE_EVASION + AGL - SUM(ArmorEvasionPenalty)
+      // Hit% = WeaponAccuracy + Char Hit%
+      static DEFAULTS:EntityModelOptions = {
          name:"Nothing",
+         icon:"",
          level:1,
          hp:0,
+         maxHP: 0,
          strength: 5,
          vitality: 4,
          intelligence: 1,
          agility: 1,
-         dead:false
+         dead:false,
+         evade:0,
+         hitPercent:1
       };
       defaults():any {
          return _.extend({},EntityModel.DEFAULTS);
       }
 
-      damage(amount:number){
-         this.set({hp: this.attributes.hp - amount});
+      // Chance to hit = (BASE_CHANCE_TO_HIT + PLAYER_HIT_PERCENT) - EVASION
+      rollHit(defender:EntityModel):boolean {
+         var roll:number = _.random(0,200);
+         var evasion:number = defender.getEvasion();
+         var chance:number = EntityModel.BASE_CHANCE_TO_HIT + this.attributes.hitPercent - evasion;
+         if(roll === 200){
+            return false;
+         }
+         if(roll === 0){
+            return true;
+         }
+         return roll <= chance;
+      }
+
+      damage(amount:number):number{
+         if(amount < 0){
+            return 0;
+         }
+         amount = Math.ceil(amount);
+         this.set({hp: Math.max(0,this.attributes.hp - amount)});
          if(this.attributes.hp < 0){
             this.set({dead:true});
          }
+         return amount;
+      }
+
+      getEvasion():number {
+         return 0;
+      }
+
+      isDefeated():boolean {
+         return this.attributes.hp <= 0;
       }
 
       attack(defender:EntityModel):number{
-         var agility = this.attributes.level * (this.attributes.agility / maxLevel);
-         var damage = Math.floor((this.attributes.strength + agility) * Math.random());
-         defender.damage(damage);
-         return damage;
+         var halfStrength = this.attributes.strength / 2;
+         return defender.damage(halfStrength);;
       }
    }
 }

@@ -1,0 +1,36 @@
+{
+  "name": "pow2",
+  "version": "0.0.1",
+  "homepage": "https://github.com/justindujardin/pow2",
+  "authors": [
+    "Justin DuJardin <justin@dujardinconsulting.com>"
+  ],
+  "keywords": [
+    "game",
+    "rpg",
+    "html5",
+    "angular",
+    "backbone",
+    "typescript"
+  ],
+  "license": "Apache 2",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "backbone": "~1.1.0",
+    "underscore": "~1.5.2",
+    "angular": "~1.2.16",
+    "jquery": "1.9.0",
+    "angular-sanitize": "~1.2.16",
+    "angular-animate": "~1.2.16",
+    "angular-touch": "~1.2.16",
+    "astar": "~0.2.0",
+    "bootstrap": "~3.1.1"
+  }
+}

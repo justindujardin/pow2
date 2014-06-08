@@ -25,10 +25,11 @@ module pow2{
    export class Rect implements IRect{
       point: Point;
       extent: Point;
+      constructor();
       constructor(rect:IRect);
       constructor(point:Point,extent:Point);
       constructor(x:number,y:number,width:number,height:number);
-      constructor(rectOrPointOrX:any,extentOrY?:any,width?:number,height?:number) {
+      constructor(rectOrPointOrX?:any,extentOrY?:any,width?:number,height?:number) {
          if(rectOrPointOrX instanceof Rect){
             this.point = new Point(rectOrPointOrX.point);
             this.extent = new Point(rectOrPointOrX.extent);
@@ -170,6 +171,31 @@ module pow2{
       getTop():number { return this.point.y; }
       getRight():number { return this.point.x + this.extent.x; }
       getBottom():number { return this.point.y + this.extent.y; }
+      getHalfSize():Point {
+         return new Point(this.extent.x / 2, this.extent.y / 2);
+      }
+
+      /**
+       * Add a point to the rect.  This will ensure that the rect
+       * contains the given point.
+       * @param {pow2.Point} value The point to add.
+       */
+      addPoint(value:Point) {
+         if(value.x < this.point.x){
+            this.extent.x = this.extent.x - (value.x - this.point.x);
+            this.point.x = value.x;
+         }
+         if(value.y < this.point.y){
+            this.extent.y = this.extent.y - (value.x - this.point.y);
+            this.point.y = value.y;
+         }
+         if(value.x > this.point.x + this.extent.x){
+            this.extent.x = value.x - this.point.x;
+         }
+         if(value.y > this.point.y + this.extent.y){
+            this.extent.y = value.y - this.point.y;
+         }
+      }
 
       inflate(x:number=1,y:number=1):Rect {
          this.point.x -= x;

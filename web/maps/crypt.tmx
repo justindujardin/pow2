@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="25" height="39" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="combat" value="true"/>
+ </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <layer name="Terrain" width="25" height="39">
   <data encoding="csv">
@@ -44,7 +47,7 @@
 9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9
 </data>
  </layer>
- <objectgroup name="Features" width="25" height="39">
+ <objectgroup draworder="topdown" name="Features" width="25" height="39">
   <object name="wilderness" type="transition" x="64" y="448" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
@@ -111,8 +114,8 @@
    <properties>
     <property name="icon" value="ship.png"/>
     <property name="id" value="cryptsShip"/>
-    <property name="type" value="ship"/>
     <property name="passable" value="true"/>
+    <property name="type" value="ship"/>
    </properties>
   </object>
   <object name="skeletonWizard.png" type="encounter" x="160" y="32" width="16" height="16">

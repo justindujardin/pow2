@@ -21,8 +21,8 @@ module pow2 {
       title:string;
       text:string;
       icon:string;
-      connectComponent():boolean{
-         if(!super.connectComponent()){
+      syncComponent():boolean{
+         if(!super.syncComponent()){
             return false;
          }
          this.title = this.feature.title;

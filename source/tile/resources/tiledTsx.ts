@@ -14,10 +14,19 @@
  limitations under the License.
  */
 
-/// <reference path="../../core/resources/image.ts"/>
-/// <reference path="../../core/resources/xml.ts"/>
+/// <reference path="../../../lib/pow2.d.ts"/>
 /// <reference path="./tiled.ts"/>
 module pow2 {
+
+
+   export interface ITileMeta {
+      image:ImageResource;
+      x:number;
+      y:number;
+      width:number;
+      height:number;
+      data?:any;
+   }
 
    export class TilesetTile {
       id:number;
@@ -36,6 +45,8 @@ module pow2 {
       imageWidth:number = 0;
       imageHeight:number = 0;
       image:ImageResource = null;
+      url:string;
+      firstgid:number = -1;
       tiles:any[] = [];
       prepare(data) {
          var tileSet = this.getRootNode('tileset');
@@ -58,7 +69,13 @@ module pow2 {
             this.imageWidth = parseInt(this.getElAttribute(image,'width') || "0");
             this.imageHeight = parseInt(this.getElAttribute(image,'height') || "0");
             console.log("Tileset source: " + source);
-            this.image = this.loader.load('/maps/' + source,() => {
+            this.url = '/maps/' + source;
+            this.loader.load(this.url,(res:ImageResource) => {
+               this.image = res;
+               if(!res.isReady()){
+                  throw new Error("Failed to load required TileMap image: " + source)
+               }
+
                this.imageWidth = this.image.data.width;
                this.imageHeight = this.image.data.height;
 
@@ -74,16 +91,37 @@ module pow2 {
                _.each(this.tiles,(tile) => {
                   tileLookup[tile.id] = tile.properties;
                });
-               // TODO: uh-oh overwriting tiles....
+               // TODO: uh-oh overwriting tiles...?
                this.tiles = tileLookup;
 
                this.ready();
-               console.log(this);
+               //console.log(this);
             });
          }
          else {
             this.ready();
          }
+      }
+
+      hasGid(gid:number):boolean {
+         return this.firstgid !== -1
+            && gid >= this.firstgid
+            && gid < this.firstgid + this.tiles.length;
+      }
+
+      getTileMeta(gidOrIndex:number):ITileMeta {
+         var index:number = this.firstgid !== -1 ? (gidOrIndex - (this.firstgid)): gidOrIndex;
+         var tilesX = this.imageWidth / this.tilewidth;
+         var x = index % tilesX;
+         var y = Math.floor((index - x) / tilesX);
+         return _.extend(this.tiles[index] || {},{
+            image: this.image,
+            url:this.url,
+            x:x * this.tilewidth,
+            y:y * this.tileheight,
+            width:this.tilewidth,
+            height:this.tileheight
+         });
       }
    }
 }

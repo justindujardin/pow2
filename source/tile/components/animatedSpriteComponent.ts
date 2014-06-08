@@ -15,12 +15,17 @@
  */
 
 /// <reference path="../../../types/backbone/backbone.d.ts" />
-/// <reference path="../../scene/components/movableComponent.ts" />
-/// <reference path="../../scene/sceneComponent.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../../tile/tileObject.ts" />
 /// <reference path="./spriteComponent.ts" />
 
 module pow2 {
+
+   export interface AnimatedSpriteComponentOptions {
+      lengthMS?:number;
+      spriteName:string;
+   }
+
    export class AnimatedSpriteComponent extends TickedComponent {
       host:TileObject;
       _elapsed: number = 0;
@@ -28,9 +33,14 @@ module pow2 {
       lengthMS:number = 500;
       spriteComponent:SpriteComponent;
       spriteName:string;
-      constructor(spriteName:string){
+      constructor(options:AnimatedSpriteComponentOptions={
+         lengthMS:500,
+         spriteName:null
+      }){
          super();
-         this.spriteName = spriteName;
+         if(typeof options !== 'undefined'){
+            _.extend(this,options);
+         }
       }
 
       connectComponent():boolean {
@@ -43,13 +53,13 @@ module pow2 {
             return false;
          }
          var sprites = <SpriteComponent[]>this.host.findComponents(SpriteComponent);
-         this.spriteComponent = _.where(sprites,{name:this.spriteName})[0];
+         this.spriteComponent = <SpriteComponent>_.where(sprites,{name:this.spriteName})[0];
          return !!this.spriteComponent;
       }
       tick(elapsed:number){
          this._elapsed += elapsed;
          if(this._elapsed >= this.lengthMS){
-            this.trigger('anim:done');
+            this.trigger('animation:done',this);
             this._elapsed = this._elapsed % this.lengthMS;
          }
          super.tick(elapsed);

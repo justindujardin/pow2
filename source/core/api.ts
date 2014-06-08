@@ -1,3 +1,5 @@
+///<reference path="../../types/underscore/underscore.d.ts"/>
+
 /**
  Copyright (C) 2013 by Justin DuJardin
 
@@ -14,14 +16,44 @@
  limitations under the License.
  */
 
-// Tell the typescript compiler that mixpanel is defined elsewhere.
-declare var mixpanel: any;
-
 module pow2 {
+
+   export interface IGameItem {
+      name:string; // The item name
+      cost:number; // The cost of this item
+      icon:string; // Sprite icon name, e.g. LongSword.png
+      usedBy?:any[]; // `HeroType`s that can use this item.
+   }
+
+   export interface IGameWeapon extends IGameItem {
+      attack:number; // Damage value
+      hit:number; // 0-100%
+   }
+
+   export interface IGameArmor extends IGameItem {
+      defense:number; // Defensive value
+      evade:number; // Value to add to evasion <= 0
+   }
+
+   export interface ISpriteMeta {
+      width: number;// Pixel width
+      height: number;// Pixel height
+      cellWidth?:number; // Optional frame width (defaults to 16px)
+      cellHeight?:number; // Optional frame height (defaults to 16px)
+      frames: number;// The number of frames the sprite has.
+      source: string; // The spritesheet source map
+      x: number; // Pixel offset x in the sprite sheet.
+      y: number; // Pixel offset y in the sprite sheet.
+   }
+
+
    export var data = {
       maps: {},
       sprites: {},
-      items:{}
+      items:{},
+      creatures:[],
+      weapons:[],
+      armor:[]
    };
 
    /**
@@ -40,23 +72,61 @@ module pow2 {
    export function registerMap(name:string,value:Object){
       data.maps[name] = value;
    }
+
+   /**
+    * Describe a dictionary of sprites.  This can be use to
+    */
+   export function describeSprites(value:Object){
+      for(var prop in value){
+         if(value.hasOwnProperty(prop)){
+            data.sprites[prop] = _.extend(data.sprites[prop] || {},value[prop]);
+         }
+      }
+   }
+
+   /**
+    * Register a dictionary of sprite meta data.  This is for automatically
+    * generated sprite sheets, and only defaults to setting information if
+    * it has not already been set by a call to describeSprites.
+    */
    export function registerSprites(name:string,value:Object){
       for(var prop in value){
          if(value.hasOwnProperty(prop)){
-            data.sprites[prop] = value[prop];
+            data.sprites[prop] = _.defaults(data.sprites[prop] || {},value[prop]);
          }
       }
+   }
 
+   export function getSpriteMeta(name:string):ISpriteMeta {
+      return <ISpriteMeta>data.sprites[name];
+   }
+
+   export function registerCreatures(level,creatures){
+      _.each(creatures,(c) => {
+         data.creatures.push(_.extend(c,{level:level}));
+      });
+   }
+   export function registerWeapons(level,weapons:IGameWeapon[]){
+      _.each(weapons,(c) => {
+         var item = _.extend(c,{
+            level:level,
+            itemType:"weapon"
+         });
+         data.weapons.push(item);
+      });
+   }
+   export function registerArmor(level,items:IGameArmor[]){
+      _.each(items,(c) => {
+         data.armor.push(_.extend(c,{
+            level:level,
+            itemType:"armor"
+         }));
+      });
    }
    export function getMap(name:string){
       return data.maps[name];
    }
    export function getMaps(){
       return data.maps;
-   }
-   export function track(name:string,properties:Object){
-      if(typeof mixpanel !== 'undefined'){
-         mixpanel.track(name,properties);
-      }
    }
 }

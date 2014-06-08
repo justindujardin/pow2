@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="10" height="7" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" width="16" height="11" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="music" value="/data/music/CombatTheme2"/>
+ </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
- <layer name="Terrain" width="10" height="7">
+ <layer name="Terrain" width="16" height="11">
   <data encoding="csv">
-37,66,37,69,37,66,69,37,66,69,
-37,46,46,46,46,46,46,46,46,37,
-69,46,46,46,46,46,46,46,46,37,
-46,46,46,46,46,46,46,46,46,69,
-37,46,46,46,46,46,46,46,46,69,
-69,46,46,46,46,46,46,46,46,66,
-66,37,69,66,37,66,69,37,37,37
+37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,
+37,46,46,46,46,46,46,46,46,46,46,46,46,46,46,37,
+37,46,46,46,46,46,46,46,46,46,46,46,46,46,46,37,
+37,46,46,46,46,46,46,46,46,46,46,46,46,46,46,37,
+37,46,46,46,46,46,46,46,46,46,46,46,46,46,46,37,
+37,46,46,46,46,46,46,46,46,46,46,46,46,46,46,37,
+37,46,46,46,46,46,46,46,46,46,46,46,46,46,46,37,
+37,46,46,46,46,46,46,46,46,46,46,46,46,46,46,37,
+37,46,46,46,46,46,46,46,46,46,46,46,46,46,46,37,
+37,46,46,46,46,46,46,46,46,46,46,46,46,46,46,37,
+37,37,37,37,37,37,37,37,37,37,37,37,37,37,37,37
 </data>
  </layer>
- <objectgroup name="Features" width="10" height="7">
-  <object name="enemy" type="combatant" x="32" y="48" width="16" height="16"/>
-  <object name="friendly" type="combatant" x="112" y="48" width="16" height="16"/>
+ <objectgroup draworder="topdown" name="Features" width="16" height="11">
+  <object name="e8" type="combatant" x="112" y="80" width="16" height="16"/>
+  <object name="p2" type="combatant" x="192" y="64" width="16" height="16"/>
+  <object name="e9" type="combatant" x="112" y="120" width="16" height="16"/>
+  <object name="e7" type="combatant" x="112" y="40" width="16" height="16"/>
+  <object name="e4" type="combatant" x="72" y="40" width="16" height="16"/>
+  <object name="e1" type="combatant" x="32" y="40" width="16" height="16"/>
+  <object name="e2" type="combatant" x="32" y="80" width="16" height="16"/>
+  <object name="e3" type="combatant" x="32" y="120" width="16" height="16"/>
+  <object name="e5" type="combatant" x="72" y="80" width="16" height="16"/>
+  <object name="e6" type="combatant" x="72" y="120" width="16" height="16"/>
+  <object name="p3" type="combatant" x="192" y="96" width="16" height="16"/>
+  <object name="p4" type="combatant" x="192" y="128" width="16" height="16"/>
+  <object name="p1" type="combatant" x="192" y="32" width="16" height="16"/>
  </objectgroup>
 </map>

@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013 by Justin DuJardin
+ Copyright (C) 2014 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,23 +14,27 @@
  limitations under the License.
  */
 
-/// <reference path="../../scene/sceneObjectRenderer.ts" />
+/// <reference path="../../../lib/pow2.d.ts"/>
 /// <reference path="../tileObject.ts" />
 /// <reference path="../tileMapView.ts" />
 /// <reference path="../tileMap.ts" />
 
 module pow2 {
    export class TileMapRenderer extends pow2.SceneObjectRenderer {
-      buffer:HTMLCanvasElement[][] = null;
-      bufferMapName:string = null;
+      buffer:HTMLCanvasElement[][] = null; // A 2d grid of rendered canvas textures.
+      bufferMapName:string = null; // The name of the rendered map.  If the map name changes, the buffer is re-rendered.
+      bufferComplete:boolean = false; // True if the entire map was rendered with all textures loaded and ready.
+
+      private _clipRect:Rect = new pow2.Rect();
+      private _renderRect:Rect = new pow2.Rect();
+
       render(object:TileMap, view:TileMapView) {
-         var sheets = {};
-         var squareUnits = 16;
+         var squareUnits = 8;
          var squareSize = squareUnits * view.unitSize;
          if(!object.isLoaded()){
             return;
          }
-         if(this.buffer === null || this.bufferMapName === null || this.bufferMapName !== object.mapName){
+         if(!this.bufferComplete || this.buffer === null || this.bufferMapName === null || this.bufferMapName !== object.mapName){
             var tileUnitSize = squareSize / view.unitSize;
             // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
             var columns = Math.ceil(object.bounds.extent.x / squareUnits);
@@ -39,6 +43,8 @@ module pow2 {
             for(var col:number = 0; col < columns; col++){
                this.buffer[col] = new Array(rows);
             }
+            this.bufferComplete = true;
+            var layers:tiled.ITiledLayer[] = object.getLayers();
             for(var col:number = 0; col < columns; col++){
                for(var row:number = 0; row < rows; row++){
                   var xOffset = col * tileUnitSize;
@@ -48,23 +54,29 @@ module pow2 {
                   this.buffer[col][row] = view.renderToCanvas(squareSize,squareSize,(ctx) => {
                      for(var x = xOffset; x < xEnd; x++){
                         for(var y = yOffset; y < yEnd; y++){
-                           var texture = object.getTerrainTexture(x, y);
-                           if (texture) {
-                              // Keep this inline to avoid more function calls.
-                              var desc, dstH, dstW, dstX, dstY, srcH, srcW, srcX, srcY;
-                              desc = pow2.data.sprites[texture];
-                              var image = sheets[desc.source] = sheets[desc.source] || view.getSpriteSheet(desc.source);
-                              if (!image || !image.isReady()) {
-                                 continue;
+
+                           // Each layer
+                           _.each(layers,(l:tiled.ITiledLayer) => {
+                              var gid:number = object.getTileGid(l.name,x, y);
+                              var meta:ITileMeta = object.getTileMeta(gid);
+                              if (meta) {
+                                 var image = meta.image;
+                                 // Keep this inline to avoid more function calls.
+                                 var dstH, dstW, dstX, dstY, srcH, srcW, srcX, srcY;
+                                 if (!image || !image.isReady()) {
+                                    this.bufferComplete = false;
+                                    return;
+                                 }
+                                 srcX = meta.x;
+                                 srcY = meta.y;
+                                 srcW = meta.width;
+                                 srcH = meta.height;
+                                 dstX = (x - xOffset) * view.unitSize;
+                                 dstY = (y - yOffset) * view.unitSize;
+                                 dstW = dstH = view.unitSize;
+                                 ctx.drawImage(image.data, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
                               }
-                              srcX = desc.x;
-                              srcY = desc.y;
-                              srcW = srcH = view.unitSize;
-                              dstX = (x - xOffset) * view.unitSize;
-                              dstY = (y - yOffset) * view.unitSize;
-                              dstW = dstH = view.unitSize;
-                              ctx.drawImage(image.data, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
-                           }
+                           });
                         }
                      }
                      // Append chunks to body (DEBUG HACKS)
@@ -77,16 +89,17 @@ module pow2 {
             }
             this.bufferMapName = object.mapName;
          }
-         var squareScreen = view.worldToScreen(squareUnits);
+         var squareScreen = view.fastWorldToScreenNumber(squareUnits);
 
-         var clipRect = view.worldToScreen(view.getCameraClip());
+         view.fastWorldToScreenRect(view.getCameraClip(),this._clipRect);
          var cols:number = this.buffer.length;
          var rows:number = this.buffer[0].length;
          // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
          for(var col:number = 0; col < cols; col++){
             for(var row:number = 0; row < rows; row++){
-               var renderRect:Rect = view.worldToScreen(new Rect(col * squareUnits,row * squareUnits,squareUnits,squareUnits));
-               if(!renderRect.intersect(clipRect)){
+               this._renderRect.set(col * squareUnits - 0.5,row * squareUnits - 0.5,squareUnits,squareUnits);
+               view.fastWorldToScreenRect(this._renderRect,this._renderRect);
+               if(!this._renderRect.intersect(this._clipRect)){
                   continue;
                }
                //console.log("Tile " + renderRect.toString())
@@ -97,10 +110,10 @@ module pow2 {
                   squareSize,
                   squareSize,
                   // Scaled to camera
-                  renderRect.point.x,
-                  renderRect.point.y,
-                  squareScreen + 1,
-                  squareScreen + 1);
+                  this._renderRect.point.x,
+                  this._renderRect.point.y,
+                  squareScreen,
+                  squareScreen);
             }
          }
       }

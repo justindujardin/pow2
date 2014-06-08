@@ -1,7 +1,7 @@
 {
   "name": "pow2",
   "version": "0.0.1",
-  "description": "Powers of Two - TypeScript RPG game.",
+  "description": "Pow2 - TypeScript RPG game.",
   "main": "Gruntfile.js",
   "directories": {
     "example": "examples"
@@ -14,24 +14,24 @@
   "license": "Apache2",
   "readmeFilename": "README.md",
   "dependencies": {
-    "express": "3.1.x",
+    "express": "3.4.8",
     "grunt": "~0.4.0",
-    "grunt-contrib-concat": "~0.3.0",
-    "q": "~0.9.7",
+    "q": "1.0.0",
     "pngjs": "~0.4.0",
     "underscore": "~1.5.2",
     "binpacking": "0.0.1",
-    "grunt-contrib-uglify": "~0.2.7",
-    "grunt-typescript": "~0.2.7",
-    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-uglify": "~0.3.0",
+    "grunt-typescript": "~0.2.8",
+    "grunt-contrib-copy": "0.5.0",
     "graceful-fs": "~2.0.1",
-    "grunt-recess": "~0.4.0",
-    "fbgraph": "~0.2.8",
+    "grunt-contrib-less": "0.10.0",
     "ejs": "~0.8.4",
-    "xml2js": "~0.4.0"
+    "xml2js": "~0.4.0",
+    "bower": "~1.3.2"
   },
   "scripts": {
-    "test": "npm install && ./node_modules/.bin/grunt"
+    "test": "npm install && ./node_modules/.bin/grunt",
+    "postinstall": "./node_modules/.bin/bower install && ./node_modules/.bin/grunt"
   },
   "devDependencies": {
     "grunt-contrib-watch": "~0.5.3",

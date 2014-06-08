@@ -83,9 +83,45 @@ module pow2 {
          return type;
       }
 
-      load(sources:Array<string>,done:Function):Array<Resource>;
-      load(source:string,done:Function):Resource;
-      load(sources:any,done:any):any{
+      loadAsType(source:string,resourceType:any,done?:any):IResource{
+         var completeCb:any = (obj:any) => {
+            if(this.world && done){
+               this._doneQueue.push({cb:done,result:obj});
+            }
+            else if(done){
+               _.defer(function() { done(obj); });
+            }
+         };
+         if(!resourceType){
+            completeCb(null);
+            console.error("Unknown resource type: " + source);
+            return;
+         }
+
+         var resource:Resource = this._cache[source];
+         if(!resource){
+            resource = this._cache[source] = new resourceType(source,this);
+            resource.setLoader(this);
+         }
+         else if(resource.isReady()){
+            return completeCb(resource);
+         }
+
+         resource.once('ready',(resource:IResource) => {
+            console.log("Loaded asset: " + resource.url);
+            completeCb(resource);
+         });
+         resource.once('failed',(resource:IResource) => {
+            console.log("Failed to load asset: " + resource.url);
+            completeCb(null);
+         });
+         resource.load();
+         return resource;
+      }
+
+      load(sources:Array<string>,done?:Function):Array<Resource>;
+      load(source:string,done?:Function):Resource;
+      load(sources:any,done?:any):any{
          var results:Array<Resource> = [];
          var loadQueue:number = 0;
          if(!_.isArray(sources)){

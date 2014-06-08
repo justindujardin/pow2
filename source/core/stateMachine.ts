@@ -17,11 +17,13 @@
 /// <reference path="../../types/underscore/underscore.d.ts" />
 /// <reference path="./state.ts" />
 /// <reference path="./world.ts" />
+/// <reference path="./events.ts" />
 module pow2 {
 
    // State Machine Interfaces
    // -------------------------------------------------------------------------
-   export interface IStateMachine {
+   export interface IStateMachine extends IEvents {
+      paused:boolean;
       update(data:any);
       addState(state:IState);
       addStates(states:IState[]);
@@ -36,25 +38,13 @@ module pow2 {
 
    // Implementation
    // -------------------------------------------------------------------------
-   export class StateMachine implements IStateMachine, IWorldObject {
+   export class StateMachine extends Events implements IStateMachine {
       defaultState:string = null;
       states:IState[] = [];
       private _currentState:IState = null;
       private _previousState:IState = null;
       private _newState:boolean = false;
-
-      // IWorldObject interface
-      world:IWorld;
-      onAddToWorld(world){
-         world.time.addObject(this);
-      }
-      onRemoveFromWorld(world){
-         world.time.removeObject(this);
-      }
-
-      tick(elapsed:number){
-         this.update(elapsed);
-      }
+      paused:boolean = false;
 
       update(data:any){
          this._newState = false;
@@ -62,7 +52,7 @@ module pow2 {
             this.setCurrentState(this.defaultState);
          }
          if(this._currentState !== null){
-            this._currentState.tick(this);
+            this._currentState.update(this);
          }
          // Didn't transition, make sure previous === current for next tick.
          if(this._newState === false && this._currentState !== null){
@@ -95,9 +85,11 @@ module pow2 {
          this._previousState = this._currentState;
          this._currentState = state;
          if(oldState){
+            this.trigger("exit",oldState,state);
             oldState.exit(this);
          }
          state.enter(this);
+         this.trigger("enter",state,oldState);
          return true;
       }
       getPreviousState():IState{
@@ -110,4 +102,22 @@ module pow2 {
          return state;
       }
    }
+
+   /**
+    * A state machine that updates with every game tick.
+    */
+   export class TickedStateMachine extends StateMachine implements IWorldObject {
+      // IWorldObject interface
+      world:IWorld;
+      onAddToWorld(world){
+         world.time.addObject(this);
+      }
+      onRemoveFromWorld(world){
+         world.time.removeObject(this);
+      }
+      tick(elapsed:number){
+         this.update(elapsed);
+      }
+   }
+
 }

@@ -14,7 +14,6 @@
  limitations under the License.
  */
 
-/// <reference path="./objects/gameFeatureObject.ts" />
 /// <reference path="../tile/tileComponent.ts" />
 /// <reference path="./gameTileMap.ts" />
 module pow2 {
@@ -22,8 +21,9 @@ module pow2 {
       feature:any = null;
       host:GameFeatureObject = null;
       tileMap:GameTileMap;
-      connectComponent():boolean{
-         if(!super.connectComponent() || !(this.tileMap instanceof GameTileMap)){
+      syncComponent():boolean{
+         this.tileMap = this.host.tileMap;
+         if(!super.syncComponent() || !(this.tileMap instanceof GameTileMap)){
             return false;
          }
          this.feature = this.host.feature;

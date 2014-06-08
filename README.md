@@ -1,20 +1,16 @@
-Pow2
-================
-[![Build Status](https://secure.travis-ci.org/justindujardin/pow2.png)](http://travis-ci.org/justindujardin/pow2)
+# Pow2 [![Build Status](https://secure.travis-ci.org/justindujardin/pow2.png)](http://travis-ci.org/justindujardin/pow2)
 
-This is originally based on the "[Eight-Bit Universal Role Playing](https://github.com/pents90/eburp)".  All of the tooling and core game classes are under construction.  It is built using Node.JS and a mix of CoffeeScript/TypeScript, with the latter being the eventual target language.  The developer tools require only Node.JS and a text editor, and the game deploys with little effort to Heroku and integrates with Facebook.
+Pow is going to be a real game one day.  For now it's an experimental Typescript/AngularJS RPG game.
 
-## Build Instructions
+> You need to have Node.JS and Grunt.JS installed, and a basic familiarity with executing commands in your system terminal.
 
-You need to have Node.JS and Grunt.JS installed, and a basic familiarity with executing commands in your system terminal.
+## Getting Started
+
+You should really only need Node.JS and Grunt.  Let's do it:
 
 ### Node.JS
 
-If you don't already have Node.JS, don't worry, there's an installer for your platform.  Go ahead and get it, we'll wait.
-
-Download: [NodeJS](http://nodejs.org/)
-
-Once you're done with that let's make sure it's installed properly.  Type these two commands in your terminal window:
+[Download](http://nodejs.org/) and install it.
 
 > node --version
 >
@@ -22,11 +18,9 @@ Once you're done with that let's make sure it's installed properly.  Type these 
 
 If those commands both return a value, and no error message, you're ready to go.
 
-### Grunt.JS
+### Grunt
 
-Once you have Node.JS installed you can install Grunt.JS via NPM, and be one step closer to working on your game!
-
-Enter these commands in your terminal to install the `grunt` utility.
+Install the `grunt` utility.
 
 > npm install -g grunt-cli
 >
@@ -35,18 +29,23 @@ Enter these commands in your terminal to install the `grunt` utility.
 If you receive errors, you may need to run this command as an administrator on your OS.  For more detailed information, see
 the grunt [Getting Started Guide](http://gruntjs.com/getting-started#installing-the-cli).
 
-Once you've installed grunt and it echos its version back without error, you're ready to install npm dependencies and then
-run your game!
+## Installing
 
-### Build it!
+Install the npm dependencies:
 
-Now that you have `node`, `npm`, and `grunt` installed--you're good to go.  Let's start up the developer workflow and test
-out the game.  Type the following command in to your terminal:
+> npm install
 
-> grunt watch
+## Developing
 
-This command should print information about executing some tasks, and eventually settle down and say that it's run a server at http://localhost:5215/.
-Once this happens, just open your browser to that page and you're ready to go.
+Once you've installed the project, start up the developer workflow using grunt:
 
-While the grunt watch task is running the game assets will be rebuilt if a file (Sprites, Maps, Code) changes.  This means you
+> grunt develop
+
+This command start a long-running process that will build the game files, and host a web server at (http://localhost:5215/).
+If a file (Sprites, Maps, Code) changes while this task is running, it will automatically build new outputs.  This means you
 can edit your files and refresh your webpage a few moments later when the new build is done.  No muss, no fuss, just game stuff.
+
+### Committing
+
+Commit messages should [follow conventions](https://github.com/justindujardin/pow2/blob/master/CONVENTIONS.md)
+

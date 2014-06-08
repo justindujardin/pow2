@@ -1,0 +1,132 @@
+
+// Stores
+// --------------------------------------------------------------------------
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  .ebp {
+    padding:0 25px;
+  }
+}
+
+.store {
+  text-align:center;
+  .name {
+    h1 {
+      margin:10px;
+      font-size: 24px;
+    }
+  }
+  .inventory {
+    text-align:center;
+    padding:0;
+    .item-price {
+      color: #E8C627;
+      padding-left:10px;
+    }
+  }
+  ul {
+    padding:0;
+    margin:0;
+    text-align: left;
+    list-style-type: none;
+    max-width: 100%;
+    li {
+      cursor: pointer;
+      border:1px solid transparent;
+      padding:5px;
+      font-size: 16px;
+      margin-left:0;
+      margin-right:0;
+      .item-name {
+        display: inline-block;
+        min-width: 150px;
+        max-width: 160px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .icon {
+        line-height: 28px;
+        img {
+          width:32px;
+        }
+      }
+      &:hover {
+        * {
+          color:#0FF !important;
+        }
+      }
+    }
+  }
+}
+
+
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+  .game-container{
+    .store {
+      .name {
+        h1 {
+          font-size: 32px;
+        }
+      }
+      .inventory{
+        .item-name {
+          max-width: 160px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+        }
+      }
+    }
+    .message {
+      .text {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+  .game-container{
+    .store {
+      ul {
+        li {
+          font-size: 18px;
+          .item-name {
+            min-width: 200px;
+            font-size:20px;
+          }
+          .item-price {
+            font-size: 18px;
+            min-width: 50px;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) {
+  .game-container{
+    .store {
+      ul {
+        li {
+          font-size: 20px;
+          .item-name {
+            min-width: 250px;
+            font-size:24px;
+          }
+          .item-price {
+            font-size: 20px;
+            min-width: 50px;
+          }
+        }
+      }
+    }
+  }
+}

@@ -24,12 +24,14 @@ module pow2 {
       type: string; // TODO: enum?
       passable:boolean;
       groups:any;
+      frame:number;
       constructor(options:any) {
          super(_.omit(options || {},["x","y","type"]));
          this.feature = options;
          this.point.x = options.x;
          this.point.y = options.y;
          this.type = options.type;
+         this.frame = typeof options.frame !== 'undefined' ? options.frame : 0;
          this.groups = typeof options.groups === 'string' ? JSON.parse(options.groups) : options.groups;
       }
    }

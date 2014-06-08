@@ -14,15 +14,15 @@
  limitations under the License.
  */
 
-/// <reference path="../../../core/point.ts" />
+/// <reference path="../../../../lib/pow2.d.ts" />
 /// <reference path="../../../tile/tileComponent.ts" />
 /// <reference path="../gameFeatureComponent.ts" />
 module pow2 {
    export class PortalFeatureComponent extends GameFeatureComponent {
       map:string;
       target:Point;
-      connectComponent():boolean{
-         if(!super.connectComponent()){
+      syncComponent():boolean{
+         if(!super.syncComponent()){
             return false;
          }
          this.map = this.feature.target;

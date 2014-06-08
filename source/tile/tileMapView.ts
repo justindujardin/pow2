@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../scene/sceneObject.ts"/>
+/// <reference path="../../lib/pow2.d.ts"/>
 /// <reference path="./tileObject.ts"/>
 /// <reference path="./tileMap.ts"/>
 /// <reference path="./components/tileMapCameraComponent.ts"/>
@@ -130,43 +130,6 @@ module pow2{
             this.context.restore();
          }
          return this;
-      }
-
-
-      /*
-       * Render Tile debug information. TODO: This is horrendous.
-       */
-      debugRender(debugStrings: string[] = []) {
-         var clipRect:Rect = this.getCameraClip();
-         var screenClip:Rect = this.worldToScreen(clipRect);
-         if (debugStrings == null) {
-            debugStrings = [];
-         }
-         debugStrings.push("Camera: (" + this.camera.point.x + "," + this.camera.point.y + ")");
-         debugStrings.push("Clip: (" + clipRect.point.x + "," + clipRect.point.y + ") (" + clipRect.extent.x + "," + clipRect.extent.y + ")");
-         this.context.strokeStyle = "#FF2222";
-         this.context.strokeRect(screenClip.point.x, screenClip.point.y, screenClip.extent.x, screenClip.extent.y);
-         var xEnd = clipRect.getRight();
-         var yEnd = clipRect.getBottom();
-         this.context.strokeStyle = "#FF2222";
-         for(var x = clipRect.point.x; x < xEnd; x++){
-            for(var y = clipRect.point.y; y < yEnd; y++){
-               var tile = this.tileMap.getTerrain(x, y);
-               if (tile && !tile.passable) {
-                  continue;
-               }
-               this.context.strokeRect(x * this.unitSize * this.cameraScale, y * this.unitSize * this.cameraScale, this.cameraScale * this.unitSize, this.cameraScale * this.unitSize);
-            }
-         }
-
-         this.context.strokeStyle = "#2222FF";
-         var tiles:TileObject[] = this.scene.objectsByType(pow2.TileObject);
-         _.each(tiles, (object:any) => {
-            var point;
-            point = object.renderPoint || object.point;
-            return this.context.strokeRect(point.x * this.unitSize * this.cameraScale, point.y * this.unitSize * this.cameraScale, this.cameraScale * this.unitSize, this.cameraScale * this.unitSize);
-         });
-         return super.debugRender(debugStrings);
       }
    }
 }

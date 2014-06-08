@@ -1,0 +1,79 @@
+
+.game-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 10;
+
+  .options, .trigger {
+    font-size: 42px;
+  }
+  .trigger {
+    position: static;
+    top: 0;
+    left:0;
+
+  }
+  a {
+    color:#fff;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .party {
+    .ebp {
+      margin-bottom:10px;
+    }
+  }
+
+  .navigation {
+    position: fixed;
+    left: -10px;
+    top: 0;
+    bottom: 0;
+    min-width: 50px;
+    ul.options {
+      list-style-type: none;
+      padding:10px;
+    }
+  }
+
+  .views {
+    display: none;
+    overflow: auto;
+    overflow-x:hidden;
+    &.open{
+      display: block;
+    }
+
+    > * {
+      position: fixed;
+      top:0;
+      left:75px;
+      bottom:0;
+      right:0;
+    }
+  }
+}
+
+.menu-overlay {
+  padding:5px;
+  position: absolute;
+  top: 0;
+  right:0;
+  margin:5px;
+  z-index: 150;
+  > span {
+    .opacity(0.8);
+    color: #ffffff;
+    text-align: center;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+    font-size:48px;
+    cursor: pointer;
+    &:hover {
+      .opacity(1);
+    }
+  }
+}

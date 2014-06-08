@@ -17,6 +17,7 @@
 /// <reference path="../../tile/tileObject.ts" />
 /// <reference path="../gameTileMap.ts" />
 /// <reference path="../models/entityModel.ts" />
+/// <reference path="../../tile/components/spriteComponent.ts" />
 
 module pow2 {
    export class GameEntityObject extends TileObject {
@@ -31,6 +32,21 @@ module pow2 {
          this.type = options.type || "player";
          this.groups = typeof options.groups === 'string' ? JSON.parse(options.groups) : options.groups;
          this.model = options.model || new EntityModel(options);
+      }
+
+      isDefeated():boolean {
+         return this.model.isDefeated();
+      }
+
+      getIcon() {
+         if(this.icon){
+            return this.icon;
+         }
+         var spriteComponent = <SpriteComponent>this.findComponent(SpriteComponent);
+         if(spriteComponent){
+            return spriteComponent.icon;
+         }
+         return null;
       }
    }
 }

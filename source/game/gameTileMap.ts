@@ -16,20 +16,43 @@
 
 /// <reference path="../tile/tileMap.ts" />
 /// <reference path="../tile/resources/tiled.ts" />
-/// <reference path="./components/features/dialogFeatureComponent.ts" />
-/// <reference path="./components/features/combatFeatureComponent.ts" />
-/// <reference path="./components/features/portalFeatureComponent.ts" />
-/// <reference path="./components/features/shipFeatureComponent.ts" />
-/// <reference path="./components/features/storeFeatureComponent.ts" />
+/// <reference path="../../lib/pow2.d.ts" />
 
 module pow2 {
+   declare var astar:any;
+   declare var Graph:any;
+
    export class GameTileMap extends TileMap {
       featureHash:any = {};
+      graph:any;
       loaded(){
          super.loaded();
+         this.buildAStarGraph();
+         this.addComponent(new GameFeatureInputComponent());
+
+         // If there are map properties, take them into account.
+         if(this.map.properties){
+            var props = this.map.properties;
+            // Does this map have random encounters?
+            if(props.combat === true){
+               this.addComponent(new CombatEncounterComponent());
+            }
+            // Does it have a music track?
+            if(typeof props.music === 'string'){
+               this.addComponent(new SoundComponent({
+                  url:<string>props.music,
+                  volume:0.5,
+                  loop:true
+               }));
+            }
+         }
+
          this.buildFeatures();
       }
       unloaded(){
+         this.removeComponentByType(GameFeatureInputComponent);
+         this.removeComponentByType(CombatEncounterComponent);
+         this.removeComponentByType(SoundComponent);
          this.removeFeaturesFromScene();
          super.unloaded();
       }
@@ -110,6 +133,9 @@ module pow2 {
             case 'encounter':
                componentType = CombatFeatureComponent;
                break;
+            case 'temple':
+               componentType = TempleFeatureComponent;
+               break;
             default:
                if(feature && feature.action === 'TALK'){
                   componentType = DialogFeatureComponent;
@@ -123,6 +149,63 @@ module pow2 {
             }
          }
          return object;
+      }
+
+      // Path Finding (astar.js)
+      buildAStarGraph() {
+         var grid = new Array(this.bounds.extent.x);
+         for(var x:number = 0; x < this.bounds.extent.x; x++){
+            grid[x] = new Array(this.bounds.extent.y);
+         }
+         for(var x:number = 0; x < this.bounds.extent.x; x++){
+            for(var y:number = 0; y < this.bounds.extent.y; y++){
+               var tile = this.getTerrain("Terrain",x,y);
+               grid[x][y] = (tile && tile.passable) ? 1 : 1000;
+            }
+         }
+
+         // TOOD: Tiled Editor format is KILLIN' me.
+         _.each(this.features.objects,(o:any) => {
+            var obj:any = o.properties;
+            if(!obj){
+               return;
+            }
+            var collideTypes:string[] = ['temple','store','sign'];
+            if(obj.passable === true || !obj.type){
+               return;
+            }
+            if(_.indexOf(collideTypes, obj.type.toLowerCase()) !== -1){
+               var x:number = o.x / o.width | 0;
+               var y:number = o.y / o.height | 0;
+               if(!obj.passable && this.bounds.pointInRect(x,y)){
+                  grid[x][y] = 100;
+               }
+            }
+         });
+         this.graph = new Graph(grid);
+      }
+
+      calculatePath(from:Point,to:Point):Point[]{
+         // Treat out of range errors as non-critical, and just
+         // return an empty array.
+         if(from.x >= this.graph.nodes.length){
+            return [];
+         }
+         if(from.y >= this.graph.nodes[from.x].length){
+            return [];
+         }
+         if(to.x >= this.graph.nodes.length){
+            return [];
+         }
+         if(to.y >= this.graph.nodes[to.x].length){
+            return [];
+         }
+         var start = this.graph.nodes[from.x][from.y];
+         var end = this.graph.nodes[to.x][to.y];
+         var result = astar.search(this.graph.nodes, start, end);
+         return _.map(result,(graphNode:any) => {
+            return new Point(graphNode.pos.x,graphNode.pos.y);
+         });
       }
 
    }

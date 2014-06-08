@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="29" height="51" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="combat" value="true"/>
+ </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <layer name="Terrain" width="29" height="51">
   <data encoding="csv">
@@ -56,7 +59,7 @@
 39,39,39,39,55,55,55,55,55,55,55,39,39,39,39,39,39,39,39,55,55,55,39,39,39,39,39,39,39
 </data>
  </layer>
- <objectgroup name="Features" width="29" height="51">
+ <objectgroup draworder="topdown" name="Features" width="29" height="51">
   <object name="wilderness" type="transition" x="224" y="736" width="16" height="16">
    <properties>
     <property name="icon" value="darkDoor.png"/>

@@ -1,0 +1,137 @@
+///<reference path="../../lib/pow2.d.ts"/>
+//// Creatures
+pow2.registerCreatures(6,[
+   //// LEVEL 6
+   {
+      "name" : "Spectre",
+      "icon" : "spectre.png",
+      "groups" : ["undead"],
+      "meleeMinDamage" : 3,
+      "strength": 15,
+      "rangeMinDamage" : 3,
+      "rangeMaxDamage" : 8,
+      "rangeAnimation" : "animHotBallSmall.png",
+      "hp": 36,
+      "exp": 80,
+      "numAttacks" : 1,
+      "numMoves" : 1,
+      "armorClass" : 11,
+      "resistance" : 4,
+      "hitModifier" : 8,
+      "description" : "A mysterious undead form, the insidious Spectre is nearly invisible, making it a very difficult opponent to defeat."
+   },
+   {
+      "name" : "Two-headed Troll",
+      "icon" : "twoHeadedTroll.png",
+      "groups" : ["outdoor", "dungeon", "tundra"],
+      "meleeMinDamage" : 2,
+      "strength": 6,
+      "rangeMinDamage" : 2,
+      "rangeMaxDamage" : 6,
+      "rangeAnimation" : "animRockSmall1.png",
+      "hp": 45,
+      "exp": 85,
+      "numAttacks" : 2,
+      "numMoves" : 1,
+      "armorClass" : 10,
+      "resistance" : 4,
+      "hitModifier" : 8,
+      "description" : "While Two-headed Trolls are notorious for their continuous self-bickering, this belies their coordination and skill in combat."
+   },
+   {
+      "name" : "Cave Peeper",
+      "icon" : "cavePeeper.png",
+      "groups" : ["outdoor", "dungeon"],
+      "meleeMinDamage" : 6,
+      "strength": 12,
+      "hp": 39,
+      "exp": 68,
+      "numAttacks" : 1,
+      "numMoves" : 1,
+      "armorClass" : 9,
+      "resistance" : 7,
+      "hitModifier" : 9,
+      "spells" : [
+         {
+            "name" : "Wink",
+            "weight" : 50
+         }
+      ],
+      "description" : "The unnerving Cave Peeper is a very dangerous creature, with the astonishing knack of suddenly appearing right beside an unwary adventurer."
+   },
+   {
+      "name" : "Oliphant Charger",
+      "icon" : "oliphant3.png",
+      "groups" : ["desert"],
+      "meleeMinDamage" : 2,
+      "strength": 10,
+      "hp": 33,
+      "exp": 75,
+      "numAttacks" : 2,
+      "numMoves" : 2,
+      "armorClass" : 9,
+      "resistance" : 5,
+      "hitModifier" : 8,
+      "description" : "The Charger is not a quick-witted Oliphant, but it relies on its superior speed and size to carry the day."
+   },
+   {
+      "name" : "Clay Golem",
+      "icon" : "clayGolem.png",
+      "groups" : ["outdoor", "dungeon", "swamp"],
+      "meleeMinDamage" : 6,
+      "strength": 18,
+      "hp": 49,
+      "exp": 70,
+      "numAttacks" : 1,
+      "numMoves" : 1,
+      "armorClass" : 10,
+      "resistance" : 4,
+      "hitModifier" : 8,
+      "description" : "Stoic and enormous, the Clay Golem is a mindless yet effective instrument of punishment."
+   },
+   {
+      "name" : "Ice Golem",
+      "icon" : "iceGolem.png",
+      "groups" : ["tundra"],
+      "meleeMinDamage" : 5,
+      "strength": 12,
+      "hp": 42,
+      "exp": 75,
+      "numAttacks" : 2,
+      "numMoves" : 1,
+      "armorClass" : 10,
+      "resistance" : 5,
+      "hitModifier" : 8,
+      "description" : "The Ice Golem is deceptively agile, considering its blocky construction. Whilst being crushed by its fist, one should remain mindful of the second fist, which is rarely far behind."
+   },
+   {
+      "name" : "Ogre Assassin",
+      "icon" : "ogre2.png",
+      "groups" : ["outdoor", "dungeon", "desert", "tundra"],
+      "meleeMinDamage" : 9,
+      "strength": 20,
+      "hp": 32,
+      "exp": 80,
+      "numAttacks" : 1,
+      "numMoves" : 2,
+      "armorClass" : 11,
+      "resistance" : 6,
+      "hitModifier" : 8,
+      "description" : "The Ogre Assassins are well-trained, resulting in a quicker and more intelligent foe than a standard Ogre. Their preferred method of attack is the ambush."
+   },
+   {
+      "name" : "Cyclops",
+      "icon" : "cyclops.png",
+      "groups" : ["outdoor", "dungeon", "desert"],
+      "meleeMinDamage" : 9,
+      "strength": 16,
+      "hp": 48,
+      "exp": 65,
+      "numAttacks" : 1,
+      "numMoves" : 1,
+      "armorClass" : 9,
+      "resistance" : 6,
+      "hitModifier" : 9,
+      "description" : "One-eyed and wicked, the Cyclops delights in tormenting creatures smaller or weaker than itself."
+   }
+]);

@@ -14,8 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../../scene/components/movableComponent.ts" />
-/// <reference path="../../scene/sceneComponent.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../../tile/tileObject.ts" />
 
 module pow2 {
@@ -63,7 +62,7 @@ module pow2 {
          }
          else{
             this.meta = this.host.world.sprites.getSpriteMeta(name);
-            this.host.world.sprites.getSpriteSheet(this.meta.source, (image) => {
+            this.host.world.sprites.getSpriteSheet(this.meta.source, (image:ImageResource) => {
                return this.image = image.data;
             });
          }

@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../../scene/components/movableComponent.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../objects/gameFeatureObject.ts" />
 /// <reference path="../../tile/tileComponent.ts" />
 /// <reference path="./playerRenderComponent.ts" />
@@ -100,11 +100,11 @@ module pow2 {
                }
             }
          }
-         var map = this.host.scene.objectByType(pow2.TileMap);
+         var map:TileMap = <TileMap>this.host.scene.objectByType(TileMap);
          if (map) {
-            var terrain = map.getTerrain(x,y);
+            var terrain = map.getTerrain("Terrain",x,y);
             if (!terrain) {
-               return true;
+               return false;
             }
             for(var i = 0; i < this.passableKeys.length; i++){
                if(terrain[this.passableKeys[i]] === true){
@@ -116,6 +116,8 @@ module pow2 {
          return false;
       }
       beginMove(from:Point,to:Point) {
+         this.host.trigger('move:begin',this,from,to);
+
          var results = [];
          var collision:boolean = this.collider.collide(to.x,to.y,GameFeatureObject,results);
          if(collision){
@@ -136,6 +138,8 @@ module pow2 {
          if(!this.collider){
             return;
          }
+
+         this.host.trigger('move:end',this,from,to);
 
          // Successful move, collide against target point and check any new tile actions.
          var fromFeature:GameFeatureObject = <GameFeatureObject>this.collider.collideFirst(from.x,from.y,GameFeatureObject);

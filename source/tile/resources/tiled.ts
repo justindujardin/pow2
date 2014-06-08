@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../../core/resources/xml.ts"/>
+/// <reference path="../../../lib/pow2.d.ts"/>
 
 module pow2.tiled {
 

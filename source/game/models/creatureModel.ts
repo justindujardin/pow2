@@ -16,48 +16,59 @@
 
 /// <reference path="../../../types/backbone/backbone.d.ts" />
 /// <reference path="../../../types/underscore/underscore.d.ts" />
-/// <reference path="../../core/api.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="./entityModel.ts" />
+/// <reference path="./heroModel.ts" />
 module pow2 {
 
-   export interface CreatureModelOptions {
+   export interface CreatureModelOptions extends EntityModelOptions {
       name:string; // The creature name
       icon:string; // The file name of a sprite source file
       groups: string[]; // Named groups this creature belongs to
       level:number;
-      minHP:number;
-      maxHP:number;
-      experienceValue:number;
+      hp:number;
+      strength:number;
       numAttacks:number;
       armorClass:number;
       description:string; // An description of the creature.
    }
    export class CreatureModel extends EntityModel {
       static DEFAULTS:CreatureModelOptions = {
-         name: "Unnamed",
-         icon: "cavePeeper.png",
+         name: "Unnamed Creature",
+         icon: "noIcon.png",
          groups: [],
-         level: 1,
-         minHP: 2,
-         maxHP: 6,
-         experienceValue: 5,
-         numAttacks: 1,
-         armorClass: 2,
-         description: ""
+         level: 0,
+         hp: 0,
+         exp: 0,
+         strength:0,
+         numAttacks: 0,
+         armorClass: 0,
+         description: "",
+         evade:0,
+         hitPercent:1
       };
 
       defaults():any {
          return _.extend(super.defaults(), CreatureModel.DEFAULTS);
       }
 
+      attack(defender:EntityModel):number{
+         var hero = <HeroModel>defender;
+         var defense = hero.getDefense();
+         var min = this.attributes.attackLow;
+         var max = this.attributes.attackHigh;
+         var damage = Math.floor(Math.random() * (max - min + 1)) + min;
+         if(this.rollHit(defender)){
+            return defender.damage(Math.max(1,damage - defense));
+         }
+         return 0;
+      }
+
+
       static fromName(name:string){
          var creatures = pow2.getData('creatures');
          var cData:CreatureModelOptions = <CreatureModelOptions>_.where(creatures,{name:name})[0];
-         var creature:CreatureModel = new CreatureModel(cData);
-         creature.set({
-            hp:Math.floor(Math.random() * (cData.maxHP - cData.minHP + 1)) + cData.minHP
-         });
-         return creature;
+         return new CreatureModel(cData);
 
       }
       static fromLevel(level:number){
@@ -67,11 +78,7 @@ module pow2 {
          }
          var templates:CreatureModelOptions[] = <CreatureModelOptions[]>_.where(creatures,{level:level});
          var cData = templates[Math.floor(Math.random()*templates.length)];
-         var creature:CreatureModel = new CreatureModel(cData);
-         creature.set({
-            hp:Math.floor(Math.random() * (cData.maxHP - cData.minHP + 1)) + cData.minHP
-         });
-         return creature;
+         return new CreatureModel(cData);
 
       }
 
