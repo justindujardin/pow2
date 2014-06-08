@@ -78,14 +78,16 @@ module pow2 {
       }
 
       tickObjects(elapsedMS:number){
-         _.each(this.objects, (o:IProcessObject) => {
-            return o.tick && o.tick(elapsedMS);
-         });
+         var values:any[] = this.objects;
+         for (var i:number = values.length - 1; i >= 0; --i) {
+            values[i].tick && values[i].tick(elapsedMS);
+         }
       }
       processFrame(elapsedMS:number){
-         _.each(this.objects, (o:IProcessObject) => {
-            return o.processFrame && o.processFrame(elapsedMS);
-         });
+         var values:any[] = this.objects;
+         for (var i:number = values.length - 1; i >= 0; --i) {
+            values[i].processFrame && values[i].processFrame(elapsedMS);
+         }
       }
 
       polyFillAnimationFrames() {

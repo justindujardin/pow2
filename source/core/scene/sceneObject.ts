@@ -79,11 +79,10 @@ module pow2 {
          if(!this.enabled){
             return;
          }
-         _.each(this._components,(o:any) => {
-            if(o.tick){
-               o.tick(elapsed);
-            }
-         });
+         var values:any[] = this._components;
+         for (var i:number = values.length - 1; i >= 0; --i) {
+            values[i].tick && values[i].tick(elapsed);
+         }
       }
 
       // Interpolate components.
@@ -91,11 +90,10 @@ module pow2 {
          if(!this.enabled){
             return;
          }
-         _.each(this._components,(o:any) => {
-            if(o.interpolateTick){
-               o.interpolateTick(elapsed);
-            }
-         });
+         var values:any[] = this._components;
+         for (var i:number = values.length - 1; i >= 0; --i) {
+            values[i].interpolateTick && values[i].interpolateTick(elapsed);
+         }
       }
 
       destroy() {
@@ -122,9 +120,10 @@ module pow2 {
       }
 
       syncComponents(){
-         _.each(this._components,(comp:ISceneComponent) => {
-            comp.syncComponent();
-         });
+         var values:any[] = this._components;
+         for (var i:number = values.length - 1; i >= 0; --i) {
+            values[i].syncComponent();
+         }
       }
 
       addComponent(component:ISceneComponent,silent:boolean=false):boolean {
