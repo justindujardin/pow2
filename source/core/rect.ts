@@ -25,10 +25,11 @@ module pow2{
    export class Rect implements IRect{
       point: Point;
       extent: Point;
+      constructor();
       constructor(rect:IRect);
       constructor(point:Point,extent:Point);
       constructor(x:number,y:number,width:number,height:number);
-      constructor(rectOrPointOrX:any,extentOrY?:any,width?:number,height?:number) {
+      constructor(rectOrPointOrX?:any,extentOrY?:any,width?:number,height?:number) {
          if(rectOrPointOrX instanceof Rect){
             this.point = new Point(rectOrPointOrX.point);
             this.extent = new Point(rectOrPointOrX.extent);

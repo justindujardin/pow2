@@ -43,7 +43,17 @@ module pow2 {
       findComponents(type:Function):ISceneComponent[];
    }
 
-   export class SceneObject extends Events implements ISceneComponentHost {
+   /**
+    * SceneObject interface
+    */
+   export interface ISceneObject extends IObject {
+      scene: Scene;
+      enabled:boolean;
+      point:Point;
+      size:Point;
+   }
+
+   export class SceneObject extends Events implements ISceneObject, ISceneComponentHost {
       id:number = _.uniqueId();
       name:string;
       scene: Scene;
@@ -69,11 +79,11 @@ module pow2 {
          if(!this.enabled){
             return;
          }
-         _.each(this._components,(o:any) => {
-            if(o.tick){
-               o.tick(elapsed);
-            }
-         });
+         var values:any[] = this._components;
+         var l:number = this._components.length;
+         for(var i = 0; i < l; i++){
+            values[i].tick && values[i].tick(elapsed);
+         }
       }
 
       // Interpolate components.
@@ -81,11 +91,11 @@ module pow2 {
          if(!this.enabled){
             return;
          }
-         _.each(this._components,(o:any) => {
-            if(o.interpolateTick){
-               o.interpolateTick(elapsed);
-            }
-         });
+         var values:any[] = this._components;
+         var l:number = this._components.length;
+         for(var i = 0; i < l; i++){
+            values[i].interpolateTick && values[i].interpolateTick(elapsed);
+         }
       }
 
       destroy() {
@@ -101,20 +111,35 @@ module pow2 {
       // -----------------------------------------------------------------------------
 
       findComponent(type:Function):ISceneComponent {
-         return _.find(this._components,(comp:ISceneComponent) => {
-            return comp instanceof type;
-         });
+         var values:any[] = this._components;
+         var l:number = this._components.length;
+         for(var i = 0; i < l; i++){
+            var o:ISceneComponent = values[i];
+            if(o instanceof type){
+               return o;
+            }
+         }
+         return null;
       }
       findComponents(type:Function):ISceneComponent[] {
-         return _.filter(this._components,(comp:ISceneComponent) => {
-            return comp instanceof type;
-         });
+         var values:any[] = this._components;
+         var results:ISceneComponent[] = [];
+         var l:number = this._components.length;
+         for(var i = 0; i < l; i++){
+            var o:ISceneComponent = values[i];
+            if(o instanceof type){
+               results.push(o);
+            }
+         }
+         return results;
       }
 
       syncComponents(){
-         _.each(this._components,(comp:ISceneComponent) => {
-            comp.syncComponent();
-         });
+         var values:any[] = this._components;
+         var l:number = this._components.length;
+         for(var i = 0; i < l; i++){
+            values[i].syncComponent();
+         }
       }
 
       addComponent(component:ISceneComponent,silent:boolean=false):boolean {
@@ -199,6 +224,21 @@ module pow2 {
             this.syncComponents();
          }
          return change;
+      }
+
+
+      // Debugging
+      // -----------------------------------------------------------------------------
+      toString():string {
+         var ctor:any = this.constructor;
+         var name:string = this.name;
+         if (ctor && ctor.name != "Function") {
+            name = ctor.name || (this.toString().match(/function (.+?)\(/) || [, ''])[1];
+         }
+         _.each(this._components,(comp:ISceneComponent) => {
+            name += ', ' + comp;
+         });
+         return name;
       }
    }
 }

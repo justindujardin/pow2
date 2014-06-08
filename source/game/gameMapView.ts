@@ -35,10 +35,12 @@ module pow2{
          this.mouse = scene.world.input.mouseHook(<SceneView>this,"world");
          // TODO: Move this elsewhere.
          this.$el.on('click',this.mouseClick);
+         this.scene.on("map:loaded",this.syncComponents,this);
       }
       onRemoveFromScene(scene:Scene) {
          scene.world.input.mouseUnhook("world");
          this.$el.off('click',this.mouseClick);
+         this.scene.off("map:loaded",this.syncComponents,this);
       }
 
 
@@ -62,33 +64,65 @@ module pow2{
          super.processCamera();
       }
 
+      private _features:pow2.GameFeatureObject[] = null;
+      private _players:pow2.SceneObject[] = null;
+      private _playerRenders:pow2.SceneObject[] = null;
+      private _sprites:pow2.SpriteComponent[] = null;
+      private _movers:pow2.MovableComponent[] = null;
+      syncComponents() {
+         super.syncComponents();
+         this._features = null;
+         this._players = null;
+         this._playerRenders = null;
+         this._sprites = null;
+         this._movers = null;
+      }
+
       /*
        * Render the tile map, and any features it has.
        */
       renderFrame(elapsed) {
          super.renderFrame(elapsed);
-         var objects = this.scene.objectsByType(pow2.GameFeatureObject);
-         _.each(objects, (object) => {
-            return this.objectRenderer.render(object,object,this);
-         });
-         var playerRenderComponents = this.scene.objectsByComponent(pow2.PlayerRenderComponent);
-         _.each(playerRenderComponents, (playerRenderComponent) => {
-            this.objectRenderer.render(playerRenderComponent,playerRenderComponent,this);
-         });
+         if(!this._features) {
+            this._features = <pow2.GameFeatureObject[]>this.scene.objectsByType(pow2.GameFeatureObject);
+         }
+         var l:number = this._features.length;
+         for(var i = 0; i < l; i++){
+            this.objectRenderer.render(this._features[i],this._features[i],this);
+         }
+         if(!this._playerRenders) {
+            this._playerRenders = <pow2.SceneObject[]>this.scene.objectsByComponent(pow2.PlayerRenderComponent);
+         }
+         l = this._playerRenders.length;
+         for(var i = 0; i < l; i++){
+            var renderObj:any = this._playerRenders[i];
+            this.objectRenderer.render(renderObj,renderObj,this);
+         }
+         if(!this._players){
+            this._players = <pow2.SceneObject[]>this.scene.objectsByComponent(pow2.PlayerComponent);
+         }
+         l = this._players.length;
+         for(var i = 0; i < l; i++){
+            var renderObj:any = this._players[i];
+            this.objectRenderer.render(renderObj,renderObj,this);
+         }
 
+         if(!this._sprites){
+            this._sprites = <SpriteComponent[]>this.scene.componentsByType(pow2.SpriteComponent);
+         }
 
-         var playerPaths = this.scene.objectsByComponent(pow2.PlayerComponent);
-         _.each(playerPaths, (player) => {
-            this.objectRenderer.render(player,player,this);
-         });
+         l = this._sprites.length;
+         for(var i = 0; i < l; i++){
+            var sprite = this._sprites[i];
+            this.objectRenderer.render(sprite.host,sprite,this);
+         }
 
-         var sprites = <ISceneComponent[]>this.scene.componentsByType(pow2.SpriteComponent);
-         _.each(sprites, (sprite:SpriteComponent) => {
-            this.objectRenderer.render(sprite.host,sprite, this);
-         });
-
-         var targets = <MovableComponent[]>this.scene.componentsByType(pow2.MovableComponent);
-         _.each(targets, (target:MovableComponent) => {
+         if(!this._movers){
+            this._movers = <MovableComponent[]>this.scene.componentsByType(pow2.MovableComponent);
+         }
+         l = this._movers.length;
+         for(var i = 0; i < l; i++){
+            var target:MovableComponent = this._movers[i];
             if(target.path.length > 0){
                this.context.save();
                var destination:Point = target.path[target.path.length -1].clone();
@@ -104,7 +138,7 @@ module pow2{
 
                this.context.restore();
             }
-         });
+         }
 
 
          return this;
@@ -130,7 +164,7 @@ module pow2{
             var hit = this.scene.db.queryRect(tileRect,SceneObject,results);
             if(hit){
                _.each(results,(obj:any) => {
-                  debugStrings.push("Hit: " + obj.type || obj.name);
+                  debugStrings.push("Hit: " + obj);
                });
                this.context.fillStyle = "rgba(10,255,10,0.3)";
                this.context.fillRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);

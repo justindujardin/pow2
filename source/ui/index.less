@@ -15,12 +15,12 @@
 
 // Utility classes
 @import "utilities";
-@import "responsive-utilities";
 
 // Other
 @import "./style/eightBitPanel";
 @import "./style/pageTransitions";
 @import "./style/animation";
+@import "./style/buttons";
 
 
 
@@ -31,15 +31,15 @@
 // Import template styles
 //  TODO: This might get _really_ old.
 //  If so, just concat all the less files then compile the concat.
-@import "./templates/inventoryView";
-@import "./templates/dialogView";
-@import "./templates/storeView";
-@import "./templates/templeView";
-@import "./templates/heroCard";
-@import "./templates/partyView";
-@import "./templates/combatView";
-@import "./templates/heroView";
-@import "./templates/gameMenu";
+@import "./directives/inventoryView";
+@import "./directives/dialogView";
+@import "./directives/storeView";
+@import "./directives/templeView";
+@import "./directives/heroCard";
+@import "./directives/partyView";
+@import "./directives/combatView";
+@import "./directives/heroView";
+@import "./directives/gameMenu";
 
 @pixelFont:'GraphicPixel', 'AdvoCut',sans-serif;
 @pixelFontAlt:'AdvoCut','GraphicPixel', sans-serif;
@@ -307,21 +307,6 @@ canvas {
     }
   }
   .game-container{
-    .store {
-      .name {
-        h1 {
-          font-size: 32px;
-        }
-      }
-      .inventory{
-        .item-name {
-          max-width: 160px;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-
-        }
-      }
-    }
     .message {
       .text {
         font-size: 18px;
@@ -336,21 +321,6 @@ canvas {
     .message {
       .text {
         font-size: 20px;
-      }
-    }
-    .store {
-      ul {
-        li {
-          font-size: 18px;
-          .item-name {
-            min-width: 200px;
-            font-size:20px;
-          }
-          .item-price {
-            font-size: 18px;
-            min-width: 50px;
-          }
-        }
       }
     }
   }
@@ -370,21 +340,6 @@ canvas {
     .message {
       .text {
         font-size: 24px;
-      }
-    }
-    .store {
-      ul {
-        li {
-          font-size: 20px;
-          .item-name {
-            min-width: 250px;
-            font-size:24px;
-          }
-          .item-price {
-            font-size: 20px;
-            min-width: 50px;
-          }
-        }
       }
     }
   }

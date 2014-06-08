@@ -30,7 +30,6 @@ module pow2.ui {
          $scope.loadingTitle = "Pow2!";
          $scope.loadingMessage = "Loading the things...";
          $scope.loading = true;
-         $scope.overlayText = null;
          $scope.saveState = function(data){
             localStorage.setItem(stateKey,data);
          };
@@ -46,17 +45,10 @@ module pow2.ui {
          $scope.saveGame = function(){
             var data = JSON.stringify(game.model.toJSON());
             $scope.saveState(data);
+            powAlert.show("Game Saved!");
          };
          // TODO: Resets state every page load.  Remove when persistence is desired.
          //resetGame();
-
-         $scope.displayMessage = function(message,callback?,time:number=1000) {
-            $scope.overlayText = message;
-            $timeout(function(){
-               $scope.overlayText = null;
-               callback && callback();
-            },time);
-         };
          game.loadGame($scope.getState());
          $scope.gameModel = game.model;
          $scope.party = game.model.party;
@@ -75,7 +67,6 @@ module pow2.ui {
                $scope.$apply(function(){
                   $scope.combat = state.machine;
                   $scope.inCombat = true;
-                  $scope.displayMessage(state.name);
                   state.machine.on('combat:attack',function(damage,attacker,defender){
                      state.machine.paused = true;
                      var msg:string = '';
@@ -118,9 +109,6 @@ module pow2.ui {
             });
             console.log("UI: Exited state: " + state.name);
          });
-
-         // TODO: Some kind of events mapping, that handles this (assigning to scope)
-         // in a generic way.  Lots of duplication here.  Beware!
       }
    ]);
 }

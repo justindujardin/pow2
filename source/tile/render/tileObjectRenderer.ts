@@ -21,6 +21,7 @@
 
 module pow2 {
    export class TileObjectRenderer extends SceneObjectRenderer {
+      private _renderPoint:pow2.Point = new pow2.Point();
       render(object:any, data:any, view:pow2.SceneView) { // TODO: typedef
 
          if (!data.image || !object.visible) {
@@ -28,7 +29,8 @@ module pow2 {
          }
 
          // Build render data.
-         var point = (object.renderPoint || object.point).clone();
+         this._renderPoint.set(object.renderPoint || object.point);
+         var point = this._renderPoint;
          var c = data.meta; // TODO: interface this
          var sourceWidth:number = view.unitSize;
          var sourceHeight:number = view.unitSize;
@@ -36,11 +38,11 @@ module pow2 {
             sourceWidth = c.cellWidth;
             sourceHeight = c.cellHeight;
          }
-         var objWidth = view.screenToWorld(sourceWidth);
-         var objHeight = view.screenToWorld(sourceHeight);
+         var objWidth = view.fastScreenToWorldNumber(sourceWidth);
+         var objHeight = view.fastScreenToWorldNumber(sourceHeight);
          point.x -= objWidth * object.scale / 2;
          point.y -= objHeight * object.scale / 2;
-         point = view.worldToScreen(point);
+         view.fastWorldToScreenPoint(point,point);
 
          if (data.icon && data.meta) {
             var cx = c.x;

@@ -167,13 +167,6 @@ module pow2 {
          this.context.restore();
       }
 
-      getSpriteSheet(name: string, done?) { // TODO: typedef (callback)
-         if (!this._sheets[name]) {
-            this._sheets[name] = this.loader.load("/images/" + name + ".png", done);
-         }
-         return this._sheets[name];
-      }
-
       // Scene Camera updates
       // -----------------------------------------------------------------------------
       processCamera() {
@@ -233,6 +226,39 @@ module pow2 {
          return value * (1 / (this.unitSize * scale));
       }
 
+
+      // Fast world to screen conversion, for high-volume usage situations.
+      // avoid memory allocations.
+      fastWorldToScreenPoint(value: Point, to:Point, scale=1): Point {
+         to.set(value);
+         to.multiply(this.unitSize * scale);
+         return to;
+      }
+      fastWorldToScreenRect(value: Rect, to:Rect, scale=1): Rect {
+         to.set(value);
+         to.scale(this.unitSize * scale);
+         return to;
+      }
+      fastWorldToScreenNumber(value: number, scale=1): number {
+         return value * (this.unitSize * scale);
+      }
+
+      // Fast screen to world conversion, for high-volume usage situations.
+      // avoid memory allocations.
+      fastScreenToWorldPoint(value: Point, to:Point, scale=1): Point {
+         to.set(value);
+         to.multiply(1 / (this.unitSize * scale));
+         return to;
+      }
+      fastScreenToWorldRect(value: Rect, to:Rect, scale=1): Rect {
+         to.set(value);
+         to.scale(1 / (this.unitSize * scale));
+         return to;
+      }
+      fastScreenToWorldNumber(value: number, scale=1): number {
+         return value * (1 / (this.unitSize * scale));
+      }
+
       // Animations
       // -----------------------------------------------------------------------------
       renderAnimations() {
@@ -247,18 +273,6 @@ module pow2 {
          }
          return this.animations = _.filter(this.animations, (a:any) => {
             return a.done !== true;
-         });
-      }
-
-      playAnimation(tickRate, animFn) { // TODO: typedef
-         if (!this.scene) {
-            throw new Error("Cannot queue an animation for a view that has no scene");
-         }
-         return this.animations.push({
-            frame: 0,
-            time: this.scene.time + tickRate,
-            rate: tickRate,
-            fn: animFn
          });
       }
    }

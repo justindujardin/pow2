@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="25" height="39" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="combat" value="true"/>
+ </properties>
+ <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <layer name="Terrain" width="25" height="39">
+  <data encoding="csv">
+13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,
+13,13,13,13,18,13,13,18,18,13,4,13,13,13,13,13,13,13,13,13,13,13,13,13,13,
+13,13,13,18,18,18,18,18,4,4,4,4,4,13,13,13,13,13,13,13,13,13,13,13,13,
+13,13,18,18,18,18,18,18,18,4,4,4,4,13,13,13,13,13,13,13,13,13,13,13,13,
+13,18,18,18,18,18,18,18,18,18,18,18,18,18,13,4,4,4,4,13,13,13,13,13,13,
+13,18,18,4,4,4,18,18,18,18,18,18,18,13,13,4,13,13,4,13,13,13,13,13,13,
+13,18,18,4,4,18,18,18,18,18,18,18,18,18,13,4,13,4,4,13,13,13,13,13,13,
+13,18,18,18,18,18,18,18,18,18,18,18,18,13,13,4,13,4,13,13,4,4,4,4,13,
+13,13,18,18,18,18,13,13,18,18,18,4,4,13,4,4,13,4,13,13,4,13,13,4,13,
+13,13,13,13,18,18,18,13,13,18,18,4,4,13,4,13,13,4,13,13,4,13,4,4,13,
+13,13,13,18,18,18,18,18,18,18,18,4,13,13,4,13,13,4,13,13,4,13,4,13,13,
+13,13,18,18,18,18,18,18,13,13,13,13,13,13,4,13,13,4,13,13,4,13,4,13,13,
+13,13,13,13,18,18,18,18,18,18,13,13,13,13,4,13,4,4,13,13,4,13,4,13,13,
+13,13,13,13,13,18,18,18,18,18,13,13,13,13,4,13,4,4,4,4,4,13,4,13,13,
+13,13,18,18,18,18,13,18,18,3,4,4,13,4,4,13,4,4,13,13,13,13,4,4,13,
+13,13,18,13,13,13,13,18,18,18,13,4,4,4,13,13,13,13,13,13,13,13,13,4,13,
+13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,4,13,
+9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,6,9,
+9,9,9,9,9,9,9,9,9,9,9,33,33,9,9,9,9,33,33,9,33,9,33,33,9,
+9,9,9,9,9,9,9,33,33,9,9,33,33,9,9,9,9,33,33,9,33,9,33,9,9,
+9,33,33,33,33,33,24,33,33,6,33,33,33,9,9,9,9,9,24,9,24,9,24,9,9,
+9,33,9,9,9,9,9,33,33,9,9,9,9,9,33,9,33,33,33,33,33,33,33,33,9,
+9,33,33,33,33,9,9,9,9,9,9,9,33,33,33,6,33,33,33,33,33,33,33,33,9,
+9,9,9,9,33,33,9,9,9,9,9,9,33,9,33,9,33,33,33,33,33,33,33,33,9,
+40,40,40,9,9,33,9,9,9,9,9,9,33,9,9,9,9,9,24,9,24,9,24,9,9,
+39,39,40,40,9,33,9,9,9,9,9,9,33,9,9,9,9,33,33,9,33,9,33,9,9,
+39,39,39,39,9,33,9,9,9,9,9,9,33,9,9,9,9,33,33,9,33,9,33,9,9,
+39,39,39,39,9,6,9,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,9,9,
+39,39,39,39,24,33,6,33,33,17,33,9,33,33,33,9,9,9,9,9,9,9,9,9,9,
+39,39,39,39,9,6,9,9,33,33,33,9,9,9,33,33,9,9,9,9,9,9,9,9,9,
+39,39,39,39,9,33,9,9,9,9,9,9,9,9,9,33,33,9,9,9,9,9,9,9,9,
+39,39,40,40,9,33,9,9,9,9,9,9,9,9,9,9,33,33,33,33,33,33,33,33,9,
+40,9,9,9,9,33,9,9,33,9,9,9,9,9,9,9,9,9,9,9,9,9,9,33,9,
+9,9,33,33,24,33,9,33,33,33,9,33,9,9,9,9,9,9,9,9,9,9,9,33,9,
+9,9,33,33,9,33,9,33,33,33,9,33,9,9,9,9,9,9,9,33,33,9,9,33,9,
+9,9,9,9,9,33,9,9,24,9,9,24,9,9,33,33,33,33,24,33,33,33,9,33,9,
+9,9,33,33,24,33,33,33,33,33,33,33,33,33,33,9,9,9,9,33,33,33,9,33,9,
+9,9,33,33,9,9,9,9,9,9,9,9,9,9,33,33,33,33,9,9,9,33,33,33,9,
+9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9,9
+</data>
+ </layer>
+ <objectgroup draworder="topdown" name="Features" width="25" height="39">
+  <object name="wilderness" type="transition" x="64" y="448" width="16" height="16">
+   <properties>
+    <property name="icon" value="dungeonGate.png"/>
+    <property name="target" value="wilderness"/>
+    <property name="targetX" value="73"/>
+    <property name="targetY" value="57"/>
+    <property name="text" value="Will you escape the Ashvari Crypts and return to the land of the living?"/>
+    <property name="transitionType" value="outdoor"/>
+    <property name="type" value="transition"/>
+   </properties>
+  </object>
+  <object type="block" x="48" y="448" width="16" height="16" visible="0">
+   <properties>
+    <property name="type" value="block"/>
+   </properties>
+  </object>
+  <object name="column.png" type="sign" x="48" y="432" width="16" height="16">
+   <properties>
+    <property name="icon" value="column.png"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="column.png" type="sign" x="48" y="464" width="16" height="16">
+   <properties>
+    <property name="icon" value="column.png"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="skeletonGuard.png" type="encounter" x="128" y="528" width="16" height="16">
+   <properties>
+    <property name="creatures" value=""/>
+    <property name="gold" value="12"/>
+    <property name="icon" value="skeletonGuard.png"/>
+    <property name="id" value="cryptsSkeletons"/>
+    <property name="items" value=""/>
+    <property name="text" value="A squadron of Skeletons attack!"/>
+    <property name="type" value="encounter"/>
+   </properties>
+  </object>
+  <object name="ghoul.png" type="encounter" x="304" y="560" width="16" height="16">
+   <properties>
+    <property name="ambushed" value="true"/>
+    <property name="creatures" value=""/>
+    <property name="gold" value="19"/>
+    <property name="icon" value="ghoul.png"/>
+    <property name="id" value="cryptsGhoul"/>
+    <property name="items" value=""/>
+    <property name="text" value="As you pass through the door, you are ambushed by horrific, frightening creatures!"/>
+    <property name="type" value="encounter"/>
+   </properties>
+  </object>
+  <object name="phantom2.png" type="encounter" x="224" y="352" width="16" height="16">
+   <properties>
+    <property name="creatures" value=""/>
+    <property name="gold" value="9"/>
+    <property name="icon" value="phantom2.png"/>
+    <property name="id" value="cryptsPhantom"/>
+    <property name="items" value=""/>
+    <property name="text" value="Two phantasmal forms emerge, seemingly only partially present in this realm."/>
+    <property name="type" value="encounter"/>
+   </properties>
+  </object>
+  <object name="ship.png" type="ship" x="128" y="224" width="16" height="16">
+   <properties>
+    <property name="icon" value="ship.png"/>
+    <property name="id" value="cryptsShip"/>
+    <property name="passable" value="true"/>
+    <property name="type" value="ship"/>
+   </properties>
+  </object>
+  <object name="skeletonWizard.png" type="encounter" x="160" y="32" width="16" height="16">
+   <properties>
+    <property name="ambushed" value="true"/>
+    <property name="creatures" value=""/>
+    <property name="gold" value="37"/>
+    <property name="icon" value="skeletonWizard.png"/>
+    <property name="id" value="cryptsWizard"/>
+    <property name="items" value=""/>
+    <property name="text" value="A Skeleton Wizard shrieks, &quot;With Vezu's power, we can convert the dead into an an unstoppable army against the living!&quot; It and its minions attack!"/>
+    <property name="type" value="encounter"/>
+   </properties>
+  </object>
+  <object name="Tablet" type="sign" x="160" y="16" width="16" height="16">
+   <properties>
+    <property name="action" value="LOOK"/>
+    <property name="icon" value="dragonStone.png"/>
+    <property name="sets" value="cryptsDone"/>
+    <property name="text" value="You see here a tablet bearing a depiction of the dragon Vezu. You must inform the King that the Crypts are somehow linked to the dragon!"/>
+    <property name="title" value="Tablet"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="Locked" type="barrier" x="368" y="272" width="16" height="16">
+   <properties>
+    <property name="icon" value="lockedDoor.png"/>
+    <property name="text" value="There is an unusual-looking, narrow door here, but is locked!"/>
+    <property name="title" value="Locked"/>
+    <property name="type" value="barrier"/>
+    <property name="until" value="cryptsStart"/>
+   </properties>
+  </object>
+  <object name="Unlocked" type="alert" x="368" y="272" width="16" height="16">
+   <properties>
+    <property name="after" value="cryptsStart"/>
+    <property name="altIcon" value="ancientKey.png"/>
+    <property name="icon" value="lockedDoor.png"/>
+    <property name="sets" value="alertCryptsKey"/>
+    <property name="text" value="You use the ancient key provided by the King to open the narrow door."/>
+    <property name="title" value="Unlocked"/>
+    <property name="type" value="alert"/>
+    <property name="until" value="alertCryptsKey"/>
+    <property name="y" value="17"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

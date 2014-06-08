@@ -17,10 +17,10 @@
 module pow2.ui {
 // TempleView directive
 // ----------------------------------------------------------------------------
-   app.directive('templeView', ['game', function (game:PowGameService) {
+   app.directive('templeView', ['game', 'powAlert', function (game:PowGameService,powAlert:PowAlertService) {
       return {
          restrict: 'E',
-         templateUrl: '/templates/templeView.html',
+         templateUrl: '/source/ui/directives/templeView.html',
          controller: function($scope) {
             $scope.heal = () => {
                if(!$scope.temple){
@@ -30,7 +30,7 @@ module pow2.ui {
                var money:number = model.get('gold');
                var cost:number = parseInt($scope.temple.cost);
                if(cost > money){
-                  $scope.displayMessage("You don't have enough money");
+                  powAlert.show("You don't have enough money");
                }
                else {
                   //console.log("You have (" + money + ") monies.  Spending (" + cost + ") on temple");
@@ -42,7 +42,7 @@ module pow2.ui {
                         hp: hero.get('maxHP')
                      });
                   });
-                  $scope.displayMessage("Your party has been healed! \nYou now have (" + model.get('gold') + ") monies.",null,2500);
+                  powAlert.show("Your party has been healed! \nYou now have (" + model.get('gold') + ") monies.",null,2500);
 
                }
                $scope.temple = null;

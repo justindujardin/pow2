@@ -62,7 +62,7 @@ module pow2.ui {
             this.sprite.addComponent(new PlayerTouchComponent());
             this.world.scene.addObject(this.sprite);
          });
-         this.tileMap = new GameTileMap("sewer");
+         this.tileMap = new GameTileMap("town");
          this.world.scene.addObject(this.tileMap);
       }
 

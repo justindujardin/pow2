@@ -71,8 +71,9 @@ module pow2 {
          if(this.paused){
             return;
          }
-         for(var i = 0; i < this._objects.length; i++){
-            this._objects[i].tick(elapsed);
+         var l:number = this._objects.length;
+         for(var i = 0; i < l; i++){
+            this._objects[i] && this._objects[i].tick(elapsed);
          }
       }
       processFrame(elapsed:number) {
@@ -81,14 +82,16 @@ module pow2 {
          }
          this.time = this.world.time.time;
          // Interpolate objects.
-         for(var i = 0; i < this._objects.length; i++){
+         var l:number = this._objects.length;
+         for(var i = 0; i < l; i++){
             var o = this._objects[i];
             if(o.interpolateTick){
                o.interpolateTick(elapsed);
             }
          }
          // Render frame.
-         for(var i = 0; i < this._views.length; i++){
+         l = this._views.length;
+         for(var i = 0; i < l; i++){
             this._views[i]._render(elapsed);
          }
          // Update FPS
@@ -184,55 +187,101 @@ module pow2 {
       }
 
       componentByType(type):ISceneComponent {
-         var obj:SceneObject = <SceneObject>_.find(this._objects, (o:SceneObject) => {
-            return !!o.findComponent(type);
-         });
-         if(!obj){
-            return null;
+         var values:any[] = this._objects;
+         var l:number = this._objects.length;
+         for(var i = 0; i < l; i++){
+            var o:SceneObject = values[i];
+            var c:ISceneComponent = o.findComponent(type);
+            if(c){
+               return c;
+            }
          }
-         return obj.findComponent(type);
+         return null;
       }
 
       componentsByType(type):ISceneComponent[] {
-         return <ISceneComponent[]>_.chain(this._objects)
-            .map((o:ISceneComponentHost) => {
-               return o.findComponents(type);
-            })
-            .flatten()
-            .compact()
-            .value();
+         var values:any[] = this._objects;
+         var l:number = this._objects.length;
+         var results:ISceneComponent[] = [];
+         for(var i = 0; i < l; i++){
+            var o:SceneObject = values[i];
+            var c:ISceneComponent[] = o.findComponents(type);
+            if(c){
+               results = results.concat(c);
+            }
+         }
+         return results;
       }
 
 
       objectsByName(name:string):SceneObject[] {
-         return _.filter(this._objects, (o:SceneObject) => {
-            return o.name === name;
-         });
+         var values:any[] = this._objects;
+         var l:number = this._objects.length;
+         var results:SceneObject[] = [];
+         for(var i = 0; i < l; i++){
+            var o:SceneObject = values[i];
+            if(o.name === name){
+               results.push(o);
+            }
+         }
+         return results;
       }
       objectByName(name:string):SceneObject {
-         return _.find(this._objects, (o:SceneObject) => {
-            return o.name === name;
-         });
+         var values:any[] = this._objects;
+         var l:number = this._objects.length;
+         for(var i = 0; i < l; i++){
+            var o:SceneObject = values[i];
+            if(o.name === name){
+               return o;
+            }
+         }
+         return null;
       }
       objectsByType(type):SceneObject[] {
-         return _.filter(this._objects, (o:SceneObject) => {
-            return o instanceof type;
-         });
+         var values:any[] = this._objects;
+         var l:number = this._objects.length;
+         var results:SceneObject[] = [];
+         for(var i = 0; i < l; i++){
+            var o:SceneObject = values[i];
+            if(o instanceof type){
+               results.push(o);
+            }
+         }
+         return results;
       }
       objectByType(type):SceneObject {
-         return _.find(this._objects, (o:SceneObject) => {
-            return o instanceof type;
-         });
+         var values:any[] = this._objects;
+         var l:number = this._objects.length;
+         for(var i = 0; i < l; i++){
+            var o:SceneObject = values[i];
+            if(o instanceof type){
+               return o;
+            }
+         }
+         return null;
       }
       objectsByComponent(type):SceneObject[] {
-         return _.filter(this._objects, (o:SceneObject) => {
-            return !!o.findComponent(type);
-         });
+         var values:any[] = this._objects;
+         var l:number = this._objects.length;
+         var results:SceneObject[] = [];
+         for(var i = 0; i < l; i++){
+            var o:SceneObject = values[i];
+            if(o.findComponent(type)){
+               results.push(o);
+            }
+         }
+         return results;
       }
       objectByComponent(type):SceneObject {
-         return _.find(this._objects, (o:SceneObject) => {
-            return !!o.findComponent(type);
-         });
+         var values:any[] = this._objects;
+         var l:number = this._objects.length;
+         for(var i = 0; i < l; i++){
+            var o:SceneObject = values[i];
+            if(o.findComponent(type)){
+               return o;
+            }
+         }
+         return null;
       }
    }
 }

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="14" height="21" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" source="tiles/environment.tsx"/>
+ <layer name="Terrain" width="14" height="21">
+  <data encoding="csv">
+57,57,57,57,57,57,57,18,18,18,18,18,18,18,
+57,57,57,57,57,57,57,18,18,18,18,18,18,18,
+57,57,57,57,57,57,57,57,18,18,18,18,18,18,
+57,57,57,57,57,57,57,57,57,57,18,18,18,18,
+57,57,57,57,57,57,57,69,69,57,18,18,18,18,
+57,57,57,57,57,57,69,69,69,69,18,18,18,18,
+57,57,57,57,57,69,69,46,46,18,18,18,18,18,
+57,57,57,57,57,46,46,46,46,18,18,18,18,18,
+57,57,57,57,57,46,46,46,18,18,18,18,18,18,
+57,57,57,57,57,46,46,46,18,18,18,18,18,18,
+57,57,57,57,46,46,46,46,18,18,18,18,18,18,
+57,57,57,57,57,46,46,46,18,18,18,18,18,18,
+57,57,57,57,57,46,46,69,18,18,18,18,18,18,
+57,57,57,57,57,69,69,46,18,18,18,18,18,18,
+57,57,57,57,69,69,46,69,69,18,18,18,18,18,
+57,57,57,57,57,69,69,69,18,18,18,18,18,18,
+57,57,57,57,57,57,69,57,57,18,18,18,18,18,
+57,57,57,18,57,57,57,57,18,18,18,18,18,18,
+57,57,57,18,18,18,57,18,18,18,18,18,18,18,
+57,18,18,18,18,18,18,18,18,18,18,18,18,18,
+57,57,18,18,18,18,18,18,18,18,18,18,18,18
+</data>
+ </layer>
+ <objectgroup name="Features" width="14" height="21">
+  <object name="wilderness" type="transition" x="64" y="160" width="16" height="16">
+   <properties>
+    <property name="icon" value="doorway.png"/>
+    <property name="target" value="wilderness"/>
+    <property name="targetX" value="31"/>
+    <property name="targetY" value="27"/>
+    <property name="text" value="Climb down the steep path back to the Wildernesse?"/>
+    <property name="transitionType" value="outdoor"/>
+    <property name="type" value="transition"/>
+   </properties>
+  </object>
+  <object name="Elder" type="sign" x="128" y="112" width="16" height="16">
+   <properties>
+    <property name="action" value="TALK"/>
+    <property name="icon" value="oldMan2.png"/>
+    <property name="text" value="Legends tell of Vezu, a powerful ancient dragon that terrorized the Three Kingdoms. It was finally defeated in the North, then entombed in a mountain that bears his name. Could the volcanic eruption have awoken the dragon within?"/>
+    <property name="title" value="Elder"/>
+    <property name="type" value="sign"/>
+   </properties>
+  </object>
+  <object name="Trading Post" type="store" x="96" y="128" width="16" height="16">
+   <properties>
+    <property name="buyRate" value="100"/>
+    <property name="groups" value="[&quot;default&quot;]"/>
+    <property name="icon" value="shop.png"/>
+    <property name="level" value="1"/>
+    <property name="name" value="Trading Post"/>
+    <property name="sellRate" value="45"/>
+    <property name="type" value="store"/>
+   </properties>
+  </object>
+  <object name="temple.png" type="temple" x="96" y="224" width="16" height="16">
+   <properties>
+    <property name="cost" value="10"/>
+    <property name="icon" value="temple.png"/>
+    <property name="type" value="temple"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

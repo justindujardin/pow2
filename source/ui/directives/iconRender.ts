@@ -29,6 +29,7 @@ module pow2.ui {
             element.append(renderImage);
             $scope.$watch(attrs.icon, function(icon) {
                if(!icon){
+                  renderImage[0].src = '/images/blank.gif';
                   return;
                }
                game.world.sprites.getSingleSprite(icon,attrs.frame || 0,function(sprite){

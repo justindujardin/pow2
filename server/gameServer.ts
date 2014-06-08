@@ -55,9 +55,6 @@ server.use('/source', express.static(path.resolve(__dirname + "/../source")));
 server.use('/build', express.static(path.resolve(__dirname + "/../build")));
 server.use('/fonts', express.static(path.resolve(__dirname + "/../data/fonts")));
 
-// Path for Angular UI templates
-server.use('/templates', express.static(path.resolve(__dirname + "/../source/ui/templates")));
-
 // Use EJS templating with Express, and assign .html as the default extension.
 server.engine('.html', require('ejs').__express);
 server.set('view engine', 'html');

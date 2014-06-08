@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2013 by Justin DuJardin
+ Copyright (C) 2014 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -24,9 +24,12 @@ module pow2 {
       buffer:HTMLCanvasElement[][] = null; // A 2d grid of rendered canvas textures.
       bufferMapName:string = null; // The name of the rendered map.  If the map name changes, the buffer is re-rendered.
       bufferComplete:boolean = false; // True if the entire map was rendered with all textures loaded and ready.
+
+      private _clipRect:Rect = new pow2.Rect();
+      private _renderRect:Rect = new pow2.Rect();
+
       render(object:TileMap, view:TileMapView) {
-         var sheets = {};
-         var squareUnits = 16;
+         var squareUnits = 8;
          var squareSize = squareUnits * view.unitSize;
          if(!object.isLoaded()){
             return;
@@ -86,16 +89,17 @@ module pow2 {
             }
             this.bufferMapName = object.mapName;
          }
-         var squareScreen = view.worldToScreen(squareUnits);
+         var squareScreen = view.fastWorldToScreenNumber(squareUnits);
 
-         var clipRect = view.worldToScreen(view.getCameraClip());
+         view.fastWorldToScreenRect(view.getCameraClip(),this._clipRect);
          var cols:number = this.buffer.length;
          var rows:number = this.buffer[0].length;
          // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
          for(var col:number = 0; col < cols; col++){
             for(var row:number = 0; row < rows; row++){
-               var renderRect:Rect = view.worldToScreen(new Rect(col * squareUnits - 0.5,row * squareUnits - 0.5,squareUnits,squareUnits));
-               if(!renderRect.intersect(clipRect)){
+               this._renderRect.set(col * squareUnits - 0.5,row * squareUnits - 0.5,squareUnits,squareUnits);
+               view.fastWorldToScreenRect(this._renderRect,this._renderRect);
+               if(!this._renderRect.intersect(this._clipRect)){
                   continue;
                }
                //console.log("Tile " + renderRect.toString())
@@ -106,8 +110,8 @@ module pow2 {
                   squareSize,
                   squareSize,
                   // Scaled to camera
-                  renderRect.point.x,
-                  renderRect.point.y,
+                  this._renderRect.point.x,
+                  this._renderRect.point.y,
                   squareScreen,
                   squareScreen);
             }

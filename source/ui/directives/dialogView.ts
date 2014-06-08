@@ -22,7 +22,7 @@ module pow2.ui {
       return {
          restrict: 'E',
          replace:true,
-         templateUrl: '/templates/dialogView.html',
+         templateUrl: '/source/ui/directives/dialogView.html',
          link: function($scope) {
 
             // Dialog bubbles
