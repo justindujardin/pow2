@@ -27,6 +27,7 @@
     "grunt-contrib-less": "0.10.0",
     "ejs": "~0.8.4",
     "xml2js": "~0.4.0",
+    "grunt-cli": "~0.1.10",
     "bower": "~1.3.2"
   },
   "scripts": {
@@ -37,7 +38,6 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt-notify": "~0.2.15",
     "grunt-express-server": "~0.4.5",
-    "grunt-cli": "~0.1.10",
     "grunt-contrib-clean": "~0.5.0"
   }
 }
