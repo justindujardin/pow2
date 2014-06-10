@@ -5,12 +5,6 @@
   left: 0;
   height:100%;
   z-index: 10;
-  &.open {
-    bottom:0;
-    right:0;
-
-  }
-
   .options, .trigger {
     font-size: 42px;
   }
@@ -42,6 +36,11 @@
     ul.options {
       list-style-type: none;
       padding:10px;
+      > li.active {
+        a {
+          color:@gameGold;
+        }
+      }
     }
   }
 
@@ -51,7 +50,6 @@
     overflow-x:hidden;
     &.open{
       display: block;
-      background-color: rgba(0,0,0,0.5);
     }
 
     > * {

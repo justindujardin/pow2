@@ -1,4 +1,4 @@
-<div class="ebp container">
+<div class="container">
     <button class="btn btn-flat" ng-click="previousCharacter()">Previous</button>
     <button class="btn btn-flat" ng-click="nextCharacter()">Next</button>
     <h2>Level{{character.attributes.level}} {{character.attributes.name}} <i class="image" icon-render icon="character.attributes.icon" frame="7"></i></h2>
@@ -30,7 +30,7 @@
     </ul>
 </div>
 
-<div class="ebp container">
+<div class="container">
     <h1>Inventory</h1>
     <ul class="unequipped" ng-init="setPartyMember=false">
         <li class="item" ng-repeat="item in inventory" ng-click="equipItem(item)">

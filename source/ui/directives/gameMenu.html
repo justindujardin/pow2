@@ -15,21 +15,18 @@
         </ul>
     </div>
     <div class="views" ng-if="open" ng-show="open" ng-class="{open:open}">
-        <div class="party" ng-if="page == 'party'">
-            <div class="ebp">
+        <div class="party ebp" ng-if="page == 'party'">
+            <div class="">
                 <h1>Party Gold: {{gameModel.attributes.gold}}</h1>
-                <button class="btn btn-flap" ng-click="saveGame()">Save Game</button>
+                <button class="btn btn-flat" ng-click="saveGame()">Save Game</button>
             </div>
             <div>
                 <hero-card hero="member" ng-repeat="member in party"></hero-card>
             </div>
 
         </div>
-        <div class="inventory" ng-if="page == 'inventory'">
+        <div class="inventory ebp" ng-if="page == 'inventory'">
             <inventory-view></inventory-view>
-        </div>
-        <div class="settings" ng-if="page == 'settings'">
-            <level-stats-view></level-stats-view>
         </div>
     </div>
 
