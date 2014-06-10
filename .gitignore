@@ -2,3 +2,6 @@ build/
 eburpReference/
 # Generated game files
 web/pow2*.*
+concepts
+lib
+web/bower

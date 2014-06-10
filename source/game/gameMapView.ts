@@ -34,7 +34,7 @@ module pow2{
       onAddToScene(scene:Scene) {
          this.mouse = scene.world.input.mouseHook(<SceneView>this,"world");
          // TODO: Move this elsewhere.
-         this.$el.on('click',this.mouseClick);
+         this.$el.on('click touchstart',this.mouseClick);
          this.scene.on("map:loaded",this.syncComponents,this);
       }
       onRemoveFromScene(scene:Scene) {
@@ -47,11 +47,15 @@ module pow2{
       /*
        * Mouse input
        */
-      mouseClick(e:JQueryMouseEventObject) {
+      mouseClick(e:any) {
          var party = <pow2.PlayerComponent>this.scene.componentByType(pow2.PlayerComponent);
          if (party) {
+            Input.mouseOnView(e.originalEvent,this.mouse.view,this.mouse);
             party.path = this.tileMap.calculatePath(party.targetPoint,this.mouse.world);
+            e.preventDefault();
+            return false;
          }
+
       }
       /*
        * Update the camera for this frame.

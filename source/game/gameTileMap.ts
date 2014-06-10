@@ -186,15 +186,18 @@ module pow2 {
       }
 
       calculatePath(from:Point,to:Point):Point[]{
+         if(!this.graph || !this.graph.nodes){
+            return [];
+         }
          // Treat out of range errors as non-critical, and just
          // return an empty array.
-         if(from.x >= this.graph.nodes.length){
+         if(from.x >= this.graph.nodes.length || from.x < 0){
             return [];
          }
          if(from.y >= this.graph.nodes[from.x].length){
             return [];
          }
-         if(to.x >= this.graph.nodes.length){
+         if(to.x >= this.graph.nodes.length || to.x < 0){
             return [];
          }
          if(to.y >= this.graph.nodes[to.x].length){
