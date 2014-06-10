@@ -1,26 +1,44 @@
-  // Dialog
-  // --------------------------------------------------------------------------
-  .dialog-view {
-    text-align: center;
-    .container {
-      width:100%;
-    }
-    .dialog {
-      width:100%;
-      margin-top:15px;
-      padding:10px 10px;
-    }
-    .character {
-      padding:0;
-      p {
-        margin:0;
+// Dialog
+// --------------------------------------------------------------------------
+.dialog-view {
+  text-align: center;
+  .container {
+    width:100%;
+  }
+  .dialog {
+    width:100%;
+    margin-top:15px;
+    padding:10px 10px;
+    position: relative;
+    .btn-close {
+      position: absolute;
+      font-size: 1.5em;
+      padding:5px 20px;
+      padding-top: 10px;
+      right: 0.5em;
+      top: 0;
+      &:hover {
+        top: 0;
+        padding-top: 12px;
+      }
+      &:active {
+        top: 0;
+        padding-top: 16px;
       }
     }
-    .text {
-      text-align: center;
-      vertical-align: middle;
-      line-height: normal;
-      color:#fff;
-      .stroke-text(1px,#000);
+
+  }
+  .character {
+    padding:0;
+    p {
+      margin:0;
     }
   }
+  .text {
+    text-align: center;
+    vertical-align: middle;
+    line-height: normal;
+    color:#fff;
+    .stroke-text(1px,#000);
+  }
+}

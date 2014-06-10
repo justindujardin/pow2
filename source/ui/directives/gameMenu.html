@@ -12,17 +12,13 @@
             <li ng-class="{active:page=='inventory'}">
                 <a href="#" ng-click="page='inventory'"><span class="pow2-battle-gear"></span></a>
             </li>
-
-            <!-- Save, etc. -->
-            <li ng-class="{active:page=='save'}">
-                <a href="#" ng-click="page='save'"><span class="pow2-bookmark"></span></a>
-            </li>
         </ul>
     </div>
     <div class="views" ng-if="open" ng-show="open" ng-class="{open:open}">
         <div class="party" ng-if="page == 'party'">
             <div class="ebp">
                 <h1>Party Gold: {{gameModel.attributes.gold}}</h1>
+                <button class="btn btn-flap" ng-click="saveGame()">Save Game</button>
             </div>
             <div>
                 <hero-card hero="member" ng-repeat="member in party"></hero-card>
@@ -34,9 +30,6 @@
         </div>
         <div class="settings" ng-if="page == 'settings'">
             <level-stats-view></level-stats-view>
-        </div>
-        <div class="save" ng-if="page == 'save'">
-            <button class="btn" ng-click="saveGame()">Save Game</button>
         </div>
     </div>
 

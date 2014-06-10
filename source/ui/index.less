@@ -12,6 +12,7 @@
 @import "type";
 @import "code";
 @import "progress-bars";
+@import "glyphicons";
 
 // Utility classes
 @import "utilities";
@@ -57,6 +58,19 @@ body {
   margin:0;
   overflow: hidden;
   height:100%;
+
+  /* GET THIS DIALOG OUT OF MY FACE! */
+  .btn-close {
+    font-size: 2.2em;
+    position: fixed;
+    padding-top: 20px;
+    right: 0.5em;
+    top: -6px;
+    text-shadow: -1px -1px rgba(0,0,0,0.2);
+    &:hover { top: -4px; }
+    &:active { top: 0; }
+  }
+
 }
 
 
@@ -159,15 +173,15 @@ canvas {
 @contrastShadow:#E85627;
 .extrude-stroke-text(@width:2px,@lightColor:@contrastHighlight,@shadowColor:@contrastShadow){
   text-shadow: @width  @width 0 @shadowColor,
-  -@width -@width 0 @lightColor,
-  @width -@width 0 @shadowColor,
+    -@width -@width 0 @lightColor,
+    @width -@width 0 @shadowColor,
   -@width  @width 0 @lightColor;
 }
 .inset-stroke-text(@width:2px,@lightColor:@contrastHighlight,@shadowColor:@contrastShadow){
   text-shadow:-@width -@width 0 @lightColor,
   @width  @width 0 @shadowColor,
   -@width  @width 0 @lightColor,
-  @width -@width 0 @shadowColor;
+    @width -@width 0 @shadowColor;
 }
 .stroke-text(@width:2px,@color:@contrastShadow){
   .extrude-stroke-text(@width,@color,@color);
@@ -233,10 +247,8 @@ canvas {
   right:0;
   bottom:0;
   border:none;
-  margin:auto;
-  width:960px;
-  height:640px;
-
+  margin:0;
+  padding:0;
   .damage-value {
     font-family: 'GraphicPixel', sans-serif;
     font-size:60px;
