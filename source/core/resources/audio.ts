@@ -61,6 +61,7 @@ module pow2 {
             this.data = reference;
             this.ready();
          });
+         reference.load();
       }
    }
 }
