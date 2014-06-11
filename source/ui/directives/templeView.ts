@@ -29,8 +29,17 @@ module pow2.ui {
                var model:GameStateModel = game.model;
                var money:number = model.get('gold');
                var cost:number = parseInt($scope.temple.cost);
+
+               var alreadyHealed:boolean = !_.find(model.party,(hero:HeroModel) => {
+                  return hero.get('hp') !== hero.get('maxHP');
+               });
+
+
                if(cost > money){
                   powAlert.show("You don't have enough money");
+               }
+               else if(alreadyHealed) {
+                  powAlert.show("Keep your monies.\nYour party is already fully healed.");
                }
                else {
                   //console.log("You have (" + money + ") monies.  Spending (" + cost + ") on temple");

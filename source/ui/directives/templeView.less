@@ -1,9 +1,30 @@
 
 .temple-view {
   text-align: center;
+  margin:auto;
+  h1,h2 {
+    margin:5px 0;
+    display: inline-block;
+  }
+
+
   .hero-view {
     padding: 0.5em;
     margin: 0.5em;
+  }
+
+  .party {
+    text-align: left;
+    .member {
+      margin:0 5px;
+      .image, .name, .stats {
+        display: inline-block;
+      }
+      .stats {
+        float:right;
+        height:64px;
+      }
+    }
   }
   .prompt {
     padding:10px;
@@ -16,6 +37,13 @@
       &:last-of-type {
         right: 0;
       }
+    }
+  }
+
+  .header {
+    margin:0;
+    h1 {
+      height:64px;
     }
   }
 }
