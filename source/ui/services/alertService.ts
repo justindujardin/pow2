@@ -44,7 +44,7 @@ module pow2.ui {
       world:pow2.GameWorld;
       id:number = _.uniqueId();
       paused:boolean = false;
-      public containerSearch:string = '.game-container';
+      public containerSearch:string = '.ui-container';
 
       private _current:IPowAlertObject = null;
       private _queue:IPowAlertObject[] = [];
