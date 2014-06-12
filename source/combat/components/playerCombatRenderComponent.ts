@@ -171,7 +171,7 @@ module pow2.combat {
                   frame = StateFrames.INJURED;
                   break;
                case "Dead":
-                  this.host.rotation = 90;
+                  //this.host.rotation = 90;
                   frame = StateFrames.DEAD;
                   break;
                case "Attacking":
