@@ -88,7 +88,7 @@ module pow2.combat {
             {
                name : "Strike at Opponent",
                repeats: 1,
-               duration:500,
+               duration:100,
                frames : [12,13,14,15,14,13,12],
                callback: () => {
                   this.host.setSprite(this.host.icon.replace("-attack.png",".png"),10);
@@ -171,6 +171,7 @@ module pow2.combat {
                   frame = StateFrames.INJURED;
                   break;
                case "Dead":
+                  this.host.rotation = 90;
                   frame = StateFrames.DEAD;
                   break;
                case "Attacking":
