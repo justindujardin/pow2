@@ -33,6 +33,7 @@ module pow2 {
       tiles:any = []; // TODO: TilesetProperties
 //      terrain:any;
       features:any;
+      zones:any;
       mapName: string;
       bounds: pow2.Rect;
       private _loaded:boolean = false;
@@ -97,6 +98,7 @@ module pow2 {
             this.tiles = this.tiles.concat(tiles.tiles);
          });
          this.features = _.where(this.map.objectGroups,{name:"Features"})[0] || [];
+         this.zones = _.where(this.map.objectGroups,{name:"Zones"})[0] || [];
          this.loaded();
          return true;
       }

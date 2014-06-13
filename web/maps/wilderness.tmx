@@ -80,7 +80,7 @@
 27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,27,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,40,27,27,27,27,27,27,27,27,27,27,27,27
 </data>
  </layer>
- <objectgroup name="Features" width="96" height="72">
+ <objectgroup draworder="topdown" name="Features" width="96" height="72">
   <object name="town" type="transition" x="256" y="816" width="16" height="16">
    <properties>
     <property name="icon" value="city.png"/>
@@ -280,5 +280,11 @@
     <property name="y" value="49"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup draworder="topdown" name="Zones" width="96" height="72">
+  <object name="Zone1" type="danger-zone" x="98" y="483" width="525" height="446"/>
+  <object name="Zone2" type="danger-zone" x="28" y="42" width="665" height="440"/>
+  <object name="Zone3" type="danger-zone" x="548" y="770" width="779" height="333"/>
+  <object name="Zone4" type="danger-zone" x="935" y="82" width="575" height="429"/>
  </objectgroup>
 </map>
