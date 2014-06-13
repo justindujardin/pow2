@@ -73,7 +73,7 @@ module pow2 {
          return this._currentState !== null ? this._currentState.name : null;
       }
       setCurrentState(state:IState):boolean;
-      setCurrentState(state:string):boolean
+      setCurrentState(state:string):boolean;
       setCurrentState(newState:any):boolean{
          var state = typeof newState === 'string' ? this.getState(newState) : <IState>newState;
          var oldState:IState = this._currentState;
