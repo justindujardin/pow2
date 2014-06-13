@@ -17,24 +17,31 @@
 /// <reference path="../resource.ts"/>
 
 module pow2 {
+   declare var Tabletop:any;
    /**
     * Use jQuery to load a published google spreadsheet as JSON.
     */
    export class GoogleSpreadsheetResource extends Resource {
       load() {
-         // TODO: This is _really_ fragile.
-         var publicSheetUrl:string = "https://spreadsheets.google.com/feeds/list/" + this.url + "/od6/public/values?alt=json";
-         var request:JQueryXHR = $.getJSON(publicSheetUrl);
-         request.done((object:JSON) => {
-            this.data = object;
-            this.ready();
-         });
-         request.fail((jqxhr,settings,exception) => {
-            this.failed(exception);
+         // TODO: ERROR Condition
+         Tabletop.init( {
+            key: this.url,
+            callback: (data, tabletop) => {
+               this.data = data;
+               this.ready();
+            }
          });
       }
 
-
+      getSheetData(name:string) {
+         if(!this.isReady()){
+            throw new Error("Cannot query spreadsheet before it's loaded");
+         }
+         if(!this.data[name] || !this.data[name].hasOwnProperty('elements')){
+            throw new Error("Unable to find sheet with name: " + name);
+         }
+         return this.data[name].elements;
+      }
 
    }
 }

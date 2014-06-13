@@ -36,7 +36,7 @@ module pow2 {
    // Implementation
    // -------------------------------------------------------------------------
    export class GameStateMachine extends TickedStateMachine {
-      model:GameStateModel = new GameStateModel();
+      model:GameStateModel = null;
       defaultState:string = GameDefaultState.NAME;
       player:TileObject = null;
       encounter:CombatEncounterComponent = null;
@@ -48,6 +48,10 @@ module pow2 {
          new GameCombatState()
       ];
       private _elapsed: number = 0;
+      onAddToWorld(world){
+         super.onAddToWorld(world);
+         this.model = new GameStateModel({loader:world.loader});
+      }
 
       updatePlayer(){
          if(this.world && this.world.scene){

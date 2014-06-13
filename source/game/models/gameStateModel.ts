@@ -29,6 +29,7 @@ module pow2 {
    export class GameStateModel extends Backbone.Model {
       party:HeroModel[]; // The player's party
       inventory:ItemModel[]; // The inventory of items owned by the player.
+      loader:pow2.ResourceLoader;
       static DEFAULTS:GameStateModelOptions = {
          gold: 200
       };
@@ -43,6 +44,25 @@ module pow2 {
          if(typeof this.inventory === 'undefined'){
             this.inventory = [];
          }
+         if(typeof options.loader === 'undefined'){
+            throw new Error("GameStateModel requires loader to fetch data");
+         }
+         this.loader = options.loader;
+      }
+
+      private _gameData:pow2.GoogleSpreadsheetResource;
+      public googSpreadsheetId:string = "1IAQbt_-Zq1BUwRNiJorvt4iPEYb5HmZrpyMOkb-OuJo";
+      getDataSource(then:(data:GoogleSpreadsheetResource)=>any):GameStateModel {
+         if(this._gameData){
+            then && then(this._gameData);
+         }
+         else {
+            this.loader.loadAsType(this.googSpreadsheetId,pow2.GoogleSpreadsheetResource,(resource:pow2.GoogleSpreadsheetResource) => {
+               this._gameData = resource;
+               then && then(resource);
+            });
+         }
+         return this;
       }
 
 

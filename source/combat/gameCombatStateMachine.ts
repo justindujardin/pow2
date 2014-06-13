@@ -123,9 +123,6 @@ module pow2 {
       scene:Scene;
       tileMap:GameTileMap;
       finished:boolean = false; // Trigger state to exit when true.
-
-      public googSpreadsheetId:string = "1IAQbt_-Zq1BUwRNiJorvt4iPEYb5HmZrpyMOkb-OuJo";
-
       enter(machine:GameStateMachine){
          super.enter(machine);
          this.parent = machine;
@@ -158,55 +155,34 @@ module pow2 {
          this.scene.once('map:loaded',() => {
             // Position Party/Enemies
 
-
-            this.scene.world.loader.loadAsType(this.googSpreadsheetId,pow2.GoogleSpreadsheetResource,(enemiesSpreadsheet:pow2.GoogleSpreadsheetResource) => {
-
-               //-----------------------------------------------------------------------------------
-               // TERRIBLE INLINE GOOGLE SPREADSHEET PARSING HACKS OMG WAT THE HECK?
-
-
-               var enemies = [];
-               if(enemiesSpreadsheet && enemiesSpreadsheet.isReady()){
-
-                  console.log("Loading enemies data from custom spreadsheet: " + enemiesSpreadsheet.url);
-                  var json:any = enemiesSpreadsheet.data;
-                  if(!json || json.version !== "1.0"){
-                     throw new Error("I'm not smart enough to parse this.  I expect version 1.0");
-                  }
-                  json = json.feed;
-
-                  // This is bad, we really need to associate this prefix with the xmlns definitions.
-                  var keyExtractor = /gsx\$(.+)/;
-                  var numberMatcher = /\d+/;
-                  enemies = _.map(json.entry,(entry:any) => {
-                     var enemyData = {};
-                     _.each(entry,(value:any,key:string)=>{
-                        var matches = key.match(keyExtractor);
-                        if(matches && matches.length == 2 && value && value.hasOwnProperty('$t')){
-                           var data = value['$t'];
-                           if(typeof data === 'string' && data.match(numberMatcher)){
-                              data = parseInt(data);
-                           }
-                           var finalKey = matches[1];
-                           if(finalKey === 'attacklow'){
-                              finalKey = 'attackLow';
-                           }
-                           else if(finalKey === 'attackhigh'){
-                              finalKey = 'attackHigh';
-                           }
-                           else if(finalKey === 'hitpercent'){
-                              finalKey = 'hitPercent';
-                           }
-                           else if(finalKey === 'groups'){
-                              data = data.split('|');
-                           }
-                           enemyData[finalKey] = data;
-                        }
-                     });
-                     return enemyData;
+            // Get enemies data from spreadsheet
+            this.parent.model.getDataSource((enemiesSpreadsheet:pow2.GoogleSpreadsheetResource) => {
+               var enemyData = enemiesSpreadsheet.getSheetData("Enemies");
+               var numberMatcher:RegExp = /\d+/;
+               var enemies:any[] = _.map(enemyData,(entry:any) => {
+                  var enemyData = {};
+                  _.each(entry,(value:any,key:string)=>{
+                     var finalKey:string = key;
+                     if(typeof value === 'string' && value.match(numberMatcher)){
+                        value = parseInt(value);
+                     }
+                     if(finalKey === 'attacklow'){
+                        finalKey = 'attackLow';
+                     }
+                     else if(finalKey === 'attackhigh'){
+                        finalKey = 'attackHigh';
+                     }
+                     else if(finalKey === 'hitpercent'){
+                        finalKey = 'hitPercent';
+                     }
+                     else if(finalKey === 'groups'){
+                        value = value.split('|');
+                     }
+                     enemyData[finalKey] = value;
                   });
-                  console.log(enemies);
-               }
+                  return enemyData;
+               });
+               console.log(enemies);
 
                // YOU CAN OPEN YOUR EYES AGAIN ...
                //-----------------------------------------------------------------------------------
