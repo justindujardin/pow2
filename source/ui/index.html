@@ -42,10 +42,10 @@
 </div>
 
 <div class="game-container fade" ng-if="loaded" id="alertContainer">
-    <canvas class="game-view map fade drop-panel" width="960" height="640" game-canvas ng-hide="inCombat">
+    <canvas class="game-view map fade" width="960" height="640" game-canvas ng-hide="inCombat">
         Your browser doesn't support this.
     </canvas>
-    <canvas class="game-view combat fade drop-panel" width="960" height="640" combat-canvas ng-hide="!inCombat">
+    <canvas class="game-view combat fade" width="960" height="640" combat-canvas ng-hide="!inCombat">
         Your browser doesn't support this.
     </canvas>
     <combat-view ng-if="inCombat"></combat-view>
@@ -68,6 +68,7 @@
 <script type="text/javascript" src="/bower/angular-sanitize/angular-sanitize.min.js"></script>
 <script type="text/javascript" src="/bower/angular-touch/angular-touch.min.js"></script>
 <script type="text/javascript" src="/bower/astar/astar.js"></script>
+<script type="text/javascript" src="/bower/tabletop/src/tabletop.js"></script>
 <script type="text/javascript" src="/lib/pow2.js"></script>
 <script type="text/javascript" src="/lib/pow2.game.js"></script>
 <script type="text/javascript" src="/lib/pow2.data.js"></script>
