@@ -27,20 +27,49 @@ module pow2 {
          Tabletop.init( {
             key: this.url,
             callback: (data, tabletop) => {
-               this.data = data;
+               this.data = this.transformTypes(data);
                this.ready();
             }
          });
       }
 
-      getSheetData(name:string) {
+      // TODO: Do we need to match - and floating point?
+      static NUMBER_MATCHER:RegExp = /^\d+$/;
+
+      transformTypes(data:any):any {
+         var results:any = {};
+         _.each(data,(dataValue:any,dataKey)=>{
+            var sheetElements = dataValue.elements.slice(0);
+            var length:number = sheetElements.length;
+            for (var i = 0; i < length; i++){
+               var entry:any = sheetElements[i];
+               for (var key in entry) {
+                  if (!entry.hasOwnProperty(key) || typeof entry[key] !== 'string') {
+                     continue;
+                  }
+                  var value = entry[key];
+                  // number values
+                  if(value.match(pow2.GoogleSpreadsheetResource.NUMBER_MATCHER)){
+                     entry[key] = parseInt(value);
+                  }
+                  // pipe delimited array values
+                  else if(key === 'usedby' || key === 'groups'){
+                     entry[key] = value.split('|');
+                  }
+               }
+            }
+            results[dataKey] = sheetElements;
+         });
+         return results;
+      }
+      getSheetData(name:string):any {
          if(!this.isReady()){
             throw new Error("Cannot query spreadsheet before it's loaded");
          }
-         if(!this.data[name] || !this.data[name].hasOwnProperty('elements')){
+         if(!this.data[name]){
             throw new Error("Unable to find sheet with name: " + name);
          }
-         return this.data[name].elements;
+         return this.data[name];
       }
 
    }

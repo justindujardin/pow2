@@ -48,17 +48,39 @@ module pow2.ui {
 
                }
             };
+            $scope.initStoreFromFeature = (feature:pow2.StoreFeatureComponent) => {
+               // Get enemies data from spreadsheet
+               game.model.getDataSource((data:pow2.GoogleSpreadsheetResource) => {
+                  var type:string = 'unknown';
+                  var sheet:string = '';
+                  if(_.indexOf(feature.host.groups,"weapon") !== -1){
+                     type = 'weapon';
+                     sheet = 'Weapons';
+                  }
+                  else if(_.indexOf(feature.host.groups,"armor") !== -1){
+                     type = 'armor';
+                     sheet = 'Armor';
+                  }
+                  var raw = _.where(data.getSheetData(sheet),{level:feature.feature.level});
+                  feature.inventory = _.map(raw,(item:any)=>{
+                     item.itemType = type;
+                     return item;
+                  });
+
+                  $scope.$apply(() => {
+                     $scope.store = feature;
+                  });
+               });
+            };
          },
-         link: function($scope,$element,$attrs){
+         link: ($scope) => {
 
             // Stores
-            game.world.scene.on('store:entered',function(feature){
-               $scope.$apply(function(){
-                  $scope.store = feature;
-               });
+            game.world.scene.on('store:entered',(feature:StoreFeatureComponent) =>{
+               $scope.initStoreFromFeature(feature);
             });
-            game.world.scene.on('store:exited',function(){
-               $scope.$apply(function(){
+            game.world.scene.on('store:exited',() => {
+               $scope.$apply(() => {
                   $scope.store = null;
                });
             });

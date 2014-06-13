@@ -32,7 +32,7 @@ module pow2 {
       agility?:number;
       dead?:boolean;
       evade:number; // The evasion of the creature.
-      hitPercent:number; // The accuracy of the creature.
+      hitpercent:number; // The accuracy of the creature.
    }
 
    export class EntityModel extends Backbone.Model {
@@ -54,7 +54,7 @@ module pow2 {
          agility: 1,
          dead:false,
          evade:0,
-         hitPercent:1
+         hitpercent:1
       };
       defaults():any {
          return _.extend({},EntityModel.DEFAULTS);
@@ -64,7 +64,7 @@ module pow2 {
       rollHit(defender:EntityModel):boolean {
          var roll:number = _.random(0,200);
          var evasion:number = defender.getEvasion();
-         var chance:number = EntityModel.BASE_CHANCE_TO_HIT + this.attributes.hitPercent - evasion;
+         var chance:number = EntityModel.BASE_CHANCE_TO_HIT + this.attributes.hitpercent - evasion;
          if(roll === 200){
             return false;
          }

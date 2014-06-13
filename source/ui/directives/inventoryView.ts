@@ -44,7 +44,7 @@ module pow2.ui {
                   return;
                }
                if(item instanceof ArmorModel){
-                  var users = item.get('usedBy');
+                  var users = item.get('usedby');
                   if(users && _.indexOf(users,hero.get('type')) === -1) {
                      powAlert.show(hero.get('name') + " cannot equip this item");
                      return;

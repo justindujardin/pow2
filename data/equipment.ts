@@ -6,7 +6,7 @@ pow2.registerWeapons(1,[
       name : "Crude Club",
       icon : "club.png",
       groups : ["default", "weapon"],
-      usedBy : ["warrior"],
+      usedby : ["warrior"],
       attack:5,
       hit:10,
       cost:25
@@ -15,7 +15,7 @@ pow2.registerWeapons(1,[
       name : "Sling",
       icon : "sling.png",
       groups : ["default", "weapon"],
-      usedBy : ["archer"],
+      usedby : ["archer"],
       attack:5,
       hit:10,
       cost:25
@@ -24,7 +24,7 @@ pow2.registerWeapons(1,[
       name : "Short Sword",
       icon : "shortSword.png",
       groups : ["default", "weapon"],
-      usedBy : ["warrior"],
+      usedby : ["warrior"],
       attack:9,
       hit:5,
       cost:150
@@ -33,7 +33,7 @@ pow2.registerWeapons(1,[
       name : "Short Staff",
       icon : "shortStaff.png",
       groups : ["default", "weapon"],
-      usedBy : ["mage"],
+      usedby : ["mage"],
       attack:2,
       hit:0,
       cost:25
@@ -42,7 +42,7 @@ pow2.registerWeapons(1,[
 //      name : "Goblin Scimitar",
 //      icon : "scimitar.png",
 //      groups : ["goblin", "kobold","weapon"],
-//      usedBy : ["archer"],
+//      usedby : ["archer"],
 //      attack:10,
 //      hit:10,
 //      cost:150
@@ -51,7 +51,7 @@ pow2.registerWeapons(1,[
 //      name : "Short Bow",
 //      icon : "shortBow2.png",
 //      groups : ["default", "weapon"],
-//      usedBy : ["archer"],
+//      usedby : ["archer"],
 //      attack:7,
 //      hit:10,
 //      cost:20
@@ -81,7 +81,7 @@ pow2.registerArmor(1,[
       type : "body",
       icon : "leatherArmor.png",
       groups : ["default", "armor"],
-      usedBy : [
+      usedby : [
          pow2.HeroType.Warrior,
          pow2.HeroType.Ranger
       ],
@@ -94,7 +94,7 @@ pow2.registerArmor(1,[
       type : "body",
       icon : "cloak.png",
       groups : ["default", "armor"],
-      usedBy : [
+      usedby : [
          pow2.HeroType.DeathMage,
          pow2.HeroType.LifeMage
       ],
@@ -107,7 +107,7 @@ pow2.registerArmor(1,[
       type : "arms",
       icon : "leatherShield.png",
       groups : ["default", "armor"],
-      usedBy : [
+      usedby : [
          pow2.HeroType.Warrior
       ],
       defense:2,
@@ -119,7 +119,7 @@ pow2.registerArmor(1,[
       type : "head",
       icon : "leatherHelm.png",
       groups : ["default", "armor"],
-      usedBy : [
+      usedby : [
          pow2.HeroType.Warrior,
          pow2.HeroType.Ranger
       ],
@@ -132,7 +132,7 @@ pow2.registerArmor(1,[
       type : "feet",
       icon : "leatherBoots2.png",
       groups : ["default", "armor"],
-      usedBy : [
+      usedby : [
          pow2.HeroType.Warrior,
          pow2.HeroType.Ranger
       ],

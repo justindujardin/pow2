@@ -93,7 +93,7 @@ module pow2 {
          baseAgility:0,
          baseIntelligence:0,
          baseVitality:0,
-         hitPercent:5,
+         hitpercent:5,
          hitPercentPerLevel:1,
          evade:0
       };
@@ -269,7 +269,7 @@ module pow2 {
                   baseAgility:2,
                   baseIntelligence:1,
                   baseVitality:7,
-                  hitPercent:10,
+                  hitpercent:10,
                   hitPercentPerLevel:3
                });
                break;
@@ -283,7 +283,7 @@ module pow2 {
                   baseAgility:6,
                   baseIntelligence:9,
                   baseVitality:4,
-                  hitPercent:5,
+                  hitpercent:5,
                   hitPercentPerLevel:1
                });
                break;
@@ -297,7 +297,7 @@ module pow2 {
                   baseAgility:10,
                   baseIntelligence:2,
                   baseVitality:5,
-                  hitPercent:7,
+                  hitpercent:7,
                   hitPercentPerLevel:2
                });
                break;
@@ -311,7 +311,7 @@ module pow2 {
                   baseAgility:10,
                   baseIntelligence:4,
                   baseVitality:4,
-                  hitPercent:5,
+                  hitpercent:5,
                   hitPercentPerLevel:2
                });
                break;

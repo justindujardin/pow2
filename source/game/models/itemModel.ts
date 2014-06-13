@@ -26,7 +26,7 @@ module pow2 {
          icon:"",
          cost:0,
          hero:null,
-         usedBy:null
+         usedby:null
       };
       defaults():any {
          return _.extend({},ItemModel.DEFAULTS);

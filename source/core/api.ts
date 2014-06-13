@@ -22,7 +22,7 @@ module pow2 {
       name:string; // The item name
       cost:number; // The cost of this item
       icon:string; // Sprite icon name, e.g. LongSword.png
-      usedBy?:any[]; // `HeroType`s that can use this item.
+      usedby?:any[]; // `HeroType`s that can use this item.
    }
 
    export interface IGameWeapon extends IGameItem {

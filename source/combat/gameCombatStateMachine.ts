@@ -157,35 +157,9 @@ module pow2 {
 
             // Get enemies data from spreadsheet
             this.parent.model.getDataSource((enemiesSpreadsheet:pow2.GoogleSpreadsheetResource) => {
-               var enemyData = enemiesSpreadsheet.getSheetData("Enemies");
-               var numberMatcher:RegExp = /\d+/;
-               var enemies:any[] = _.map(enemyData,(entry:any) => {
-                  var enemyData = {};
-                  _.each(entry,(value:any,key:string)=>{
-                     var finalKey:string = key;
-                     if(typeof value === 'string' && value.match(numberMatcher)){
-                        value = parseInt(value);
-                     }
-                     if(finalKey === 'attacklow'){
-                        finalKey = 'attackLow';
-                     }
-                     else if(finalKey === 'attackhigh'){
-                        finalKey = 'attackHigh';
-                     }
-                     else if(finalKey === 'hitpercent'){
-                        finalKey = 'hitPercent';
-                     }
-                     else if(finalKey === 'groups'){
-                        value = value.split('|');
-                     }
-                     enemyData[finalKey] = value;
-                  });
-                  return enemyData;
-               });
+               var enemies:any[] = enemiesSpreadsheet.getSheetData("Enemies");
                console.log(enemies);
 
-               // YOU CAN OPEN YOUR EYES AGAIN ...
-               //-----------------------------------------------------------------------------------
                // Create the enemy
                var max = 3;
                var min = 1;
