@@ -27,7 +27,7 @@
 18,18,18,18,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69,69
 </data>
  </layer>
- <objectgroup name="Features" width="29" height="22">
+ <objectgroup draworder="topdown" name="Features" width="29" height="22">
   <object name="wilderness" type="transition" x="320" y="64" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
@@ -74,7 +74,7 @@
   <object name="Nothian Wares" type="store" x="144" y="144" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
-    <property name="groups" value="[&quot;rare&quot;]"/>
+    <property name="groups" value="rare"/>
     <property name="icon" value="shop.png"/>
     <property name="level" value="1"/>
     <property name="name" value="Nothian Wares"/>

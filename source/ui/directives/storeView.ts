@@ -44,17 +44,23 @@ module pow2.ui {
             $scope.initStoreFromFeature = (feature:pow2.StoreFeatureComponent) => {
                // Get enemies data from spreadsheet
                game.model.getDataSource((data:pow2.GoogleSpreadsheetResource) => {
+
+                  var hasCategory:boolean = typeof feature.host.category !== 'undefined';
                   var theChoices: any[] = [];
-                  theChoices = theChoices.concat(_.map(data.getSheetData('weapons'),(w)=>{
-                     return _.extend({ instanceModel: new WeaponModel(w) },w);
-                  }));
-                  theChoices = theChoices.concat(_.map(data.getSheetData('armor'),(a)=>{
-                     return _.extend({ instanceModel: new ArmorModel(a) },a);
-                  }));
+                  if(!hasCategory || feature.host.category === 'weapons'){
+                     theChoices = theChoices.concat(_.map(data.getSheetData('weapons'),(w)=>{
+                        return _.extend({ instanceModel: new WeaponModel(w) },w);
+                     }));
+                  }
+                  if(!hasCategory || feature.host.category === 'armor') {
+                     theChoices = theChoices.concat(_.map(data.getSheetData('armor'), (a)=> {
+                        return _.extend({ instanceModel: new ArmorModel(a) }, a);
+                     }));
+                  }
                   var items = [];
                   _.each(feature.host.groups,(group:string)=>{
                      items = items.concat(_.filter(theChoices,(c:any)=>{
-                        return _.indexOf(c.groups,group) !== -1
+                        return _.indexOf(c.groups,group) !== -1;
                      }));
                   });
 
