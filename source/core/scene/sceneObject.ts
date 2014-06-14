@@ -53,7 +53,7 @@ module pow2 {
       size:Point;
    }
 
-   export class SceneObject extends Events implements ISceneObject, ISceneComponentHost {
+   export class SceneObject extends Events implements ISceneObject, ISceneComponentHost, IWorldObject {
       id:number = _.uniqueId();
       name:string;
       scene: Scene;
