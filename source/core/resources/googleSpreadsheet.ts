@@ -54,7 +54,13 @@ module pow2 {
                   }
                   // pipe delimited array values
                   else if(key === 'usedby' || key === 'groups'){
-                     entry[key] = value.split('|');
+                     if(/^\s*$/.test(value)){
+                        entry[key] = null;
+                     }
+                     else {
+                        entry[key] = value.split('|');
+                     }
+
                   }
                }
             }
