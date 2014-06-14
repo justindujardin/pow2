@@ -118,6 +118,7 @@ module pow2 {
             y: Math.round(tiledObject.y / this.map.tileheight)
          });
          var object = new GameFeatureObject(options);
+         this.world.mark(object);
          var componentType:any = null;
          var type:string = (feature && feature.type) ? feature.type : tiledObject.type;
          switch(type){

@@ -24,6 +24,21 @@ module pow2 {
       party:PlayerComponent;
       partyObject:TileObject;
       partySprite:string;
+
+      syncComponent():boolean {
+         if(super.syncComponent()){
+            var gameWorld:GameWorld = <GameWorld>this.host.world;
+            if(gameWorld && gameWorld.state){
+               var gameState:GameStateModel = gameWorld.state.model;
+               var location = gameState.get('shipPosition');
+               if(location){
+                  this.host.setPoint(new Point(location.x,location.y));
+               }
+            }
+         }
+         return false;
+      }
+
       enter(object:GameFeatureObject):boolean {
          if(!this.tileMap){
             return false;
@@ -76,6 +91,11 @@ module pow2 {
          this.host.enabled = true;
          this.partyObject = null;
          this.party = null;
+
+         var gameWorld:GameWorld = <GameWorld>this.host.world;
+         if(gameWorld && gameWorld.state && gameWorld.state.model){
+            gameWorld.state.model.set('shipPosition',this.host.point);
+         }
       }
    }
 }
