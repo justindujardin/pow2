@@ -74,9 +74,9 @@
   <object name="Nothian Wares" type="store" x="144" y="144" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
-    <property name="groups" value="[&quot;default&quot;]"/>
+    <property name="groups" value="[&quot;rare&quot;]"/>
     <property name="icon" value="shop.png"/>
-    <property name="level" value="2"/>
+    <property name="level" value="1"/>
     <property name="name" value="Nothian Wares"/>
     <property name="sellRate" value="25"/>
     <property name="type" value="store"/>

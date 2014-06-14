@@ -58,7 +58,7 @@ module pow2 {
                   }
                }
             }
-            results[dataKey] = sheetElements;
+            results[dataKey.toLowerCase()] = sheetElements;
          });
          return results;
       }
@@ -67,7 +67,7 @@ module pow2 {
             throw new Error("Cannot query spreadsheet before it's loaded");
          }
          if(!this.data[name]){
-            throw new Error("Unable to find sheet with name: " + name);
+            return [];
          }
          return this.data[name];
       }

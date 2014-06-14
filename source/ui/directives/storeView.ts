@@ -36,37 +36,29 @@ module pow2.ui {
                   model.set({
                      gold: money - cost
                   });
-                  var inventoryModel:any = null;
-                  if(item.itemType === 'armor'){
-                     inventoryModel = new ArmorModel(item);
-                  }
-                  else if(item.itemType === 'weapon'){
-                     inventoryModel = new WeaponModel(item);
-                  }
                   powAlert.show("Purchased " + item.name + ".",null,1500);
-                  model.inventory.push(inventoryModel);
+                  model.inventory.push(item.instanceModel.clone());
 
                }
             };
             $scope.initStoreFromFeature = (feature:pow2.StoreFeatureComponent) => {
                // Get enemies data from spreadsheet
                game.model.getDataSource((data:pow2.GoogleSpreadsheetResource) => {
-                  var type:string = 'unknown';
-                  var sheet:string = '';
-                  if(_.indexOf(feature.host.groups,"weapon") !== -1){
-                     type = 'weapon';
-                     sheet = 'Weapons';
-                  }
-                  else if(_.indexOf(feature.host.groups,"armor") !== -1){
-                     type = 'armor';
-                     sheet = 'Armor';
-                  }
-                  var raw = _.where(data.getSheetData(sheet),{level:feature.feature.level});
-                  feature.inventory = _.map(raw,(item:any)=>{
-                     item.itemType = type;
-                     return item;
+                  var theChoices: any[] = [];
+                  theChoices = theChoices.concat(_.map(data.getSheetData('weapons'),(w)=>{
+                     return _.extend({ instanceModel: new WeaponModel(w) },w);
+                  }));
+                  theChoices = theChoices.concat(_.map(data.getSheetData('armor'),(a)=>{
+                     return _.extend({ instanceModel: new ArmorModel(a) },a);
+                  }));
+                  var items = [];
+                  _.each(feature.host.groups,(group:string)=>{
+                     items = items.concat(_.filter(theChoices,(c:any)=>{
+                        return _.indexOf(c.groups,group) !== -1
+                     }));
                   });
 
+                  feature.inventory =  _.where(items,{level:feature.feature.level});
                   $scope.$apply(() => {
                      $scope.store = feature;
                   });

@@ -202,7 +202,7 @@
   <object name="Suvian Arms" type="store" x="416" y="64" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
-    <property name="groups" value="[&quot;weapon&quot;]"/>
+    <property name="groups" value="[&quot;weapons&quot;]"/>
     <property name="icon" value="shop.png"/>
     <property name="level" value="3"/>
     <property name="name" value="Suvian Arms"/>

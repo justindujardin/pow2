@@ -51,7 +51,7 @@
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="soldier.png"/>
-    <property name="text" value="May you find glory on your noble quest!"/>
+    <property name="text" value="Don't forget to equip basic weapons and armor before wandering too far from town."/>
     <property name="title" value="Guard"/>
     <property name="type" value="sign"/>
    </properties>
@@ -69,7 +69,7 @@
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="man.png"/>
-    <property name="text" value="Ever since the volcano erupted up North, things have taken an awful turn. Monsters lurk everywhere, preventing regular folk from travelling or trading."/>
+    <property name="text" value="I'm just the crazy guy that hangs out in the corner of town."/>
     <property name="title" value="Citizen"/>
     <property name="type" value="sign"/>
    </properties>
@@ -84,7 +84,7 @@
   <object name="Weapons" type="store" x="96" y="112" width="16" height="16">
    <properties>
     <property name="buyRate" value="100"/>
-    <property name="groups" value="[&quot;weapon&quot;]"/>
+    <property name="groups" value="[&quot;weapons&quot;]"/>
     <property name="icon" value="shop.png"/>
     <property name="level" value="1"/>
     <property name="name" value="Weapons"/>
