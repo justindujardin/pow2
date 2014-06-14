@@ -25,16 +25,6 @@ module pow2.ui {
       'ngTouch'
    ]);
 
-// CombatView directive
-// ----------------------------------------------------------------------------
-   app.directive('combatView', function () {
-      return {
-         restrict: 'E',
-         replace:true,
-         templateUrl: '/source/ui/directives/combatView.html'
-      };
-   });
-
 // PartyView directive
 // ----------------------------------------------------------------------------
    app.directive('partyView', function () {

@@ -3,15 +3,17 @@
 // --------------------------------------------------------------------------
 .combat-view{
   font-family: @pixelFont;
-  position: absolute;
-  bottom: -2px;
-  left:-2px;
-  right:-2px;
+  position: fixed;
+  bottom: 0;
+  left:0;
+  right:0;
 
   font-size: 1.5em;
   margin-left:auto;
   margin-right:auto;
   width:100%;
+
+  background-color: @menuOverlayBackground;
 
   .progress {
     margin-bottom:0;
@@ -20,19 +22,23 @@
     padding: 0 15px;
     border-radius: 0;
     text-align: right;
+    color:#fff;
     > * {
       display: inline-block;
     }
+
+    &.focused {
+      color:@gameGold;
+    }
+
     .name {
       float:left;
       text-align: left;
       width:25%;
-      color:#fff;
       .stroke-text(1px,#000);
     }
 
     .hp {
-      color:#fff;
       .stroke-text(1px,#000);
     }
     .progress {
