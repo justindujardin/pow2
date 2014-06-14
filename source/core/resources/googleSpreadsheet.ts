@@ -34,7 +34,7 @@ module pow2 {
       }
 
       // TODO: Do we need to match - and floating point?
-      static NUMBER_MATCHER:RegExp = /^\d+$/;
+      static NUMBER_MATCHER:RegExp = /^-?\d+$/;
 
       transformTypes(data:any):any {
          var results:any = {};
