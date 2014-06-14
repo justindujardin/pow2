@@ -75,9 +75,9 @@ module pow2.ui {
          // TODO: This init stuff should go in a 'newGame' method or something.
          //
          if(this.model.party.length === 0){
-            this.model.addHero(HeroModel.create(HeroType.Warrior,"Warrior"));
-            this.model.addHero(HeroModel.create(HeroType.DeathMage,"DeathMage"));
-            this.model.addHero(HeroModel.create(HeroType.Ranger,"Ranger"));
+            this.model.addHero(HeroModel.create(HeroTypes.Warrior,"Warrior"));
+            this.model.addHero(HeroModel.create(HeroTypes.DeathMage,"Mage"));
+            this.model.addHero(HeroModel.create(HeroTypes.Ranger,"Ranger"));
          }
 
       }

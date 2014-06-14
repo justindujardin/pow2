@@ -37,14 +37,14 @@ module pow2 {
    ];
 
 
-   export enum HeroType {
-      Warrior = 1,
-      LifeMage = 2,
-      DeathMage = 3,
-      Ranger = 4
-   }
+   export var HeroTypes:any = {
+      Warrior: "warrior",
+      LifeMage: "mage",
+      DeathMage:"mage",
+      Ranger:"ranger"
+   };
    export interface HeroModelOptions extends EntityModelOptions {
-      type:HeroType;
+      type:string;
       description:string; // An description of the hero.
 
       combatSprite:string;
@@ -80,7 +80,7 @@ module pow2 {
          name: "Hero",
          icon: "",
          combatSprite:"",
-         type: HeroType.Warrior,
+         type: HeroTypes.Warrior,
          level: 1,
          exp:0,
          nextLevelExp:0,
@@ -256,10 +256,10 @@ module pow2 {
       }
 
 
-      static create(type:HeroType,name:string){
+      static create(type:string,name:string){
          var character:HeroModel = null;
          switch(type){
-            case HeroType.Warrior:
+            case HeroTypes.Warrior:
                character = new HeroModel({
                   type:type,
                   level:0,
@@ -273,7 +273,7 @@ module pow2 {
                   hitPercentPerLevel:3
                });
                break;
-            case HeroType.LifeMage:
+            case HeroTypes.LifeMage:
                character = new HeroModel({
                   type:type,
                   name:name,
@@ -287,7 +287,7 @@ module pow2 {
                   hitPercentPerLevel:1
                });
                break;
-            case HeroType.Ranger:
+            case HeroTypes.Ranger:
                character = new HeroModel({
                   type:type,
                   name:name,
@@ -301,7 +301,7 @@ module pow2 {
                   hitPercentPerLevel:2
                });
                break;
-            case HeroType.DeathMage:
+            case HeroTypes.DeathMage:
                character = new HeroModel({
                   type:type,
                   name:name,
@@ -315,6 +315,8 @@ module pow2 {
                   hitPercentPerLevel:2
                });
                break;
+            default:
+               throw new Error("Unknown character class: " + type);
          }
          character.awardLevelUp();
          character.set({
