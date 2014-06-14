@@ -44,15 +44,19 @@ module pow2 {
          if(typeof this.inventory === 'undefined'){
             this.inventory = [];
          }
-         if(typeof options.loader === 'undefined'){
-            throw new Error("GameStateModel requires loader to fetch data");
-         }
-         this.loader = options.loader;
+      }
+
+      initData(loader:pow2.ResourceLoader,then?:(data:GoogleSpreadsheetResource)=>any){
+         this.loader = loader;
+         this.getDataSource(then);
       }
 
       private _gameData:pow2.GoogleSpreadsheetResource;
       public googSpreadsheetId:string = "1IAQbt_-Zq1BUwRNiJorvt4iPEYb5HmZrpyMOkb-OuJo";
-      getDataSource(then:(data:GoogleSpreadsheetResource)=>any):GameStateModel {
+      getDataSource(then?:(data:GoogleSpreadsheetResource)=>any):GameStateModel {
+         if(!this.loader){
+            throw new Error("Cannot fetch data source before data source is initialized.\nCall model.initData(loader) before calling this.");
+         }
          if(this._gameData){
             then && then(this._gameData);
          }
