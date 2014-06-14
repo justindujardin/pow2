@@ -341,13 +341,13 @@ module.exports = function(grunt) {
    });
 
    grunt.loadNpmTasks('grunt-contrib-uglify');
-   grunt.loadNpmTasks('grunt-contrib-clean');
    grunt.loadNpmTasks('grunt-typescript');
    grunt.loadNpmTasks('grunt-contrib-less');
    grunt.loadNpmTasks('grunt-contrib-copy');
-   grunt.loadNpmTasks('grunt-notify');
    // Support system notifications in non-production environments
    if(process && process.env && process.env.NODE_ENV !== 'production'){
+      grunt.loadNpmTasks('grunt-contrib-clean');
+      grunt.loadNpmTasks('grunt-notify');
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
 
