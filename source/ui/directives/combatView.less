@@ -3,34 +3,30 @@
 // --------------------------------------------------------------------------
 .combat-view{
   font-family: @pixelFont;
+  position: absolute;
+  bottom: -2px;
+  left:-2px;
+  right:-2px;
+
+  font-size: 1.5em;
+  margin-left:auto;
+  margin-right:auto;
+  width:100%;
+
   .progress {
     margin-bottom:0;
   }
   .status {
-    position: absolute;
-    bottom: -2px;
-    left:-2px;
-    right:-2px;
-    .drop-panel;
-    .clearfix;
-    margin-left:auto;
-    margin-right:auto;
-    width:100%;
     padding: 0 15px;
     border-radius: 0;
     text-align: right;
-    .box-shadow(none);
-    .border-bottom-radius(6px);
-
     > * {
       display: inline-block;
-      font-size: 2.2em;
     }
     .name {
       float:left;
       text-align: left;
       width:25%;
-      font-size: 2em;
       color:#fff;
       .stroke-text(1px,#000);
     }
@@ -40,7 +36,18 @@
       .stroke-text(1px,#000);
     }
     .progress {
+      .clearfix;
       min-width: 25%;
+    }
+  }
+}
+
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+  .combat-view {
+    .status {
+      font-size: 2.2em;
     }
   }
 }

@@ -225,10 +225,10 @@ canvas {
     .border-top-radius(6px);
     margin:auto;
     position: absolute;
-    padding:25px;
+    padding: 10px;
+    font-size: 2em;
     color:#fff;
     .stroke-text(1px,#000);
-    font-size:3em;
   }
 }
 
@@ -249,7 +249,7 @@ canvas {
   padding:0;
   .damage-value {
     font-family: 'GraphicPixel', sans-serif;
-    font-size:60px;
+    font-size:3em;
     color:#F00;
     .stroke-text(2px, rgba(255, 255, 255, 0.9));
     &.miss {
@@ -347,6 +347,9 @@ canvas {
     }
   }
   .game-container{
+    .damage-value {
+      font-size:5em;
+    }
     .message {
       .text {
         font-size: 18px;
@@ -357,6 +360,12 @@ canvas {
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: @screen-md-min) {
+  .drop-overlay {
+    .message {
+      padding:25px;
+      font-size:3em;
+    }
+  }
   .game-container{
     .message {
       .text {

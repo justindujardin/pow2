@@ -42,7 +42,7 @@ module pow2.ui {
                state.machine.on('combat:attack',function(damage,attacker,defender:pow2.GameEntityObject){
                   var targetPos:pow2.Point = defender.point.clone();
                   targetPos.y -= 1.25;
-                  var screenPos:pow2.Point = tileView.worldToScreen(targetPos,4);
+                  var screenPos:pow2.Point = tileView.worldToScreen(targetPos,tileView.cameraScale);
                   var damageValue = $compile('<span class="damage-value' + (damage === 0 ? ' miss' : '') + '" style="position:absolute;left:' + screenPos.x + 'px;top:' + screenPos.y + 'px;">' + damage + '</span>')($scope);
                   $scope.$apply(() => {
                      $animate.enter(damageValue, element.parent(),null,() => {
