@@ -105,7 +105,8 @@ module pow2 {
                }),
                damage: new pow2.DamageComponent(),
                sound: new pow2.SoundComponent({
-                  url: hitSound
+                  url: hitSound,
+                  volume:0.3
                })
             };
             var animDamage:boolean = machine.isFriendlyTurn() && !!defenderSprite;
