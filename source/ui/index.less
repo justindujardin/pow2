@@ -239,7 +239,7 @@ canvas {
 }
 
 .game-container {
-  position: absolute;
+  position: fixed;
   top:0;
   left:0;
   right:0;
@@ -278,6 +278,9 @@ canvas {
   pointer-events:none;
   > * {
     pointer-events:auto;
+    display: block;
+    height:100%;
+    overflow-y:auto;
   }
   .dialog {
     max-width: 800px;
