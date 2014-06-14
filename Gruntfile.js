@@ -344,18 +344,18 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-typescript');
    grunt.loadNpmTasks('grunt-contrib-less');
    grunt.loadNpmTasks('grunt-contrib-copy');
+   grunt.loadNpmTasks('grunt-contrib-clean');
+   grunt.loadNpmTasks('grunt-notify');
    // Support system notifications in non-production environments
-   if(process && process.env && process.env.NODE_ENV !== 'production'){
-      grunt.loadNpmTasks('grunt-contrib-clean');
-      grunt.loadNpmTasks('grunt-notify');
+   if(process && process.env && process.env.NODE_ENV === 'production'){
+      grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
+      grunt.registerTask('heroku:production', ['typescript', 'copy','less','sprites','uglify']);
+   }
+   else {
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
 
       grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
       grunt.registerTask('develop', ['default', 'watch']);
-   }
-   else {
-      grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
-      grunt.registerTask('heroku:production', ['typescript', 'copy','less','sprites','uglify']);
    }
 };
