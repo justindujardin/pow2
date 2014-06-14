@@ -23,6 +23,7 @@ module pow2 {
       processFrame?(elapsed:number);
    }
 
+   var _shared:pow2.Time = null;
    export class Time {
       autoStart:boolean = false;
       tickRateMS:number = 32;
@@ -39,6 +40,14 @@ module pow2 {
             this.start();
          }
       }
+
+      static get():pow2.Time {
+         if(!_shared){
+            _shared = new pow2.Time({ autoStart:true });
+         }
+         return _shared;
+      }
+
 
       start() {
          if(this.running){
