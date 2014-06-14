@@ -43,7 +43,7 @@ module pow2.ui {
             };
             $scope.initStoreFromFeature = (feature:pow2.StoreFeatureComponent) => {
                // Get enemies data from spreadsheet
-               game.model.getDataSource((data:pow2.GoogleSpreadsheetResource) => {
+               GameStateModel.getDataSource((data:pow2.GoogleSpreadsheetResource) => {
 
                   var hasCategory:boolean = typeof feature.host.category !== 'undefined';
                   var theChoices: any[] = [];

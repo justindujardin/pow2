@@ -28,7 +28,7 @@ module pow2.ui {
       'powAlert',
       function($scope,$timeout,game:PowGameService,powAlert:PowAlertService){
          $scope.loadingTitle = "Pow2!";
-         $scope.loadingMessage = "Loading the things...";
+         $scope.loadingMessage = "Asking Google for data...";
          $scope.loading = true;
          $scope.saveState = function(data){
             localStorage.setItem(stateKey,data);
@@ -47,14 +47,20 @@ module pow2.ui {
             $scope.saveState(data);
             powAlert.show("Game Saved!");
          };
-         // TODO: Resets state every page load.  Remove when persistence is desired.
-         //resetGame();
-         game.loadGame($scope.getState());
-         $scope.gameModel = game.model;
-         $scope.party = game.model.party;
-         $scope.inventory = game.model.inventory;
-         $scope.player = game.model.party[0];
 
+         GameStateModel.getDataSource(()=>{
+            $scope.loadingMessage = "Loading the things...";
+            // TODO: Resets state every page load.  Remove when persistence is desired.
+            //resetGame();
+            game.loadGame($scope.getState(),()=>{
+               $scope.gameModel = game.model;
+               $scope.party = game.model.party;
+               $scope.inventory = game.model.inventory;
+               $scope.player = game.model.party[0];
+            });
+
+
+         });
          // TODO: A better system for game event handling.
          game.machine.on('enter',function(state){
             if(state.name === GameMapState.NAME){

@@ -18,6 +18,14 @@
 
 module pow2 {
 
+   /**
+    * The Google Spreadsheet ID to load game data from.  This must be a published
+    * google spreadsheet key.
+    * @type {string} The google spreadsheet ID
+    */
+   export var SPREADSHEET_ID:string = "1IAQbt_-Zq1BUwRNiJorvt4iPEYb5HmZrpyMOkb-OuJo";
+
+
    export interface IGameItem {
       name:string; // The item name
       cost:number; // The cost of this item
@@ -104,23 +112,6 @@ module pow2 {
    export function registerCreatures(level,creatures){
       _.each(creatures,(c) => {
          data.creatures.push(_.extend(c,{level:level}));
-      });
-   }
-   export function registerWeapons(level,weapons:IGameWeapon[]){
-      _.each(weapons,(c) => {
-         var item = _.extend(c,{
-            level:level,
-            itemType:"weapon"
-         });
-         data.weapons.push(item);
-      });
-   }
-   export function registerArmor(level,items:IGameArmor[]){
-      _.each(items,(c) => {
-         data.armor.push(_.extend(c,{
-            level:level,
-            itemType:"armor"
-         }));
       });
    }
    export function getMap(name:string){

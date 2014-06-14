@@ -156,8 +156,11 @@ module pow2 {
             // Position Party/Enemies
 
             // Get enemies data from spreadsheet
-            this.parent.model.getDataSource((enemiesSpreadsheet:pow2.GoogleSpreadsheetResource) => {
-               var enemies:any[] = enemiesSpreadsheet.getSheetData("Enemies");
+            GameStateModel.getDataSource((enemiesSpreadsheet:pow2.GoogleSpreadsheetResource) => {
+               var enemies:any[] = enemiesSpreadsheet.getSheetData("enemies");
+               enemies = enemies.filter((e)=>{
+                  return e.level <= machine.model.party[0].get('level');
+               });
                console.log(enemies);
 
                // Create the enemy

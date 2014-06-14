@@ -211,18 +211,22 @@ module pow2 {
          if(!data){
             return {};
          }
-         _.each(HeroModel.ARMOR_TYPES,(type:string) => {
-            if(data[type]){
-               var piece = _.where(pow2.getData('armor'),{name:data[type]})[0];
-               if(piece){
-                  this[type] = new ArmorModel(piece);
+
+         GameStateModel.getDataSource((spreadsheet:GoogleSpreadsheetResource)=>{
+            _.each(HeroModel.ARMOR_TYPES,(type:string) => {
+               if(data[type]){
+                  var piece = _.where(spreadsheet.getSheetData('armor'),{name:data[type]})[0];
+                  if(piece){
+                     this[type] = new ArmorModel(piece);
+                  }
                }
+            });
+            if(data.weapon){
+               var weapon = _.where(spreadsheet.getSheetData('weapons'),{name:data.weapon})[0];
+               this.weapon = new WeaponModel(weapon);
             }
+
          });
-         if(data.weapon){
-            var weapon = _.where(pow2.getData('weapons'),{name:data.weapon})[0];
-            this.weapon = new WeaponModel(weapon);
-         }
          return _.omit(data, _.flatten(['weapon',HeroModel.ARMOR_TYPES]));
       }
 

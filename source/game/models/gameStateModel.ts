@@ -26,6 +26,7 @@ module pow2 {
       gold:number;
    }
 
+   var _gameData:pow2.GoogleSpreadsheetResource = null;
    export class GameStateModel extends Backbone.Model {
       party:HeroModel[]; // The player's party
       inventory:ItemModel[]; // The inventory of items owned by the player.
@@ -46,27 +47,24 @@ module pow2 {
          }
       }
 
-      initData(loader:pow2.ResourceLoader,then?:(data:GoogleSpreadsheetResource)=>any){
-         this.loader = loader;
-         this.getDataSource(then);
+      initData(then?:(data:GoogleSpreadsheetResource)=>any){
+         GameStateModel.getDataSource(then);
       }
 
-      private _gameData:pow2.GoogleSpreadsheetResource;
-      public googSpreadsheetId:string = "1IAQbt_-Zq1BUwRNiJorvt4iPEYb5HmZrpyMOkb-OuJo";
-      getDataSource(then?:(data:GoogleSpreadsheetResource)=>any):GameStateModel {
-         if(!this.loader){
-            throw new Error("Cannot fetch data source before data source is initialized.\nCall model.initData(loader) before calling this.");
-         }
-         if(this._gameData){
-            then && then(this._gameData);
+      /**
+       * Get the game data sheets from google and callback when they're loaded.
+       * @param then The function to call when spreadsheet data has been fetched
+       */
+      static getDataSource(then?:(data:GoogleSpreadsheetResource)=>any) {
+         if(_gameData){
+            then && then(_gameData);
          }
          else {
-            this.loader.loadAsType(this.googSpreadsheetId,pow2.GoogleSpreadsheetResource,(resource:pow2.GoogleSpreadsheetResource) => {
-               this._gameData = resource;
+            pow2.ResourceLoader.get().loadAsType(pow2.SPREADSHEET_ID,pow2.GoogleSpreadsheetResource,(resource:pow2.GoogleSpreadsheetResource) => {
+               _gameData = resource;
                then && then(resource);
             });
          }
-         return this;
       }
 
 
@@ -97,6 +95,9 @@ module pow2 {
       }
 
       parse(data:any,options?:any):any {
+         if(!_gameData){
+            throw new Error("cannot instantiate inventory without valid data source.\nCall model.initData(loader) first.")
+         }
          try{
             if(typeof data === 'string'){
                data = JSON.parse(data);
@@ -106,18 +107,20 @@ module pow2 {
             console.log("Failed to load save game.");
             return {};
          }
+
+
+         var theChoices: any[] = [];
+         theChoices = theChoices.concat(_.map(_gameData.getSheetData('weapons'),(w)=>{
+            return _.extend({ instanceModel: new WeaponModel(w) },w);
+         }));
+         theChoices = theChoices.concat(_.map(_gameData.getSheetData('armor'), (a)=> {
+            return _.extend({ instanceModel: new ArmorModel(a) }, a);
+         }));
+
+
          this.inventory = _.map(data.inventory,(item:any) => {
-            switch(item.itemType){
-               case "armor":
-                  var armor = _.where(pow2.getData('armor'),{name:item.name})[0];
-                  return new ArmorModel(armor);
-                  break;
-               case "weapon":
-                  var armor = _.where(pow2.getData('weapons'),{name:item.name})[0];
-                  return new WeaponModel(armor);
-                  break;
-            }
-            throw new Error("Unknown item type: " + item.itemType);
+            var choice:any = _.where(theChoices,{name:item.name})[0];
+            return <pow2.ItemModel>choice.instanceModel;
          });
          this.party = _.map(data.party,(partyMember) => {
             return new HeroModel(partyMember,{parse:true});
@@ -131,7 +134,7 @@ module pow2 {
             return p.toJSON();
          });
          result.inventory = _.map(this.inventory,(p) => {
-            return <any>_.pick(p.attributes,'name','itemType');
+            return <any>_.pick(p.attributes,'name','key');
          });
          return result;
       }

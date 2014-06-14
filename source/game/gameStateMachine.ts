@@ -50,8 +50,8 @@ module pow2 {
       private _elapsed: number = 0;
       onAddToWorld(world){
          super.onAddToWorld(world);
+         GameStateModel.getDataSource();
          this.model = new GameStateModel();
-         this.model.initData(world.loader);
       }
 
       updatePlayer(){

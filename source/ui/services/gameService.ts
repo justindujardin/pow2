@@ -45,41 +45,70 @@ module pow2.ui {
          });
          this.machine = this.world.state;
          this.model = this.world.state.model;
-         this.world.scene.once('map:loaded',() => {
-            // Create a movable character with basic components.
-
-            var model:HeroModel = this.model.party[0];
-            this.sprite = new GameEntityObject({
-               name:"Hero!",
-               icon: model.attributes.icon,
-               model:model
-            });
-            this.sprite.addComponent(new PlayerRenderComponent());
-            this.sprite.setPoint(this.tileMap.bounds.getCenter());
-            this.sprite.addComponent(new CollisionComponent());
-            this.sprite.addComponent(new PlayerComponent());
-            this.sprite.addComponent(new PlayerCameraComponent());
-            this.sprite.addComponent(new PlayerTouchComponent());
-            this.world.scene.addObject(this.sprite);
-         });
-         this.tileMap = new GameTileMap("town");
-         this.world.scene.addObject(this.tileMap);
       }
 
-      loadGame(data:any){
+      createPlayer(from:HeroModel,at?:pow2.Point){
+         if(!from){
+            throw new Error("Cannot create player without valid model");
+         }
+         if(this.sprite){
+            this.sprite.destroy();
+            this.sprite = null;
+         }
+         this.sprite = new GameEntityObject({
+            name: from.attributes.name,
+            icon: from.attributes.icon,
+            model:from
+         });
+         this.sprite.addComponent(new PlayerRenderComponent());
+         this.sprite.addComponent(new CollisionComponent());
+         this.sprite.addComponent(new PlayerComponent());
+         this.sprite.addComponent(new PlayerCameraComponent());
+         this.sprite.addComponent(new PlayerTouchComponent());
+         this.world.scene.addObject(this.sprite);
+
+         if(typeof at === 'undefined' && this.tileMap instanceof pow2.TileMap) {
+            at = this.tileMap.bounds.getCenter();
+         }
+         this.sprite.setPoint(at || new Point());
+      }
+
+      loadMap(mapName:string,then?:()=>any,player?:HeroModel,at?:pow2.Point){
+         if(this.tileMap){
+            this.tileMap.destroy();
+            this.tileMap = null;
+         }
+         this.world.scene.once('map:loaded',() => {
+            // Create a movable character with basic components.
+            var model:HeroModel = player || this.model.party[0];
+            this.createPlayer(model,at);
+            then && then();
+         });
+         this.tileMap = new GameTileMap(mapName);
+         this.world.scene.addObject(this.tileMap);
+
+      }
+
+      newGame(then?:()=>any){
+         this.loadMap("town",then,this.model.party[0]);
+      }
+
+      loadGame(data:any, then?:()=>any){
          if(data){
             this.model.clear();
-            this.model.set(this.model.parse(data));
+            this.model.initData(()=>{
+               this.model.set(this.model.parse(data));
+               this.loadMap("town",then,this.model.party[0]);
+            });
          }
-         // Only add a hero if none exists.
-         // TODO: This init stuff should go in a 'newGame' method or something.
-         //
-         if(this.model.party.length === 0){
-            this.model.addHero(HeroModel.create(HeroTypes.Warrior,"Warrior"));
-            this.model.addHero(HeroModel.create(HeroTypes.DeathMage,"Mage"));
-            this.model.addHero(HeroModel.create(HeroTypes.Ranger,"Ranger"));
+         else {
+            if(this.model.party.length === 0){
+               this.model.addHero(HeroModel.create(HeroTypes.Warrior,"Warrior"));
+               this.model.addHero(HeroModel.create(HeroTypes.DeathMage,"Mage"));
+               this.model.addHero(HeroModel.create(HeroTypes.Ranger,"Ranger"));
+            }
+            this.newGame(then);
          }
-
       }
 
       /**
