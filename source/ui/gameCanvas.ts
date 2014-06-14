@@ -29,9 +29,9 @@ module pow2.ui {
 
 
             // Inspired by : http://seb.ly/2011/04/multi-touch-game-controller-in-javascripthtml5-for-ipad/
-            $scope.canvas.addEventListener('touchstart', onTouchStart, false);
-            $scope.canvas.addEventListener('touchmove', onTouchMove, false);
-            $scope.canvas.addEventListener('touchend', onTouchEnd, false);
+//            $scope.canvas.addEventListener('touchstart', onTouchStart, false);
+//            $scope.canvas.addEventListener('touchmove', onTouchMove, false);
+//            $scope.canvas.addEventListener('touchend', onTouchEnd, false);
             window.addEventListener('resize',onResize,false);
 
             /**
@@ -39,10 +39,10 @@ module pow2.ui {
              * TODO: Move this into a touch input component.
              */
             var gwi:any = game.world.input;
-            gwi.touchId = -1;
-            gwi.touchCurrent = new Point(0, 0);
-            gwi.touchStart = new Point(0, 0);
-            gwi.analogVector = new Point(0, 0);
+//            gwi.touchId = -1;
+//            gwi.touchCurrent = new Point(0, 0);
+//            gwi.touchStart = new Point(0, 0);
+//            gwi.analogVector = new Point(0, 0);
 
 
             function relTouch(touch){

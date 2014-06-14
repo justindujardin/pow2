@@ -15,6 +15,9 @@
     bottom: 0;
     line-height: 60px;
     height: 60px;
+    &.ng-click-active{
+      color:@gameBlue;
+    }
   }
   a {
     color:#fff;
@@ -40,10 +43,16 @@
     ul.options {
       list-style-type: none;
       padding:5px;
-      > li.active {
-        a {
-          color:@gameGold;
+      li {
+        a.ng-click-active{
+          color:@gameBlue;
         }
+        &.active {
+          a {
+            color:@gameGold;
+          }
+        }
+
       }
     }
   }
