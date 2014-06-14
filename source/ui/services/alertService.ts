@@ -129,7 +129,6 @@ module pow2.ui {
             container.on('click touchstart',dismisser);
             this.animate.enter(this.element, container, null,() => {
                this.paused = false;
-               container.off('click touchstart',dismisser);
             });
          });
       }

@@ -43,6 +43,10 @@ module pow2.ui {
             return localStorage.getItem(stateKey);
          };
          $scope.saveGame = function(){
+            var party = <pow2.PlayerComponent>game.currentScene.componentByType(pow2.PlayerComponent);
+            if (party) {
+               game.model.set('playerPosition',party.host.point);
+            }
             var data = JSON.stringify(game.model.toJSON());
             $scope.saveState(data);
             powAlert.show("Game Saved!");
@@ -58,8 +62,10 @@ module pow2.ui {
                $scope.inventory = game.model.inventory;
                $scope.player = game.model.party[0];
             });
+         });
 
-
+         game.currentScene.on("map:loaded",(map:GameTileMap) => {
+            game.model.set('playerMap',map.mapName);
          });
          // TODO: A better system for game event handling.
          game.machine.on('enter',function(state){

@@ -98,7 +98,9 @@ module pow2.ui {
             this.model.clear();
             this.model.initData(()=>{
                this.model.set(this.model.parse(data));
-               this.loadMap("town",then,this.model.party[0]);
+               var at = this.model.get('playerPosition');
+               at = at ? new Point(at.x,at.y) : undefined;
+               this.loadMap(this.model.get('playerMap') || "town",then,this.model.party[0],at);
             });
          }
          else {
