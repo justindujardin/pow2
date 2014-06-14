@@ -28,7 +28,14 @@ inventory-view {
     overflow-x: hidden;
   }
   .btn {
-    margin: 15px 5px;
+    margin: 5px 5px;
+    font-size: 2em;
+    &.next{
+      float:right;
+    }
+    &.previous {
+      float:left;
+    }
 
   }
   ul {
@@ -46,7 +53,7 @@ inventory-view {
         top: 0;
         left:0;
         right:0;
-        font-size: 0.7em;
+        font-size: 0.9em;
         line-height: @inventoryLabelPaddingTop / 2;
       }
       .icon {

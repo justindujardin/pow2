@@ -23,7 +23,6 @@ module pow2.ui {
       function (game:PowGameService) {
          return {
             restrict: 'E',
-            replace:true,
             templateUrl: '/source/ui/directives/gameMenu.html',
             controller: function($scope) {
                $scope.page = 'party';

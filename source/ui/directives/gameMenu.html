@@ -1,9 +1,9 @@
-<div class="game-menu container" ng-hide="combat">
-    <a href="#" class="trigger glyphicon glyphicon-th-list" ng-click="toggle()" ng-hide="open"></a>
-    <div class="navigation ebp menu-fade" ng-show="open">
+<div class="game-menu" ng-hide="combat">
+    <a href="#" class="trigger glyphicon glyphicon-collapse-down" ng-click="toggle()" ng-hide="open"></a>
+    <div class="navigation" ng-show="open">
         <ul class="options">
             <!-- Close -->
-            <li><a href="#" ng-click="toggle()"><span class="glyphicon glyphicon-th-list"></span></a></li>
+            <li><a href="#" ng-click="toggle()"><span class="glyphicon glyphicon glyphicon-collapse-up"></span></a></li>
             <!-- Characters -->
             <li ng-class="{active:page=='party'}">
                 <a href="#" ng-click="showParty()"><span class="pow2-black-flag"></span></a>
@@ -15,14 +15,14 @@
         </ul>
     </div>
     <div class="views" ng-if="open" ng-show="open" ng-class="{open:open}">
-        <div class="party ebp" ng-if="page == 'party'">
+        <div class="party" ng-if="page == 'party'">
             <div class="">
                 <h1>Party Gold: {{gameModel.attributes.gold}}</h1>
                 <button class="btn btn-flat" ng-click="saveGame()">Save Game</button>
             </div>
             <hero-card hero="member" ng-repeat="member in party"></hero-card>
         </div>
-        <div class="inventory ebp" ng-if="page == 'inventory'">
+        <div class="inventory" ng-if="page == 'inventory'">
             <inventory-view></inventory-view>
         </div>
     </div>

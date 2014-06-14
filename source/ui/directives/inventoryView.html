@@ -1,7 +1,10 @@
 <div class="container">
-    <button class="btn btn-flat" ng-click="previousCharacter()">Previous</button>
-    <button class="btn btn-flat" ng-click="nextCharacter()">Next</button>
-    <h2>Level{{character.attributes.level}} {{character.attributes.name}} <i class="image" icon-render icon="character.attributes.icon" frame="7"></i></h2>
+    <button class="btn btn-flat previous" ng-click="previousCharacter()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+    <button class="btn btn-flat next" ng-click="nextCharacter()"><span class="glyphicon glyphicon-chevron-right"></span></button>
+    <h2>{{character.attributes.name}} <i class="image" icon-render icon="character.attributes.icon" frame="7"></i></h2>
+    <div class="hero-stat">Damage : {{character.getDamage()}}</div>
+    <div class="hero-stat">Defense : {{character.getDefense()}}</div>
+
     <ul class="equipped">
         <li class="weapon">
             <span class="desc">Weapon</span>
