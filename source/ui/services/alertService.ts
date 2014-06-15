@@ -122,7 +122,7 @@ module pow2.ui {
          this.scope.$apply(() => {
             this.scope.powAlert = this._current;
             var container = this.document.find(this.containerSearch);
-            container.on('click touchstart',(e) => {
+            container.on('click',(e) => {
                this.dismiss();
             });
             this.animate.enter(this.element, container, null,() => {
