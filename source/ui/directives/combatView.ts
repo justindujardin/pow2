@@ -23,11 +23,27 @@ module pow2.ui {
          controller:($scope) => {
             $scope.getMemberClass = (member,focused) => {
                var result = "";
-               if(focused && focused.model && member.model.cid === focused.model.cid){
+               if(focused && focused.model && member.model.get('name') === focused.model.get('name')){
                   result += "focused";
                }
                return result;
             };
+         },
+         link:(scope, element, attrs) => {
+            var turnListener = (player:GameEntityObject) => {
+               scope.$apply(()=>{
+                  scope.combat = scope.combat;
+               });
+            };
+            game.machine.on('combat:begin',(state:GameCombatState) => {
+               state.machine.on('combat:beginTurn',turnListener);
+            },this);
+            game.machine.on('combat:end',(state:GameCombatState) => {
+               state.machine.off('combat:beginTurn',turnListener);
+            });
+            scope.$on('$destroy',()=>{
+               game.machine && game.machine.off('combat:begin',null,this);
+            });
          }
       };
    }]);

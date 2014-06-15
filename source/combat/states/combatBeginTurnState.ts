@@ -41,7 +41,7 @@ module pow2 {
          machine.current.scale = 1.25;
          this.current = machine.current;
 
-         if(machine.isFriendlyTurn()){
+         if(machine.current && machine.isFriendlyTurn()){
             machine.focus = machine.current;
          }
 
@@ -85,7 +85,6 @@ module pow2 {
          else {
             attacker = machine.current;
             defender = defender || machine.getRandomPartyMember();
-            machine.focus = defender;
          }
          var attackerPlayer:combat.PlayerCombatRenderComponent = <any>attacker.findComponent(combat.PlayerCombatRenderComponent);
          var attack = () => {
