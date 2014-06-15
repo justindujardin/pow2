@@ -40,7 +40,7 @@ module pow2 {
    export var HeroTypes:any = {
       Warrior: "warrior",
       LifeMage: "mage",
-      DeathMage:"mage",
+      DeathMage:"necromancer",
       Ranger:"ranger"
    };
    export interface HeroModelOptions extends EntityModelOptions {
