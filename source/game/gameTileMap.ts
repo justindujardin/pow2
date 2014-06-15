@@ -161,7 +161,11 @@ module pow2 {
          for(var x:number = 0; x < this.bounds.extent.x; x++){
             for(var y:number = 0; y < this.bounds.extent.y; y++){
                var tile = this.getTerrain("Terrain",x,y);
-               grid[x][y] = (tile && tile.passable) ? 1 : 1000;
+               grid[x][y] = (tile && tile.passable) ? 10 : 1000;
+               // Prefer tiles that are paths over just passable ones
+               if(tile && tile.isPath){
+                  grid[x][y] = 1;
+               }
             }
          }
 
