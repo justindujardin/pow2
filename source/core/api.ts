@@ -120,4 +120,25 @@ module pow2 {
    export function getMaps(){
       return data.maps;
    }
+
+   var _worldLookup:{ [name:string]:any } = {};
+   /**
+    * Module level world accessor.
+    */
+   export function getWorld<T>(name:string):T{
+      return <T>_worldLookup[name];
+   }
+   /**
+    * Module level world setter.
+    */
+   export function registerWorld(name:string,instance:any) {
+      if(!name){
+         throw new Error("Cannot register world with null name");
+      }
+      if(_worldLookup.hasOwnProperty(name)){
+         throw new Error("Cannot register world multiple times with the same name");
+      }
+      _worldLookup[name] = instance;
+      return _worldLookup[name];
+   }
 }
