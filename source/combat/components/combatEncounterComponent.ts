@@ -1,18 +1,18 @@
 /**
-Copyright (C) 2013 by Justin DuJardin
+ Copyright (C) 2013 by Justin DuJardin
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0
+ http://www.apache.org/licenses/LICENSE-2.0
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
 
 /// <reference path="../../tile/tileComponent.ts" />
 
@@ -27,6 +27,9 @@ module pow2 {
       host:GameTileMap;
       battleCounter:number = 256;
       combatFlag:boolean = false;
+      combatZone:string = 'default';
+      isDangerous:boolean = false;
+      world:GameWorld = pow2.getWorld<GameWorld>('pow2');
 
       connectComponent():boolean {
          if(!super.connectComponent() || !(this.host instanceof GameTileMap)){
@@ -57,18 +60,13 @@ module pow2 {
       }
 
       moveProcess(player:PlayerComponent,from:Point,to:Point) {
-         var map = this.host.scene.objectByType(pow2.TileMap);
-         if (map) {
-            var terrain = this.host.getTerrain("Terrain",to.x,to.y);
-            if (!terrain) {
-            }
-         }
-
+         var terrain = this.host.getTerrain("Terrain",to.x,to.y);
+         this.isDangerous = terrain && terrain.isDangerous;
+         var dangerValue = this.isDangerous ? 10 : 6;
          if(this.battleCounter <= 0){
-            this.host.trigger('combat:encounter',this);
-            this.combatFlag = true;
+            this.triggerCombat(to);
          }
-         this.battleCounter -= 6; // TODO: Variance based on tile type
+         this.battleCounter -= dangerValue;
          return false;
       }
       resetBattleCounter() {
@@ -76,6 +74,32 @@ module pow2 {
          var min:number = 64;
          this.battleCounter = Math.floor(Math.random() * (max - min + 1)) + min;
          this.combatFlag = false;
+      }
+      triggerCombat(at:pow2.Point) {
+         // Determine which zone and combat type
+         var invTileSize = 1 / this.host.map.tilewidth;
+         var zones:any[] = _.map(this.host.zones.objects,(z:any)=>{
+            var x =  z.x * invTileSize;
+            var y =  z.y * invTileSize;
+            var w =  z.width * invTileSize;
+            var h =  z.height * invTileSize;
+            return {
+               bounds:new Rect(x,y,w,h),
+               name:z.name
+            }
+         });
+         var zone = _.find(zones,(z:any)=>{
+            return z.bounds.pointInRect(this.player.point);
+         });
+         if(zone && zone.name){
+            this.combatZone = zone.name;
+            if(this.world && this.world.state && this.world.state.model){
+               this.world.state.model.set('combatZone',this.combatZone);
+            }
+         }
+         console.log("Combat in zone : " + this.combatZone);
+         this.host.trigger('combat:encounter',this);
+         this.combatFlag = true;
       }
    }
 }

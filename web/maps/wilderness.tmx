@@ -282,9 +282,9 @@
   </object>
  </objectgroup>
  <objectgroup draworder="topdown" name="Zones" width="96" height="72">
-  <object name="Zone1" type="danger-zone" x="98" y="483" width="525" height="446"/>
-  <object name="Zone2" type="danger-zone" x="28" y="42" width="665" height="440"/>
-  <object name="Zone3" type="danger-zone" x="548" y="770" width="779" height="333"/>
-  <object name="Zone4" type="danger-zone" x="935" y="82" width="575" height="429"/>
+  <object name="world-plains" type="danger-zone" x="98" y="483" width="525" height="446"/>
+  <object name="world-forest" type="danger-zone" x="28" y="42" width="665" height="440"/>
+  <object name="world-sand" type="danger-zone" x="548" y="770" width="779" height="333"/>
+  <object name="world-ice" type="danger-zone" x="935" y="82" width="575" height="429"/>
  </objectgroup>
 </map>

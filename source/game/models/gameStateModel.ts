@@ -24,6 +24,9 @@ module pow2 {
 
    export interface GameStateModelOptions {
       gold:number;
+      playerPosition:pow2.Point;
+      playerMap:string;
+      combatZone:string;
    }
 
    var _gameData:pow2.GoogleSpreadsheetResource = null;
@@ -32,7 +35,10 @@ module pow2 {
       inventory:ItemModel[]; // The inventory of items owned by the player.
       loader:pow2.ResourceLoader;
       static DEFAULTS:GameStateModelOptions = {
-         gold: 200
+         gold: 200,
+         playerPosition: new pow2.Point(),
+         playerMap:"",
+         combatZone:"default"
       };
       defaults():any {
          return _.extend({}, GameStateModel.DEFAULTS);

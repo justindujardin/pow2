@@ -32,7 +32,7 @@ module pow2 {
          }
          view.cameraScale = view.context.canvas.width > 768 ? 4 : 2;
          view.camera = view.screenToWorld(new Rect(0,0,view.context.canvas.width,view.context.canvas.height),view.cameraScale);
-         view.camera.point.zero();
+         view.camera.point.x = (this.host.bounds.extent.x / 2) - (view.camera.extent.x / 2);
       }
    }
 }

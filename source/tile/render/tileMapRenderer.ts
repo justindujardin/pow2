@@ -34,6 +34,11 @@ module pow2 {
          if(!object.isLoaded()){
             return;
          }
+         if(object.dirtyLayers){
+            object.dirtyLayers = false;
+            this.buffer = null;
+            this.bufferComplete = false;
+         }
          if(!this.bufferComplete || this.buffer === null || this.bufferMapName === null || this.bufferMapName !== object.mapName){
             var tileUnitSize = squareSize / view.unitSize;
             // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
@@ -57,6 +62,9 @@ module pow2 {
 
                            // Each layer
                            _.each(layers,(l:tiled.ITiledLayer) => {
+                              if(!l.visible){
+                                 return;
+                              }
                               var gid:number = object.getTileGid(l.name,x, y);
                               var meta:ITileMeta = object.getTileMeta(gid);
                               if (meta) {

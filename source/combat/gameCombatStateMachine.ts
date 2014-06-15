@@ -160,10 +160,18 @@ module pow2 {
          });
 
          this.tileMap = new pow2.GameTileMap("combat");
-         this.tileMap.addComponent(new pow2.CombatCameraComponent);
-         this.scene.addObject(this.tileMap);
+         this.tileMap.once('loaded',() => {
+            // Hide all layers that don't correspond to the current combat zone
+            var zone:string = machine.model.get('combatZone');
+            if(zone){
+               _.each(this.tileMap.getLayers(),(l)=>{
+                  l.visible = l.name === zone;
+               });
+               this.tileMap.dirtyLayers = true;
+            }
+            this.tileMap.addComponent(new pow2.CombatCameraComponent);
+            this.scene.addObject(this.tileMap);
 
-         this.scene.once('map:loaded',() => {
             // Position Party/Enemies
 
             // Get enemies data from spreadsheet
@@ -214,7 +222,7 @@ module pow2 {
 
             });
          });
-
+         this.tileMap.load();
       }
       exit(machine:GameStateMachine){
          machine.trigger('combat:end',this);

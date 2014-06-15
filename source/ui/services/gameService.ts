@@ -45,6 +45,7 @@ module pow2.ui {
          });
          this.machine = this.world.state;
          this.model = this.world.state.model;
+         pow2.registerWorld('pow2',this.world);
       }
 
       createPlayer(from:HeroModel,at?:pow2.Point){

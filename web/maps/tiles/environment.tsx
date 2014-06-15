@@ -335,6 +335,7 @@
    <property name="icon" value="treeAlt.png"/>
    <property name="opaque" value="true"/>
    <property name="passable" value="true"/>
+   <property name="isDangerous" value="true"/>
    <property name="shipPassable" value="false"/>
   </properties>
  </tile>
