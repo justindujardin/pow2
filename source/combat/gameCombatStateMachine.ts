@@ -178,30 +178,34 @@ module pow2 {
             GameStateModel.getDataSource((enemiesSpreadsheet:pow2.GoogleSpreadsheetResource) => {
                var enemies:any[] = enemiesSpreadsheet.getSheetData("enemies");
                enemies = enemies.filter((e)=>{
+                  if(zone){
+                     return _.indexOf(e.groups,zone) !== -1;
+                  }
                   return e.level <= machine.model.party[0].get('level');
                });
                console.log(enemies);
 
-               // Create the enemy
-               var max = 3;
-               var min = 1;
-               var enemyCount = Math.floor(Math.random() * (max - min + 1)) + min;
-               for(var i = 0; i < enemyCount; i++){
+               if(enemies.length){
+                  // Create the enemy
+                  var max = 3;
+                  var min = 1;
+                  var enemyCount = Math.floor(Math.random() * (max - min + 1)) + min;
+                  for(var i = 0; i < enemyCount; i++){
 
-                  var rndEnemy = Math.floor(Math.random() * ((enemies.length - 1) - 0 + 1)) + 0;
-                  //
-                  var nmeModel = enemies.length > 0 ? new CreatureModel(enemies[rndEnemy]) : CreatureModel.fromName("Snake");
+                     var rndEnemy = Math.floor(Math.random() * ((enemies.length - 1) - 0 + 1)) + 0;
+                     //
+                     var nmeModel = new CreatureModel(enemies[rndEnemy]);
 
-                  var nme = new pow2.GameEntityObject({
-                     model: nmeModel
-                  });
-                  this.scene.addObject(nme);
-                  nme.addComponent(new pow2.SpriteComponent({
-                     name:"enemy",
-                     icon:nme.model.get('icon')
-                  }));
-                  this.machine.enemies.push(nme);
-
+                     var nme = new pow2.GameEntityObject({
+                        model: nmeModel
+                     });
+                     this.scene.addObject(nme);
+                     nme.addComponent(new pow2.SpriteComponent({
+                        name:"enemy",
+                        icon:nme.model.get('icon')
+                     }));
+                     this.machine.enemies.push(nme);
+                  }
                }
 
                _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
