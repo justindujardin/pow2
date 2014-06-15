@@ -69,6 +69,9 @@ module pow2 {
             task.target = this.host.point.clone().add(task.move);
             task.value = this.host.point.clone();
          }
+         if(typeof task.duration === 'undefined'){
+            task.duration = 0;
+         }
          this._tasks.push(task);
       }
 

@@ -138,7 +138,18 @@ module pow2 {
                icon: hero.attributes.icon,
                model:hero
             });
-            heroEntity.addComponent(new combat.PlayerCombatRenderComponent());
+
+            // Instantiate a [Class]CombatRenderComponent implementation for the
+            // hero type, if available.
+            var playerType:string = hero.attributes.type[0].toUpperCase() + hero.attributes.type.substr(1);
+            var playerRender:any = pow2.combat[playerType + 'CombatRenderComponent'];
+            if(typeof playerRender === 'undefined'){
+               playerRender = new pow2.combat.PlayerCombatRenderComponent();
+            }
+            else {
+               playerRender = new playerRender();
+            }
+            heroEntity.addComponent(<pow2.combat.PlayerCombatRenderComponent>playerRender);
             heroEntity.addComponent(new AnimatedComponent());
             if(heroEntity.isDefeated()){
                return;
