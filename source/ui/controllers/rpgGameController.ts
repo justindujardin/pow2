@@ -36,8 +36,9 @@ module pow2.ui {
          $scope.range = function(n) {
             return new Array(n);
          };
-         $scope.clearState = function() {
+         $scope.resetGame = function() {
             localStorage.removeItem(stateKey);
+            powAlert.show("Game Save Deleted.  This will take effect the next time you refresh.",null,0);
          };
          $scope.getState = function(){
             return localStorage.getItem(stateKey);
@@ -49,7 +50,7 @@ module pow2.ui {
             }
             var data = JSON.stringify(game.model.toJSON());
             $scope.saveState(data);
-            powAlert.show("Game Saved!");
+            powAlert.show("Game Saved!",null,0);
          };
 
          GameStateModel.getDataSource(()=>{

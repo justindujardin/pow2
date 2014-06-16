@@ -62,7 +62,6 @@ module pow2.ui {
          game.world.mark(this);
          game.world.time.addObject(this);
          this._dismissBinding = (e) => {
-            console.log("clicked");
             this.dismiss();
          };
       }

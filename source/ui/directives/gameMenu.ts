@@ -34,6 +34,9 @@ module pow2.ui {
                $scope.showParty = function(){
                   $scope.page = 'party';
                };
+               $scope.showSave = function(){
+                  $scope.page = 'save';
+               };
                $scope.showInventory = function(){
                   $scope.page = 'inventory';
                };
