@@ -38,7 +38,7 @@ module pow2 {
          gold: 200,
          playerPosition: new pow2.Point(),
          playerMap:"",
-         combatZone:"default"
+         combatZone:"world-plains"
       };
       defaults():any {
          return _.extend({}, GameStateModel.DEFAULTS);
