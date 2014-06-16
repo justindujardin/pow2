@@ -46,10 +46,13 @@ module pow2.ui {
       paused:boolean = false;
       public containerSearch:string = '.ui-container';
 
+      container:ng.IAugmentedJQuery = null;
+
       private _current:IPowAlertObject = null;
       private _queue:IPowAlertObject[] = [];
+      private _dismissBinding:(e) => any = null;
       constructor(
-         public element:ng.IAugmentedJQuery,
+         public element:JQuery,
          public document:any,
          public scope:IAlertScopeService,
          public timeout:ng.ITimeoutService,
@@ -58,6 +61,10 @@ module pow2.ui {
          super();
          game.world.mark(this);
          game.world.time.addObject(this);
+         this._dismissBinding = (e) => {
+            console.log("clicked");
+            this.dismiss();
+         };
       }
 
       onAddToWorld(world:pow2.IWorld) {}
@@ -70,9 +77,24 @@ module pow2.ui {
       }
 
       dismiss() {
+         this.paused = true;
+         this.scope.$apply(() => {
+            this.animate.leave(this.element, () => {
+               if(this._current){
+                  this._current.done && this._current.done(this._current);
+                  this._current = null;
+               }
+               this.scope.powAlert = null;
+               this.paused = false;
+            });
+         });
          if(this._current){
             this._current.dismissed = true;
          }
+         if(this.container){
+            this.container.off('click',this._dismissBinding);
+         }
+         this.container = null;
       }
       show(message:string,done?:() => void,duration?:number):IPowAlertObject{
          var obj:IPowAlertObject = {
@@ -103,17 +125,7 @@ module pow2.ui {
                c.elapsed += elapsed;
                return;
             }
-            this.paused = true;
-            this.scope.$apply(() => {
-               this.animate.leave(this.element, () => {
-                  if(this._current){
-                     this._current.done && this._current.done(this._current);
-                     this._current = null;
-                  }
-                  this.scope.powAlert = null;
-                  this.paused = false;
-               });
-            });
+            this.dismiss();
          }
          if(this.paused || this._queue.length === 0){
             return;
@@ -121,11 +133,9 @@ module pow2.ui {
          this._current = this._queue.shift();
          this.scope.$apply(() => {
             this.scope.powAlert = this._current;
-            var container = this.document.find(this.containerSearch);
-            container.on('click',(e) => {
-               this.dismiss();
-            });
-            this.animate.enter(this.element, container, null,() => {
+            this.container = this.document.find(this.containerSearch);
+            this.container.on('click',this._dismissBinding);
+            this.animate.enter(this.element, this.container, null,() => {
                this.paused = false;
             });
          });
