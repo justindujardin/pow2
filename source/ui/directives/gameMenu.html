@@ -23,7 +23,6 @@
         <div class="party" ng-if="page == 'party'">
             <div class="">
                 <h1>Party Gold: {{gameModel.attributes.gold}}</h1>
-                <button class="btn btn-flat" ng-click="saveGame()">Save Game</button>
             </div>
             <hero-card hero="member" ng-repeat="member in party"></hero-card>
         </div>
