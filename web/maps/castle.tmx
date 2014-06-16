@@ -194,7 +194,7 @@
     <property name="category" value="armor"/>
     <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
-    <property name="level" value="3"/>
+    <property name="level" value="2"/>
     <property name="name" value="Suvian Armors"/>
     <property name="sellRate" value="30"/>
     <property name="type" value="store"/>
@@ -206,7 +206,7 @@
     <property name="category" value="weapons"/>
     <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
-    <property name="level" value="3"/>
+    <property name="level" value="2"/>
     <property name="name" value="Suvian Arms"/>
     <property name="sellRate" value="30"/>
     <property name="type" value="store"/>
@@ -218,7 +218,7 @@
     <property name="category" value="accessories"/>
     <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
-    <property name="level" value="3"/>
+    <property name="level" value="2"/>
     <property name="name" value="Suvian Artifacts"/>
     <property name="sellRate" value="20"/>
     <property name="type" value="store"/>
@@ -230,7 +230,7 @@
     <property name="category" value="items"/>
     <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
-    <property name="level" value="3"/>
+    <property name="level" value="2"/>
     <property name="name" value="Ashvari Apothecary"/>
     <property name="sellRate" value="22"/>
     <property name="type" value="store"/>
