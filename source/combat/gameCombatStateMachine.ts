@@ -162,13 +162,12 @@ module pow2 {
          this.tileMap = new pow2.GameTileMap("combat");
          this.tileMap.once('loaded',() => {
             // Hide all layers that don't correspond to the current combat zone
-            var zone:string = machine.model.get('combatZone');
-            if(zone){
-               _.each(this.tileMap.getLayers(),(l)=>{
-                  l.visible = l.name === zone;
-               });
-               this.tileMap.dirtyLayers = true;
-            }
+            var zone:IZoneMatch = machine.encounter.host.getCombatZones(machine.encounter.player.point);
+            var visibleZone:string = zone.target || zone.map;
+            _.each(this.tileMap.getLayers(),(l)=>{
+               l.visible = (l.name === visibleZone);
+            });
+            this.tileMap.dirtyLayers = true;
             this.tileMap.addComponent(new pow2.CombatCameraComponent);
             this.scene.addObject(this.tileMap);
 
@@ -176,15 +175,15 @@ module pow2 {
 
             // Get enemies data from spreadsheet
             GameStateModel.getDataSource((enemiesSpreadsheet:pow2.GoogleSpreadsheetResource) => {
-               var enemies:any[] = enemiesSpreadsheet.getSheetData("enemies");
-               enemies = enemies.filter((e)=>{
-                  if(zone){
-                     return _.indexOf(e.groups,zone) !== -1;
-                  }
-                  return e.level <= machine.model.party[0].get('level');
+               var enemyList:any[] = enemiesSpreadsheet.getSheetData("enemies");
+               var enemies:any[] = enemyList.filter((e)=>{
+                  return _.indexOf(e.groups,zone.map) !== -1 && _.indexOf(e.groups,zone.target) !== -1;
                });
-               console.log(enemies);
-
+               if(enemies.length == 0){
+                  enemies = enemyList.filter((e)=>{
+                     return _.indexOf(e.groups,zone.map) !== -1 || _.indexOf(e.groups,zone.target) !== -1;
+                  });
+               }
                if(enemies.length){
                   // Create the enemy
                   var max = 3;
@@ -206,23 +205,23 @@ module pow2 {
                      }));
                      this.machine.enemies.push(nme);
                   }
+                  _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
+                     var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
+                     heroEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+                  });
+
+                  _.each(this.machine.enemies,(enemyEntity:GameEntityObject,index:number) => {
+                     var battleSpawn = this.tileMap.getFeature('e' + (index + 1));
+                     if(battleSpawn){
+                        enemyEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+                     }
+                  });
+                  machine.trigger('combat:begin',this);
                }
-
-               _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
-                  var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
-                  heroEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
-               });
-
-               _.each(this.machine.enemies,(enemyEntity:GameEntityObject,index:number) => {
-                  var battleSpawn = this.tileMap.getFeature('e' + (index + 1));
-                  if(battleSpawn){
-                     enemyEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
-                  }
-               });
-//
-//               var enemy = this.tileMap.getFeature('e1');
-//               this.machine.enemies[0].point = new Point(enemy.x / 16, enemy.y / 16);
-               machine.trigger('combat:begin',this);
+               else {
+                  // TODO: This is an error, I think.  Player entered combat with no valid enemies.
+                  machine.trigger('combat:end',this);
+               }
 
             });
          });
