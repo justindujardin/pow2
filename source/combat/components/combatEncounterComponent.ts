@@ -75,27 +75,15 @@ module pow2 {
          this.battleCounter = Math.floor(Math.random() * (max - min + 1)) + min;
          this.combatFlag = false;
       }
+
       triggerCombat(at:pow2.Point) {
-         // Determine which zone and combat type
-         var invTileSize = 1 / this.host.map.tilewidth;
-         var zones:any[] = _.map(this.host.zones.objects,(z:any)=>{
-            var x =  z.x * invTileSize;
-            var y =  z.y * invTileSize;
-            var w =  z.width * invTileSize;
-            var h =  z.height * invTileSize;
-            return {
-               bounds:new Rect(x,y,w,h),
-               name:z.name
-            }
-         });
-         var zone = _.find(zones,(z:any)=>{
-            return z.bounds.pointInRect(this.player.point);
-         });
-         if(zone && zone.name){
-            this.combatZone = zone.name;
-            if(this.world && this.world.state && this.world.state.model){
-               this.world.state.model.set('combatZone',this.combatZone);
-            }
+         var zones:IZoneMatch = this.host.getCombatZones(at);
+         this.combatZone = zones.map || zones.target;
+         if(this.world && this.world.state && this.world.state.model){
+            // TODO: NO NO NO NO NO.  This is for combat feature components to
+            // guess from.  Have combat feature objects load up an encounter comp
+            // and get the mapCombatZone and combatZone values off of it.
+            this.world.state.model.set('combatZone',this.combatZone);
          }
          console.log("Combat in zone : " + this.combatZone);
          this.host.trigger('combat:encounter',this);
