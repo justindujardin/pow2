@@ -175,36 +175,36 @@ module pow2 {
 
             // Get enemies data from spreadsheet
             GameStateModel.getDataSource((enemiesSpreadsheet:pow2.GoogleSpreadsheetResource) => {
-               var enemyList:any[] = enemiesSpreadsheet.getSheetData("enemies");
-               var enemies:any[] = enemyList.filter((e)=>{
-                  return _.indexOf(e.groups,zone.map) !== -1 && _.indexOf(e.groups,zone.target) !== -1;
+               var encounters:any[] = _.filter(enemiesSpreadsheet.getSheetData("encounters"),(enc:any)=>{
+                  return enc.type === 'random' && (_.indexOf(enc.zones,zone.map) !== -1 || _.indexOf(enc.zones,zone.target) !== -1);
                });
-               if(enemies.length == 0){
-                  enemies = enemyList.filter((e)=>{
-                     return _.indexOf(e.groups,zone.map) !== -1 || _.indexOf(e.groups,zone.target) !== -1;
-                  });
+               if(encounters.length === 0){
+                  throw new Error("No valid encounters for this zone");
                }
-               if(enemies.length){
-                  // Create the enemy
-                  var max = 3;
-                  var min = 1;
-                  var enemyCount = Math.floor(Math.random() * (max - min + 1)) + min;
-                  for(var i = 0; i < enemyCount; i++){
+               var max = encounters.length - 1;
+               var min = 0;
+               var encounter = encounters[Math.floor(Math.random() * (max - min + 1)) + min];
 
-                     var rndEnemy = Math.floor(Math.random() * ((enemies.length - 1) - 0 + 1)) + 0;
-                     //
-                     var nmeModel = new CreatureModel(enemies[rndEnemy]);
+               var enemyList:any[] = enemiesSpreadsheet.getSheetData("enemies");
 
-                     var nme = new pow2.GameEntityObject({
-                        model: nmeModel
-                     });
-                     this.scene.addObject(nme);
-                     nme.addComponent(new pow2.SpriteComponent({
-                        name:"enemy",
-                        icon:nme.model.get('icon')
-                     }));
-                     this.machine.enemies.push(nme);
+               var enemiesLength:number = encounter.enemies.length;
+               for(var i:number = 0; i < enemiesLength; i++){
+                  var tpl = _.where(enemyList,{id:encounter.enemies[i]});
+                  if(tpl.length === 0){
+                     continue;
                   }
+                  var nmeModel = new CreatureModel(tpl[0]);
+                  var nme = new pow2.GameEntityObject({
+                     model: nmeModel
+                  });
+                  this.scene.addObject(nme);
+                  nme.addComponent(new pow2.SpriteComponent({
+                     name:"enemy",
+                     icon:nme.model.get('icon')
+                  }));
+                  this.machine.enemies.push(nme);
+               }
+               if(this.machine.enemies.length){
                   _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
                      var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
                      heroEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));

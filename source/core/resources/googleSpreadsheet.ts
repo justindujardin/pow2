@@ -53,7 +53,7 @@ module pow2 {
                      entry[key] = parseInt(value);
                   }
                   // pipe delimited array values
-                  else if(key === 'usedby' || key === 'groups'){
+                  else if(key === 'usedby' || key === 'groups' || key === 'zones' || key === 'enemies'){
                      if(/^\s*$/.test(value)){
                         entry[key] = null;
                      }
