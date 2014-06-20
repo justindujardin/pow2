@@ -62,62 +62,37 @@
     <property name="type" value="transition"/>
    </properties>
   </object>
-  <object name="wererat.png" type="encounter" x="320" y="64" width="16" height="16">
+  <object name="kobold-sewers" type="encounter" x="320" y="496" width="16" height="16">
    <properties>
-    <property name="ambushed" value="true"/>
-    <property name="creatures" value=""/>
-    <property name="gold" value="4"/>
-    <property name="icon" value="wererat.png"/>
-    <property name="id" value="sewerEntrance"/>
-    <property name="items" value=""/>
-    <property name="text" value="The sewers are inhabited by Wererats! They attack!"/>
-    <property name="type" value="encounter"/>
-   </properties>
-  </object>
-  <object name="koboldSwordsman.png" type="encounter" x="288" y="528" width="16" height="16">
-   <properties>
-    <property name="creatures" value=""/>
-    <property name="gold" value="6"/>
     <property name="icon" value="koboldSwordsman.png"/>
-    <property name="id" value="sewerKobolds"/>
-    <property name="items" value=""/>
+    <property name="id" value="sewer-kobolds"/>
     <property name="text" value="You are confronted by a pack of Kobolds!"/>
     <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object name="greenSpider.png" type="encounter" x="112" y="400" width="16" height="16">
+  <object name="impTalisman.png" type="treasure" x="96" y="32" width="16" height="16">
    <properties>
-    <property name="ambushed" value="true"/>
-    <property name="creatures" value=""/>
-    <property name="gold" value="1"/>
-    <property name="icon" value="greenSpider.png"/>
-    <property name="id" value="sewerSpiders"/>
-    <property name="items" value=""/>
-    <property name="text" value="Enormous spiders drop from the ceiling and attack!"/>
-    <property name="type" value="encounter"/>
+    <property name="icon" value="chest.png"/>
+    <property name="item" value="apprentice-hat"/>
+    <property name="type" value="treasure"/>
    </properties>
   </object>
-  <object name="impTalisman.png" type="encounter" x="112" y="32" width="16" height="16">
+  <object name="kobold-sewers-elite" type="encounter" x="64" y="544" width="16" height="16">
    <properties>
-    <property name="creatures" value=""/>
-    <property name="gold" value="0"/>
-    <property name="icon" value="impTalisman.png"/>
-    <property name="id" value="caveTalisman"/>
-    <property name="items" value=""/>
-    <property name="text" value="You discover here an unusual little statue."/>
-    <property name="type" value="encounter"/>
-   </properties>
-  </object>
-  <object name="koboldShaman.png" type="encounter" x="64" y="544" width="16" height="16">
-   <properties>
-    <property name="creatures" value=""/>
     <property name="gold" value="12"/>
     <property name="icon" value="koboldShaman.png"/>
-    <property name="id" value="sewerKoboldElite"/>
+    <property name="id" value="sewer-kobolds-elite"/>
     <property name="items" value=""/>
     <property name="sets" value="ruinsDone"/>
     <property name="text" value="At long last, you find the source of the evil in Kinstown. Surrounded by roiling sewage water, you see a make-shift Kobold throne room! A shamanistic Kobold points at you and howls!"/>
     <property name="type" value="encounter"/>
+   </properties>
+  </object>
+  <object name="shield treasure" type="treasure" x="288" y="528" width="16" height="16">
+   <properties>
+    <property name="icon" value="chest.png"/>
+    <property name="item" value="leather-shield"/>
+    <property name="type" value="treasure"/>
    </properties>
   </object>
  </objectgroup>
