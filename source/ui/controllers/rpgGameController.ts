@@ -60,8 +60,33 @@ module pow2.ui {
 
          // Dialog bubbles
          game.world.scene.on('treasure:entered',function(feature){
-            game.model.addGold(feature.gold);
-            powAlert.show("You found " + feature.gold + " gold!",null,0);
+            if(typeof feature.gold !== 'undefined'){
+               game.model.addGold(feature.gold);
+               powAlert.show("You found " + feature.gold + " gold!",null,0);
+            }
+            if(typeof feature.item === 'string'){
+               // Get enemies data from spreadsheet
+               GameStateModel.getDataSource((data:pow2.GoogleSpreadsheetResource) => {
+                  var item:ItemModel = null;
+                  var desc:any = _.where(data.getSheetData('weapons'),{id:feature.item})[0];
+                  if(desc){
+                     item = new pow2.WeaponModel(desc);
+                  }
+                  else {
+                     desc = _.where(data.getSheetData('armor'),{id:feature.item})[0];
+                     if(desc){
+                        item = new pow2.ArmorModel(desc);
+                     }
+                  }
+                  if(!item){
+                     return;
+                  }
+                  game.model.inventory.push(item);
+                  powAlert.show("You found " + item.get('name') + "!",null,0);
+
+               });
+
+            }
          });
 
 
