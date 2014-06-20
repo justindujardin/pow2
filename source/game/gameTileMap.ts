@@ -135,6 +135,9 @@ module pow2 {
             case 'transition':
                componentType = PortalFeatureComponent;
                break;
+            case 'treasure':
+               componentType = TreasureFeatureComponent;
+               break;
             case 'ship':
                componentType = ShipFeatureComponent;
                break;

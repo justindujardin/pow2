@@ -65,6 +65,13 @@ module pow2.ui {
             });
          });
 
+         // Dialog bubbles
+         game.world.scene.on('treasure:entered',function(feature){
+            game.model.addGold(feature.gold);
+            powAlert.show("You found " + feature.gold + " gold!",null,0);
+         });
+
+
          game.currentScene.on("map:loaded",(map:GameTileMap) => {
             game.model.set('playerMap',map.mapName);
          });
