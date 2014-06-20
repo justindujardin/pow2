@@ -29,6 +29,7 @@ module pow2.ui {
       currentScene:Scene;
       private _renderCanvas:HTMLCanvasElement;
       private _canvasAcquired:boolean = false;
+      private _stateKey:string = "_testPow2State";
       constructor(
          public compile:ng.ICompileService,
          public scope:ng.IRootScopeService){
@@ -46,6 +47,16 @@ module pow2.ui {
          this.machine = this.world.state;
          this.model = this.world.state.model;
          pow2.registerWorld('pow2',this.world);
+      }
+
+      getSaveData():any {
+         return localStorage.getItem(this._stateKey);
+      }
+      resetGame(){
+         localStorage.removeItem(this._stateKey);
+      }
+      saveGame(data:any){
+         localStorage.setItem(this._stateKey,data);
       }
 
       createPlayer(from:HeroModel,at?:pow2.Point){

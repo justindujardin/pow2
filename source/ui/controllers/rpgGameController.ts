@@ -17,10 +17,6 @@
 /// <reference path="../services/alertService.ts"/>
 
 module pow2.ui {
-   var stateKey = "_testPow2State";
-   export function resetGame() {
-      localStorage.removeItem(stateKey);
-   }
    app.controller('RPGGameController',[
       '$scope',
       '$timeout',
@@ -30,18 +26,15 @@ module pow2.ui {
          $scope.loadingTitle = "Pow2!";
          $scope.loadingMessage = "Asking Google for data...";
          $scope.loading = true;
-         $scope.saveState = function(data){
-            localStorage.setItem(stateKey,data);
-         };
          $scope.range = function(n) {
             return new Array(n);
          };
          $scope.resetGame = function() {
-            localStorage.removeItem(stateKey);
+            game.resetGame();
             powAlert.show("Game Save Deleted.  This will take effect the next time you refresh.",null,0);
          };
          $scope.getState = function(){
-            return localStorage.getItem(stateKey);
+            return game.getSaveData();
          };
          $scope.saveGame = function(){
             var party = <pow2.PlayerComponent>game.currentScene.componentByType(pow2.PlayerComponent);
@@ -49,7 +42,7 @@ module pow2.ui {
                game.model.set('playerPosition',party.host.point);
             }
             var data = JSON.stringify(game.model.toJSON());
-            $scope.saveState(data);
+            game.saveGame(data);
             powAlert.show("Game Saved!",null,0);
          };
 
@@ -57,7 +50,7 @@ module pow2.ui {
             $scope.loadingMessage = "Loading the things...";
             // TODO: Resets state every page load.  Remove when persistence is desired.
             //resetGame();
-            game.loadGame($scope.getState(),()=>{
+            game.loadGame(game.getSaveData(),()=>{
                $scope.gameModel = game.model;
                $scope.party = game.model.party;
                $scope.inventory = game.model.inventory;
@@ -112,6 +105,22 @@ module pow2.ui {
                      powAlert.show("Enemies Defeated!",function(){
                         state.machine.paused = false;
                      });
+                  });
+                  state.machine.on('combat:defeat',(enemies,party) => {
+                     state.machine.paused = true;
+                     powAlert.show("Your party was defeated...",function(){
+                        state.machine.paused = false;
+                        game.loadGame(game.getSaveData(),()=>{
+                           $scope.$apply(()=>{
+                              $scope.gameModel = game.model;
+                              $scope.party = game.model.party;
+                              $scope.inventory = game.model.inventory;
+                              $scope.player = game.model.party[0];
+                              $scope.combat = null;
+                              $scope.inCombat = false;
+                           });
+                        });
+                     },0);
                   });
                });
             }
