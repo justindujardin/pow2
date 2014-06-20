@@ -59,6 +59,12 @@ module pow2 {
 
          this.buildFeatures();
       }
+
+      destroy(){
+         this.unloaded();
+         return super.destroy();
+      }
+
       unloaded(){
          this.removeComponentByType(GameFeatureInputComponent);
          this.removeComponentByType(CombatEncounterComponent);

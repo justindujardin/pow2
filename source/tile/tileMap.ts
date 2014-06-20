@@ -72,13 +72,17 @@ module pow2 {
 
       loaded(){
          this.trigger('loaded',this);
-         this.scene.trigger("map:loaded",this);
+         if(this.scene){
+            this.scene.trigger("map:loaded",this);
+         }
          this._loaded = true;
       }
 
       unloaded(){
          this.trigger('unloaded',this);
-         this.scene.trigger("map:unloaded",this);
+         if(this.scene){
+            this.scene.trigger("map:unloaded",this);
+         }
          this._loaded = false;
       }
 
