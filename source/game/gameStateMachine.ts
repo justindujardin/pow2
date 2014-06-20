@@ -33,14 +33,16 @@ module pow2 {
       ];
    }
 
-   // Implementation
    // -------------------------------------------------------------------------
+   // TODO: This does not need to be time ticked.   Manual evaluation and state
+   // changing would be more appropriate.
    export class GameStateMachine extends TickedStateMachine {
       model:GameStateModel = null;
       defaultState:string = GameDefaultState.NAME;
       player:TileObject = null;
       encounter:CombatEncounterComponent = null;
       combatant:TileObject = null;
+      combatType:string = '';
       tickRateMS:number = 300;
       states:IState[] = [
          new GameDefaultState(),

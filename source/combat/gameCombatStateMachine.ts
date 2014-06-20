@@ -28,6 +28,7 @@
 /// <reference path="./components/combatCameraComponent.ts" />
 /// <reference path="../game/models/entityModel.ts" />
 /// <reference path="../game/models/creatureModel.ts" />
+/// <reference path="./combat.ts" />
 
 module pow2 {
    // Combat State Machine
@@ -176,7 +177,12 @@ module pow2 {
             // Get enemies data from spreadsheet
             GameStateModel.getDataSource((enemiesSpreadsheet:pow2.GoogleSpreadsheetResource) => {
                var encounters:any[] = _.filter(enemiesSpreadsheet.getSheetData("encounters"),(enc:any)=>{
-                  return enc.type === 'random' && (_.indexOf(enc.zones,zone.map) !== -1 || _.indexOf(enc.zones,zone.target) !== -1);
+                  if(machine.combatType === pow2.COMBAT_ENCOUNTERS.RANDOM && enc.type === pow2.COMBAT_ENCOUNTERS.RANDOM){
+                     return _.indexOf(enc.zones,zone.map) !== -1 || _.indexOf(enc.zones,zone.target) !== -1;
+                  }
+                  if(machine.combatType === pow2.COMBAT_ENCOUNTERS.FIXED && enc.type === pow2.COMBAT_ENCOUNTERS.FIXED){
+                     return enc.id === machine.combatant.id;
+                  }
                });
                if(encounters.length === 0){
                   throw new Error("No valid encounters for this zone");
@@ -253,6 +259,7 @@ module pow2 {
             return false;
          }
          if(machine.encounter && machine.encounter.combatFlag === true){
+            machine.combatType = pow2.COMBAT_ENCOUNTERS.RANDOM;
             return true;
          }
          var coll = <CollisionComponent>machine.player.findComponent(CollisionComponent);
@@ -265,6 +272,7 @@ module pow2 {
                if(touched){
                   var combat = <CombatFeatureComponent>touched.findComponent(CombatFeatureComponent);
                   if(combat.isEntered){
+                     machine.combatType = pow2.COMBAT_ENCOUNTERS.FIXED;
                      machine.combatant = touched;
                      return true;
                   }
