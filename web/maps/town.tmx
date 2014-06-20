@@ -104,12 +104,11 @@
     <property name="type" value="store"/>
    </properties>
   </object>
-  <object name="chest.png" type="encounter" x="272" y="144" width="16" height="16">
+  <object name="chest.png" type="treasure" x="272" y="144" width="16" height="16">
    <properties>
-    <property name="after" value="ruinsDone"/>
     <property name="gold" value="20"/>
-    <property name="icon" value="skull.png"/>
-    <property name="type" value="encounter"/>
+    <property name="icon" value="chest.png"/>
+    <property name="type" value="treasure"/>
    </properties>
   </object>
  </objectgroup>
