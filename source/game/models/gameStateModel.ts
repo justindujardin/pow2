@@ -125,7 +125,7 @@ module pow2 {
 
 
          this.inventory = _.map(data.inventory,(item:any) => {
-            var choice:any = _.where(theChoices,{name:item.name})[0];
+            var choice:any = _.where(theChoices,{id:item.id})[0];
             return <pow2.ItemModel>choice.instanceModel;
          });
          this.party = _.map(data.party,(partyMember) => {
@@ -140,7 +140,7 @@ module pow2 {
             return p.toJSON();
          });
          result.inventory = _.map(this.inventory,(p) => {
-            return <any>_.pick(p.attributes,'name','key');
+            return <any>_.pick(p.attributes,'id','key');
          });
          return result;
       }

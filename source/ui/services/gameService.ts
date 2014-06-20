@@ -29,7 +29,7 @@ module pow2.ui {
       currentScene:Scene;
       private _renderCanvas:HTMLCanvasElement;
       private _canvasAcquired:boolean = false;
-      private _stateKey:string = "_testPow2State";
+      private _stateKey:string = "_test2Pow2State";
       constructor(
          public compile:ng.ICompileService,
          public scope:ng.IRootScopeService){
