@@ -62,6 +62,11 @@ module pow2 {
 
       // Chance to hit = (BASE_CHANCE_TO_HIT + PLAYER_HIT_PERCENT) - EVASION
       rollHit(defender:EntityModel):boolean {
+
+         // TODO: Fix this calculation, which is producing too many misses
+         // and causing the combat to feel too random and arbitrary.
+         return true;
+
          var roll:number = _.random(0,200);
          var evasion:number = defender.getEvasion();
          var chance:number = EntityModel.BASE_CHANCE_TO_HIT + this.attributes.hitpercent - evasion;
