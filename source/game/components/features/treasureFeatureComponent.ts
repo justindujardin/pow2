@@ -33,28 +33,9 @@ module pow2 {
          return true;
       }
       enter(object:TileObject):boolean {
-         this.party = <PlayerComponent>object.findComponent(PlayerComponent);
-         if(!!this.party){
-            object.scene.trigger('treasure:entered',this);
-
-            //this.host.destroy();
-            this.host.enabled = false;
-            this.host.visible = false;
-            return true;
-         }
-         return false;
-      }
-
-      party:PlayerComponent;
-      enter(object:TileObject):boolean {
          object.scene.trigger('treasure:entered',this);
-         //this.host.destroy();
          this.host.enabled = false;
          this.host.visible = false;
-         return true;
-      }
-      exit(object:TileObject):boolean {
-         object.scene.trigger('treasure:exited',this);
          return true;
       }
    }

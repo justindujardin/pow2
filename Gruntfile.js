@@ -78,16 +78,6 @@ module.exports = function(grunt) {
                "server/*.ts"
             ]
          },
-         tests: {
-            src: [
-               "test/fixtures/*.ts",
-               "test/fixtures/**/*.ts",
-               "test/*.ts",
-               "test/**/*.ts"
-            ],
-            dest: 'lib/test/<%= pkg.name %>.tests.js'
-         },
-
          pow2: {
             src: [
                "source/core/api.ts",
@@ -97,7 +87,7 @@ module.exports = function(grunt) {
                "source/core/scene/*.ts",
                "source/core/scene/components/*.ts"
             ],
-            dest: 'lib/<%= pkg.name %>.core.js'
+            dest: 'lib/<%= pkg.name %>.js'
          },
          game: {
             src: [
@@ -137,6 +127,15 @@ module.exports = function(grunt) {
                "data/creatures/*.ts"
             ],
             dest: 'lib/<%= pkg.name %>.data.js'
+         },
+         tests: {
+            src: [
+               "test/fixtures/*.ts",
+               "test/fixtures/**/*.ts",
+               "test/*.ts",
+               "test/**/*.ts"
+            ],
+            dest: 'lib/test/<%= pkg.name %>.tests.js'
          }
 
       },
