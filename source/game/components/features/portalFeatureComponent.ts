@@ -33,8 +33,10 @@ module pow2 {
          if(!this.target || !this.tileMap){
             return false;
          }
-         object.scene.once("map:loaded",(map) => {
-            console.log("Transition to: " + this.map);
+         var oldMap:string = this.host.tileMap.mapName;
+         object.scene.once("map:loaded",(map:TileMap) => {
+            console.log("Transition from " + oldMap + " to " + this.map);
+            // TODO: Remove this targetX targetY feature transition crap.
             object.setPoint(this.target);
          });
          this.tileMap.load(this.map);
