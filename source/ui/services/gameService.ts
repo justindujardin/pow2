@@ -42,6 +42,7 @@ module pow2.ui {
          });
          this.world = new GameWorld({
             scene:this.currentScene,
+            model:new GameStateModel(),
             state:new GameStateMachine()
          });
          this.machine = this.world.state;

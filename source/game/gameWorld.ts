@@ -20,5 +20,10 @@
 module pow2 {
    export class GameWorld extends World {
       state:GameStateMachine;
+      // TODO: Fix game loading and multiple scenes/maps state.
+      // Put the game model here, and use the pow2.getWorld() api
+      // for access to the game model.   Reset state methods should
+      // exist there, and angular UI should listen in.
+      model:GameStateModel;
    }
 }

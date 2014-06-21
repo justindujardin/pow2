@@ -34,6 +34,9 @@ module pow2 {
       party:HeroModel[]; // The player's party
       inventory:ItemModel[]; // The inventory of items owned by the player.
       loader:pow2.ResourceLoader;
+      keyData:{
+         [key:string]:any
+      } = {};
       static DEFAULTS:GameStateModelOptions = {
          gold: 200,
          playerPosition: new pow2.Point(),
@@ -71,6 +74,13 @@ module pow2 {
                then && then(resource);
             });
          }
+      }
+
+      setKeyData(key:string,data:any){
+         this.keyData[key] = data;
+      }
+      getKeyData(key:string):any{
+         return this.keyData[key];
       }
 
 
@@ -113,7 +123,16 @@ module pow2 {
             console.log("Failed to load save game.");
             return {};
          }
+         if(typeof data.keyData !== 'undefined'){
+            try{
+               this.keyData = JSON.parse(data.keyData);
+            }
+            catch(e){
+               console.error("Failed to parse keyData");
+               this.keyData = data.keyData;
+            }
 
+         }
 
          var theChoices: any[] = [];
          theChoices = theChoices.concat(_.map(_gameData.getSheetData('weapons'),(w)=>{
@@ -131,7 +150,7 @@ module pow2 {
          this.party = _.map(data.party,(partyMember) => {
             return new HeroModel(partyMember,{parse:true});
          });
-         return _.omit(data,'party','inventory');
+         return _.omit(data,'party','inventory','keyData');
       }
 
       toJSON() {
@@ -142,6 +161,13 @@ module pow2 {
          result.inventory = _.map(this.inventory,(p) => {
             return <any>_.pick(p.attributes,'id','key');
          });
+         try{
+            result.keyData = JSON.stringify(this.keyData);
+         }
+         catch(e){
+            console.error("Failed to stringify keyData");
+            result.keyData = {};
+         }
          return result;
       }
    }

@@ -53,7 +53,7 @@ module pow2 {
       onAddToWorld(world){
          super.onAddToWorld(world);
          GameStateModel.getDataSource();
-         this.model = new GameStateModel();
+         this.model = world.model || new GameStateModel();
       }
 
       updatePlayer(){
