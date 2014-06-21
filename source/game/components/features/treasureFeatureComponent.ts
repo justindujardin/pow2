@@ -34,8 +34,7 @@ module pow2 {
       }
       enter(object:TileObject):boolean {
          object.scene.trigger('treasure:entered',this);
-         this.host.enabled = false;
-         this.host.visible = false;
+         this.setDataHidden(true);
          return true;
       }
    }

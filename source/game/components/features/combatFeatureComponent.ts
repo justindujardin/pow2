@@ -22,10 +22,11 @@ module pow2 {
       party:PlayerComponent;
       enter(object:GameFeatureObject):boolean {
          this.party = <PlayerComponent>object.findComponent(PlayerComponent);
+         this.setDataHidden(true);
          return !!this.party;
       }
       exited(object:GameFeatureObject):boolean {
-         //this.host.destroy();
+         this.setDataHidden(true);
          return super.exited(object);
       }
    }
