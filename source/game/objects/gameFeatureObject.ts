@@ -19,6 +19,7 @@
 
 module pow2 {
    export class GameFeatureObject extends pow2.TileObject {
+      id:string;
       world:GameWorld;
       tileMap:GameTileMap;
       feature:any; // TODO: Feature Interface

@@ -24,7 +24,7 @@ module pow2 {
    export interface IGameEncounter {
       type:string; // @see pow2.ENCOUNTERS
       id:string; // unique id in spreadsheet
-      rarity:number; // 0-1 how rare is it to encounter this group
       zones:string[]; // array of zones this encounter can happen in
+      enemies:string[]; // array of enemies in this encounter
    }
 }

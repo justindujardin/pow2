@@ -36,46 +36,38 @@ module pow2 {
    // -------------------------------------------------------------------------
    // TODO: This does not need to be time ticked.   Manual evaluation and state
    // changing would be more appropriate.
-   export class GameStateMachine extends TickedStateMachine {
+   export class GameStateMachine extends StateMachine {
       model:GameStateModel = null;
       defaultState:string = GameDefaultState.NAME;
       player:TileObject = null;
-      encounter:CombatEncounterComponent = null;
+      encounterInfo:IZoneMatch = null;
+      encounter:IGameEncounter = null;
       combatant:TileObject = null;
       combatType:string = '';
-      tickRateMS:number = 300;
       states:IState[] = [
          new GameDefaultState(),
          new GameMapState(''),
          new GameCombatState()
       ];
-      private _elapsed: number = 0;
       onAddToWorld(world){
          super.onAddToWorld(world);
          GameStateModel.getDataSource();
          this.model = world.model || new GameStateModel();
       }
 
-      updatePlayer(){
+      setCurrentState(newState:any):boolean{
+         if(super.setCurrentState(newState)){
+            this.update(this.getCurrentState());
+            return true;
+         }
+         return false;
+      }
+      update(data?:any){
          if(this.world && this.world.scene){
             var scene:Scene = this.world.scene;
             this.player = <TileObject>scene.objectByComponent(PlayerComponent);
-            this.encounter = <CombatEncounterComponent>this.world.scene.componentByType(CombatEncounterComponent);
          }
-      }
-
-      tick(elapsed:number){
-         this._elapsed += elapsed;
-         if (this._elapsed < this.tickRateMS) {
-            return;
-         }
-         // Don't subtract elapsed here, but take the modulus so that
-         // if for some reason we get a HUGE elapsed, it just does one
-         // tick and keeps the remainder toward the next.
-         this._elapsed = this._elapsed % this.tickRateMS;
-
-         super.tick(elapsed);
-         this.updatePlayer();
+         super.update(data);
       }
   }
 }

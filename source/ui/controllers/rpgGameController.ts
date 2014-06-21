@@ -39,29 +39,37 @@ module pow2.ui {
          $scope.saveGame = function(){
             var party = <pow2.PlayerComponent>game.currentScene.componentByType(pow2.PlayerComponent);
             if (party) {
-               game.model.set('playerPosition',party.host.point);
+               game.world.model.setKeyData('playerPosition',party.host.point);
             }
-            var data = JSON.stringify(game.model.toJSON());
+            var data = JSON.stringify(game.world.model.toJSON());
             game.saveGame(data);
             powAlert.show("Game Saved!",null,0);
          };
 
          GameStateModel.getDataSource(()=>{
-            $scope.loadingMessage = "Loading the things...";
+            $scope.$apply(()=>{
+               $scope.loadingMessage = "Loading the things...";
+            });
+
             // TODO: Resets state every page load.  Remove when persistence is desired.
             //resetGame();
             game.loadGame(game.getSaveData(),()=>{
-               $scope.gameModel = game.model;
-               $scope.party = game.model.party;
-               $scope.inventory = game.model.inventory;
-               $scope.player = game.model.party[0];
+               $scope.$apply(()=>{
+                  $scope.gameModel = game.world.model;
+                  $scope.party = game.world.model.party;
+                  $scope.inventory = game.world.model.inventory;
+                  $scope.player = game.world.model.party[0];
+                  $scope.loading = false;
+                  $scope.loaded = true;
+
+               });
             });
          });
 
          // Dialog bubbles
-         game.world.scene.on('treasure:entered',function(feature){
+         game.world.scene.on('treasure:entered',(feature) => {
             if(typeof feature.gold !== 'undefined'){
-               game.model.addGold(feature.gold);
+               game.world.model.addGold(feature.gold);
                powAlert.show("You found " + feature.gold + " gold!",null,0);
             }
             if(typeof feature.item === 'string'){
@@ -81,7 +89,7 @@ module pow2.ui {
                   if(!item){
                      return;
                   }
-                  game.model.inventory.push(item);
+                  game.world.model.inventory.push(item);
                   powAlert.show("You found " + item.get('name') + "!",null,0);
 
                });
@@ -91,21 +99,15 @@ module pow2.ui {
 
 
          game.currentScene.on("map:loaded",(map:GameTileMap) => {
-            game.model.set('playerMap',map.mapName);
+            game.world.model.setKeyData('playerMap',map.mapName);
          });
          // TODO: A better system for game event handling.
-         game.machine.on('enter',function(state){
-            if(state.name === GameMapState.NAME){
-               $scope.$apply(function(){
-                  $scope.loading = false;
-                  $scope.loaded = true;
-               });
-            }
+         game.machine.on('enter',(state) => {
             if(state.name === GameCombatState.NAME){
-               $scope.$apply(function(){
+               $scope.$apply(()=>{
                   $scope.combat = state.machine;
                   $scope.inCombat = true;
-                  state.machine.on('combat:attack',function(damage,attacker,defender){
+                  state.machine.on('combat:attack',(damage,attacker,defender)=>{
                      state.machine.paused = true;
                      var msg:string = '';
                      var a = attacker.model.get('name');
@@ -116,31 +118,31 @@ module pow2.ui {
                      else {
                         msg = a + " attacked " + b + ", and MISSED!";
                      }
-                     powAlert.show(msg,function(){
+                     powAlert.show(msg,() => {
                         state.machine.paused = false;
                      });
                   });
-                  state.machine.on('combat:victory',function(data:CombatVictorySummary) {
+                  state.machine.on('combat:victory',(data:CombatVictorySummary) => {
                      state.machine.paused = true;
                      powAlert.show("Found " + data.gold + " gold!",null,0);
                      powAlert.show("Gained " + data.exp + " experience!",null,0);
                      angular.forEach(data.levels,(hero:HeroModel) => {
                         powAlert.show(hero.get('name') + " reached level " + hero.get('level') + "!",null,0);
                      });
-                     powAlert.show("Enemies Defeated!",function(){
+                     powAlert.show("Enemies Defeated!",() => {
                         state.machine.paused = false;
                      });
                   });
                   state.machine.on('combat:defeat',(enemies,party) => {
                      state.machine.paused = true;
-                     powAlert.show("Your party was defeated...",function(){
+                     powAlert.show("Your party was defeated...",() => {
                         state.machine.paused = false;
                         game.loadGame(game.getSaveData(),()=>{
                            $scope.$apply(()=>{
-                              $scope.gameModel = game.model;
-                              $scope.party = game.model.party;
-                              $scope.inventory = game.model.inventory;
-                              $scope.player = game.model.party[0];
+                              $scope.gameModel = game.world.model;
+                              $scope.party = game.world.model.party;
+                              $scope.inventory = game.world.model.inventory;
+                              $scope.player = game.world.model.party[0];
                               $scope.combat = null;
                               $scope.inCombat = false;
                            });
@@ -150,8 +152,8 @@ module pow2.ui {
                });
             }
          });
-         game.machine.on('exit',function(state){
-            $scope.$apply(function(){
+         game.machine.on('exit',(state) => {
+            $scope.$apply(() => {
                if(state.name === GameMapState.NAME){
                   $scope.dialog = null;
                   $scope.store = null;

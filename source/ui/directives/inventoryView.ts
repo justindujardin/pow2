@@ -23,7 +23,7 @@ module pow2.ui {
          templateUrl: '/source/ui/directives/inventoryView.html',
          controller : function($scope,$element){
             var currentIndex:number = 0;
-            $scope.character = $scope.party[currentIndex];
+            $scope.character = $scope.party[currentIndex]; 
             $scope.nextCharacter = () => {
                currentIndex++;
                if(currentIndex >= $scope.party.length){
@@ -53,17 +53,17 @@ module pow2.ui {
                if(item instanceof ArmorModel){
                   var old:ArmorModel = hero.equipArmor(item);
                   if(old){
-                     game.model.addInventory(old);
+                     game.world.model.addInventory(old);
                   }
                }
                else if(item instanceof WeaponModel){
                   // Remove any existing weapon first
                   if(hero.weapon){
-                     game.model.addInventory(hero.weapon);
+                     game.world.model.addInventory(hero.weapon);
                   }
                   hero.weapon = <WeaponModel>item;
                }
-               game.model.removeInventory(item);
+               game.world.model.removeInventory(item);
                //powAlert.show("Equipped " + item.attributes.name + " to " + hero.attributes.name);
             };
 
@@ -82,7 +82,7 @@ module pow2.ui {
                   }
                   hero.weapon = null;
                }
-               game.model.addInventory(item);
+               game.world.model.addInventory(item);
                //powAlert.show("Unequipped " + item.attributes.name + " from " + hero.attributes.name);
             };
          }

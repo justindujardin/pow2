@@ -98,7 +98,7 @@ module pow2.ui {
       show(message:string,done?:() => void,duration?:number):IPowAlertObject{
          var obj:IPowAlertObject = {
             message:message,
-            duration: typeof duration === 'undefined' ? 1000 : duration,
+            duration: typeof duration === 'undefined' ? 4000 : duration,
             done:done
          };
          return this.queue(obj);

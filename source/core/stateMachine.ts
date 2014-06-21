@@ -38,7 +38,7 @@ module pow2 {
 
    // Implementation
    // -------------------------------------------------------------------------
-   export class StateMachine extends Events implements IStateMachine {
+   export class StateMachine extends Events implements IStateMachine, IWorldObject{
       defaultState:string = null;
       states:IState[] = [];
       private _currentState:IState = null;
@@ -46,7 +46,12 @@ module pow2 {
       private _newState:boolean = false;
       paused:boolean = false;
 
-      update(data:any){
+      world:IWorld;
+      onAddToWorld(world){}
+      onRemoveFromWorld(world){}
+
+
+      update(data?:any){
          this._newState = false;
          if(this._currentState === null){
             this.setCurrentState(this.defaultState);
@@ -106,7 +111,7 @@ module pow2 {
    /**
     * A state machine that updates with every game tick.
     */
-   export class TickedStateMachine extends StateMachine implements IWorldObject {
+   export class TickedStateMachine extends StateMachine {
       // IWorldObject interface
       world:IWorld;
       onAddToWorld(world){

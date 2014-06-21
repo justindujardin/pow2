@@ -22,7 +22,7 @@
     <div class="views" ng-if="open" ng-show="open" ng-class="{open:open}">
         <div class="party" ng-if="page == 'party'">
             <div class="">
-                <h1>Party Gold: {{gameModel.attributes.gold}}</h1>
+                <h1>Party Gold: {{gameModel.gold}}</h1>
             </div>
             <hero-card hero="member" ng-repeat="member in party"></hero-card>
         </div>

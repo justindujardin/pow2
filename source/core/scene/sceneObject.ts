@@ -23,7 +23,7 @@
 module pow2 {
 
    export interface IObject {
-      id:number;
+      id:string;
       name:string;
    }
 
@@ -54,7 +54,7 @@ module pow2 {
    }
 
    export class SceneObject extends Events implements ISceneObject, ISceneComponentHost, IWorldObject {
-      id:number = _.uniqueId();
+      id:string;
       name:string;
       scene: Scene;
       world: IWorld;
@@ -65,6 +65,7 @@ module pow2 {
       // The render point that is interpolated between ticks.
       renderPoint:Point;
       _components:ISceneComponent[] = [];
+      _uid:number = _.uniqueId();
       constructor(options?: any) {
          super();
          _.extend(this, _.defaults(options || {}), {
@@ -179,7 +180,7 @@ module pow2 {
       }
       removeComponentDictionary(components:any,silent?:boolean):boolean {
          var previousCount:number = this._components.length;
-         var removeIds:number[] = _.map(components,(value:ISceneComponent) => {
+         var removeIds:string[] = _.map(components,(value:ISceneComponent) => {
             return value.id;
          });
          this._components = _.filter(this._components, (obj:SceneComponent) => {

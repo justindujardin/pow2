@@ -14,6 +14,7 @@
  limitations under the License.
  */
 /// <reference path="../services/gameService.ts"/>
+/// <reference path="../services/alertService.ts"/>
 module pow2.ui {
 // TempleView directive
 // ----------------------------------------------------------------------------
@@ -26,8 +27,8 @@ module pow2.ui {
                if(!$scope.temple){
                   return;
                }
-               var model:GameStateModel = game.model;
-               var money:number = model.get('gold');
+               var model:GameStateModel = game.world.model;
+               var money:number = model.gold;
                var cost:number = parseInt($scope.temple.cost);
 
                var alreadyHealed:boolean = !_.find(model.party,(hero:HeroModel) => {
@@ -43,15 +44,11 @@ module pow2.ui {
                }
                else {
                   //console.log("You have (" + money + ") monies.  Spending (" + cost + ") on temple");
-                  model.set({
-                     gold: money - cost
-                  });
+                  model.gold -= cost;
                   _.each(model.party,(hero:HeroModel) => {
-                     hero.set({
-                        hp: hero.get('maxHP')
-                     });
+                     hero.set({ hp: hero.get('maxHP') });
                   });
-                  powAlert.show("Your party has been healed! \nYou now have (" + model.get('gold') + ") monies.",null,2500);
+                  powAlert.show("Your party has been healed! \nYou now have (" + model.gold + ") monies.",null,2500);
 
                }
                $scope.temple = null;

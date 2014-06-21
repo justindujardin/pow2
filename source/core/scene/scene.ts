@@ -103,7 +103,7 @@ module pow2 {
       // -----------------------------------------------------------------------------
       removeIt(property:string,object:any){
          this[property] = _.filter(this[property], (obj:any) => {
-            if(obj.id === object.id){
+            if(obj._uid === object._uid){
                this.db.removeSpatialObject(obj);
                if(obj.onRemoveFromScene){
                   obj.onRemoveFromScene(this);
@@ -127,7 +127,7 @@ module pow2 {
 
          // Check that we're not adding this twice (though, I suspect the above
          // should make that pretty unlikely)
-         if(_.where(this[property],{ id: object.id}).length > 0){
+         if(_.where(this[property],{ _uid: object._uid}).length > 0){
             throw new Error("Object added to scene twice");
          }
          this[property].push(object);

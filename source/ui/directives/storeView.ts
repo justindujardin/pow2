@@ -14,6 +14,7 @@
  limitations under the License.
  */
 /// <reference path="../services/gameService.ts"/>
+/// <reference path="../services/alertService.ts"/>
 module pow2.ui {
 // StoreBubble directive
 // ----------------------------------------------------------------------------
@@ -26,16 +27,13 @@ module pow2.ui {
                if(!$scope.store || !item){
                   return;
                }
-               var model:GameStateModel = game.model;
-               var money:number = model.get('gold');
+               var model:GameStateModel = game.world.model;
                var cost:number = parseInt(item.cost);
-               if(cost > money){
+               if(cost > model.gold){
                   powAlert.show("You don't have enough money");
                }
                else {
-                  model.set({
-                     gold: money - cost
-                  });
+                  model.gold -= cost;
                   powAlert.show("Purchased " + item.name + ".",null,1500);
                   model.inventory.push(item.instanceModel.clone());
 

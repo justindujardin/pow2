@@ -30,7 +30,7 @@ module pow2 {
             var gameWorld:GameWorld = <GameWorld>this.host.world;
             if(gameWorld && gameWorld.state){
                var gameState:GameStateModel = gameWorld.state.model;
-               var location = gameState.get('shipPosition');
+               var location = gameState.getKeyData('shipPosition');
                if(location){
                   this.host.setPoint(new Point(location.x,location.y));
                }
@@ -94,7 +94,7 @@ module pow2 {
 
          var gameWorld:GameWorld = <GameWorld>this.host.world;
          if(gameWorld && gameWorld.state && gameWorld.state.model){
-            gameWorld.state.model.set('shipPosition',this.host.point);
+            gameWorld.state.model.setKeyData('shipPosition',this.host.point);
          }
       }
    }

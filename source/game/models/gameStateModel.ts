@@ -22,44 +22,31 @@
 /// <reference path="./itemModel.ts" />
 module pow2 {
 
-   export interface GameStateModelOptions {
-      gold:number;
-      playerPosition:pow2.Point;
-      playerMap:string;
-      combatZone:string;
-   }
-
    var _gameData:pow2.GoogleSpreadsheetResource = null;
-   export class GameStateModel extends Backbone.Model {
+   export class GameStateModel extends pow2.Events {
       party:HeroModel[]; // The player's party
       inventory:ItemModel[]; // The inventory of items owned by the player.
       loader:pow2.ResourceLoader;
       keyData:{
          [key:string]:any
       } = {};
-      static DEFAULTS:GameStateModelOptions = {
-         gold: 200,
-         playerPosition: new pow2.Point(),
-         playerMap:"",
-         combatZone:"world-plains"
-      };
-      defaults():any {
-         return _.extend({}, GameStateModel.DEFAULTS);
-      }
-      initialize(options?:any) {
-         super.initialize(options);
-         if(typeof this.party === 'undefined'){
-            this.party = [];
-         }
-         if(typeof this.inventory === 'undefined'){
-            this.inventory = [];
-         }
-      }
+      gold:number;
+      combatZone:string;
 
+      constructor(options?:any) {
+         super();
+         _.extend(this,{
+            gold: 200,
+            playerPosition: new pow2.Point(),
+            playerMap:"",
+            combatZone:"world-plains",
+            party:[],
+            inventory:[]
+         },options||{});
+      }
       initData(then?:(data:GoogleSpreadsheetResource)=>any){
          GameStateModel.getDataSource(then);
       }
-
       /**
        * Get the game data sheets from google and callback when they're loaded.
        * @param then The function to call when spreadsheet data has been fetched
@@ -107,10 +94,10 @@ module pow2 {
       }
 
       addGold(amount:number){
-         this.set({ gold: this.attributes.gold + amount});
+         this.gold += amount;
       }
 
-      parse(data:any,options?:any):any {
+      parse(data:any,options?:any) {
          if(!_gameData){
             throw new Error("cannot instantiate inventory without valid data source.\nCall model.initData(loader) first.")
          }
@@ -121,7 +108,7 @@ module pow2 {
          }
          catch(e){
             console.log("Failed to load save game.");
-            return {};
+            return;
          }
          if(typeof data.keyData !== 'undefined'){
             try{
@@ -150,16 +137,16 @@ module pow2 {
          this.party = _.map(data.party,(partyMember) => {
             return new HeroModel(partyMember,{parse:true});
          });
-         return _.omit(data,'party','inventory','keyData');
+         _.extend(this,_.omit(data,'party','inventory','keyData'));
       }
 
       toJSON() {
-         var result = super.toJSON();
+         var result:any = _.omit(data,'party','inventory','keyData','world');
          result.party = _.map(this.party,(p) => {
             return p.toJSON();
          });
          result.inventory = _.map(this.inventory,(p) => {
-            return <any>_.pick(p.attributes,'id','key');
+            return <any>_.pick(p.attributes,'id');
          });
          try{
             result.keyData = JSON.stringify(this.keyData);

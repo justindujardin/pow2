@@ -30,9 +30,12 @@ module pow2 {
       map:string;
       // The zone name for the target location on the map
       target:string;
+      // The point that target refers to.
+      targetPoint:pow2.Point;
    }
 
    export class GameTileMap extends TileMap {
+      world:GameWorld;
       featureHash:any = {};
       graph:any;
       loaded(){
@@ -51,7 +54,7 @@ module pow2 {
             if(typeof props.music === 'string'){
                this.addComponent(new SoundComponent({
                   url:<string>props.music,
-                  volume:0.5,
+                  volume:0.1,
                   loop:true
                }));
             }
@@ -243,7 +246,8 @@ module pow2 {
       getCombatZones(at:pow2.Point):IZoneMatch {
          var result:IZoneMatch = {
             map:null,
-            target:null
+            target:null,
+            targetPoint:at
          };
          if(this.map && this.map.properties && this.map.properties){
             if(typeof this.map.properties.combatZone !== 'undefined'){

@@ -33,7 +33,7 @@
 module pow2 {
    // Combat State Machine
    //--------------------------------------------------------------------------
-   export class CombatStateMachine extends TickedStateMachine {
+   export class CombatStateMachine extends StateMachine {
       parent:GameStateMachine;
       defaultState:string = CombatStartState.NAME;
       states:IState[] = [
@@ -163,7 +163,7 @@ module pow2 {
          this.tileMap = new pow2.GameTileMap("combat");
          this.tileMap.once('loaded',() => {
             // Hide all layers that don't correspond to the current combat zone
-            var zone:IZoneMatch = machine.encounter.host.getCombatZones(machine.encounter.player.point);
+            var zone:IZoneMatch = machine.encounterInfo;
             var visibleZone:string = zone.target || zone.map;
             _.each(this.tileMap.getLayers(),(l)=>{
                l.visible = (l.name === visibleZone);
@@ -176,26 +176,10 @@ module pow2 {
 
             // Get enemies data from spreadsheet
             GameStateModel.getDataSource((enemiesSpreadsheet:pow2.GoogleSpreadsheetResource) => {
-               var encounters:any[] = _.filter(enemiesSpreadsheet.getSheetData("encounters"),(enc:any)=>{
-                  if(machine.combatType === pow2.COMBAT_ENCOUNTERS.RANDOM && enc.type === pow2.COMBAT_ENCOUNTERS.RANDOM){
-                     return _.indexOf(enc.zones,zone.map) !== -1 || _.indexOf(enc.zones,zone.target) !== -1;
-                  }
-                  if(machine.combatType === pow2.COMBAT_ENCOUNTERS.FIXED && enc.type === pow2.COMBAT_ENCOUNTERS.FIXED){
-                     return enc.id === machine.combatant.id;
-                  }
-               });
-               if(encounters.length === 0){
-                  throw new Error("No valid encounters for this zone");
-               }
-               var max = encounters.length - 1;
-               var min = 0;
-               var encounter = encounters[Math.floor(Math.random() * (max - min + 1)) + min];
-
                var enemyList:any[] = enemiesSpreadsheet.getSheetData("enemies");
-
-               var enemiesLength:number = encounter.enemies.length;
+               var enemiesLength:number = machine.encounter.enemies.length;
                for(var i:number = 0; i < enemiesLength; i++){
-                  var tpl = _.where(enemyList,{id:encounter.enemies[i]});
+                  var tpl = _.where(enemyList,{id:machine.encounter.enemies[i]});
                   if(tpl.length === 0){
                      continue;
                   }
@@ -236,7 +220,7 @@ module pow2 {
       exit(machine:GameStateMachine){
          machine.trigger('combat:end',this);
          this.scene.destroy();
-         machine.updatePlayer();
+         machine.update(this);
          this.tileMap.destroy();
          this.scene.destroy();
          this.finished = false;
@@ -258,7 +242,7 @@ module pow2 {
          if(!super.evaluate(machine) || !machine.player || !machine.player.tileMap){
             return false;
          }
-         if(machine.encounter && machine.encounter.combatFlag === true){
+         if(machine.encounter && machine.encounterInfo){
             machine.combatType = pow2.COMBAT_ENCOUNTERS.RANDOM;
             return true;
          }

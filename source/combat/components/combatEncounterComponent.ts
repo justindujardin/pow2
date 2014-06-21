@@ -79,14 +79,10 @@ module pow2 {
       triggerCombat(at:pow2.Point) {
          var zones:IZoneMatch = this.host.getCombatZones(at);
          this.combatZone = zones.map || zones.target;
-         if(this.world && this.world.state && this.world.state.model){
-            // TODO: NO NO NO NO NO.  This is for combat feature components to
-            // guess from.  Have combat feature objects load up an encounter comp
-            // and get the mapCombatZone and combatZone values off of it.
-            this.world.state.model.set('combatZone',this.combatZone);
-         }
          console.log("Combat in zone : " + this.combatZone);
+         this.host.world.randomEncounter(zones);
          this.host.trigger('combat:encounter',this);
+         this.resetBattleCounter();
          this.combatFlag = true;
       }
    }

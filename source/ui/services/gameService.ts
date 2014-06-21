@@ -25,7 +25,6 @@ module pow2.ui {
       tileMap:GameTileMap;
       sprite:GameEntityObject;
       machine:GameStateMachine;
-      model:GameStateModel;
       currentScene:Scene;
       private _renderCanvas:HTMLCanvasElement;
       private _canvasAcquired:boolean = false;
@@ -46,7 +45,6 @@ module pow2.ui {
             state:new GameStateMachine()
          });
          this.machine = this.world.state;
-         this.model = this.world.state.model;
          pow2.registerWorld('pow2',this.world);
       }
 
@@ -91,36 +89,35 @@ module pow2.ui {
             this.tileMap.destroy();
             this.tileMap = null;
          }
-         this.world.scene.once('map:loaded',() => {
+         this.tileMap = new GameTileMap(mapName);
+         this.tileMap.once('loaded',() => {
             // Create a movable character with basic components.
-            var model:HeroModel = player || this.model.party[0];
+            var model:HeroModel = player || this.world.model.party[0];
             this.createPlayer(model,at);
             then && then();
          });
-         this.tileMap = new GameTileMap(mapName);
          this.world.scene.addObject(this.tileMap);
-
       }
 
       newGame(then?:()=>any){
-         this.loadMap("town",then,this.model.party[0]);
+         this.loadMap("town",then,this.world.model.party[0]);
       }
 
       loadGame(data:any, then?:()=>any){
          if(data){
-            this.model.clear();
-            this.model.initData(()=>{
-               this.model.set(this.model.parse(data));
-               var at = this.model.get('playerPosition');
+            //this.world.model.clear();
+            this.world.model.initData(()=>{
+               this.world.model.parse(data);
+               var at = this.world.model.getKeyData('playerPosition');
                at = at ? new Point(at.x,at.y) : undefined;
-               this.loadMap(this.model.get('playerMap') || "town",then,this.model.party[0],at);
+               this.loadMap(this.world.model.getKeyData('playerMap') || "town",then,this.world.model.party[0],at);
             });
          }
          else {
-            if(this.model.party.length === 0){
-               this.model.addHero(HeroModel.create(HeroTypes.Warrior,"Warrior"));
-               this.model.addHero(HeroModel.create(HeroTypes.DeathMage,"Mage"));
-               this.model.addHero(HeroModel.create(HeroTypes.Ranger,"Ranger"));
+            if(this.world.model.party.length === 0){
+               this.world.model.addHero(HeroModel.create(HeroTypes.Warrior,"Warrior"));
+               this.world.model.addHero(HeroModel.create(HeroTypes.Ranger,"Ranger"));
+               this.world.model.addHero(HeroModel.create(HeroTypes.DeathMage,"Mage"));
             }
             this.newGame(then);
          }
