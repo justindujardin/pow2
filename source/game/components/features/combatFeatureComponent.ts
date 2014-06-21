@@ -22,7 +22,26 @@ module pow2 {
       party:PlayerComponent;
       enter(object:GameFeatureObject):boolean {
          this.party = <PlayerComponent>object.findComponent(PlayerComponent);
-         this.setDataHidden(true);
+         // Create new combat state
+         // set current state on game machine manually here.
+//         var coll = <CollisionComponent>machine.player.findComponent(CollisionComponent);
+//         if(coll){
+//            var results = [];
+//            if(coll.collide(machine.player.point.x,machine.player.point.y,GameFeatureObject,results)){
+//               var touched = <GameFeatureObject>_.find(results,(r:GameFeatureObject) => {
+//                  return !!r.findComponent(CombatFeatureComponent);
+//               });
+//               if(touched){
+//                  var combat = <CombatFeatureComponent>touched.findComponent(CombatFeatureComponent);
+//                  if(combat.isEntered){
+//                     machine.combatType = pow2.COMBAT_ENCOUNTERS.FIXED;
+//                     machine.combatant = touched;
+//                     return true;
+//                  }
+//               }
+//            }
+//         }
+//
          return !!this.party;
       }
       exited(object:GameFeatureObject):boolean {
