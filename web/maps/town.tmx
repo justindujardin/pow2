@@ -60,7 +60,7 @@
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="soldier.png"/>
-    <property name="text" value="Be sure to avoid the forests at first, there are some really dangerous creatures lurking amongst the trees."/>
+    <property name="text" value="Be careful exploring heavily forested areas as they tend to contain more monsters than the plains."/>
     <property name="title" value="Guard"/>
     <property name="type" value="sign"/>
    </properties>
@@ -108,6 +108,7 @@
    <properties>
     <property name="gold" value="20"/>
     <property name="icon" value="chest.png"/>
+    <property name="id" value="bryarlake-chest"/>
     <property name="type" value="treasure"/>
    </properties>
   </object>

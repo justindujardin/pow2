@@ -73,7 +73,7 @@ module pow2 {
 
       attack(machine:CombatStateMachine,defender?:GameEntityObject){
          if(this.attacksLeft <= 0){
-            return;
+            return machine.update(this);
          }
          this.attacksLeft -= 1;
          //
