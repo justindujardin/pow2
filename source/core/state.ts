@@ -40,9 +40,17 @@ module pow2 {
       enter(machine:IStateMachine){}
       exit(machine:IStateMachine){}
       update(machine:IStateMachine){
-         _.any(this.transitions,(t:IStateTransition) => {
-            return t.evaluate(machine) && machine.setCurrentState(t.targetState);
-         });
+         var l:number = this.transitions.length;
+         for(var i:number = 0; i < l; i++){
+            var t:IStateTransition = this.transitions[i];
+            if(!t.evaluate(machine)){
+               continue;
+            }
+            if(!machine.setCurrentState(t.targetState)){
+               continue;
+            }
+            return;
+         }
       }
    }
 

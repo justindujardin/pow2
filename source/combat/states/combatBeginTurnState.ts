@@ -34,8 +34,10 @@ module pow2 {
       ];
       attacksLeft:number = 0;
       current:GameEntityObject; // Used to restore scale on exit.
+      machine:CombatStateMachine;
       enter(machine:CombatStateMachine){
          super.enter(machine);
+         this.machine = machine;
          machine.currentDone = false;
          this.attacksLeft = 1;
          machine.current.scale = 1.25;
@@ -45,9 +47,7 @@ module pow2 {
             machine.focus = machine.current;
          }
 
-         machine.current.scene.on('click',(mouse,hits) => {
-            this.attack(machine,hits[0]);
-         });
+         machine.current.scene.on('click',this.sceneClick,this);
          machine.trigger("combat:beginTurn",machine.current);
          if(!machine.isFriendlyTurn()){
             this.attack(machine);
@@ -55,7 +55,14 @@ module pow2 {
       }
       exit(machine:CombatStateMachine){
          this.current.scale = 1;
+         machine.current.scene.off('click',this.sceneClick,this);
          super.exit(machine);
+      }
+
+      sceneClick(mouse,hits) {
+         if(this.machine){
+            this.attack(this.machine,hits[0]);
+         }
       }
       keyPress(machine:CombatStateMachine,keyCode:KeyCode):boolean {
          if(!machine.isFriendlyTurn()){
@@ -73,7 +80,7 @@ module pow2 {
 
       attack(machine:CombatStateMachine,defender?:GameEntityObject){
          if(this.attacksLeft <= 0){
-            return machine.update(this);
+            return;
          }
          this.attacksLeft -= 1;
          //
@@ -114,6 +121,7 @@ module pow2 {
                attackerPlayer.setState("Moving");
             }
             defender.addComponentDictionary(components);
+            machine.currentDone = true;
             machine.trigger("combat:attack",damage,attacker,defender);
             components.damage.once('damage:done',() => {
                if(!!attackerPlayer){
@@ -132,20 +140,13 @@ module pow2 {
             });
          };
 
-         var next = () => {
-            machine.currentDone = true;
-         };
-
          if(!!attackerPlayer){
-            attackerPlayer.attack(attack,() => {
-               next();
-            });
+            attackerPlayer.attack(attack);
          }
          else {
             _.delay(() => {
                attack();
-               next();
-            },150);
+            },1000);
          }
       }
    }

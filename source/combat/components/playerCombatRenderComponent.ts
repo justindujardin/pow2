@@ -71,7 +71,7 @@ module pow2.combat {
       }
 
 
-      attack(attackCb:() => any, cb:() => void) {
+      attack(attackCb:() => any, cb?:() => void) {
          if(!this.animator || this.animating){
             return;
          }
@@ -110,7 +110,7 @@ module pow2.combat {
          ];
       }
 
-      _attack(attackCb:() => any, cb:() => void) {
+      _attack(attackCb:() => any, cb?:() => void) {
          var attackAnimation = this.getAttackAnimation(attackCb);
          var animations:IAnimationConfig[] = _.map(attackAnimation,(anim:IAnimationConfig) => {
             var result = _.extend({},anim);

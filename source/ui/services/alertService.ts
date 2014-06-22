@@ -73,28 +73,11 @@ module pow2.ui {
       destroy() {
          this.game.world.time.removeObject(this);
          this.game.world.erase(this);
-      }
-
-      dismiss() {
-         this.paused = true;
-         this.scope.$apply(() => {
-            this.animate.leave(this.element, () => {
-               if(this._current){
-                  this._current.done && this._current.done(this._current);
-                  this._current = null;
-               }
-               this.scope.powAlert = null;
-               this.paused = false;
-            });
-         });
-         if(this._current){
-            this._current.dismissed = true;
-         }
          if(this.container){
             this.container.off('click',this._dismissBinding);
          }
-         this.container = null;
       }
+
       show(message:string,done?:() => void,duration?:number):IPowAlertObject{
          var obj:IPowAlertObject = {
             message:message,
@@ -105,6 +88,10 @@ module pow2.ui {
       }
 
       queue(config:IPowAlertObject){
+         if(!this.container){
+            this.container = this.document.find(this.containerSearch);
+            this.container.on('click',this._dismissBinding);
+         }
          config.elapsed = 0;
          this._queue.push(config);
          return config;
@@ -132,13 +119,29 @@ module pow2.ui {
          this._current = this._queue.shift();
          this.scope.$apply(() => {
             this.scope.powAlert = this._current;
-            this.container = this.document.find(this.containerSearch);
-            this.container.on('click',this._dismissBinding);
             this.animate.enter(this.element, this.container, null,() => {
                this.paused = false;
             });
          });
       }
+
+      dismiss() {
+         this.paused = true;
+         this.scope.$apply(() => {
+            this.animate.leave(this.element, () => {
+               if(this._current){
+                  this._current.done && this._current.done(this._current);
+                  this._current = null;
+               }
+               this.scope.powAlert = null;
+               this.paused = false;
+            });
+         });
+         if(this._current){
+            this._current.dismissed = true;
+         }
+      }
+
    }
    app.factory('powAlert', [
       '$rootScope',

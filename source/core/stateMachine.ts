@@ -92,6 +92,8 @@ module pow2 {
          this._newState = true;
          this._previousState = this._currentState;
          this._currentState = state;
+         // DEBUG:
+         //console.log("STATE: " + (!!oldState ? oldState.name : oldState) + " -> " + this._currentState.name);
          if(oldState){
             this.trigger("exit",oldState,state);
             oldState.exit(this);
