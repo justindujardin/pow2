@@ -2,10 +2,6 @@
     <div class="status" ng-repeat="member in combat.party" ng-class="getMemberClass(member,combat.focus)">
         <span class="name">{{member.model.attributes.name}}</span>
         <span class="hp">HP {{member.model.attributes.hp}} / {{member.model.attributes.maxHP}}</span>
-        <span class="progress">
-            <div class="progress-bar" ng-style="getProgressStyle(member)">
-                <span class="sr-only">60% Complete</span>
-            </div>
-        </span>
+        <health-bar model="member.model"></health-bar>
     </div>
 </div>

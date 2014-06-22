@@ -3,11 +3,7 @@
     <div class="image" icon-render icon="hero.attributes.icon" frame="7" width="64" height="72"></div>
     <div>Level {{hero.attributes.level}}</div>
     <div>HP {{hero.attributes.hp}} / {{hero.attributes.maxHP}}</div>
-    <div class="progress">
-        <div class="progress-bar" style="width:{{hero.attributes.hp / hero.attributes.maxHP * 100}}%;">
-            <span class="sr-only">60% Complete</span>
-        </div>
-    </div>
+    <health-bar model="hero"></health-bar>
     <div>EXP {{hero.attributes.exp}} / {{hero.attributes.nextLevelExp}}</div>
     <div class="progress">
         <div class="progress-bar" style="width:{{(hero.attributes.exp - hero.attributes.prevLevelExp) / (hero.attributes.nextLevelExp - hero.attributes.prevLevelExp) * 100 }}%;">

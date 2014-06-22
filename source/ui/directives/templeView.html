@@ -19,11 +19,7 @@
                 <div>Level {{hero.attributes.level}}</div>
                 <div>HP {{hero.attributes.hp}} / {{hero.attributes.maxHP}}</div>
             </div>
-            <div class="progress">
-                <div class="progress-bar" style="width:{{hero.attributes.hp / hero.attributes.maxHP * 100}}%;">
-                    <span class="sr-only">60% Complete</span>
-                </div>
-            </div>
+            <health-bar model="hero"></health-bar>
         </div>
     </div>
 </div>
