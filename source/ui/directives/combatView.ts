@@ -22,11 +22,30 @@ module pow2.ui {
          templateUrl: '/source/ui/directives/combatView.html',
          controller:($scope) => {
             $scope.getMemberClass = (member,focused) => {
-               var result = "";
+               var pct:number = Math.round(member.model.attributes.hp / member.model.attributes.maxHP * 100);
+               var result:string[] = [];
                if(focused && focused.model && member.model.get('name') === focused.model.get('name')){
-                  result += "focused";
+                  result.push("focused");
                }
-               return result;
+               if(pct === 0){
+                  result.push('dead');
+               }
+               if(pct < 33){
+                  result.push("critical");
+               }
+               else if(pct < 66){
+                  result.push("hurt");
+               }
+               else {
+                  result.push("fine");
+               }
+               return result.join(' ');
+            };
+            $scope.getProgressStyle = (member) => {
+               var pct:number = Math.ceil(member.model.attributes.hp / member.model.attributes.maxHP * 100);
+               return {
+                  width: pct + '%'
+               };
             };
          },
          link:(scope, element, attrs) => {

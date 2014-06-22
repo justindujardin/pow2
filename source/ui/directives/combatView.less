@@ -31,6 +31,42 @@
       color:@gameGold;
     }
 
+    /* Damage states */
+    &.fine {
+      .progress {
+        background-color: rgba(33, 79, 120,0.1);
+        .progress-bar {
+          background-color: rgb(33, 79, 120);
+        }
+      }
+    }
+    &.hurt {
+      .progress {
+        background-color: rgba(230,200,40,0.1);
+        .progress-bar {
+          background-color: rgba(230,200,40,1);
+        }
+      }
+    }
+    &.critical {
+      .progress {
+        background-color: rgba(183, 0, 5,0.1);
+        .progress-bar {
+          background-color: rgb(183, 0, 5);
+        }
+      }
+
+    }
+    &.dead {
+      .progress {
+        background-color: rgba(255, 255, 255,0.1);
+        .progress-bar {
+          background-color: rgb(255, 255, 255);
+        }
+      }
+
+    }
+
     .name {
       float:left;
       text-align: left;
