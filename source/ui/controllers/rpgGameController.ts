@@ -108,7 +108,6 @@ module pow2.ui {
                   $scope.combat = state.machine;
                   $scope.inCombat = true;
                   state.machine.on('combat:attack',(damage,attacker,defender)=>{
-                     state.machine.paused = true;
                      var msg:string = '';
                      var a = attacker.model.get('name');
                      var b = defender.model.get('name');
@@ -119,24 +118,22 @@ module pow2.ui {
                         msg = a + " attacked " + b + ", and MISSED!";
                      }
                      powAlert.show(msg,() => {
-                        state.machine.paused = false;
+                        state.machine.update(state.machine);
                      });
                   });
                   state.machine.on('combat:victory',(data:CombatVictorySummary) => {
-                     state.machine.paused = true;
                      powAlert.show("Found " + data.gold + " gold!",null,0);
                      powAlert.show("Gained " + data.exp + " experience!",null,0);
                      angular.forEach(data.levels,(hero:HeroModel) => {
                         powAlert.show(hero.get('name') + " reached level " + hero.get('level') + "!",null,0);
                      });
                      powAlert.show("Enemies Defeated!",() => {
-                        state.machine.paused = false;
+                        state.machine.update(state.machine);
                      });
                   });
                   state.machine.on('combat:defeat',(enemies,party) => {
-                     state.machine.paused = true;
                      powAlert.show("Your party was defeated...",() => {
-                        state.machine.paused = false;
+                        state.machine.update(state.machine);
                         game.loadGame(game.getSaveData(),()=>{
                            $scope.$apply(()=>{
                               $scope.gameModel = game.world.model;

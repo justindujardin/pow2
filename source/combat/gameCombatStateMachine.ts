@@ -55,7 +55,7 @@ module pow2 {
 
       isFriendlyTurn():boolean {
          return this.current && !!_.find(this.party,(h:GameEntityObject) => {
-            return h.id === this.current.id;
+            return h._uid === this.current._uid;
          });
       }
 
@@ -116,20 +116,16 @@ module pow2 {
    export class GameCombatState extends State {
       static NAME:string = "combat";
       name:string = GameCombatState.NAME;
-      transitions:IStateTransition[] = [
-         new GameMapTransition()
-      ];
       machine:CombatStateMachine = null;
       parent:GameStateMachine = null;
-      scene:Scene;
       tileMap:GameTileMap;
       finished:boolean = false; // Trigger state to exit when true.
       enter(machine:GameStateMachine){
          super.enter(machine);
          this.parent = machine;
          this.machine = new CombatStateMachine(machine);
-         this.scene = new Scene();
-         machine.world.mark(this.scene);
+         var combatScene = machine.world.combatScene = new Scene();
+         machine.world.mark(combatScene);
 
          // Build party
          _.each(machine.model.party,(hero:HeroModel,index:number) => {
@@ -157,7 +153,7 @@ module pow2 {
             }
             heroEntity.icon = hero.get('icon');
             this.machine.party.push(heroEntity);
-            this.scene.addObject(heroEntity);
+            combatScene.addObject(heroEntity);
          });
 
          this.tileMap = new pow2.GameTileMap("combat");
@@ -170,7 +166,7 @@ module pow2 {
             });
             this.tileMap.dirtyLayers = true;
             this.tileMap.addComponent(new pow2.CombatCameraComponent);
-            this.scene.addObject(this.tileMap);
+            combatScene.addObject(this.tileMap);
 
             // Position Party/Enemies
 
@@ -187,7 +183,7 @@ module pow2 {
                   var nme = new pow2.GameEntityObject({
                      model: nmeModel
                   });
-                  this.scene.addObject(nme);
+                  combatScene.addObject(nme);
                   nme.addComponent(new pow2.SpriteComponent({
                      name:"enemy",
                      icon:nme.model.get('icon')
@@ -207,6 +203,7 @@ module pow2 {
                      }
                   });
                   machine.trigger('combat:begin',this);
+                  this.machine.update(this);
                }
                else {
                   // TODO: This is an error, I think.  Player entered combat with no valid enemies.
@@ -219,51 +216,16 @@ module pow2 {
       }
       exit(machine:GameStateMachine){
          machine.trigger('combat:end',this);
-         this.scene.destroy();
-         machine.update(this);
+         var world:GameWorld = this.parent.world;
+         if(world && world.combatScene){
+            world.combatScene.destroy();
+            world.combatScene = null;
+         }
          this.tileMap.destroy();
-         this.scene.destroy();
+         machine.update(this);
          this.finished = false;
          this.machine = null;
          this.parent = null;
-         if(machine.combatant){
-            machine.combatant.destroy();
-         }
-      }
-      update(machine:IStateMachine){
-         if(this.machine){
-            this.machine.update(machine);
-         }
-      }
-   }
-   export class GameCombatTransition extends StateTransition {
-      targetState:string = GameCombatState.NAME;
-      evaluate(machine:GameStateMachine):boolean {
-         if(!super.evaluate(machine) || !machine.player || !machine.player.tileMap){
-            return false;
-         }
-         if(machine.encounter && machine.encounterInfo){
-            machine.combatType = pow2.COMBAT_ENCOUNTERS.RANDOM;
-            return true;
-         }
-         var coll = <CollisionComponent>machine.player.findComponent(CollisionComponent);
-         if(coll){
-            var results = [];
-            if(coll.collide(machine.player.point.x,machine.player.point.y,GameFeatureObject,results)){
-               var touched = <GameFeatureObject>_.find(results,(r:GameFeatureObject) => {
-                  return !!r.findComponent(CombatFeatureComponent);
-               });
-               if(touched){
-                  var combat = <CombatFeatureComponent>touched.findComponent(CombatFeatureComponent);
-                  if(combat.isEntered){
-                     machine.combatType = pow2.COMBAT_ENCOUNTERS.FIXED;
-                     machine.combatant = touched;
-                     return true;
-                  }
-               }
-            }
-         }
-         return false;
       }
    }
 }

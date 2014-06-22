@@ -56,7 +56,7 @@ module pow2.ui {
             game.machine.on('combat:begin',(state:GameCombatState) => {
                // Scope apply?
                // Transition canvas views, and such
-               state.scene.addView(tileView);
+               game.world.combatScene.addView(tileView);
                game.tileMap.scene.paused = true;
 
                tileView.setTileMap(state.tileMap);
@@ -74,7 +74,7 @@ module pow2.ui {
 
             });
             game.machine.on('combat:end',(state:GameCombatState) => {
-               state.scene.removeView(tileView);
+               game.world.combatScene.removeView(tileView);
                game.tileMap.scene.paused = false;
                state.machine.off('combat:beginTurn',null,this);
 

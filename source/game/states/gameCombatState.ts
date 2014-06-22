@@ -24,7 +24,7 @@ module pow2 {
       enter(machine:StateMachine){
          super.enter(machine);
          (<any>machine).keyListener = (e) => {
-            if(machine.paused === false && this.keyPress(machine,e.keyCode) === false){
+            if(this.keyPress(machine,e.keyCode) === false){
                e.preventDefault();
                return false;
             }

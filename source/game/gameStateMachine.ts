@@ -28,22 +28,18 @@ module pow2 {
    export class GameDefaultState extends State {
       static NAME:string = "default";
       name:string = GameDefaultState.NAME;
-      transitions:IStateTransition[] = [
-         new GameMapTransition()
-      ];
    }
 
    // -------------------------------------------------------------------------
    // TODO: This does not need to be time ticked.   Manual evaluation and state
    // changing would be more appropriate.
    export class GameStateMachine extends StateMachine {
+      world:GameWorld;
       model:GameStateModel = null;
       defaultState:string = GameDefaultState.NAME;
       player:TileObject = null;
       encounterInfo:IZoneMatch = null;
       encounter:IGameEncounter = null;
-      combatant:TileObject = null;
-      combatType:string = '';
       states:IState[] = [
          new GameDefaultState(),
          new GameMapState(''),
@@ -57,7 +53,7 @@ module pow2 {
 
       setCurrentState(newState:any):boolean{
          if(super.setCurrentState(newState)){
-            this.update(this.getCurrentState());
+            this.update(this);
             return true;
          }
          return false;

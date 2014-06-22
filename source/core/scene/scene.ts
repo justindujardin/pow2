@@ -24,8 +24,9 @@
 module pow2 {
 
    export class Scene extends Events implements IProcessObject, IWorldObject {
-      id:number = _.uniqueId();
-      name:string = _.uniqueId('scene');
+      id:string;
+      _uid:string = _.uniqueId('scene');
+      name:string;
       db:SceneSpatialDatabase = new SceneSpatialDatabase;
       options:any = {};
       private _objects:SceneObject[] = [];
@@ -146,7 +147,7 @@ module pow2 {
       }
 
       findIt(property:string,object:any){
-         return _.where(this[property],{id:object.id});
+         return _.where(this[property],{_uid:object._uid});
       }
 
 

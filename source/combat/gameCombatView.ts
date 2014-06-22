@@ -20,6 +20,7 @@
 
 module pow2{
    export class GameCombatView extends TileMapView {
+      world:GameWorld;
       objectRenderer:TileObjectRenderer = new TileObjectRenderer;
       mouse:NamedMouseElement = null;
 
@@ -44,8 +45,8 @@ module pow2{
          //console.log("clicked at " + this.mouse.world);
          var hits = [];
          Input.mouseOnView(e.originalEvent,this.mouse.view,this.mouse);
-         if(this.scene.db.queryPoint(this.mouse.world,GameEntityObject,hits)) {
-            this.scene.trigger('click',this.mouse,hits);
+         if(this.world.combatScene.db.queryPoint(this.mouse.world,GameEntityObject,hits)) {
+            this.world.combatScene.trigger('click',this.mouse,hits);
          }
       }
       /*

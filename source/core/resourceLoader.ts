@@ -39,11 +39,11 @@ module pow2 {
          '':AudioResource
       };
       private _doneQueue = [];
-      id:number;
+      _uid:string;
       world:IWorld = null;
 
       constructor(){
-         this.id = _.uniqueId();
+         this._uid = _.uniqueId('res');
       }
 
       static get():pow2.ResourceLoader {

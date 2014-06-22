@@ -23,7 +23,6 @@ module pow2 {
    // State Machine Interfaces
    // -------------------------------------------------------------------------
    export interface IStateMachine extends IEvents {
-      paused:boolean;
       update(data:any);
       addState(state:IState);
       addStates(states:IState[]);
@@ -44,7 +43,6 @@ module pow2 {
       private _currentState:IState = null;
       private _previousState:IState = null;
       private _newState:boolean = false;
-      paused:boolean = false;
 
       world:IWorld;
       onAddToWorld(world){}
@@ -86,6 +84,11 @@ module pow2 {
             console.error("STATE NOT FOUND: " + newState);
             return false;
          }
+         // Already in the desired state.
+         if(this._currentState && state.name === this._currentState.name){
+            console.warn("Attempting to set current state to already active state");
+            return true;
+         }
          this._newState = true;
          this._previousState = this._currentState;
          this._currentState = state;
@@ -112,6 +115,7 @@ module pow2 {
     * A state machine that updates with every game tick.
     */
    export class TickedStateMachine extends StateMachine {
+      paused:boolean = false;
       // IWorldObject interface
       world:IWorld;
       onAddToWorld(world){

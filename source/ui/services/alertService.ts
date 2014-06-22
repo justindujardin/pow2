@@ -42,7 +42,7 @@ module pow2.ui {
     */
    export class PowAlertService extends pow2.Events implements pow2.IWorldObject, pow2.IProcessObject, IPowAlertService {
       world:pow2.GameWorld;
-      id:number = _.uniqueId();
+      _uid:string = _.uniqueId('alert');
       paused:boolean = false;
       public containerSearch:string = '.ui-container';
 
@@ -98,7 +98,7 @@ module pow2.ui {
       show(message:string,done?:() => void,duration?:number):IPowAlertObject{
          var obj:IPowAlertObject = {
             message:message,
-            duration: typeof duration === 'undefined' ? 4000 : duration,
+            duration: typeof duration === 'undefined' ? 1000 : duration,
             done:done
          };
          return this.queue(obj);

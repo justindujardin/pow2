@@ -56,7 +56,8 @@ module pow2 {
     * reason, all SceneComponents should derive this class.
     */
    export class SceneComponent extends Events implements ISceneComponent {
-      id:string = _.uniqueId('sc');
+      id:string;
+      _uid:string = _.uniqueId('sc');
       scene: Scene;
       host:SceneObject;
       constructor(public name:string = _.uniqueId('comp')){

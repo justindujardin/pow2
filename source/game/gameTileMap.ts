@@ -130,7 +130,7 @@ module pow2 {
          return true;
       }
       createFeatureObject(tiledObject:tiled.ITiledObject):TileObject {
-         var feature = tiledObject.properties;
+         var feature = typeof tiledObject.properties !== 'undefined' ? tiledObject.properties : tiledObject;
          var options = _.extend({}, feature, {
             tileMap: this,
             x: Math.round(tiledObject.x / this.map.tilewidth),

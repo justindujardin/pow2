@@ -27,10 +27,10 @@ module pow2 {
          }
          var zone:IZoneMatch = this.host.tileMap.getCombatZones(this.party.host.point);
          this.host.world.fixedEncounter(zone,this.host.id);
+         this.setDataHidden(true);
          return true;
       }
       exited(object:GameFeatureObject):boolean {
-         this.setDataHidden(true);
          return super.exited(object);
       }
    }

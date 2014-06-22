@@ -39,6 +39,7 @@ module pow2 {
                machine.current = null;
             }
          }
+         machine.update(this);
       }
    }
 

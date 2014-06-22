@@ -110,7 +110,7 @@ module pow2 {
       mouseUnhook(view:SceneView);
       mouseUnhook(nameOrView:any){
          this._mouseElements = _.filter(this._mouseElements,(hook:NamedMouseElement) => {
-            return hook.name === nameOrView || hook.view.id === nameOrView.id;
+            return hook.name === nameOrView || hook.view._uid === nameOrView._uid;
          });
       }
 
@@ -118,7 +118,7 @@ module pow2 {
       getMouseHook(view:SceneView):NamedMouseElement;
       getMouseHook(nameOrView:any):NamedMouseElement{
          return <NamedMouseElement>_.find(this._mouseElements,(hook:NamedMouseElement) => {
-            return hook.name === nameOrView || hook.view.id === nameOrView.id;
+            return hook.name === nameOrView || hook.view._uid === nameOrView._uid;
          });
       }
 
