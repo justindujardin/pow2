@@ -13,8 +13,8 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-/// <reference path="../index.ts"/>
-/// <reference path="../../../lib/pow2.game.d.ts"/>
+/// <reference path="../../index.ts"/>
+/// <reference path="../../../../lib/pow2.game.d.ts"/>
 module pow2.ui {
 // IconRender directive
 // ----------------------------------------------------------------------------
