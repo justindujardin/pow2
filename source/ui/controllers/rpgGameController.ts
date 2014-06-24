@@ -51,19 +51,25 @@ module pow2.ui {
                $scope.loadingMessage = "Loading the things...";
             });
 
-            // TODO: Resets state every page load.  Remove when persistence is desired.
-            //resetGame();
-            game.loadGame(game.getSaveData(),()=>{
-               $scope.$apply(()=>{
-                  $scope.gameModel = game.world.model;
-                  $scope.party = game.world.model.party;
-                  $scope.inventory = game.world.model.inventory;
-                  $scope.player = game.world.model.party[0];
-                  $scope.loading = false;
-                  $scope.loaded = true;
-
+            var saveData:any = game.getSaveData();
+            if(true || saveData){
+               game.loadGame(game.getSaveData(),()=>{
+                  $scope.$apply(()=>{
+                     $scope.gameModel = game.world.model;
+                     $scope.party = game.world.model.party;
+                     $scope.inventory = game.world.model.inventory;
+                     $scope.player = game.world.model.party[0];
+                     $scope.loading = false;
+                     $scope.loaded = true;
+                  });
                });
-            });
+            }
+            else {
+               $scope.$apply(()=>{
+                  $scope.menu = true;
+                  $scope.loading = false;
+               });
+            }
          });
 
          // Dialog bubbles

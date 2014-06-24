@@ -1,0 +1,18 @@
+main-menu {
+  ul {
+    margin:0;
+    padding:2em;
+    list-style-type: none;
+    position: relative;
+    text-align: center;
+    li {
+      list-style-type: none;
+      position:absolute;
+      left:-9000px;
+      &.active {
+        left:0;
+        right:0;
+      }
+    }
+  }
+}

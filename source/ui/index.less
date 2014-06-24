@@ -41,6 +41,7 @@
 @import "./directives/combatView";
 @import "./directives/gameMenu";
 @import "./directives/bits/healthBar";
+@import "./directives/pages/mainMenu";
 
 @pixelFont:'GraphicPixel', 'AdvoCut',sans-serif;
 @pixelFontAlt:'AdvoCut','GraphicPixel', sans-serif;
@@ -97,6 +98,31 @@ body {
 
 }
 
+  .hero-container {
+    margin-right: auto;
+    margin-left: auto;
+
+    > * {
+      font-family: @pixelFont;
+      text-align: center;
+      color:#fff;
+    }
+
+    > h1 {
+      margin-top:10px;
+      margin-bottom:25px;
+      font-size: 8em;
+      .extrude-stroke-text(4px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+
+    }
+    p {
+      font-size:1.2em;
+      .inset-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+      color:@contrastFontColor;
+    }
+  }
+
+
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
 .loading {
@@ -116,39 +142,8 @@ body {
     vertical-align: middle;
     text-align:center;
   }
-  .loading-container {
-    margin-right: auto;
-    margin-left: auto;
-
-    > * {
-      font-family: @pixelFont;
-      text-align: center;
-      color:#fff;
-    }
-
-    > h1 {
-      margin-top:10px;
-      margin-bottom:25px;
-      font-size: 16em;
-      .extrude-stroke-text(4px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
-
-    }
-    p {
-      font-size: 1.8em;
-      .inset-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
-      color:@contrastFontColor;
-    }
-  }
 }
 
-.loading .loading-wrapper .loading-wrapper-inner .loading-container {
-  h1 {
-    font-size: 8em;
-  }
-  p {
-    font-size:1.2em;
-  }
-}
 
 canvas {
   image-rendering: -moz-crisp-edges;         /* Firefox */
@@ -337,7 +332,7 @@ canvas {
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: @screen-sm-min) {
-  .loading .loading-wrapper .loading-wrapper-inner .loading-container {
+  .hero-container {
     h1 {
       font-size: 12em;
     }
@@ -381,7 +376,7 @@ canvas {
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: @screen-lg-min) {
-  .loading .loading-wrapper .loading-wrapper-inner .loading-container {
+  .hero-container {
     h1 {
       font-size: 16em;
     }

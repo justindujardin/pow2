@@ -32,13 +32,17 @@
 <div class="loading fade pt-page-scaleUp" ng-show="loading">
     <div class="loading-wrapper">
         <div class="loading-wrapper-inner">
-            <div class="loading-container">
+            <div class="hero-container">
                 <h1 ng-bind="loadingTitle">Pow2!</h1>
                 <p ng-bind="loadingMessage">Waking up...</p>
             </div>
         </div>
     </div>
 </div>
+
+
+<main-menu class="hero-container fade ng-hide" ng-show="menu"></main-menu>
+
 
 <div class="game-container fade" ng-if="loaded" id="alertContainer">
     <canvas class="game-view map fade" width="960" height="640" game-canvas ng-hide="inCombat">
