@@ -73,6 +73,7 @@
   <object name="impTalisman.png" type="treasure" x="96" y="32" width="16" height="16">
    <properties>
     <property name="icon" value="chest.png"/>
+    <property name="id" value="sewers-treasure-2"/>
     <property name="item" value="apprentice-hat"/>
     <property name="type" value="treasure"/>
    </properties>
@@ -91,6 +92,7 @@
   <object name="shield treasure" type="treasure" x="288" y="528" width="16" height="16">
    <properties>
     <property name="icon" value="chest.png"/>
+    <property name="id" value="sewers-treasure1"/>
     <property name="item" value="leather-shield"/>
     <property name="type" value="treasure"/>
    </properties>
