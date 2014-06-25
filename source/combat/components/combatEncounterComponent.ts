@@ -25,7 +25,7 @@ module pow2 {
     */
    export class CombatEncounterComponent extends SceneComponent {
       host:GameTileMap;
-      battleCounter:number = 256;
+      battleCounter:number;
       combatFlag:boolean = false;
       combatZone:string = 'default';
       isDangerous:boolean = false;
@@ -35,7 +35,10 @@ module pow2 {
          if(!super.connectComponent() || !(this.host instanceof GameTileMap)){
             return false;
          }
-         this.resetBattleCounter();
+         this.battleCounter = this.world.model.getKeyData('battleCounter');
+         if(typeof this.battleCounter === 'undefined'){
+            this.resetBattleCounter();
+         }
          return true;
       }
       disconnectComponent():boolean {
@@ -66,13 +69,13 @@ module pow2 {
          if(this.battleCounter <= 0){
             this.triggerCombat(to);
          }
-         this.battleCounter -= dangerValue;
+         this._setCounter(this.battleCounter - dangerValue);
          return false;
       }
       resetBattleCounter() {
          var max:number = 255;
          var min:number = 64;
-         this.battleCounter = Math.floor(Math.random() * (max - min + 1)) + min;
+         this._setCounter(Math.floor(Math.random() * (max - min + 1)) + min);
          this.combatFlag = false;
       }
 
@@ -84,6 +87,11 @@ module pow2 {
          this.host.trigger('combat:encounter',this);
          this.resetBattleCounter();
          this.combatFlag = true;
+      }
+
+      private _setCounter(value:number){
+         this.battleCounter = value;
+         this.world.model.setKeyData('battleCounter',this.battleCounter);
       }
    }
 }
