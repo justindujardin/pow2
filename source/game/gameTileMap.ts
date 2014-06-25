@@ -146,6 +146,9 @@ module pow2 {
                break;
             case 'treasure':
                componentType = TreasureFeatureComponent;
+               if(typeof options.id === 'undefined'){
+                  console.error("Treasure must have a given id so it may be hidden");
+               }
                break;
             case 'ship':
                componentType = ShipFeatureComponent;
@@ -155,6 +158,9 @@ module pow2 {
                break;
             case 'encounter':
                componentType = CombatFeatureComponent;
+               if(typeof options.id === 'undefined'){
+                  console.error("Fixed encounters must have a given id so they may be hidden");
+               }
                break;
             case 'temple':
                componentType = TempleFeatureComponent;

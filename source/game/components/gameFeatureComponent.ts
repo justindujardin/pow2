@@ -39,7 +39,7 @@ module pow2 {
        * @param hidden Whether to hide or unhide the object.
        */
       setDataHidden(hidden:boolean=true) {
-         if(this.host && this.host.world && this.host.world.model){
+         if(this.host && this.host.world && this.host.world.model && this.host.id){
             this.host.world.model.setKeyData('' + this.host.id,{
                hidden:hidden
             });
@@ -52,7 +52,7 @@ module pow2 {
        * to `hideFeature`.
        */
       getDataHidden():boolean{
-         if(this.host && this.host.world && this.host.world.model){
+         if(this.host && this.host.world && this.host.world.model && this.host.id){
             var data:any = this.host.world.model.getKeyData('' + this.host.id);
             if(data && data.hidden){
                return true;
