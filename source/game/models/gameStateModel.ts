@@ -22,7 +22,7 @@
 /// <reference path="./itemModel.ts" />
 module pow2 {
 
-   var _gameData:pow2.GoogleSpreadsheetResource = null;
+   var _gameData:pow2.GameDataResource = null;
    export class GameStateModel extends pow2.Events {
       party:HeroModel[]; // The player's party
       inventory:ItemModel[]; // The inventory of items owned by the player.
@@ -44,19 +44,19 @@ module pow2 {
             inventory:[]
          },options||{});
       }
-      initData(then?:(data:GoogleSpreadsheetResource)=>any){
+      initData(then?:(data:GameDataResource)=>any){
          GameStateModel.getDataSource(then);
       }
       /**
        * Get the game data sheets from google and callback when they're loaded.
        * @param then The function to call when spreadsheet data has been fetched
        */
-      static getDataSource(then?:(data:GoogleSpreadsheetResource)=>any) {
+      static getDataSource(then?:(data:GameDataResource)=>any) {
          if(_gameData){
             then && then(_gameData);
          }
          else {
-            pow2.ResourceLoader.get().loadAsType(pow2.SPREADSHEET_ID,pow2.GoogleSpreadsheetResource,(resource:pow2.GoogleSpreadsheetResource) => {
+            pow2.ResourceLoader.get().loadAsType(pow2.SPREADSHEET_ID,pow2.GameDataResource,(resource:pow2.GameDataResource) => {
                _gameData = resource;
                then && then(resource);
             });

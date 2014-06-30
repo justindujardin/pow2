@@ -171,7 +171,7 @@ module pow2 {
             // Position Party/Enemies
 
             // Get enemies data from spreadsheet
-            GameStateModel.getDataSource((enemiesSpreadsheet:pow2.GoogleSpreadsheetResource) => {
+            GameStateModel.getDataSource((enemiesSpreadsheet:pow2.GameDataResource) => {
                var enemyList:any[] = enemiesSpreadsheet.getSheetData("enemies");
                var enemiesLength:number = machine.encounter.enemies.length;
                for(var i:number = 0; i < enemiesLength; i++){

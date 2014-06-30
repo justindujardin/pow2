@@ -1,4 +1,4 @@
-/*
+/**
  Copyright (C) 2013 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");

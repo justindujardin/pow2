@@ -212,7 +212,7 @@ module pow2 {
             return {};
          }
 
-         GameStateModel.getDataSource((spreadsheet:GoogleSpreadsheetResource)=>{
+         GameStateModel.getDataSource((spreadsheet:GameDataResource)=>{
             _.each(HeroModel.ARMOR_TYPES,(type:string) => {
                if(data[type]){
                   var piece = _.where(spreadsheet.getSheetData('armor'),{name:data[type]})[0];

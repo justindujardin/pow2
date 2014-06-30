@@ -16,6 +16,7 @@
 
 /// <reference path="../../lib/pow2.d.ts" />
 /// <reference path="./gameStateMachine.ts" />
+/// <reference path="./resources/gameData.ts" />
 
 module pow2 {
    export class GameWorld extends World {
@@ -31,7 +32,7 @@ module pow2 {
 
 
       randomEncounter(zone:IZoneMatch){
-         GameStateModel.getDataSource((gsr:GoogleSpreadsheetResource)=>{
+         GameStateModel.getDataSource((gsr:GameDataResource)=>{
             var encounters:IGameEncounter[] = _.filter(gsr.getSheetData("encounters"),(enc:any)=>{
                return _.indexOf(enc.zones,zone.map) !== -1 || _.indexOf(enc.zones,zone.target) !== -1;
             });
@@ -45,7 +46,7 @@ module pow2 {
          });
       }
       fixedEncounter(zone:IZoneMatch,encounterId:string){
-         GameStateModel.getDataSource((gsr:GoogleSpreadsheetResource)=>{
+         GameStateModel.getDataSource((gsr:GameDataResource)=>{
             var encounters = <IGameEncounter[]>_.where(gsr.getSheetData("encounters"),{
                id:encounterId
             });

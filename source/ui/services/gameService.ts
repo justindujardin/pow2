@@ -32,6 +32,12 @@ module pow2.ui {
       constructor(
          public compile:ng.ICompileService,
          public scope:ng.IRootScopeService){
+
+         if(this.qs().hasOwnProperty('dev')){
+            console.log("Clearing gameData cache and loading live from Google Spreadsheets");
+            GameDataResource.clearCache();
+         }
+
          this._renderCanvas = <HTMLCanvasElement>compile('<canvas style="position:absolute;left:-9000px;top:-9000px;" width="64" height="64"></canvas>')(scope)[0];
 
          this.loader = new ResourceLoader();
@@ -57,6 +63,8 @@ module pow2.ui {
       saveGame(data:any){
          localStorage.setItem(this._stateKey,data);
       }
+
+
 
       createPlayer(from:HeroModel,at?:pow2.Point){
          if(!from){
@@ -148,6 +156,29 @@ module pow2.ui {
       releaseRenderContext():string{
          this._canvasAcquired = false;
          return this._renderCanvas.toDataURL();
+      }
+
+      /**
+       * Extract the browser location query params
+       * http://stackoverflow.com/questions/9241789/how-to-get-url-params-with-javascript
+       */
+      qs():any {
+         if(window.location.search){
+            var query_string = {};
+            (function () {
+               var e,
+                  a = /\+/g,  // Regex for replacing addition symbol with a space
+                  r = /([^&=]+)=?([^&]*)/g,
+                  d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+                  q = window.location.search.substring(1);
+
+               while ((e = r.exec(q))){
+                  query_string[d(e[1])] = d(e[2]);
+               }
+            })();
+            return query_string;
+         }
+         return {};
       }
    }
    app.factory('game', [

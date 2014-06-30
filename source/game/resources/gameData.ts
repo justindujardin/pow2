@@ -14,28 +14,52 @@
  limitations under the License.
  */
 
-/// <reference path="../resource.ts"/>
+/// <reference path="../../../lib/pow2.d.ts" />
 
 module pow2 {
    declare var Tabletop:any;
    /**
-    * Use jQuery to load a published google spreadsheet as JSON.
+    * Use TableTop to load a published google spreadsheet.
     */
-   export class GoogleSpreadsheetResource extends Resource {
+   export class GameDataResource extends Resource {
+
+      static DATA_KEY:string = '__db';
       load() {
+         // Attempt to load db from save game cache to avoid hitting
+         // google spreadsheets API on ever page load.
+         try{
+            this.data = JSON.parse(this.getCache());
+            if(this.data){
+               _.defer(()=>{ this.ready(); });
+            }
+         }
+         catch(e){
+         }
          // TODO: ERROR Condition
          Tabletop.init( {
             key: this.url,
             callback: (data, tabletop) => {
-               this.data = this.transformTypes(data);
+               data = this.data = this.transformTypes(data);
+               this.setCache(JSON.stringify(data));
                this.ready();
             }
          });
       }
 
+      getCache():any {
+         return localStorage.getItem(GameDataResource.DATA_KEY);
+      }
+      static clearCache(){
+         localStorage.removeItem(GameDataResource.DATA_KEY);
+      }
+      setCache(data:any){
+         localStorage.setItem(GameDataResource.DATA_KEY,data);
+      }
+
       // TODO: Do we need to match - and floating point?
       static NUMBER_MATCHER:RegExp = /^-?\d+$/;
 
+      // TODO: More sophisticated deserializing of types, removing hardcoded keys.
       transformTypes(data:any):any {
          var results:any = {};
          _.each(data,(dataValue:any,dataKey)=>{
@@ -49,7 +73,7 @@ module pow2 {
                   }
                   var value = entry[key];
                   // number values
-                  if(value.match(pow2.GoogleSpreadsheetResource.NUMBER_MATCHER)){
+                  if(value.match(pow2.GameDataResource.NUMBER_MATCHER)){
                      entry[key] = parseInt(value);
                   }
                   // pipe delimited array values
@@ -60,7 +84,6 @@ module pow2 {
                      else {
                         entry[key] = value.split('|');
                      }
-
                   }
                }
             }
