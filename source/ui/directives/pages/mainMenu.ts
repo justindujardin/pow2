@@ -21,7 +21,7 @@ module pow2.ui {
       static $inject:string[] = ['$scope'];
       constructor(public $scope:any){
          this.$scope.currentClass = "warrior";
-         GameStateModel.getDataSource((res:pow2.GoogleSpreadsheetResource)=> {
+         GameStateModel.getDataSource((res:pow2.GameDataResource)=> {
             var data = res.getSheetData('classes');
             this.$scope.$apply(()=>{
                this.$scope.classes = data;
@@ -38,6 +38,10 @@ module pow2.ui {
          return classData.id === this.$scope.currentClass ? "active": "";
       }
 
+      previousClass(){
+         var newClass = this.$scope.currentClass === "mage" ? "warrior" : "mage";
+         this.$scope.currentClass = newClass;
+      }
       nextClass(){
          var newClass = this.$scope.currentClass === "warrior" ? "mage" : "warrior";
          this.$scope.currentClass = newClass;
