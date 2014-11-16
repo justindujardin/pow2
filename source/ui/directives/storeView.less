@@ -1,59 +1,67 @@
-// Stores
-// --------------------------------------------------------------------------
-.title {
-  text-align: center;
-  margin-bottom: 20px;
-  .ebp {
-    padding:0 25px;
-  }
-}
+store-view {
 
-.store {
-  text-align:center;
-  .name {
-    h1 {
-      margin:10px;
-      font-size: 24px;
-    }
+  position: fixed;
+  top: 0;
+  bottom:0;
+  left:0;
+  width:320px;
+  .ebp;
+  padding:0 25px;
+  pointer-events:auto;
+
+  // Stores
+  // --------------------------------------------------------------------------
+  .title {
+    margin-bottom: 20px;
   }
-  .inventory {
+
+  .store {
     text-align:center;
-    padding:0;
-    .item-price {
-      color: @gameGold;
-      padding-left:10px;
+    .name {
+      h1 {
+        margin:10px;
+        font-size: 24px;
+      }
     }
-  }
-  ul {
-    padding:0;
-    margin:0;
-    text-align: left;
-    list-style-type: none;
-    max-width: 100%;
-    li {
-      cursor: pointer;
-      border:1px solid transparent;
-      padding:5px;
-      font-size: 16px;
-      margin-left:0;
-      margin-right:0;
-      .item-name {
-        display: inline-block;
-        min-width: 150px;
-        max-width: 160px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+    .inventory {
+      text-align:center;
+      padding:0;
+      .item-price {
+        color: @gameGold;
+        padding-left:10px;
       }
-
-      .icon {
-        line-height: 28px;
-        img {
-          width:32px;
+    }
+    ul {
+      padding:0;
+      margin:0;
+      text-align: left;
+      list-style-type: none;
+      max-width: 100%;
+      li {
+        cursor: pointer;
+        border:1px solid transparent;
+        padding:5px;
+        font-size: 16px;
+        margin-left:0;
+        margin-right:0;
+        .item-name {
+          display: inline-block;
+          min-width: 150px;
+          max-width: 160px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
-      }
-      &:hover {
-        * {
-          color:#0FF !important;
+
+        .icon {
+          line-height: 28px;
+          img {
+            width:32px;
+          }
+        }
+        &:hover {
+          * {
+            color:#0FF !important;
+          }
         }
       }
     }
@@ -87,6 +95,7 @@
     }
   }
 }
+
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: @screen-md-min) {
