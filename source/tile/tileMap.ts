@@ -114,12 +114,15 @@ module pow2 {
       }
 
       getTerrain(layer:string, x:number, y:number) {
-         var terrain:tiled.ITiledLayer = this.getLayer(layer);
-         if (!this.map || !terrain || !this.bounds.pointInRect(x, y)) {
+         return this.getTileData(this.getLayer(layer),x,y);
+      }
+
+      getTileData(layer:tiled.ITiledLayer, x:number, y:number) {
+         if (!this.map || !layer || !layer.data || !this.bounds.pointInRect(x, y)) {
             return null;
          }
          var terrainIndex = y * this.map.width + x;
-         var tileIndex = terrain.data[terrainIndex];
+         var tileIndex = layer.data[terrainIndex];
          return this.tiles[tileIndex];
       }
 
