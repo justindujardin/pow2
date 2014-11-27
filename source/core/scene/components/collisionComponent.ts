@@ -19,7 +19,7 @@
 
 module pow2 {
    export class CollisionComponent extends SceneComponent {
-      collideBox: pow2.Rect = new pow2.Rect(0, 0, 0, 0);
+      collideBox: pow2.Rect = new pow2.Rect(0, 0, 1, 1);
       resultsArray: any[] = [];
 
       connectComponent():boolean {

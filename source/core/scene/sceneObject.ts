@@ -71,7 +71,7 @@ module pow2 {
             o.disconnectComponent();
          });
          if (this.scene) {
-            this.scene.removeObject(this,true);
+            this.scene.removeObject(this,false);
          }
       }
 

@@ -59,22 +59,12 @@ module pow2 {
             if(o.enabled === false){
                continue;
             }
-            if (o.point && pow2.SceneSpatialDatabase.pointInRect(rect, o.point)) {
+            if (o.point && rect.pointInRect(o.point)) {
                results.push(o);
                foundAny = true;
             }
          }
          return foundAny;
-      }
-
-      /**
-       * Determine if the given rect contains the given point.
-       */
-      static pointInRect(rect: pow2.Rect, point: pow2.Point):boolean {
-         if (point.x < rect.point.x || point.y < rect.point.y) {
-            return false;
-         }
-         return !(point.x >= rect.point.x + rect.extent.x || point.y >= rect.point.y + rect.extent.y);
       }
    }
 }
