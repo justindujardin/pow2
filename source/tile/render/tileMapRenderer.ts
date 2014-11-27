@@ -68,7 +68,7 @@ module pow2 {
                               var gid:number = object.getTileGid(l.name,x, y);
                               var meta:pow2.tiled.ITileInstanceMeta = object.getTileMeta(gid);
                               if (meta) {
-                                 var image = meta.image;
+                                 var image:HTMLImageElement = (<any>meta.image).data;
                                  // Keep this inline to avoid more function calls.
                                  var dstH, dstW, dstX, dstY, srcH, srcW, srcX, srcY;
                                  if (!image || !image.complete) {
