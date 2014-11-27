@@ -14,10 +14,8 @@
  limitations under the License.
  */
 
-/// <reference path="../../types/underscore/underscore.d.ts" />
+/// <reference path="./api.ts"/>
 /// <reference path="./state.ts" />
-/// <reference path="./world.ts" />
-/// <reference path="./events.ts" />
 module pow2 {
 
    // State Machine Interfaces

@@ -14,7 +14,6 @@
  limitations under the License.
  */
 
-/// <reference path="../../../types/underscore/underscore.d.ts" />
 /// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../../tile/tileObject.ts" />
 module pow2 {

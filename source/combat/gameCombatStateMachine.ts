@@ -15,20 +15,6 @@
  */
 
 /// <reference path="../game/objects/gameEntityObject.ts" />
-/// <reference path="../game/components/animatedComponent.ts" />
-/// <reference path="../game/components/features/combatFeatureComponent.ts" />
-/// <reference path="../tile/components/animatedSpriteComponent.ts" />
-/// <reference path="../game/gameStateMachine.ts" />
-/// <reference path="../game/states/gameMapState.ts" />
-/// <reference path="./states/combatBeginTurnState.ts" />
-/// <reference path="./states/combatEndTurnState.ts" />
-/// <reference path="./states/combatVictoryState.ts" />
-/// <reference path="./states/combatDefeatState.ts" />
-/// <reference path="./states/combatStartState.ts" />
-/// <reference path="./components/combatCameraComponent.ts" />
-/// <reference path="../game/models/entityModel.ts" />
-/// <reference path="../game/models/creatureModel.ts" />
-/// <reference path="./combat.ts" />
 
 module pow2 {
    // Combat State Machine

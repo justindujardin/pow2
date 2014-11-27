@@ -13,7 +13,6 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-/// <reference path="../../../types/underscore/underscore.d.ts"/>
 /// <reference path="../../../types/backbone/backbone.d.ts"/>
 /// <reference path="../../../types/angularjs/angular.d.ts"/>
 /// <reference path="../../../lib/pow2.game.d.ts"/>
@@ -52,6 +51,8 @@ module pow2.ui {
          });
          this.machine = this.world.state;
          pow2.registerWorld('pow2',this.world);
+         // Tell the world time manager to start ticking.
+         this.world.time.start();
       }
 
       getSaveData():any {
@@ -79,12 +80,13 @@ module pow2.ui {
             icon: from.attributes.icon,
             model:from
          });
+         this.world.scene.addObject(this.sprite);
          this.sprite.addComponent(new PlayerRenderComponent());
          this.sprite.addComponent(new CollisionComponent());
          this.sprite.addComponent(new PlayerComponent());
          this.sprite.addComponent(new PlayerCameraComponent());
          this.sprite.addComponent(new PlayerTouchComponent());
-         this.world.scene.addObject(this.sprite);
+
 
          if(typeof at === 'undefined' && this.tileMap instanceof pow2.TileMap) {
             at = this.tileMap.bounds.getCenter();

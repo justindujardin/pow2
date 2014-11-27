@@ -66,12 +66,12 @@ module pow2 {
                                  return;
                               }
                               var gid:number = object.getTileGid(l.name,x, y);
-                              var meta:ITileMeta = object.getTileMeta(gid);
+                              var meta:pow2.tiled.ITileInstanceMeta = object.getTileMeta(gid);
                               if (meta) {
                                  var image = meta.image;
                                  // Keep this inline to avoid more function calls.
                                  var dstH, dstW, dstX, dstY, srcH, srcW, srcX, srcY;
-                                 if (!image || !image.isReady()) {
+                                 if (!image || !image.complete) {
                                     this.bufferComplete = false;
                                     return;
                                  }
@@ -82,7 +82,7 @@ module pow2 {
                                  dstX = (x - xOffset) * view.unitSize;
                                  dstY = (y - yOffset) * view.unitSize;
                                  dstW = dstH = view.unitSize;
-                                 ctx.drawImage(image.data, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
+                                 ctx.drawImage(image, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
                               }
                            });
                         }

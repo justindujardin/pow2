@@ -15,7 +15,6 @@
  */
 
 /// <reference path="../../../types/backbone/backbone.d.ts" />
-/// <reference path="../../../types/underscore/underscore.d.ts" />
 module pow2 {
    var maxLevel = 50;
 

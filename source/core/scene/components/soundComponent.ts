@@ -15,7 +15,6 @@
  */
 
 /// <reference path="../sceneComponent.ts" />
-/// <reference path="../../resources/audio.ts" />
 
 module pow2 {
 
@@ -60,7 +59,7 @@ module pow2 {
             this.audio.data.volume = this.volume;
             return true;
          }
-         this.audio = this.host.world.loader.load(this.url,() => {
+         this.audio = this.scene.world.loader.load(this.url,() => {
             if(this.audio.isReady()){
                this.audio.data.currentTime = 0;
                this.audio.data.volume = this.volume;

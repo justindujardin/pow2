@@ -1,4 +1,3 @@
-///<reference path="../../types/underscore/underscore.d.ts"/>
 ///<reference path="./api.ts"/>
 
 /**

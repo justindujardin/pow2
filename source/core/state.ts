@@ -14,7 +14,6 @@
  limitations under the License.
  */
 
-/// <reference path="../../types/underscore/underscore.d.ts" />
 /// <reference path="./stateMachine.ts" />
 module pow2 {
 

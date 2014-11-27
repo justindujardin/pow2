@@ -1,5 +1,3 @@
-///<reference path="../../types/underscore/underscore.d.ts"/>
-
 /**
  Copyright (C) 2013 by Justin DuJardin
 
@@ -15,6 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+
+///<reference path="../../web/bower/pow-core/lib/pow-core.d.ts"/>
+///<reference path="../interfaces/IScene.ts"/>
 
 module pow2 {
 
@@ -119,26 +120,5 @@ module pow2 {
    }
    export function getMaps(){
       return data.maps;
-   }
-
-   var _worldLookup:{ [name:string]:any } = {};
-   /**
-    * Module level world accessor.
-    */
-   export function getWorld<T>(name:string):T{
-      return <T>_worldLookup[name];
-   }
-   /**
-    * Module level world setter.
-    */
-   export function registerWorld(name:string,instance:any) {
-      if(!name){
-         throw new Error("Cannot register world with null name");
-      }
-      if(_worldLookup.hasOwnProperty(name)){
-         throw new Error("Cannot register world multiple times with the same name");
-      }
-      _worldLookup[name] = instance;
-      return _worldLookup[name];
    }
 }

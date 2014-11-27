@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-/// <reference path="./point.ts"/>
+/// <reference path="./api.ts"/>
 /// <reference path="../../types/jquery/jquery.d.ts"/>
 /// <reference path="./scene/sceneView.ts"/>
 module pow2 {
@@ -43,7 +43,8 @@ module pow2 {
       view:SceneView;
    }
 
-   export class Input {
+   export class Input implements IWorldObject {
+      world:pow2.IWorld;
       _keysDown:Object = {};
       _mouseElements:NamedMouseElement[] = [];
 

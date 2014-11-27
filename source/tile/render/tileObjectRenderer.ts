@@ -14,10 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../../../types/underscore/underscore.d.ts" />
 /// <reference path="../../../lib/pow2.d.ts"/>
-/// <reference path="../tileObject.ts" />
-/// <reference path="../tileMap.ts" />
 
 module pow2 {
    export class TileObjectRenderer extends SceneObjectRenderer {

@@ -14,8 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../tile/tileMap.ts" />
-/// <reference path="../tile/resources/tiled.ts" />
+/// <reference path="./gameWorld.ts" />
 /// <reference path="../../lib/pow2.d.ts" />
 
 module pow2 {

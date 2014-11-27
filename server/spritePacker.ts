@@ -1,5 +1,4 @@
 ///<reference path="../types/node/node.d.ts"/>
-///<reference path="../types/underscore/underscore.d.ts"/>
 ///<reference path="../types/q/Q.d.ts"/>
 
 /* jslint node: true */

@@ -26,6 +26,7 @@ module pow2{
       objectRenderer:TileObjectRenderer = new TileObjectRenderer;
       mapRenderer:TileMapRenderer = new TileMapRenderer;
       tileMap:TileMap = null;
+      world:SceneWorld;
 
       setTileMap(tileMap:TileMap){
          this.tileMap = tileMap;
@@ -47,9 +48,25 @@ module pow2{
          if (!this.tileMap) {
             return this.camera;
          }
-         var clipGrow = this.camera.clone().round();
-         var clipRect = clipGrow.clamp(this.tileMap.bounds);
-         return clipRect;
+         var clipGrow = this.camera.clone();
+         clipGrow.point.round();
+         clipGrow.extent.round();
+
+         // Clamp to tilemap bounds.
+         var rect:IRect = this.tileMap.bounds;
+         if(clipGrow.point.x < rect.point.x){
+            clipGrow.point.x += rect.point.x - clipGrow.point.x;
+         }
+         if(clipGrow.point.y < rect.point.y){
+            clipGrow.point.y += rect.point.y - clipGrow.point.y;
+         }
+         if(clipGrow.point.x + clipGrow.extent.x > rect.point.x + rect.extent.x){
+            clipGrow.point.x -= ((clipGrow.point.x + clipGrow.extent.x) - (rect.point.x + rect.extent.x));
+         }
+         if(clipGrow.point.y + clipGrow.extent.y > rect.point.y + rect.extent.y){
+            clipGrow.point.y -= ((clipGrow.point.y + clipGrow.extent.y) - (rect.point.y + rect.extent.y));
+         }
+         return clipGrow;
       }
 
       /*

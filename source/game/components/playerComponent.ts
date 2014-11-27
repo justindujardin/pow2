@@ -15,9 +15,8 @@
  */
 
 /// <reference path="../../../lib/pow2.d.ts" />
-/// <reference path="../objects/gameFeatureObject.ts" />
-/// <reference path="../../tile/tileComponent.ts" />
 /// <reference path="./playerRenderComponent.ts" />
+/// <reference path="../objects/gameFeatureObject.ts" />
 
 module pow2 {
 

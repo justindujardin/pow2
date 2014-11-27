@@ -14,13 +14,9 @@
  limitations under the License.
  */
 
-/// <reference path="../../types/underscore/underscore.d.ts" />
 /// <reference path="../../lib/pow2.d.ts"/>
 /// <reference path="./tileObject.ts" />
 /// <reference path="./components/tileMapCameraComponent.ts" />
-/// <reference path="./resources/tiled.ts" />
-/// <reference path="./resources/tiledTmx.ts" />
-/// <reference path="./resources/tiledTsx.ts" />
 
 module pow2 {
 
@@ -31,7 +27,7 @@ module pow2 {
       map: TiledTMXResource;
 //      tileSet:any; // TODO: Tileset
       tiles:any = []; // TODO: TilesetProperties
-//      terrain:any;
+      scene:Scene;
       features:any;
       zones:any;
       mapName: string;
@@ -58,8 +54,6 @@ module pow2 {
 
       load(mapName:string=this.mapName){
          var loader:pow2.ResourceLoader = pow2.ResourceLoader.get();
-         loader.ensureType('tmx',TiledTMXResource);
-         loader.ensureType('tsx',TiledTSXResource);
          loader.load("/maps/" + mapName + ".tmx", (mapResource:TiledTMXResource) => {
             this.mapName = mapName;
             this.setMap(mapResource);
@@ -105,8 +99,8 @@ module pow2 {
             }
             this.tiles = this.tiles.concat(tiles.tiles);
          });
-         this.features = _.where(this.map.objectGroups,{name:"Features"})[0] || [];
-         this.zones = _.where(this.map.objectGroups,{name:"Zones"})[0] || [];
+         this.features = _.where(this.map.layers,{name:"Features"})[0] || [];
+         this.zones = _.where(this.map.layers,{name:"Zones"})[0] || [];
          this.loaded();
          return true;
       }
@@ -131,14 +125,14 @@ module pow2 {
 
       getTileGid(layer:string, x:number, y:number):number {
          var terrain:tiled.ITiledLayer = this.getLayer(layer);
-         if (!this.map || !terrain || !this.bounds.pointInRect(x, y)) {
+         if (!this.map || !terrain || !terrain.data || !this.bounds.pointInRect(x, y)) {
             return null;
          }
          var terrainIndex = y * this.map.width + x;
          return terrain.data[terrainIndex];
       }
 
-      getTileMeta(gid:number):ITileMeta {
+      getTileMeta(gid:number):pow2.tiled.ITileInstanceMeta {
          if(this.tiles.length <= gid){
             return null;
          }
