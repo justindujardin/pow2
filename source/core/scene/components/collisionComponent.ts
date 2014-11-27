@@ -21,10 +21,6 @@ module pow2 {
    export class CollisionComponent extends SceneComponent {
       collideBox: pow2.Rect = new pow2.Rect(0, 0, 1, 1);
       resultsArray: any[] = [];
-
-      connectComponent():boolean {
-         return super.connectComponent();
-      }
       collide(x:number, y:number,type:Function=SceneObject,results=[]) {
          this.collideBox.point.x = x;
          this.collideBox.point.y = y;
