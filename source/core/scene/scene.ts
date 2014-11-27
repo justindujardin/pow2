@@ -102,7 +102,7 @@ module pow2 {
       removeIt(property:string,object:any):boolean{
          var removed:boolean = false;
          this[property] = _.filter(this[property], (obj:any) => {
-            if(obj._uid === object._uid){
+            if(object && obj && obj._uid === object._uid){
                this.db.removeSpatialObject(obj);
                if(obj.onRemoveFromScene){
                   obj.onRemoveFromScene(this);
@@ -112,6 +112,9 @@ module pow2 {
                }
                delete obj.scene;
                removed = true;
+               return false;
+            }
+            else if(!obj){
                return false;
             }
             return true;
@@ -173,10 +176,11 @@ module pow2 {
       removeObject(object:ISceneObject,destroy?:boolean):boolean{
          destroy = typeof destroy === 'undefined' ? true : !!destroy;
          var o:any = object;
-         if(destroy && o.destroy){
+         var removed:boolean = this.removeIt('_objects',object);
+         if(o && destroy && o.destroy){
             o.destroy();
          }
-         return this.removeIt('_objects',object);
+         return removed;
       }
       findObject(object:ISceneObject):boolean{
          return !!this.findIt('_objects',object);
