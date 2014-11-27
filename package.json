@@ -6,6 +6,9 @@
   "directories": {
     "example": "examples"
   },
+  "engines": {
+    "node": "0.10.x"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/justindujardin/pow2.git"
