@@ -427,7 +427,7 @@ module.exports = function(grunt) {
       type = type || 'patch';
       grunt.task.run([
          'npm-contributors',
-         'typescript:source',
+         'default',
          'uglify',
          'bump:' + type + ':bump-only',
          'changelog',
