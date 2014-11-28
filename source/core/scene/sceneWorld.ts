@@ -1,5 +1,5 @@
 /**
- Copyright (C) 2013 by Justin DuJardin
+ Copyright (C) 2014 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,22 +14,20 @@
  limitations under the License.
  */
 
-/// <reference path="../resource.ts"/>
-
+/// <reference path="../api.ts" />
+/// <reference path="../input.ts" />
+/// <reference path="../stateMachine.ts" />
+/// <reference path="../spriteRender.ts" />
 module pow2 {
-   /**
-    * Use jQuery to load a Javascript file from a URL.
-    */
-   export class ScriptResource extends Resource {
-      load() {
-         var request:JQueryXHR = $.getScript(this.url);
-         request.done((script:HTMLScriptElement) => {
-            this.data = script;
-            this.ready();
-         });
-         request.fail((jqxhr,settings,exception) => {
-            this.failed(exception);
-         });
+   export class SceneWorld extends World {
+      input:Input;
+      sprites:SpriteRender;
+      state: IStateMachine;
+      scene:IScene;
+      constructor(services?:any){
+         super(services);
+         this.setService('input',new Input());
+         this.setService('sprites',new SpriteRender());
       }
    }
 }

@@ -15,17 +15,14 @@
  */
 
 /// <reference path="../../lib/pow2.d.ts" />
-/// <reference path="../tile/tileMapView.ts"/>
-/// <reference path="../tile/render/tileObjectRenderer.ts"/>
-/// <reference path="./components/playerComponent.ts"/>
-/// <reference path="./components/playerCameraComponent.ts"/>
-/// <reference path="../tile/components/spriteComponent.ts"/>
+/// <reference path="./gameTileMap.ts"/>
 
 module pow2{
    export class GameMapView extends TileMapView {
       objectRenderer:TileObjectRenderer = new TileObjectRenderer;
       tileMap:GameTileMap = null;
       mouse:NamedMouseElement = null;
+      scene:Scene;
 
       constructor(canvas: HTMLCanvasElement, loader: any) {
          super(canvas,loader);
@@ -180,7 +177,7 @@ module pow2{
             this.context.strokeRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
 
          }
-         super.debugRender(debugStrings);
+         //super.debugRender(debugStrings);
       }
    }
 }

@@ -15,13 +15,6 @@
  */
 
 /// <reference path="../../lib/pow2.d.ts" />
-/// <reference path="./gameMapView.ts" />
-/// <reference path="./components/playerComponent.ts" />
-/// <reference path="./components/playerTouchComponent.ts" />
-/// <reference path="./states/gameMapState.ts"/>
-/// <reference path="./models/heroModel.ts"/>
-/// <reference path="./models/gameStateModel.ts"/>
-
 /// <reference path="../combat/gameCombatStateMachine.ts"/>
 module pow2 {
 

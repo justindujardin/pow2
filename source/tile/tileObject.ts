@@ -14,7 +14,6 @@
  limitations under the License.
  */
 
-/// <reference path="../../types/underscore/underscore.d.ts" />
 /// <reference path="../../lib/pow2.d.ts"/>
 /// <reference path="./tileMap.ts" />
 
@@ -59,6 +58,7 @@ module pow2 {
       icon:string;
       meta:any;
       frame:number;
+      world:SceneWorld;
 
       constructor(options:TileObjectOptions=DEFAULTS) {
          super(options);

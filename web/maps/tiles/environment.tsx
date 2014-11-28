@@ -357,4 +357,10 @@
    <property name="shipPassable" value="false"/>
   </properties>
  </tile>
+ <tile id="44">
+  <properties>
+   <property name="passable" value="false"/>
+   <property name="shipPassable" value="false"/>
+  </properties>
+ </tile>
 </tileset>

@@ -14,24 +14,20 @@
  limitations under the License.
  */
 
-/// <reference path="../../../types/underscore/underscore.d.ts" />
-/// <reference path="../time.ts"/>
-/// <reference path="../world.ts"/>
-/// <reference path="./sceneObject.ts"/>
-/// <reference path="./sceneView.ts"/>
+/// <reference path="../api.ts"/>
+/// <reference path="./sceneWorld.ts"/>
 /// <reference path="./sceneSpatialDatabase.ts"/>
 
 module pow2 {
 
-   export class Scene extends Events implements IProcessObject, IWorldObject {
-      id:string;
-      _uid:string = _.uniqueId('scene');
+   export class Scene extends Events implements IScene, IProcessObject, IWorldObject {
+      id:string = _.uniqueId('scene');
       name:string;
       db:SceneSpatialDatabase = new SceneSpatialDatabase;
       options:any = {};
-      private _objects:SceneObject[] = [];
-      private _views:SceneView[] = [];
-      world:IWorld = null;
+      private _objects:ISceneObject[] = [];
+      private _views:ISceneView[] = [];
+      world:SceneWorld = null;
       fps:number = 0;
       time:number = 0;
       paused:boolean = false;
@@ -47,14 +43,15 @@ module pow2 {
          if(this.world){
             this.world.erase(this);
          }
-         _.each(this._objects,(obj) => {
-            this.removeObject(obj,true);
-         });
-         _.each(this._views,(obj) => {
-            this.removeView(obj);
-         });
+         var l:number = this._objects.length;
+         for(var i = 0; i < l; i++){
+            this.removeObject(this._objects[i],true);
+         }
+         l = this._views.length;
+         for(var i = 0; i < l; i++){
+            this.removeView(this._views[i]);
+         }
          this.paused = true;
-
       }
 
       // IWorldObject
@@ -85,7 +82,7 @@ module pow2 {
          // Interpolate objects.
          var l:number = this._objects.length;
          for(var i = 0; i < l; i++){
-            var o = this._objects[i];
+            var o:any = this._objects[i];
             if(o.interpolateTick){
                o.interpolateTick(elapsed);
             }
@@ -93,7 +90,7 @@ module pow2 {
          // Render frame.
          l = this._views.length;
          for(var i = 0; i < l; i++){
-            this._views[i]._render(elapsed);
+            this._views[i].render(elapsed);
          }
          // Update FPS
          var currFPS:number = elapsed ? 1000 / elapsed : 0;
@@ -102,9 +99,10 @@ module pow2 {
 
       // Object add/remove helpers.
       // -----------------------------------------------------------------------------
-      removeIt(property:string,object:any){
+      removeIt(property:string,object:any):boolean{
+         var removed:boolean = false;
          this[property] = _.filter(this[property], (obj:any) => {
-            if(obj._uid === object._uid){
+            if(object && obj && obj._uid === object._uid){
                this.db.removeSpatialObject(obj);
                if(obj.onRemoveFromScene){
                   obj.onRemoveFromScene(this);
@@ -113,13 +111,18 @@ module pow2 {
                   this.world.erase(obj);
                }
                delete obj.scene;
+               removed = true;
+               return false;
+            }
+            else if(!obj){
                return false;
             }
             return true;
          });
+         return removed;
       }
 
-      addIt(property:string,object:any){
+      addIt(property:string,object:any):boolean{
 
          // Remove object from any scene it might already be in.
          if(object.scene){
@@ -144,9 +147,10 @@ module pow2 {
          if(object.onAddToScene){
             object.onAddToScene(this);
          }
+         return true;
       }
 
-      findIt(property:string,object:any){
+      findIt(property:string,object:any):any{
          return _.where(this[property],{_uid:object._uid});
       }
 
@@ -154,44 +158,39 @@ module pow2 {
       // View management
       // -----------------------------------------------------------------------------
 
-      addView(view) {
-         if(!(view instanceof SceneView)){
-            throw new Error("Scene.addView: must be a SceneView");
-         }
-         this.addIt('_views',view);
+      addView(view:ISceneView):boolean {
+         return this.addIt('_views',view);
       }
-
-      removeView(view){
-         this.removeIt('_views',view);
+      removeView(view:ISceneView):boolean {
+         return this.removeIt('_views',view);
       }
-
-      findView(view){
-         return this.findIt('_views',view);
+      findView(view):boolean{
+         return !!this.findIt('_views',view);
       }
 
       // SceneObject management
       // -----------------------------------------------------------------------------
-      addObject(object) {
-         if(!(object instanceof SceneObject)){
-            throw new Error("Scene.addObject: must be a SceneObject");
-         }
-         this.addIt('_objects',object);
+      addObject(object:ISceneObject):boolean {
+         return this.addIt('_objects',object);
       }
-      removeObject(object:SceneObject,destroy:boolean=true){
-         this.removeIt('_objects',object);
-         if(destroy){
-            object.destroy();
+      removeObject(object:ISceneObject,destroy?:boolean):boolean{
+         destroy = typeof destroy === 'undefined' ? true : !!destroy;
+         var o:any = object;
+         var removed:boolean = this.removeIt('_objects',object);
+         if(o && destroy && o.destroy){
+            o.destroy();
          }
+         return removed;
       }
-      findObject(object){
-         return this.findIt('_objects',object);
+      findObject(object:ISceneObject):boolean{
+         return !!this.findIt('_objects',object);
       }
 
       componentByType(type):ISceneComponent {
          var values:any[] = this._objects;
          var l:number = this._objects.length;
          for(var i = 0; i < l; i++){
-            var o:SceneObject = values[i];
+            var o:ISceneObject = values[i];
             var c:ISceneComponent = o.findComponent(type);
             if(c){
                return c;
@@ -205,7 +204,7 @@ module pow2 {
          var l:number = this._objects.length;
          var results:ISceneComponent[] = [];
          for(var i = 0; i < l; i++){
-            var o:SceneObject = values[i];
+            var o:ISceneObject = values[i];
             var c:ISceneComponent[] = o.findComponents(type);
             if(c){
                results = results.concat(c);
@@ -215,69 +214,69 @@ module pow2 {
       }
 
 
-      objectsByName(name:string):SceneObject[] {
+      objectsByName(name:string):ISceneObject[] {
          var values:any[] = this._objects;
          var l:number = this._objects.length;
-         var results:SceneObject[] = [];
+         var results:ISceneObject[] = [];
          for(var i = 0; i < l; i++){
-            var o:SceneObject = values[i];
+            var o:ISceneObject = values[i];
             if(o.name === name){
                results.push(o);
             }
          }
          return results;
       }
-      objectByName(name:string):SceneObject {
+      objectByName(name:string):ISceneObject {
          var values:any[] = this._objects;
          var l:number = this._objects.length;
          for(var i = 0; i < l; i++){
-            var o:SceneObject = values[i];
+            var o:ISceneObject = values[i];
             if(o.name === name){
                return o;
             }
          }
          return null;
       }
-      objectsByType(type):SceneObject[] {
+      objectsByType(type):ISceneObject[] {
          var values:any[] = this._objects;
          var l:number = this._objects.length;
-         var results:SceneObject[] = [];
+         var results:ISceneObject[] = [];
          for(var i = 0; i < l; i++){
-            var o:SceneObject = values[i];
+            var o:ISceneObject = values[i];
             if(o instanceof type){
                results.push(o);
             }
          }
          return results;
       }
-      objectByType(type):SceneObject {
+      objectByType(type):ISceneObject {
          var values:any[] = this._objects;
          var l:number = this._objects.length;
          for(var i = 0; i < l; i++){
-            var o:SceneObject = values[i];
+            var o:ISceneObject = values[i];
             if(o instanceof type){
                return o;
             }
          }
          return null;
       }
-      objectsByComponent(type):SceneObject[] {
+      objectsByComponent(type):ISceneObject[] {
          var values:any[] = this._objects;
          var l:number = this._objects.length;
-         var results:SceneObject[] = [];
+         var results:ISceneObject[] = [];
          for(var i = 0; i < l; i++){
-            var o:SceneObject = values[i];
+            var o:ISceneObject = values[i];
             if(o.findComponent(type)){
                results.push(o);
             }
          }
          return results;
       }
-      objectByComponent(type):SceneObject {
+      objectByComponent(type):ISceneObject {
          var values:any[] = this._objects;
          var l:number = this._objects.length;
          for(var i = 0; i < l; i++){
-            var o:SceneObject = values[i];
+            var o:ISceneObject = values[i];
             if(o.findComponent(type)){
                return o;
             }

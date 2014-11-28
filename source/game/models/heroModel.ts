@@ -15,7 +15,6 @@
  */
 
 /// <reference path="../../../types/backbone/backbone.d.ts" />
-/// <reference path="../../../types/underscore/underscore.d.ts" />
 /// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="./entityModel.ts" />
 /// <reference path="./creatureModel.ts" />

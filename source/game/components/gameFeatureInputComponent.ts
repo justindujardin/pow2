@@ -17,7 +17,6 @@
 /// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../../tile/tileObject.ts" />
 /// <reference path="../objects/gameFeatureObject.ts" />
-/// <reference path="./playerComponent.ts" />
 
 module pow2 {
    export class GameFeatureInputComponent extends TickedComponent {
@@ -46,7 +45,7 @@ module pow2 {
          this.hits.length = 0;
 
          this.hitBox.point.set(this.mouse.world);
-         this.host.scene.db.queryRect(this.hitBox, GameFeatureObject, this.hits);
+         this.scene.db.queryRect(this.hitBox, GameFeatureObject, this.hits);
 
          _.each(this.hits,(obj:any) => {
             obj.scale = 1.25;

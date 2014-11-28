@@ -56,14 +56,14 @@ module pow2 {
          }
          else {
             var touchComponent = <GameFeatureComponent>touched.findComponent(GameFeatureComponent);
-            var previousTouch = this.touchedComponent ? this.touchedComponent._uid : null;
-            if(this.touchedComponent && this.touchedComponent._uid !== touchComponent._uid){
+            var previousTouch = this.touchedComponent ? this.touchedComponent.id : null;
+            if(this.touchedComponent && this.touchedComponent.id !== touchComponent.id){
                this.touchedComponent.exit(this.host);
                this.touchedComponent = null;
             }
 
             this.touchedComponent = touchComponent;
-            if(touchComponent._uid !== previousTouch){
+            if(touchComponent.id !== previousTouch){
                this.touchedComponent.enter(this.host);
             }
             this.touch = touched;

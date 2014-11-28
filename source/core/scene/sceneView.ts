@@ -14,21 +14,15 @@
  limitations under the License.
  */
 
-/// <reference path="../../../types/underscore/underscore.d.ts" />
 /// <reference path="../../../types/jquery/jquery.d.ts" />
-/// <reference path="../rect.ts" />
-/// <reference path="../point.ts" />
-/// <reference path="../world.ts" />
-/// <reference path="../resourceLoader.ts" />
-/// <reference path="./scene.ts" />
+/// <reference path="../api.ts" />
 /// <reference path="./sceneObject.ts" />
-/// <reference path="./components/cameraComponent.ts" />
 
 // A view that renders a `Scene`.
 //
 // You should probably only have one of these per Canvas that you render to.
 module pow2 {
-   export class SceneView extends SceneObject implements IWorldObject {
+   export class SceneView extends SceneObject implements IWorldObject, ISceneView {
       static UNIT: number = 16;
 
       animations: any[];
@@ -36,13 +30,12 @@ module pow2 {
       canvas:HTMLCanvasElement;
       context: CanvasRenderingContext2D;
       camera: Rect;
-      cameraComponent:CameraComponent = null;
+      cameraComponent:any = null; // TODO: ICameraComponent
       cameraScale: number;
       unitSize: number;
       _sheets: any;
-      scene: Scene = null;
+      scene: IScene = null;
       loader: ResourceLoader = null;
-      world:IWorld;
 
       constructor(canvas: HTMLCanvasElement, loader: any) {
          super();
@@ -71,7 +64,7 @@ module pow2 {
       onAddToWorld(world:IWorld){}
       onRemoveFromWorld(world:IWorld){}
 
-      setScene(scene:Scene){
+      setScene(scene:IScene){
          if(this.scene){
             this.scene.removeView(this);
          }
@@ -135,36 +128,7 @@ module pow2 {
          this.renderFrame(elapsed);
          this.renderAnimations();
          this.renderPost();
-         if (this.scene && this.scene.options.debugRender) {
-            this.debugRender();
-         }
          this.restoreRenderState();
-      }
-
-      // Do any debug rendering for this view.
-      debugRender(debugStrings: string[] = []) {
-         if (!this.context) {
-            return;
-         }
-         var fontSize = 4;
-         debugStrings.push("MSPF: " + this.world.time.mspf);
-         debugStrings.push("FPS:  " + this.scene.fps.toFixed(0));
-         // MSPF/FPS Counter debug
-         this.context.save();
-         this.context.scale(1,1);
-         this.context.font = "bold " + fontSize + "px Arial";
-         var renderPos = this.worldToScreen(this.camera.point);
-         var x = renderPos.x + 10;
-         var y = renderPos.y + 10;
-         var i:number;
-         for (i = 0; i < debugStrings.length; ++i) {
-            this.context.fillStyle = "rgba(0,0,0,0.8)";
-            this.context.fillText(<string>debugStrings[i], x + 0.5, y + 0.5);
-            this.context.fillStyle = "rgba(255,255,255,1)";
-            this.context.fillText(<string>debugStrings[i], x, y);
-            y += fontSize;
-         }
-         this.context.restore();
       }
 
       // Scene Camera updates
@@ -202,7 +166,10 @@ module pow2 {
 
       worldToScreen(value: any, scale = 1): any {
          if (value instanceof Rect) {
-            return new Rect(value).scale(this.unitSize * scale);
+            var result:pow2.Rect = new Rect(value);
+            result.point.multiply(this.unitSize * scale);
+            result.extent.multiply(this.unitSize * scale);
+            return result;
          } else if (value instanceof Point) {
             return new Point(value).multiply(this.unitSize * scale);
          }
@@ -219,7 +186,10 @@ module pow2 {
 
       screenToWorld(value: any, scale = 1): any {
          if (value instanceof Rect) {
-            return new Rect(value).scale(1 / (this.unitSize * scale));
+            var result:pow2.Rect = new Rect(value);
+            result.point.multiply(1 / (this.unitSize * scale));
+            result.extent.multiply(1 / (this.unitSize * scale));
+            return result;
          } else if (value instanceof Point) {
             return new Point(value).multiply(1 / (this.unitSize * scale));
          }
@@ -236,7 +206,8 @@ module pow2 {
       }
       fastWorldToScreenRect(value: Rect, to:Rect, scale=1): Rect {
          to.set(value);
-         to.scale(this.unitSize * scale);
+         to.point.multiply(this.unitSize * scale);
+         to.extent.multiply(this.unitSize * scale);
          return to;
       }
       fastWorldToScreenNumber(value: number, scale=1): number {
@@ -252,7 +223,8 @@ module pow2 {
       }
       fastScreenToWorldRect(value: Rect, to:Rect, scale=1): Rect {
          to.set(value);
-         to.scale(1 / (this.unitSize * scale));
+         to.point.multiply(1 / (this.unitSize * scale));
+         to.extent.multiply(1 / (this.unitSize * scale));
          return to;
       }
       fastScreenToWorldNumber(value: number, scale=1): number {

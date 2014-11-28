@@ -15,9 +15,8 @@
  */
 
 /// <reference path="../../../lib/pow2.d.ts" />
-/// <reference path="../objects/gameFeatureObject.ts" />
-/// <reference path="../../tile/tileComponent.ts" />
 /// <reference path="./playerRenderComponent.ts" />
+/// <reference path="../objects/gameFeatureObject.ts" />
 
 module pow2 {
 
@@ -100,18 +99,24 @@ module pow2 {
                }
             }
          }
+         // Iterate over all layers of the map, check point(x,y) and see if the tile
+         // has any unpassable attributes set on it.  If any unpassable attributes are
+         // found, there is a collision.
+         // TODO: This should probably respect layer visibility, and another flag?  collidable?
          var map:TileMap = <TileMap>this.host.scene.objectByType(TileMap);
          if (map) {
-            var terrain = map.getTerrain("Terrain",x,y);
-            if (!terrain) {
-               return false;
-            }
-            for(var i = 0; i < this.passableKeys.length; i++){
-               if(terrain[this.passableKeys[i]] === true){
-                  return false;
+            var layers:tiled.ITiledLayer[] = map.getLayers();
+            for(var i = 0; i < layers.length; i++) {
+               var terrain = map.getTileData(layers[i],x,y);
+               if (!terrain) {
+                  continue;
+               }
+               for(var j = 0; j < this.passableKeys.length; j++){
+                  if(terrain[this.passableKeys[j]] === false){
+                     return true;
+                  }
                }
             }
-            return true;
          }
          return false;
       }

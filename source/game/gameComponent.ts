@@ -21,6 +21,7 @@ module pow2 {
       feature:any = null;
       host:GameFeatureObject = null;
       tileMap:GameTileMap;
+      scene:Scene;
       syncComponent():boolean{
          this.tileMap = this.host.tileMap;
          if(!super.syncComponent() || !(this.tileMap instanceof GameTileMap)){

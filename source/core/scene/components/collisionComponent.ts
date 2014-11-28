@@ -14,25 +14,23 @@
  limitations under the License.
  */
 
-/// <reference path="../../point.ts" />
-/// <reference path="../../rect.ts" />
 /// <reference path="../sceneObject.ts" />
 /// <reference path="../../scene/sceneComponent.ts" />
 
 module pow2 {
    export class CollisionComponent extends SceneComponent {
-      collideBox: pow2.Rect = new pow2.Rect(0, 0, 0, 0);
+      collideBox: pow2.Rect = new pow2.Rect(0, 0, 1, 1);
       resultsArray: any[] = [];
       collide(x:number, y:number,type:Function=SceneObject,results=[]) {
          this.collideBox.point.x = x;
          this.collideBox.point.y = y;
-         return this.host.scene.db.queryRect(this.collideBox, type, results);
+         return this.scene.db.queryRect(this.collideBox, type, results);
       }
       collideFirst(x:number, y:number,type:Function=SceneObject):SceneObject {
          this.collideBox.point.x = x;
          this.collideBox.point.y = y;
          this.resultsArray.length = 0;
-         var hit:boolean = this.host.scene.db.queryRect(this.collideBox, type, this.resultsArray);
+         var hit:boolean = this.scene.db.queryRect(this.collideBox, type, this.resultsArray);
          return hit ? this.resultsArray[0] : null;
       }
   }

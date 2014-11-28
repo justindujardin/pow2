@@ -14,41 +14,10 @@
  limitations under the License.
  */
 
-/// <reference path="../../../types/underscore/underscore.d.ts" />
-/// <reference path="../events.ts" />
+/// <reference path="../api.ts" />
 /// <reference path="./scene.ts" />
 
-// An object that may exist in a `Scene`, has a unique `id` and receives ticked updates.
 module pow2 {
-
-
-   /**
-    * Basic component interface.  Supports component host lifetime implementations, and
-    * hot-swapping components.
-    */
-   export interface ISceneComponent extends IObject, IEvents {
-
-      /**
-       * The host object that this component belongs to.
-       */
-      host:SceneObject;
-
-      /**
-       * Connect this component to its host.  Initialization logic goes here.
-       */
-      connectComponent():boolean;
-      /**
-       * Disconnect this component from its host.  Destruction logic goes here.
-       */
-      disconnectComponent():boolean;
-
-      /**
-       * Components on the host have changed.  If this component depends on other
-       * host object components, the references to them should be looked up and
-       * stored here.
-       */
-      syncComponent():boolean;
-   }
 
    /**
     * Simplest ISceneComponent implementation.  Because Typescript interfaces are compile
@@ -56,15 +25,14 @@ module pow2 {
     * reason, all SceneComponents should derive this class.
     */
    export class SceneComponent extends Events implements ISceneComponent {
-      id:string;
-      _uid:string = _.uniqueId('sc');
+      id:string = _.uniqueId('sc');
       scene: Scene;
-      host:SceneObject;
+      host:ISceneObject;
       constructor(public name:string = _.uniqueId('comp')){
          super();
       }
       connectComponent():boolean {
-         this.scene = this.host.scene;
+         this.scene = <Scene>this.host.scene;
          return true;
       }
       disconnectComponent():boolean {
@@ -72,7 +40,7 @@ module pow2 {
          return true;
       }
       syncComponent():boolean {
-         this.scene = this.host.scene;
+         this.scene = <Scene>this.host.scene;
          return !!this.scene;
       }
 

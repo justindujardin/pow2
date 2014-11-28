@@ -15,6 +15,7 @@ module.exports = function(config) {
          "web/bower/angular-touch/angular-touch.min.js",
          "web/bower/astar/astar.js",
          "web/bower/tabletop/src/tabletop.js",
+         "web/bower/pow-core/lib/pow-core.js",
          "lib/pow2.js",
          "lib/pow2.game.js",
          "lib/pow2.data.js",

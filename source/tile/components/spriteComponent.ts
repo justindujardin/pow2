@@ -15,7 +15,8 @@
  */
 
 /// <reference path="../../../lib/pow2.d.ts" />
-/// <reference path="../../tile/tileObject.ts" />
+/// <reference path="../tileObject.ts" />
+
 
 module pow2 {
 

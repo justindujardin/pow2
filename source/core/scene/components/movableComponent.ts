@@ -14,10 +14,6 @@
  limitations under the License.
  */
 
-/// <reference path="../../point.ts" />
-/// <reference path="../../rect.ts" />
-/// <reference path="../sceneObject.ts" />
-/// <reference path="../sceneComponent.ts" />
 /// <reference path="./collisionComponent.ts" />
 
 module pow2 {
@@ -36,7 +32,7 @@ module pow2 {
          this.host.point.round();
          this.targetPoint = this.host.point.clone();
          this.host.renderPoint = this.targetPoint.clone();
-         return true;
+         return super.connectComponent();
       }
       syncComponent():boolean{
          this.collider = <CollisionComponent>this.host.findComponent(CollisionComponent);
@@ -72,12 +68,12 @@ module pow2 {
 
 
       updateVelocity(){
-         if(!this.host.world || !this.host.world.input){
+         if(!this.scene.world || !this.scene.world.input){
             return;
          }
          // Touch movement
          var hasCreateTouch = (<any>document).createTouch;
-         var worldInput = <any>this.host.world.input;
+         var worldInput = <any>this.scene.world.input;
          if (hasCreateTouch && worldInput.analogVector instanceof pow2.Point) {
             this.velocity.x = 0;
             if (worldInput.analogVector.x < -20) {

@@ -14,9 +14,9 @@
  limitations under the License.
  */
 
-/// <reference path="../../types/underscore/underscore.d.ts"/>
 /// <reference path="../../types/backbone/backbone.d.ts"/>
 /// <reference path="../../types/angularjs/angular.d.ts"/>
+/// <reference path="../../web/bower/pow-core/lib/pow-core.d.ts"/>
 
 module pow2.ui {
    export var app = angular.module('pow2', [

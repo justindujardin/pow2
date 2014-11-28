@@ -6,6 +6,9 @@
   "directories": {
     "example": "examples"
   },
+  "engines": {
+    "node": "0.10.x"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/justindujardin/pow2.git"
@@ -15,13 +18,13 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "express": "3.4.8",
-    "grunt": "~0.4.0",
+    "grunt": "~0.4.5",
     "q": "1.0.0",
     "pngjs": "~0.4.0",
     "underscore": "~1.5.2",
     "binpacking": "0.0.1",
     "grunt-contrib-uglify": "~0.3.0",
-    "grunt-typescript": "~0.2.8",
+    "grunt-typescript": "~0.4.4",
     "grunt-contrib-copy": "0.5.0",
     "graceful-fs": "~2.0.1",
     "grunt-contrib-less": "0.10.0",

@@ -14,11 +14,7 @@
  limitations under the License.
  */
 
-///<reference path="../../types/underscore/underscore.d.ts"/>
 ///<reference path="./api.ts"/>
-///<reference path="./resources/image.ts"/>
-///<reference path="./resourceLoader.ts"/>
-///<reference path="./world.ts"/>
 module pow2 {
 
    export class SpriteRender implements IWorldObject {
@@ -44,7 +40,7 @@ module pow2 {
          (<any>this.context).mozImageSmoothingEnabled = false;
       }
 
-      getSpriteSheet(name:string,done:Function=()=>{}):ImageResource{
+      getSpriteSheet(name:string,done:(res?: IResource) => any):ImageResource{
          if(this.world){
             return this.world.loader.load("/images/" + name + ".png",done);
          }

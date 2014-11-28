@@ -1,10 +1,10 @@
 ///<reference path="../types/node/node.d.ts"/>
 ///<reference path="../types/express/express.d.ts"/>
-///<reference path="../types/underscore/underscore.d.ts"/>
+
 "use strict";
 import express = require('express');
 var fs = require('graceful-fs');
-import _ = require('underscore');
+var _:any = require('underscore');
 var path = require('path');
 var grunt:any = require("grunt");
 var server = express();

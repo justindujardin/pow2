@@ -15,7 +15,6 @@
  */
 
 /// <reference path="../../../types/backbone/backbone.d.ts" />
-/// <reference path="../../../types/underscore/underscore.d.ts" />
 /// <reference path="./itemModel.ts" />
 
 module pow2 {

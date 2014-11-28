@@ -19,7 +19,7 @@
 /// <reference path="./resources/gameData.ts" />
 
 module pow2 {
-   export class GameWorld extends World {
+   export class GameWorld extends SceneWorld {
       state:GameStateMachine;
       // TODO: Fix game loading and multiple scenes/maps state.
       // Put the game model here, and use the pow2.getWorld() api
@@ -29,6 +29,15 @@ module pow2 {
 
       // TODO: More than two scenes?  Scene managers?  ugh.  If we need them.
       combatScene:Scene = null;
+
+      scene:Scene;
+
+      constructor(services?:any){
+         super(services);
+         if(!this.scene){
+            this.setService('scene',new Scene());
+         }
+      }
 
 
       randomEncounter(zone:IZoneMatch){

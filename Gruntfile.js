@@ -81,9 +81,7 @@ module.exports = function(grunt) {
          pow2: {
             src: [
                "source/core/api.ts",
-               "source/core/events.ts",
                "source/core/*.ts",
-               "source/core/resources/*.ts",
                "source/core/scene/*.ts",
                "source/core/scene/components/*.ts"
             ],
