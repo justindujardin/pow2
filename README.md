@@ -1,4 +1,4 @@
-# Pow2 [![Build Status](https://secure.travis-ci.org/justindujardin/pow2.png)](http://travis-ci.org/justindujardin/pow2)
+# Pow2 [![Build Status](https://travis-ci.org/justindujardin/pow2.svg?branch=master)](https://travis-ci.org/justindujardin/pow2) [![Coverage Status](https://img.shields.io/coveralls/justindujardin/pow2.svg)](https://coveralls.io/r/justindujardin/pow2?branch=master)
 
 Pow is going to be a real game one day.  For now it's an experimental Typescript/AngularJS RPG game.
 
