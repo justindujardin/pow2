@@ -30,11 +30,6 @@ module.exports = function(grunt) {
                message: 'Server restarted.'
             }
          },
-         data:{
-            options: {
-               message: 'Data files built.'
-            }
-         },
          code:{
             options: {
                message: 'Code build complete.'
@@ -120,13 +115,6 @@ module.exports = function(grunt) {
             ],
             dest: 'lib/<%= pkg.name %>.ui.js'
          },
-         data: {
-            src: [
-               "data/*.ts",
-               "data/creatures/*.ts"
-            ],
-            dest: 'lib/<%= pkg.name %>.data.js'
-         },
          tests: {
             src: [
                "test/fixtures/*.ts",
@@ -165,7 +153,6 @@ module.exports = function(grunt) {
             files: {
                'lib/<%= pkg.name %>.min.js'    : ['lib/<%= pkg.name %>.js'],
                'lib/<%= pkg.name %>.min.game.js'    : ['lib/<%= pkg.name %>.game.js'],
-               'lib/<%= pkg.name %>.min.data.js'    : ['lib/<%= pkg.name %>.data.js'],
                'lib/<%= pkg.name %>.min.ui.js'    : ['lib/<%= pkg.name %>.ui.js'],
                'lib/<%= pkg.name %>.min.sprites.js' : ['lib/<%= pkg.name %>.sprites.js']
             }
@@ -266,12 +253,6 @@ module.exports = function(grunt) {
             ],
             tasks: ['typescript:ui', 'notify:code']
          },
-         data: {
-            files: [
-               '<%= typescript.data.src %>'
-            ],
-            tasks: ['typescript:data', 'notify:data']
-         },
          typedefs: {
             files: [
                'types/**'
@@ -311,7 +292,55 @@ module.exports = function(grunt) {
                nospawn: true //Without this option specified express won't be reloaded
             }
          }
+      },
+      /**
+       * Release Tasks
+       */
+      bump: {
+         options: {
+            files: ['package.json', 'bower.json'],
+            updateConfigs: ['pkg'],
+            commit: true,
+            commitMessage: 'chore(deploy): release v%VERSION%',
+            commitFiles: [
+               'package.json',
+               'bower.json',
+               'CHANGELOG.md'
+            ],
+            createTag: true,
+            tagName: 'v%VERSION%',
+            tagMessage: 'Version %VERSION%',
+            push: true,
+            pushTo: 'origin',
+            gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d'
+         }
+      },
+      artifacts: {
+         options:{
+            files: [ 'lib/*.*' ]
+         }
+      },
+      changelog: {},
+
+      'npm-contributors': {
+         options: {
+            commitMessage: 'chore(attribution): update contributors'
+         }
+      },
+
+      /**
+       * Code Coverage
+       */
+      coveralls: {
+         options: {
+            coverage_dir: '.coverage/',
+            debug: process.env.TRAVIS ? false : true,
+            dryRun: process.env.TRAVIS ? false : true,
+            force: true,
+            recursive: true
+         }
       }
+
    });
 
    grunt.registerMultiTask('sprites', 'Pack sprites into output sheets', function()
@@ -381,4 +410,84 @@ module.exports = function(grunt) {
       grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
       grunt.registerTask('develop', ['default', 'watch']);
    }
+
+
+   // -----------------------------
+   // Release
+
+   // Test Coverage
+   grunt.loadNpmTasks('grunt-karma-coveralls');
+
+
+
+   // Release a version
+   grunt.loadNpmTasks('grunt-bump');
+   grunt.loadNpmTasks('grunt-conventional-changelog');
+   grunt.loadNpmTasks('grunt-npm');
+   grunt.registerTask('release', 'Build, bump and tag a new release.', function(type) {
+      type = type || 'patch';
+      grunt.task.run([
+         'npm-contributors',
+         'typescript:source',
+         'uglify',
+         'bump:' + type + ':bump-only',
+         'changelog',
+         'artifacts:add',
+         'bump-commit',
+         'artifacts:remove'
+      ]);
+   });
+
+
+   var exec = require('child_process').exec;
+   grunt.registerTask('artifacts', 'temporarily version output libs for release tags', function(type) {
+      var opts = this.options({
+         files: [],
+         pushTo: 'origin',
+         commitAdd:"chore: add artifacts for release",
+         commitRemove:"chore: remove release artifacts"
+      });
+      var done = this.async();
+      console.log(opts.files);
+      if(type === 'add') {
+         exec('git add -f ' + opts.files.join(' '), function (err, stdout, stderr) {
+            if (err) {
+               grunt.fatal('Cannot add the release artifacts:\n  ' + stderr);
+            }
+            var commitMessage = opts.commitAdd;
+            exec('git commit ' + opts.files.join(' ') + ' -m "' + commitMessage + '"', function (err, stdout, stderr) {
+               if (err) {
+                  grunt.fatal('Cannot create the commit:\n  ' + stderr);
+               }
+               grunt.log.ok('Committed as "' + commitMessage + '"');
+               done();
+            });
+         });
+      }
+      else if(type === 'remove'){
+         exec('git rm -f ' + opts.files.join(' ') + ' --cached', function(err, stdout, stderr) {
+            if (err) {
+               grunt.fatal('Cannot remove the release artifacts:\n  ' + stderr);
+            }
+            var commitMessage = opts.commitRemove;
+            exec('git commit -m "' + commitMessage + '"', function(err, stdout, stderr) {
+               if (err) {
+                  grunt.fatal('Cannot create the commit:\n  ' + stderr);
+               }
+               grunt.log.ok('Committed as "' + commitMessage + '"');
+               exec('git push ' + opts.pushTo, function(err, stdout, stderr) {
+                  if (err) {
+                     grunt.fatal('Can not push to ' + opts.pushTo + ':\n  ' + stderr);
+                  }
+                  grunt.log.ok('Pushed to ' + opts.pushTo);
+                  done();
+               });
+            });
+         });
+      }
+      else {
+         grunt.fatal('Invalid type to artifacts');
+      }
+   });
+
 };
