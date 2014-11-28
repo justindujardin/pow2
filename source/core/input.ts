@@ -48,11 +48,16 @@ module pow2 {
       _mouseElements:NamedMouseElement[] = [];
 
       static mouseOnView(ev:MouseEvent,view:pow2.SceneView,coords?:CanvasMouseCoords) {
+         var relativeElement:any = ev.srcElement;
+         var touches:any = (<any>ev).touches;
+         if(touches && touches.length > 0){
+            ev = <any>touches[0];
+         }
          var result:CanvasMouseCoords = coords || {
             point: new pow2.Point(),
             world: new pow2.Point()
          };
-         var canoffset = $(ev.srcElement).offset();
+         var canoffset = $(relativeElement).offset();
          var x = ev.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
          var y = ev.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
          result.point.set(x,y);
@@ -71,7 +76,7 @@ module pow2 {
             this._keysDown[ev.which] = false;
          });
          var hooks = this._mouseElements;
-         window.addEventListener(<string>'mousemove', (ev:MouseEvent) => {
+         window.addEventListener(<string>'mousemove touchmove', (ev:MouseEvent) => {
             var l:number = hooks.length;
             for(var i = 0; i < l; i++){
                var hook:NamedMouseElement = hooks[i];
@@ -105,7 +110,7 @@ module pow2 {
       mouseUnhook(view:SceneView);
       mouseUnhook(nameOrView:any){
          this._mouseElements = _.filter(this._mouseElements,(hook:NamedMouseElement) => {
-            return hook.name === nameOrView || hook.view.id === nameOrView.id;
+            return hook.name === nameOrView || hook.view._uid === nameOrView._uid;
          });
       }
 
@@ -113,7 +118,7 @@ module pow2 {
       getMouseHook(view:SceneView):NamedMouseElement;
       getMouseHook(nameOrView:any):NamedMouseElement{
          return <NamedMouseElement>_.find(this._mouseElements,(hook:NamedMouseElement) => {
-            return hook.name === nameOrView || hook.view.id === nameOrView.id;
+            return hook.name === nameOrView || hook.view._uid === nameOrView._uid;
          });
       }
 

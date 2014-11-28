@@ -23,21 +23,23 @@ module pow2.ui {
       function (game:PowGameService) {
          return {
             restrict: 'E',
-            replace:true,
             templateUrl: '/source/ui/directives/gameMenu.html',
             controller: function($scope) {
                $scope.page = 'party';
+               $scope.open = false;
+
+               $scope.toggle = () => {
+                  $scope.open = !$scope.open;
+               };
                $scope.showParty = function(){
-                  alert("Show party");
+                  $scope.page = 'party';
+               };
+               $scope.showSave = function(){
+                  $scope.page = 'save';
                };
                $scope.showInventory = function(){
-                  alert("Show inv");
+                  $scope.page = 'inventory';
                };
-               $scope.showSettings = function(){
-                  alert("Show settings");
-               };
-            },
-            link: function($scope) {
             }
          };
       }

@@ -19,11 +19,14 @@
 
 module pow2 {
    export class GameFeatureObject extends pow2.TileObject {
+      id:string;
+      world:GameWorld;
       tileMap:GameTileMap;
       feature:any; // TODO: Feature Interface
       type: string; // TODO: enum?
       passable:boolean;
-      groups:any;
+      groups:any[];
+      category:any;
       frame:number;
       constructor(options:any) {
          super(_.omit(options || {},["x","y","type"]));
@@ -32,7 +35,8 @@ module pow2 {
          this.point.y = options.y;
          this.type = options.type;
          this.frame = typeof options.frame !== 'undefined' ? options.frame : 0;
-         this.groups = typeof options.groups === 'string' ? JSON.parse(options.groups) : options.groups;
+         this.groups = typeof options.groups === 'string' ? options.groups.split('|') : options.groups;
+         this.category = options.category;
       }
    }
 }

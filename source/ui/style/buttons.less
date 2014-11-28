@@ -36,15 +36,35 @@
   position: relative;
   -webkit-font-smoothing: antialiased;
 }
-.btn {
+.btn-flat {
   border: 3px solid #fff;
   color: #fff;
   /* Button 1a */
   &:hover,
-  &:active {
+  &:active,
+  &.ng-click-active {
     color: #0e83cd;
     background: #fff;
   }
-
 }
 
+/* Button 2 */
+.btn-flap {
+  background: #cb4e4e;
+  color: #fff;
+  box-shadow: 0 6px #ab3c3c;
+  -webkit-transition: none;
+  -moz-transition: none;
+  transition: none;
+
+  border-radius: 0 0 5px 5px;
+  &:hover {
+    box-shadow: 0 4px #ab3c3c;
+    top: 2px;
+  }
+  &:active,
+  &.ng-click-active {
+    box-shadow: 0 0 #ab3c3c;
+    top: 6px;
+  }
+}

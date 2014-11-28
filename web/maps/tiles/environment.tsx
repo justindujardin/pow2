@@ -25,6 +25,7 @@
    <property name="icon" value="darkBridgeVertical.png"/>
    <property name="opaque" value="false"/>
    <property name="passable" value="true"/>
+   <property name="isPath" value="true"/>
    <property name="shipPassable" value="false"/>
   </properties>
  </tile>
@@ -97,6 +98,7 @@
    <property name="icon" value="darkFloor.png"/>
    <property name="opaque" value="false"/>
    <property name="passable" value="true"/>
+   <property name="isPath" value="true"/>
    <property name="shipPassable" value="false"/>
   </properties>
  </tile>
@@ -160,6 +162,7 @@
    <property name="icon" value="floor.png"/>
    <property name="opaque" value="false"/>
    <property name="passable" value="true"/>
+   <property name="isPath" value="true"/>
    <property name="shipPassable" value="false"/>
   </properties>
  </tile>
@@ -277,6 +280,7 @@
    <property name="icon" value="iceFloor.png"/>
    <property name="opaque" value="false"/>
    <property name="passable" value="true"/>
+   <property name="isPath" value="true"/>
    <property name="shipPassable" value="false"/>
   </properties>
  </tile>
@@ -331,6 +335,7 @@
    <property name="icon" value="treeAlt.png"/>
    <property name="opaque" value="true"/>
    <property name="passable" value="true"/>
+   <property name="isDangerous" value="true"/>
    <property name="shipPassable" value="false"/>
   </properties>
  </tile>

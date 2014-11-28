@@ -18,11 +18,12 @@
 
 module pow2 {
    export interface IProcessObject {
-      id:number;
+      _uid:string;
       tick?(elapsed:number);
       processFrame?(elapsed:number);
    }
 
+   var _shared:pow2.Time = null;
    export class Time {
       autoStart:boolean = false;
       tickRateMS:number = 32;
@@ -39,6 +40,14 @@ module pow2 {
             this.start();
          }
       }
+
+      static get():pow2.Time {
+         if(!_shared){
+            _shared = new pow2.Time({ autoStart:true });
+         }
+         return _shared;
+      }
+
 
       start() {
          if(this.running){
@@ -65,13 +74,16 @@ module pow2 {
       }
 
       removeObject(object:IProcessObject){
-         this.objects = <IProcessObject[]>_.filter(this.objects,function (o:IProcessObject){
-            return o.id != object.id;
+         this.objects = <IProcessObject[]>_.reject(this.objects,function (o:IProcessObject){
+            return o._uid === object._uid;
          });
       }
 
       addObject(object:IProcessObject){
-         if(_.where(this.objects,{id:object.id}).length > 0){
+         if(!object._uid){
+            throw new Error("Invalid object contains no _uid ->" + object);
+         }
+         if(_.where(this.objects,{_uid:object._uid}).length > 0){
             return;
          }
          this.objects.push(object);

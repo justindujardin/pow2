@@ -13,7 +13,7 @@ pow2.registerData("items",[
       "meleeMaxDamage" : 4,
       "baseValue" : 12, // Base value to buy/sell
       "level" : 1,
-      "usedBy" : ["warrior"] // Only general classes here, no specific allowed
+      "usedby" : ["warrior"] // Only general classes here, no specific allowed
    },
    {
       "name" : "Crude Club",
@@ -25,7 +25,7 @@ pow2.registerData("items",[
       "meleeMaxDamage" : 3,
       "baseValue" : 6,
       "level" : 1,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Goblin Scimitar",
@@ -38,7 +38,7 @@ pow2.registerData("items",[
       "toHitBonus" : -2,
       "baseValue" : 8,
       "level" : 1,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Sling",
@@ -51,7 +51,7 @@ pow2.registerData("items",[
       "baseValue" : 8,
       "level" : 1,
       "rangeAnimation" : "animRockSmall1.png",
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Short Bow",
@@ -64,7 +64,7 @@ pow2.registerData("items",[
       "baseValue" : 15,
       "level" : 1,
       "rangeAnimation" : "animArrow.png",
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Goblin Crossbow",
@@ -78,7 +78,7 @@ pow2.registerData("items",[
       "baseValue" : 12,
       "level" : 1,
       "rangeAnimation" : "animArrow.png",
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Short Staff",
@@ -90,7 +90,7 @@ pow2.registerData("items",[
       "meleeMaxDamage" : 2,
       "baseValue" : 5,
       "level" : 1,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Leather Armor",
@@ -101,7 +101,7 @@ pow2.registerData("items",[
       "armorClass" : 2,
       "baseValue" : 18,
       "level" : 1,
-      "usedBy" : ["warrior", "archer"]
+      "usedby" : ["warrior", "archer"]
    },
    {
       "name" : "Cloak",
@@ -112,7 +112,7 @@ pow2.registerData("items",[
       "armorClass" : 1,
       "baseValue" : 9,
       "level" : 1,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Leather Shield",
@@ -123,7 +123,7 @@ pow2.registerData("items",[
       "armorClass" : 1,
       "baseValue" : 6,
       "level" : 1,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Leather Helm",
@@ -134,7 +134,7 @@ pow2.registerData("items",[
       "armorClass" : 1,
       "baseValue" : 8,
       "level" : 1,
-      "usedBy" : ["warrior", "archer"]
+      "usedby" : ["warrior", "archer"]
    },
    {
       "name" : "Leather Boots",
@@ -145,7 +145,7 @@ pow2.registerData("items",[
       "armorClass" : 1,
       "baseValue" : 10,
       "level" : 1,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Healing Salve",
@@ -158,7 +158,7 @@ pow2.registerData("items",[
       "chargesMax" : 4,
       "baseValue" : 4,
       "level" : 1,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Imp Talisman",
@@ -171,7 +171,7 @@ pow2.registerData("items",[
       "chargesMax" : 1,
       "baseValue" : 8,
       "level" : 1,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    //// Level 2
    {
@@ -184,7 +184,7 @@ pow2.registerData("items",[
       "resistance" : 1,
       "baseValue" : 22,
       "level" : 2,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Snake Flute",
@@ -197,7 +197,7 @@ pow2.registerData("items",[
       "chargesMax" : 4,
       "baseValue" : 10,
       "level" : 2,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Coral Helm",
@@ -208,7 +208,7 @@ pow2.registerData("items",[
       "armorClass" : 2,
       "baseValue" : 35,
       "level" : 2,
-      "usedBy" : ["warrior", "archer"]
+      "usedby" : ["warrior", "archer"]
    },
    {
       "name" : "Fish-oil Salve",
@@ -221,7 +221,7 @@ pow2.registerData("items",[
       "chargesMax" : 10,
       "baseValue" : 4,
       "level" : 2,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Wand of Striking",
@@ -234,7 +234,7 @@ pow2.registerData("items",[
       "chargesMax" : 4,
       "baseValue" : 5,
       "level" : 2,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Goblin Staff",
@@ -247,7 +247,7 @@ pow2.registerData("items",[
       "toHitBonus" : -1,
       "baseValue" : 12,
       "level" : 2,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Long Sword",
@@ -259,7 +259,7 @@ pow2.registerData("items",[
       "meleeMaxDamage" : 8,
       "baseValue" : 20,
       "level" : 2,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Long Bow",
@@ -272,7 +272,7 @@ pow2.registerData("items",[
       "baseValue" : 35,
       "level" : 2,
       "rangeAnimation" : "animArrow.png",
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Long Staff",
@@ -284,7 +284,7 @@ pow2.registerData("items",[
       "meleeMaxDamage" : 4,
       "baseValue" : 15,
       "level" : 2,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Studded Armor",
@@ -295,7 +295,7 @@ pow2.registerData("items",[
       "armorClass" : 3,
       "baseValue" : 36,
       "level" : 2,
-      "usedBy" : ["warrior", "archer"]
+      "usedby" : ["warrior", "archer"]
    },
    {
       "name" : "Iron Shield",
@@ -306,7 +306,7 @@ pow2.registerData("items",[
       "armorClass" : 2,
       "baseValue" : 26,
       "level" : 2,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Iron Helm",
@@ -317,7 +317,7 @@ pow2.registerData("items",[
       "armorClass" : 2,
       "baseValue" : 30,
       "level" : 2,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Energy Salve",
@@ -330,7 +330,7 @@ pow2.registerData("items",[
       "chargesMax" : 6,
       "baseValue" : 5,
       "level" : 2,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    //// LEVEL 3
    {
@@ -344,7 +344,7 @@ pow2.registerData("items",[
       "chargesMax" : 6,
       "baseValue" : 6,
       "level" : 3,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Seaweed Armor",
@@ -355,7 +355,7 @@ pow2.registerData("items",[
       "armorClass" : 4,
       "baseValue" : 55,
       "level" : 3,
-      "usedBy" : ["warrior", "archer"]
+      "usedby" : ["warrior", "archer"]
    },
    {
       "name" : "Merman Shield",
@@ -366,7 +366,7 @@ pow2.registerData("items",[
       "armorClass" : 3,
       "baseValue" : 45,
       "level" : 3,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Enchanted Skull",
@@ -379,7 +379,7 @@ pow2.registerData("items",[
       "chargesMax" : 5,
       "baseValue" : 15,
       "level" : 3,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Healing Potion",
@@ -392,7 +392,7 @@ pow2.registerData("items",[
       "chargesMax" : 6,
       "baseValue" : 10,
       "level" : 3,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Broadsword",
@@ -405,7 +405,7 @@ pow2.registerData("items",[
       "toHitBonus" : 1,
       "baseValue" : 35,
       "level" : 3,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Heavy Axe",
@@ -417,7 +417,7 @@ pow2.registerData("items",[
       "meleeMaxDamage" : 12,
       "baseValue" : 32,
       "level" : 3,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Fine Bow",
@@ -431,7 +431,7 @@ pow2.registerData("items",[
       "baseValue" : 60,
       "level" : 3,
       "rangeAnimation" : "animArrow.png",
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Heavy Crossbow",
@@ -444,7 +444,7 @@ pow2.registerData("items",[
       "baseValue" : 55,
       "level" : 3,
       "rangeAnimation" : "animArrow.png",
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Long Oak Staff",
@@ -458,7 +458,7 @@ pow2.registerData("items",[
       "awarenessBonus" : 1,
       "baseValue" : 50,
       "level" : 3,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Coral Staff",
@@ -470,7 +470,7 @@ pow2.registerData("items",[
       "meleeMaxDamage" : 7,
       "baseValue" : 45,
       "level" : 3,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Chain Mail Armor",
@@ -481,7 +481,7 @@ pow2.registerData("items",[
       "armorClass" : 4,
       "baseValue" : 60,
       "level" : 3,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Elvish Cloak",
@@ -492,7 +492,7 @@ pow2.registerData("items",[
       "armorClass" : 2,
       "baseValue" : 48,
       "level" : 3,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Amulet of Protection",
@@ -503,7 +503,7 @@ pow2.registerData("items",[
       "armorClass" : 1,
       "baseValue" : 45,
       "level" : 3,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Narwhal Sword",
@@ -516,7 +516,7 @@ pow2.registerData("items",[
       "accuracyBonus" : 1,
       "baseValue" : 50,
       "level" : 3,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Potion of Strength",
@@ -529,7 +529,7 @@ pow2.registerData("items",[
       "chargesMax" : 4,
       "baseValue" : 9,
       "level" : 3,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    //// Level 4
    {
@@ -543,7 +543,7 @@ pow2.registerData("items",[
       "chargesMax" : 6,
       "baseValue" : 12,
       "level" : 4,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Curing Potion",
@@ -556,7 +556,7 @@ pow2.registerData("items",[
       "chargesMax" : 8,
       "baseValue" : 10,
       "level" : 4,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Merman Talisman",
@@ -569,7 +569,7 @@ pow2.registerData("items",[
       "chargesMax" : 6,
       "baseValue" : 20,
       "level" : 4,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Seaweed Cloak",
@@ -580,7 +580,7 @@ pow2.registerData("items",[
       "armorClass" : 4,
       "baseValue" : 90,
       "level" : 4,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Wand of Blasting",
@@ -593,7 +593,7 @@ pow2.registerData("items",[
       "chargesMax" : 10,
       "baseValue" : 10,
       "level" : 4,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Battle-axe",
@@ -605,7 +605,7 @@ pow2.registerData("items",[
       "meleeMaxDamage" : 14,
       "baseValue" : 70,
       "level" : 4,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Great Sword",
@@ -618,7 +618,7 @@ pow2.registerData("items",[
       "toHitBonus" : 2,
       "baseValue" : 75,
       "level" : 4,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Elvish Staff",
@@ -632,7 +632,7 @@ pow2.registerData("items",[
       "awarenessBonus" : 1,
       "baseValue" : 90,
       "level" : 4,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Spark Staff",
@@ -648,7 +648,7 @@ pow2.registerData("items",[
       "baseValue" : 290,
       "level" : 4,
       "combatSpell" : "Spark Blast",
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Elvish Bow",
@@ -662,7 +662,7 @@ pow2.registerData("items",[
       "baseValue" : 100,
       "level" : 4,
       "rangeAnimation" : "animArrow.png",
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Elvish Armor",
@@ -673,7 +673,7 @@ pow2.registerData("items",[
       "armorClass" : 4,
       "baseValue" : 90,
       "level" : 4,
-      "usedBy" : ["warrior", "archer"]
+      "usedby" : ["warrior", "archer"]
    },
    {
       "name" : "Spiked Shield",
@@ -684,7 +684,7 @@ pow2.registerData("items",[
       "armorClass" : 3,
       "baseValue" : 70,
       "level" : 4,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Great Helm",
@@ -695,7 +695,7 @@ pow2.registerData("items",[
       "armorClass" : 3,
       "baseValue" : 80,
       "level" : 4,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Amulet of Thought",
@@ -706,7 +706,7 @@ pow2.registerData("items",[
       "awarenessBonus" : 2,
       "baseValue" : 100,
       "level" : 4,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Amulet of Precision",
@@ -717,7 +717,7 @@ pow2.registerData("items",[
       "accuracyBonus" : 2,
       "baseValue" : 100,
       "level" : 4,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Amulet of Might",
@@ -728,7 +728,7 @@ pow2.registerData("items",[
       "strengthBonus" : 2,
       "baseValue" : 100,
       "level" : 4,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Sharkbone Bow",
@@ -742,7 +742,7 @@ pow2.registerData("items",[
       "baseValue" : 150,
       "level" : 4,
       "rangeAnimation" : "animArrow.png",
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Elvish Hat",
@@ -755,7 +755,7 @@ pow2.registerData("items",[
       "awareness" : 1,
       "baseValue" : 123,
       "level" : 4,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Elvish Boots",
@@ -766,7 +766,7 @@ pow2.registerData("items",[
       "armorClass" : 2,
       "baseValue" : 80,
       "level" : 4,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
 
    //// Level 5
@@ -779,7 +779,7 @@ pow2.registerData("items",[
       "armorClass" : 3,
       "baseValue" : 130,
       "level" : 5,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Explosive Vial",
@@ -792,7 +792,7 @@ pow2.registerData("items",[
       "chargesMax" : 9,
       "baseValue" : 19,
       "level" : 5,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Anti-Magic Amulet",
@@ -803,7 +803,7 @@ pow2.registerData("items",[
       "resistance" : 2,
       "baseValue" : 140,
       "level" : 5,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Serpentine Robes",
@@ -815,7 +815,7 @@ pow2.registerData("items",[
       "resistance" : 2,
       "baseValue" : 160,
       "level" : 5,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Magic Sword",
@@ -828,7 +828,7 @@ pow2.registerData("items",[
       "toHitBonus" : 3,
       "baseValue" : 175,
       "level" : 5,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Dark Sword",
@@ -842,7 +842,7 @@ pow2.registerData("items",[
       "constitutionBonus" : -5,
       "baseValue" : 200,
       "level" : 5,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Magic Bow",
@@ -856,7 +856,7 @@ pow2.registerData("items",[
       "baseValue" : 175,
       "level" : 5,
       "rangeAnimation" : "animArrow.png",
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Dark Bow",
@@ -871,7 +871,7 @@ pow2.registerData("items",[
       "baseValue" : 210,
       "level" : 5,
       "rangeAnimation" : "animArrow.png",
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Magic Staff",
@@ -888,7 +888,7 @@ pow2.registerData("items",[
       "awarenessBonus" : 2,
       "baseValue" : 195,
       "level" : 5,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Dark Staff",
@@ -906,7 +906,7 @@ pow2.registerData("items",[
       "awarenessBonus" : 2,
       "baseValue" : 255,
       "level" : 5,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Jewel of Health",
@@ -919,7 +919,7 @@ pow2.registerData("items",[
       "chargesMax" : 5,
       "baseValue" : 45,
       "level" : 5,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Scale Mail Armor",
@@ -930,7 +930,7 @@ pow2.registerData("items",[
       "armorClass" : 5,
       "baseValue" : 150,
       "level" : 5,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Elvish Helm",
@@ -942,7 +942,7 @@ pow2.registerData("items",[
       "resistance" : 1,
       "baseValue" : 140,
       "level" : 5,
-      "usedBy" : ["warrior", "archer"]
+      "usedby" : ["warrior", "archer"]
    },
    {
       "name" : "Amulet of Sight",
@@ -953,7 +953,7 @@ pow2.registerData("items",[
       "accuracyBonus" : 4,
       "baseValue" : 150,
       "level" : 5,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Amulet of Life",
@@ -964,7 +964,7 @@ pow2.registerData("items",[
       "constitutionBonus" : 5,
       "baseValue" : 150,
       "level" : 5,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Oliphant Talisman",
@@ -977,7 +977,7 @@ pow2.registerData("items",[
       "chargesMax" : 4,
       "baseValue" : 35,
       "level" : 5,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
 
    //// Level 6
@@ -993,7 +993,7 @@ pow2.registerData("items",[
       "accuracyBonus" : 2,
       "baseValue" : 255,
       "level" : 6,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Potion of Rage",
@@ -1006,7 +1006,7 @@ pow2.registerData("items",[
       "chargesMax" : 7,
       "baseValue" : 35,
       "level" : 6,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Blink Gem",
@@ -1019,7 +1019,7 @@ pow2.registerData("items",[
       "chargesMax" : 5,
       "baseValue" : 41,
       "level" : 6,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Wand of Fire",
@@ -1032,7 +1032,7 @@ pow2.registerData("items",[
       "chargesMax" : 5,
       "baseValue" : 80,
       "level" : 6,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Wand of Blessing",
@@ -1045,7 +1045,7 @@ pow2.registerData("items",[
       "chargesMax" : 5,
       "baseValue" : 65,
       "level" : 6,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Wand of Paralysis",
@@ -1058,7 +1058,7 @@ pow2.registerData("items",[
       "chargesMax" : 8,
       "baseValue" : 56,
       "level" : 6,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Speed Boots",
@@ -1070,7 +1070,7 @@ pow2.registerData("items",[
       "baseValue" : 290,
       "extraMoves" : 1,
       "level" : 6,
-      "usedBy" : ["warrior", "archer"]
+      "usedby" : ["warrior", "archer"]
    },
    {
       "name" : "Sheepskin Boots",
@@ -1082,7 +1082,7 @@ pow2.registerData("items",[
       "constitutionBonus" : 3,
       "baseValue" : 265,
       "level" : 6,
-      "usedBy" : ["warrior", "archer"]
+      "usedby" : ["warrior", "archer"]
    },
    {
       "name" : "Archer's Helm",
@@ -1094,7 +1094,7 @@ pow2.registerData("items",[
       "resistance" : 2,
       "baseValue" : 305,
       "level" : 6,
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Wizard Hat",
@@ -1107,7 +1107,7 @@ pow2.registerData("items",[
       "awareness" : 2,
       "baseValue" : 318,
       "level" : 6,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Ogre Talisman",
@@ -1120,7 +1120,7 @@ pow2.registerData("items",[
       "chargesMax" : 3,
       "baseValue" : 120,
       "level" : 6,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Jewel of Energy",
@@ -1133,7 +1133,7 @@ pow2.registerData("items",[
       "chargesMax" : 6,
       "baseValue" : 70,
       "level" : 6,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Embroidered Cloak",
@@ -1145,7 +1145,7 @@ pow2.registerData("items",[
       "resistance" : 2,
       "baseValue" : 330,
       "level" : 6,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Tempered Shield",
@@ -1157,7 +1157,7 @@ pow2.registerData("items",[
       "resistance" : 1,
       "baseValue" : 300,
       "level" : 6,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Helm of Valor",
@@ -1169,7 +1169,7 @@ pow2.registerData("items",[
       "resistance" : 1,
       "baseValue" : 300,
       "level" : 6,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    //// Level 7
    {
@@ -1183,7 +1183,7 @@ pow2.registerData("items",[
       "chargesMax" : 3,
       "baseValue" : 150,
       "level" : 7,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Healing Vial",
@@ -1196,7 +1196,7 @@ pow2.registerData("items",[
       "chargesMax" : 5,
       "baseValue" : 130,
       "level" : 7,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Wand of Curing",
@@ -1209,7 +1209,7 @@ pow2.registerData("items",[
       "chargesMax" : 9,
       "baseValue" : 115,
       "level" : 7,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Wand of Disruption",
@@ -1222,7 +1222,7 @@ pow2.registerData("items",[
       "chargesMax" : 5,
       "baseValue" : 130,
       "level" : 7,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "War Amulet",
@@ -1236,7 +1236,7 @@ pow2.registerData("items",[
       "constitutionBonus" : 1,
       "baseValue" : 500,
       "level" : 7,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Amulet of Shadow",
@@ -1249,7 +1249,7 @@ pow2.registerData("items",[
       "constitutionBonus" : 1,
       "baseValue" : 500,
       "level" : 7,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Amulet of Light",
@@ -1262,7 +1262,7 @@ pow2.registerData("items",[
       "awarenessBonus" : 4,
       "baseValue" : 500,
       "level" : 7,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Strengthsword",
@@ -1276,7 +1276,7 @@ pow2.registerData("items",[
       "strengthBonus" : 5,
       "baseValue" : 600,
       "level" : 7,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Bow of Seeking",
@@ -1291,7 +1291,7 @@ pow2.registerData("items",[
       "baseValue" : 610,
       "level" : 7,
       "rangeAnimation" : "animArrow.png",
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Staff of Wisdom",
@@ -1309,7 +1309,7 @@ pow2.registerData("items",[
       "resistance" : 1,
       "baseValue" : 675,
       "level" : 7,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Platemail Armor",
@@ -1322,7 +1322,7 @@ pow2.registerData("items",[
       "constitutionBonus" : 1,
       "baseValue" : 720,
       "level" : 7,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Armored Boots",
@@ -1333,7 +1333,7 @@ pow2.registerData("items",[
       "armorClass" : 4,
       "baseValue" : 540,
       "level" : 7,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    //// Level 8
    {
@@ -1346,7 +1346,7 @@ pow2.registerData("items",[
       "resistance" : 3,
       "baseValue" : 965,
       "level" : 8,
-      "usedBy" : ["mage"]
+      "usedby" : ["mage"]
    },
    {
       "name" : "Energy Vial",
@@ -1359,7 +1359,7 @@ pow2.registerData("items",[
       "chargesMax" : 5,
       "baseValue" : 120,
       "level" : 8,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Mithril Armor",
@@ -1371,7 +1371,7 @@ pow2.registerData("items",[
       "resistance" : 2,
       "baseValue" : 1350,
       "level" : 8,
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Force Shield",
@@ -1383,7 +1383,7 @@ pow2.registerData("items",[
       "constitutionBonus" : 2,
       "baseValue" : 1100,
       "level" : 8,
-      "usedBy" : ["warrior"]
+      "usedby" : ["warrior"]
    },
    {
       "name" : "Amulet of Awe",
@@ -1398,7 +1398,7 @@ pow2.registerData("items",[
       "awarenessBonus" : 3,
       "baseValue" : 1200,
       "level" : 8,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    },
    {
       "name" : "Enchanted Boots",
@@ -1411,7 +1411,7 @@ pow2.registerData("items",[
       "baseValue" : 940,
       "extraMoves" : 1,
       "level" : 8,
-      "usedBy" : ["archer", "mage"]
+      "usedby" : ["archer", "mage"]
    },
    {
       "name" : "Enchanted Helm",
@@ -1424,7 +1424,7 @@ pow2.registerData("items",[
       "accuracyBonus" : 1,
       "baseValue" : 550,
       "level" : 8,
-      "usedBy" : ["archer"]
+      "usedby" : ["archer"]
    },
    {
       "name" : "Flayer Talisman",
@@ -1437,7 +1437,7 @@ pow2.registerData("items",[
       "chargesMax" : 4,
       "baseValue" : 300,
       "level" : 8,
-      "usedBy" : ["warrior", "archer", "mage"]
+      "usedby" : ["warrior", "archer", "mage"]
    }
 
 ]);

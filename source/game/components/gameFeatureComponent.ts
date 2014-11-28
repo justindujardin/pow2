@@ -24,5 +24,41 @@ module pow2 {
     */
    export class GameFeatureComponent extends GameComponent {
       host:GameFeatureObject;
+
+      syncComponent():boolean{
+         if(!super.syncComponent()){
+            return false;
+         }
+         this.host.visible = this.host.enabled = !this.getDataHidden();
+         return true;
+      }
+
+
+      /**
+       * Hide and disable a feature object in a persistent manner.
+       * @param hidden Whether to hide or unhide the object.
+       */
+      setDataHidden(hidden:boolean=true) {
+         if(this.host && this.host.world && this.host.world.model && this.host.id){
+            this.host.world.model.setKeyData('' + this.host.id,{
+               hidden:hidden
+            });
+            this.syncComponent();
+         }
+      }
+
+      /**
+       * Determine if a feature has been persistently hidden by a call
+       * to `hideFeature`.
+       */
+      getDataHidden():boolean{
+         if(this.host && this.host.world && this.host.world.model && this.host.id){
+            var data:any = this.host.world.model.getKeyData('' + this.host.id);
+            if(data && data.hidden){
+               return true;
+            }
+         }
+         return false;
+      }
    }
 }

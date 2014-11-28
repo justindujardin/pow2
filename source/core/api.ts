@@ -18,11 +18,19 @@
 
 module pow2 {
 
+   /**
+    * The Google Spreadsheet ID to load game data from.  This must be a published
+    * google spreadsheet key.
+    * @type {string} The google spreadsheet ID
+    */
+   export var SPREADSHEET_ID:string = "1IAQbt_-Zq1BUwRNiJorvt4iPEYb5HmZrpyMOkb-OuJo";
+
+
    export interface IGameItem {
       name:string; // The item name
       cost:number; // The cost of this item
       icon:string; // Sprite icon name, e.g. LongSword.png
-      usedBy?:any[]; // `HeroType`s that can use this item.
+      usedby?:any[]; // `HeroType`s that can use this item.
    }
 
    export interface IGameWeapon extends IGameItem {
@@ -106,27 +114,31 @@ module pow2 {
          data.creatures.push(_.extend(c,{level:level}));
       });
    }
-   export function registerWeapons(level,weapons:IGameWeapon[]){
-      _.each(weapons,(c) => {
-         var item = _.extend(c,{
-            level:level,
-            itemType:"weapon"
-         });
-         data.weapons.push(item);
-      });
-   }
-   export function registerArmor(level,items:IGameArmor[]){
-      _.each(items,(c) => {
-         data.armor.push(_.extend(c,{
-            level:level,
-            itemType:"armor"
-         }));
-      });
-   }
    export function getMap(name:string){
       return data.maps[name];
    }
    export function getMaps(){
       return data.maps;
+   }
+
+   var _worldLookup:{ [name:string]:any } = {};
+   /**
+    * Module level world accessor.
+    */
+   export function getWorld<T>(name:string):T{
+      return <T>_worldLookup[name];
+   }
+   /**
+    * Module level world setter.
+    */
+   export function registerWorld(name:string,instance:any) {
+      if(!name){
+         throw new Error("Cannot register world with null name");
+      }
+      if(_worldLookup.hasOwnProperty(name)){
+         throw new Error("Cannot register world multiple times with the same name");
+      }
+      _worldLookup[name] = instance;
+      return _worldLookup[name];
    }
 }

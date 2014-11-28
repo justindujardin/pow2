@@ -78,7 +78,6 @@ module.exports = function(grunt) {
                "server/*.ts"
             ]
          },
-
          pow2: {
             src: [
                "source/core/api.ts",
@@ -105,11 +104,13 @@ module.exports = function(grunt) {
                "source/game/models/*.ts",
                "source/game/states/*.ts",
                "source/game/objects/*.ts",
+               "source/game/resources/*.ts",
                "source/game/components/*.ts",
                "source/game/components/features/*.ts",
                "source/combat/*.ts",
                "source/combat/states/*.ts",
-               "source/combat/components/*.ts"
+               "source/combat/components/*.ts",
+               "source/combat/components/players/*.ts"
             ],
             dest: 'lib/<%= pkg.name %>.game.js'
          },
@@ -127,6 +128,15 @@ module.exports = function(grunt) {
                "data/creatures/*.ts"
             ],
             dest: 'lib/<%= pkg.name %>.data.js'
+         },
+         tests: {
+            src: [
+               "test/fixtures/*.ts",
+               "test/fixtures/**/*.ts",
+               "test/*.ts",
+               "test/**/*.ts"
+            ],
+            dest: 'lib/test/<%= pkg.name %>.tests.js'
          }
 
       },
@@ -171,6 +181,7 @@ module.exports = function(grunt) {
          game: {
             options: {
                metaFile: 'lib/<%= pkg.name %>.sprites.js',
+               jsonFile: 'lib/<%= pkg.name %>.sprites.json',
                indexFiles: true
             },
             files: [
@@ -233,6 +244,12 @@ module.exports = function(grunt) {
 
          // Game Source outputs
          //--------------------------------------------------------------------
+         tests: {
+            files: [
+               '<%= typescript.tests.src %>'
+            ],
+            tasks: ['typescript:tests', 'notify:code']
+         },
          pow2: {
             files: [
                '<%= typescript.pow2.src %>'
@@ -305,10 +322,12 @@ module.exports = function(grunt) {
       var spritePacker = require('./server/spritePacker');
       var options = this.options({
          metaFile: null,
+         jsonFile: null,
          indexFiles:false
       });
       var queue = this.files.slice();
       var jsChunks = [];
+      var jsonData = {};
       function _next(){
          if(queue.length > 0){
             var exec = queue.shift();
@@ -320,6 +339,7 @@ module.exports = function(grunt) {
                      grunt.file.write(index, JSON.stringify(exec.src,null,3));
                      grunt.log.writeln('File "' + index + '" created.');
                   }
+                  jsonData[result.file] = result.meta;
                   jsChunks.push("pow2.registerSprites('" + result.name + "'," + JSON.stringify(result.meta,null,3)+");");
                   return _next();
                },function(error){
@@ -330,10 +350,15 @@ module.exports = function(grunt) {
          _done();
       }
       function _done(){
-         // Write out metadata if specified.
+         // Write out javascript metadata if specified.
          if(options.metaFile){
             grunt.file.write(options.metaFile,jsChunks.join('\n'));
             grunt.log.writeln('File "' + options.metaFile + '" created.');
+         }
+         // Write out JSON metadata if specified.
+         if(options.jsonFile){
+            grunt.file.write(options.jsonFile,JSON.stringify(jsonData,null,2));
+            grunt.log.writeln('File "' + options.jsonFile + '" created.');
          }
          done();
       }
@@ -341,21 +366,21 @@ module.exports = function(grunt) {
    });
 
    grunt.loadNpmTasks('grunt-contrib-uglify');
-   grunt.loadNpmTasks('grunt-contrib-clean');
    grunt.loadNpmTasks('grunt-typescript');
    grunt.loadNpmTasks('grunt-contrib-less');
    grunt.loadNpmTasks('grunt-contrib-copy');
+   grunt.loadNpmTasks('grunt-contrib-clean');
    grunt.loadNpmTasks('grunt-notify');
    // Support system notifications in non-production environments
-   if(process && process.env && process.env.NODE_ENV !== 'production'){
+   if(process && process.env && process.env.NODE_ENV === 'production'){
+      grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
+      grunt.registerTask('heroku:production', ['typescript', 'copy','less','sprites','uglify']);
+   }
+   else {
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
 
       grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
       grunt.registerTask('develop', ['default', 'watch']);
-   }
-   else {
-      grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
-      grunt.registerTask('heroku:production', ['typescript', 'copy','less','sprites','uglify']);
    }
 };

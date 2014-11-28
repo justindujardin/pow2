@@ -23,7 +23,7 @@ module pow2.ui {
          templateUrl: '/source/ui/directives/inventoryView.html',
          controller : function($scope,$element){
             var currentIndex:number = 0;
-            $scope.character = $scope.party[currentIndex];
+            $scope.character = $scope.party[currentIndex]; 
             $scope.nextCharacter = () => {
                currentIndex++;
                if(currentIndex >= $scope.party.length){
@@ -43,28 +43,28 @@ module pow2.ui {
                if(!$scope.inventory || !item || !hero){
                   return;
                }
+
+               var users = item.get('usedby');
+               if(users && _.indexOf(users,hero.get('type')) === -1) {
+                  powAlert.show(hero.get('name') + " cannot equip this item");
+                  return;
+               }
+
                if(item instanceof ArmorModel){
-                  var users = item.get('usedBy');
-                  if(users && _.indexOf(users,hero.get('type')) === -1) {
-                     powAlert.show(hero.get('name') + " cannot equip this item");
-                     return;
-                  }
-                  else {
-                     var old:ArmorModel = hero.equipArmor(item);
-                     if(old){
-                        game.model.addInventory(old);
-                     }
+                  var old:ArmorModel = hero.equipArmor(item);
+                  if(old){
+                     game.world.model.addInventory(old);
                   }
                }
                else if(item instanceof WeaponModel){
                   // Remove any existing weapon first
                   if(hero.weapon){
-                     game.model.addInventory(hero.weapon);
+                     game.world.model.addInventory(hero.weapon);
                   }
-                  hero.weapon = item;
+                  hero.weapon = <WeaponModel>item;
                }
-               game.model.removeInventory(item);
-               powAlert.show("Equipped " + item.attributes.name + " to " + hero.attributes.name);
+               game.world.model.removeInventory(item);
+               //powAlert.show("Equipped " + item.attributes.name + " to " + hero.attributes.name);
             };
 
             $scope.unequipItem = (item:ItemModel) => {
@@ -76,10 +76,14 @@ module pow2.ui {
                   hero.unequipArmor(item);
                }
                else if(item instanceof WeaponModel){
+                  var weapon:WeaponModel = <WeaponModel>item;
+                  if(weapon.isNoWeapon()){
+                     return;
+                  }
                   hero.weapon = null;
                }
-               game.model.addInventory(item);
-               powAlert.show("Unequipped " + item.attributes.name + " from " + hero.attributes.name);
+               game.world.model.addInventory(item);
+               //powAlert.show("Unequipped " + item.attributes.name + " from " + hero.attributes.name);
             };
          }
       };

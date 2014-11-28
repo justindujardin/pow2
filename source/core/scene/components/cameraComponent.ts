@@ -20,7 +20,7 @@ module pow2 {
    export class CameraComponent extends SceneComponent {
       process(view:SceneView) {
          view.camera.point.set(this.host.point);
-         view.cameraScale = 4;
+         view.cameraScale = view.context.canvas.width > 768 ? 4 : 2;
          var canvasSize = view.screenToWorld(new Point(view.context.canvas.width,view.context.canvas.height),view.cameraScale);
          view.camera.extent.set(canvasSize);
       }

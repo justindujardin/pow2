@@ -21,9 +21,6 @@ module pow2 {
    export class GameMapState extends State {
       static NAME:string = "map";
       name:string = GameMapState.NAME;
-      transitions:IStateTransition[] = [
-         new GameCombatTransition()
-      ];
       mapName:string;
       mapPoint:Point;
 
@@ -51,23 +48,8 @@ module pow2 {
          if(!machine.player.tileMap){
             throw new Error("Defensive exception: The player must have a tileMap.");
          }
-         if(machine.encounter){
-            machine.encounter.resetBattleCounter();
-         }
          this.mapName = machine.player.tileMap.mapName;
          this.mapPoint = machine.player.point.clone();
-      }
-   }
-   export class GameMapTransition extends StateTransition {
-      targetState:string = GameMapState.NAME;
-      evaluate(machine:GameStateMachine):boolean {
-         if(!super.evaluate(machine) || !machine.player){
-            return false;
-         }
-         if(machine.getCurrentName() === GameCombatState.NAME){
-            return machine.player.point.x === 1;
-         }
-         return true;
       }
    }
 }

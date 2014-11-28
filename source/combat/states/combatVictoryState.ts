@@ -25,6 +25,7 @@ module pow2 {
       levels:HeroModel[];
       gold:number;
       exp:number;
+      state:CombatVictoryState;
    }
 
    export class CombatVictoryState extends CombatState {
@@ -54,6 +55,7 @@ module pow2 {
          });
 
          var summary:CombatVictorySummary = {
+            state:this,
             party:machine.party,
             enemies:machine.enemies,
             levels:leveledHeros,
@@ -64,9 +66,6 @@ module pow2 {
       }
 
       update(machine:CombatStateMachine){
-         if(machine.paused){
-            return;
-         }
          machine.parent.setCurrentState(GameMapState.NAME);
       }
    }

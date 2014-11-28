@@ -36,10 +36,10 @@ module pow2.combat {
       private _renderFrame:number = 3;
       state:string = "";
       animating:boolean = false;
-      private _animator:AnimatedComponent = null;
+      animator:AnimatedComponent = null;
 
       syncComponent():boolean {
-         this._animator = <AnimatedComponent>this.host.findComponent(AnimatedComponent);
+         this.animator = <AnimatedComponent>this.host.findComponent(AnimatedComponent);
          return super.syncComponent();
       }
 
@@ -70,40 +70,48 @@ module pow2.combat {
          this.state = name;
       }
 
-      attack(attackCb:() => any, cb:() => void) {
-         if(!this._animator || this.animating){
+
+      attack(attackCb:() => any, cb?:() => void) {
+         if(!this.animator || this.animating){
             return;
          }
-         var attackAnimation = [
+         this._attack(attackCb,cb);
+      }
+
+      getAttackAnimation(strikeCb:()=>any){
+         return [
             {
-               name : "Move Forward for Attack",
-               repeats : 0,
-               duration:250,
-               frames : [9,11,10],
-               move: new Point(-1,0),
-               callback: () => {
-                  this.host.setSprite(this.host.icon.replace(".png","-attack.png"),12);
-               }
-            },
-            {
-               name : "Strike at Opponent",
-               repeats: 1,
-               duration:500,
-               frames : [12,13,14,15,14,13,12],
-               callback: () => {
-                  this.host.setSprite(this.host.icon.replace("-attack.png",".png"),10);
-                  attackCb && attackCb();
-               }
-            },
-            {
-               name : "Return to Party",
-               duration : 250,
+               name: "Move Forward for Attack",
                repeats: 0,
-               frames : [10,11,9],
-               move: new Point(1,0)
+               duration: 250,
+               frames: [9, 11, 10],
+               move: new Point(-1, 0),
+               callback: () => {
+                  this.host.setSprite(this.host.icon.replace(".png", "-attack.png"), 12);
+               }
+            },
+            {
+               name: "Strike at Opponent",
+               repeats: 1,
+               duration: 100,
+               frames: [12, 13, 14, 15, 14, 13, 12],
+               callback: () => {
+                  this.host.setSprite(this.host.icon.replace("-attack.png", ".png"), 10);
+                  strikeCb && strikeCb();
+               }
+            },
+            {
+               name: "Return to Party",
+               duration: 250,
+               repeats: 0,
+               frames: [10, 11, 9],
+               move: new Point(1, 0)
             }
          ];
+      }
 
+      _attack(attackCb:() => any, cb?:() => void) {
+         var attackAnimation = this.getAttackAnimation(attackCb);
          var animations:IAnimationConfig[] = _.map(attackAnimation,(anim:IAnimationConfig) => {
             var result = _.extend({},anim);
             if(typeof result.move !== 'undefined'){
@@ -112,47 +120,7 @@ module pow2.combat {
             return result;
          });
          this.animating = true;
-         this._animator.playChain(animations,() => {
-            this.animating = false;
-            cb && cb();
-         });
-      }
-
-      magic(attackCb:() => any, cb:() => void) {
-         if(!this._animator || this.animating){
-            return;
-         }
-         var magicAnimation = [
-            {
-               name : "Magic cast",
-               repeats: 0,
-               duration:1000,
-               frames : [19,18,17,16,15],
-               callback: () => {
-                  attackCb && attackCb();
-               }
-            },
-            {
-               name : "Back to rest",
-               repeats: 0,
-               duration:1000,
-               frames : [15,16,17,18,19],
-               callback: () => {
-                  this.host.setSprite(this.host.icon.replace("-magic.png",".png"),10);
-               }
-            }
-
-         ];
-         var animations:IAnimationConfig[] = _.map(magicAnimation,(anim:IAnimationConfig) => {
-            var result = _.extend({},anim);
-            if(typeof result.move !== 'undefined'){
-               result.move = result.move.clone();
-            }
-            return result;
-         });
-         this.animating = true;
-         this.host.setSprite(this.host.icon.replace(".png","-magic.png"),19);
-         this._animator.playChain(animations,() => {
+         this.animator.playChain(animations,() => {
             this.animating = false;
             cb && cb();
          });
@@ -168,17 +136,14 @@ module pow2.combat {
             var frame = StateFrames.DEFAULT;
             switch(this.state){
                case "Injured":
-                  frame = StateFrames.INJURED;
+                  frame = StateFrames.DEFAULT;
                   break;
                case "Dead":
-                  frame = StateFrames.DEAD;
+                  frame = StateFrames.DEFAULT;
                   break;
                case "Attacking":
                   frame = altFrame ? StateFrames.STRIKE : StateFrames.SWING;
                   break;
-//               case "Moving":
-//                  frame = altFrame ? StateFrames.WALK : StateFrames.DEFAULT;
-//                  break;
             }
             this.host.frame = this._renderFrame = frame;
          }

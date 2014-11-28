@@ -42,14 +42,17 @@ module pow2.ui {
     */
    export class PowAlertService extends pow2.Events implements pow2.IWorldObject, pow2.IProcessObject, IPowAlertService {
       world:pow2.GameWorld;
-      id:number = _.uniqueId();
+      _uid:string = _.uniqueId('alert');
       paused:boolean = false;
-      public containerSearch:string = '.game-container';
+      public containerSearch:string = '.ui-container';
+
+      container:ng.IAugmentedJQuery = null;
 
       private _current:IPowAlertObject = null;
       private _queue:IPowAlertObject[] = [];
+      private _dismissBinding:(e) => any = null;
       constructor(
-         public element:ng.IAugmentedJQuery,
+         public element:JQuery,
          public document:any,
          public scope:IAlertScopeService,
          public timeout:ng.ITimeoutService,
@@ -58,6 +61,9 @@ module pow2.ui {
          super();
          game.world.mark(this);
          game.world.time.addObject(this);
+         this._dismissBinding = (e) => {
+            this.dismiss();
+         };
       }
 
       onAddToWorld(world:pow2.IWorld) {}
@@ -67,13 +73,11 @@ module pow2.ui {
       destroy() {
          this.game.world.time.removeObject(this);
          this.game.world.erase(this);
-      }
-
-      dismiss() {
-         if(this._current){
-            this._current.dismissed = true;
+         if(this.container){
+            this.container.off('click',this._dismissBinding);
          }
       }
+
       show(message:string,done?:() => void,duration?:number):IPowAlertObject{
          var obj:IPowAlertObject = {
             message:message,
@@ -84,6 +88,10 @@ module pow2.ui {
       }
 
       queue(config:IPowAlertObject){
+         if(!this.container){
+            this.container = this.document.find(this.containerSearch);
+            this.container.on('click',this._dismissBinding);
+         }
          config.elapsed = 0;
          this._queue.push(config);
          return config;
@@ -103,17 +111,7 @@ module pow2.ui {
                c.elapsed += elapsed;
                return;
             }
-            this.paused = true;
-            this.scope.$apply(() => {
-               this.animate.leave(this.element, () => {
-                  if(this._current){
-                     this._current.done && this._current.done(this._current);
-                     this._current = null;
-                  }
-                  this.scope.powAlert = null;
-                  this.paused = false;
-               });
-            });
+            this.dismiss();
          }
          if(this.paused || this._queue.length === 0){
             return;
@@ -121,15 +119,29 @@ module pow2.ui {
          this._current = this._queue.shift();
          this.scope.$apply(() => {
             this.scope.powAlert = this._current;
-            var container = this.document.find(this.containerSearch);
-            container.on('click',(e) => {
-               this.dismiss();
-            });
-            this.animate.enter(this.element, container, null,() => {
+            this.animate.enter(this.element, this.container, null,() => {
                this.paused = false;
             });
          });
       }
+
+      dismiss() {
+         this.paused = true;
+         this.scope.$apply(() => {
+            this.animate.leave(this.element, () => {
+               if(this._current){
+                  this._current.done && this._current.done(this._current);
+                  this._current = null;
+               }
+               this.scope.powAlert = null;
+               this.paused = false;
+            });
+         });
+         if(this._current){
+            this._current.dismissed = true;
+         }
+      }
+
    }
    app.factory('powAlert', [
       '$rootScope',

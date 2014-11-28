@@ -22,10 +22,15 @@ module pow2 {
       party:PlayerComponent;
       enter(object:GameFeatureObject):boolean {
          this.party = <PlayerComponent>object.findComponent(PlayerComponent);
-         return !!this.party;
+         if(!this.party){
+            return false;
+         }
+         var zone:IZoneMatch = this.host.tileMap.getCombatZones(this.party.host.point);
+         this.host.world.fixedEncounter(zone,this.host.id);
+         this.setDataHidden(true);
+         return true;
       }
       exited(object:GameFeatureObject):boolean {
-         //this.host.destroy();
          return super.exited(object);
       }
    }

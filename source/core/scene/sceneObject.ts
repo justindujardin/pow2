@@ -23,7 +23,8 @@
 module pow2 {
 
    export interface IObject {
-      id:number;
+      id:string;
+      _uid:string; // Unique ID
       name:string;
    }
 
@@ -53,8 +54,9 @@ module pow2 {
       size:Point;
    }
 
-   export class SceneObject extends Events implements ISceneObject, ISceneComponentHost {
-      id:number = _.uniqueId();
+   export class SceneObject extends Events implements ISceneObject, ISceneComponentHost, IWorldObject {
+      id:string;
+      _uid:string = _.uniqueId('so');
       name:string;
       scene: Scene;
       world: IWorld;
@@ -65,6 +67,7 @@ module pow2 {
       // The render point that is interpolated between ticks.
       renderPoint:Point;
       _components:ISceneComponent[] = [];
+
       constructor(options?: any) {
          super();
          _.extend(this, _.defaults(options || {}), {
@@ -143,7 +146,7 @@ module pow2 {
       }
 
       addComponent(component:ISceneComponent,silent:boolean=false):boolean {
-         if(_.where(this._components,{id: component.id}).length > 0){
+         if(_.where(this._components,{_uid: component._uid}).length > 0){
             throw new Error("Component added twice");
          }
          component.host = this;
@@ -179,11 +182,11 @@ module pow2 {
       }
       removeComponentDictionary(components:any,silent?:boolean):boolean {
          var previousCount:number = this._components.length;
-         var removeIds:number[] = _.map(components,(value:ISceneComponent) => {
-            return value.id;
+         var removeIds:string[] = _.map(components,(value:ISceneComponent) => {
+            return value._uid;
          });
          this._components = _.filter(this._components, (obj:SceneComponent) => {
-            if(_.indexOf(removeIds,obj.id) !== -1){
+            if(_.indexOf(removeIds,obj._uid) !== -1){
                if(obj.disconnectComponent() === false){
                   return true;
                }
@@ -210,7 +213,7 @@ module pow2 {
       removeComponent(component:ISceneComponent,silent:boolean=false):boolean{
          var previousCount:number = this._components.length;
          this._components = _.filter(this._components, (obj:SceneComponent) => {
-            if(obj.id === component.id){
+            if(obj._uid === component._uid){
                if(obj.disconnectComponent() === false){
                   return true;
                }

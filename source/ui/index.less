@@ -12,6 +12,7 @@
 @import "type";
 @import "code";
 @import "progress-bars";
+@import "glyphicons";
 
 // Utility classes
 @import "utilities";
@@ -26,6 +27,7 @@
 
 @zCanvas: 10;
 @zCanvasGui: 20;
+@zCanvasAlert: 50;
 
 
 // Import template styles
@@ -36,14 +38,38 @@
 @import "./directives/storeView";
 @import "./directives/templeView";
 @import "./directives/heroCard";
-@import "./directives/partyView";
 @import "./directives/combatView";
-@import "./directives/heroView";
 @import "./directives/gameMenu";
+@import "./directives/bits/healthBar";
+@import "./directives/pages/mainMenu";
 
 @pixelFont:'GraphicPixel', 'AdvoCut',sans-serif;
 @pixelFontAlt:'AdvoCut','GraphicPixel', sans-serif;
 @gameBlue:#004c62;
+@menuOverlayBackground:rgba(0,0,0,0.8);
+
+@font-face {
+  font-family: 'GraphicPixel';
+  src: url('/fonts/bq/graphicpixel-webfont.eot');
+  src: url('/fonts/bq/graphicpixel-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/fonts/bq/graphicpixel-webfont.woff') format('woff'),
+  url('/fonts/bq/graphicpixel-webfont.ttf') format('truetype'),
+  url('/fonts/bq/graphicpixel-webfont.svg#GraphicPixelRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AdvoCut';
+  src: url('/fonts/bq/advocut-webfont.eot');
+  src: url('/fonts/bq/advocut-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/fonts/bq/advocut-webfont.woff') format('woff'),
+  url('/fonts/bq/advocut-webfont.ttf') format('truetype'),
+  url('/fonts/bq/advocut-webfont.svg#AndinaRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 * {
   -webkit-touch-callout: none;
@@ -57,7 +83,45 @@ body {
   margin:0;
   overflow: hidden;
   height:100%;
+
+  /* GET THIS DIALOG OUT OF MY FACE! */
+  .btn-close {
+    font-size: 2.2em;
+    position: fixed;
+    padding-top: 20px;
+    right: 0.5em;
+    top: -6px;
+    text-shadow: -1px -1px rgba(0,0,0,0.2);
+    &:hover { top: -4px; }
+    &:active { top: 0; }
+  }
+
 }
+
+  .hero-container {
+    margin-right: auto;
+    margin-left: auto;
+
+    > * {
+      font-family: @pixelFont;
+      text-align: center;
+      color:#fff;
+    }
+
+    > h1 {
+      margin-top:10px;
+      margin-bottom:25px;
+      font-size: 8em;
+      .extrude-stroke-text(4px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+
+    }
+    p {
+      font-size:1.2em;
+      .inset-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+      color:@contrastFontColor;
+    }
+  }
+
 
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -78,39 +142,8 @@ body {
     vertical-align: middle;
     text-align:center;
   }
-  .loading-container {
-    margin-right: auto;
-    margin-left: auto;
-
-    > * {
-      font-family: @pixelFont;
-      text-align: center;
-      color:#fff;
-    }
-
-    > h1 {
-      margin-top:10px;
-      margin-bottom:25px;
-      font-size: 16em;
-      .extrude-stroke-text(4px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
-
-    }
-    p {
-      font-size: 1.8em;
-      .inset-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
-      color:@contrastFontColor;
-    }
-  }
 }
 
-.loading .loading-wrapper .loading-wrapper-inner .loading-container {
-  h1 {
-    font-size: 8em;
-  }
-  p {
-    font-size:1.2em;
-  }
-}
 
 canvas {
   image-rendering: -moz-crisp-edges;         /* Firefox */
@@ -119,33 +152,6 @@ canvas {
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
   z-index: auto;
-}
-
-
-
-
-@font-face {
-  font-family: 'GraphicPixel';
-  src: url('/fonts/bq/graphicpixel-webfont.eot');
-  src: url('/fonts/bq/graphicpixel-webfont.eot?#iefix') format('embedded-opentype'),
-  url('/fonts/bq/graphicpixel-webfont.woff') format('woff'),
-  url('/fonts/bq/graphicpixel-webfont.ttf') format('truetype'),
-  url('/fonts/bq/graphicpixel-webfont.svg#GraphicPixelRegular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-
-}
-
-@font-face {
-  font-family: 'AdvoCut';
-  src: url('/fonts/bq/advocut-webfont.eot');
-  src: url('/fonts/bq/advocut-webfont.eot?#iefix') format('embedded-opentype'),
-  url('/fonts/bq/advocut-webfont.woff') format('woff'),
-  url('/fonts/bq/advocut-webfont.ttf') format('truetype'),
-  url('/fonts/bq/advocut-webfont.svg#AndinaRegular') format('svg');
-  font-weight: normal;
-  font-style: normal;
-
 }
 .ebp {
   font-family: 'GraphicPixel', sans-serif;
@@ -159,15 +165,15 @@ canvas {
 @contrastShadow:#E85627;
 .extrude-stroke-text(@width:2px,@lightColor:@contrastHighlight,@shadowColor:@contrastShadow){
   text-shadow: @width  @width 0 @shadowColor,
-  -@width -@width 0 @lightColor,
-  @width -@width 0 @shadowColor,
+    -@width -@width 0 @lightColor,
+    @width -@width 0 @shadowColor,
   -@width  @width 0 @lightColor;
 }
 .inset-stroke-text(@width:2px,@lightColor:@contrastHighlight,@shadowColor:@contrastShadow){
   text-shadow:-@width -@width 0 @lightColor,
   @width  @width 0 @shadowColor,
   -@width  @width 0 @lightColor,
-  @width -@width 0 @shadowColor;
+    @width -@width 0 @shadowColor;
 }
 .stroke-text(@width:2px,@color:@contrastShadow){
   .extrude-stroke-text(@width,@color,@color);
@@ -199,24 +205,24 @@ canvas {
   min-height: 100%;
   position: absolute;
   background-color: transparent;
-  z-index: @zCanvasGui;
+  z-index: @zCanvasAlert;
   text-align: center;
   font-family: @pixelFont;
+  pointer-events:auto;
 
   .message {
-    top:0;
+    top:45%;
     left: 0;
     right:0;
-    background-color: rgba(0, 0, 0, 0.50);
+    background-color: rgba(0, 0, 0, 0.80);
     border: none;
     box-shadow: none;
-    .border-top-radius(6px);
     margin:auto;
     position: absolute;
-    padding:25px;
+    padding: 10px;
+    font-size: 2em;
     color:#fff;
     .stroke-text(1px,#000);
-    font-size:3em;
   }
 }
 
@@ -227,19 +233,17 @@ canvas {
 }
 
 .game-container {
-  position: absolute;
+  position: fixed;
   top:0;
   left:0;
   right:0;
   bottom:0;
   border:none;
-  margin:auto;
-  width:960px;
-  height:640px;
-
+  margin:0;
+  padding:0;
   .damage-value {
     font-family: 'GraphicPixel', sans-serif;
-    font-size:60px;
+    font-size:3em;
     color:#F00;
     .stroke-text(2px, rgba(255, 255, 255, 0.9));
     &.miss {
@@ -264,36 +268,71 @@ canvas {
   left:0;
   right:0;
   bottom:0;
+  overflow-y:auto;
   pointer-events:none;
-  > * {
+  .ebp {
     pointer-events:auto;
   }
-}
-@landscape-max:(@screen-phone - 1);
-@media(max-width:@landscape-max) and (orientation:portrait) {
-  body > * {
-    display: none !important;
+  > * {
+    display: block;
+    height:100%;
+    overflow-y:auto;
   }
-  .landscape-notice {
-    z-index:9999;
-    display: block !important;
-    background-color: #004c62;
-    .stroke-text(1px,#000);
-    h2 {
-      .extrude-stroke-text(2px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
-      font-size: 10em;
+  .dialog {
+    max-width: 800px;
+    min-width: 300px;
+    margin-top:15px;
+    padding:10px 10px;
+    position: relative;
+    .btn-close {
+      position: absolute;
+      font-size: 1em;
+      padding: 5px 15px;
+      padding-top: 10px;
+      right: 0;
+      top: 0;
+      &:hover {
+        top: 0;
+        padding-top: 12px;
+      }
+      &:active {
+        top: 0;
+        padding-top: 16px;
+      }
     }
-    span {
-      .extrude-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
-      color:#fff;
-      font-size: 2em;
-    }
+
   }
+
 }
+
+// This restricted mobile phone resolutions to landscape.  Removed because pow should work
+// at phone res in portrait as well, but keep around in case that changes
+
+//@landscape-max:(@screen-phone - 1);
+//@media(max-width:@landscape-max) and (orientation:portrait) {
+//  body > * {
+//    display: none !important;
+//  }
+//  .landscape-notice {
+//    z-index:9999;
+//    display: block !important;
+//    background-color: #004c62;
+//    .stroke-text(1px,#000);
+//    h2 {
+//      .extrude-stroke-text(2px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+//      font-size: 10em;
+//    }
+//    span {
+//      .extrude-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
+//      color:#fff;
+//      font-size: 2em;
+//    }
+//  }
+//}
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: @screen-sm-min) {
-  .loading .loading-wrapper .loading-wrapper-inner .loading-container {
+  .hero-container {
     h1 {
       font-size: 12em;
     }
@@ -307,6 +346,9 @@ canvas {
     }
   }
   .game-container{
+    .damage-value {
+      font-size:5em;
+    }
     .message {
       .text {
         font-size: 18px;
@@ -317,6 +359,12 @@ canvas {
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: @screen-md-min) {
+  .drop-overlay {
+    .message {
+      padding:25px;
+      font-size:3em;
+    }
+  }
   .game-container{
     .message {
       .text {
@@ -328,7 +376,7 @@ canvas {
 
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: @screen-lg-min) {
-  .loading .loading-wrapper .loading-wrapper-inner .loading-container {
+  .hero-container {
     h1 {
       font-size: 16em;
     }

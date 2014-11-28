@@ -30,5 +30,12 @@ module pow2 {
       defaults():any {
          return _.extend(super.defaults(),WeaponModel.DEFAULTS);
       }
+      isNoWeapon():boolean{
+         return this.attributes.name === WeaponModel.DEFAULTS.name &&
+            this.attributes.icon === WeaponModel.DEFAULTS.icon &&
+            this.attributes.attack === WeaponModel.DEFAULTS.attack &&
+            this.attributes.hit === WeaponModel.DEFAULTS.hit &&
+            this.attributes.cost === WeaponModel.DEFAULTS.cost;
+      }
    }
 }

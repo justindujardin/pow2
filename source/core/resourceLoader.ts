@@ -22,6 +22,8 @@
 /// <reference path="./time.ts"/>
 
 module pow2 {
+
+   var _shared:ResourceLoader=null;
    /**
     * A basic resource loading manager.  Supports a basic api for requesting
     * resources by file name, and uses registered types and file extension
@@ -37,11 +39,18 @@ module pow2 {
          '':AudioResource
       };
       private _doneQueue = [];
-      id:number;
+      _uid:string;
       world:IWorld = null;
 
       constructor(){
-         this.id = _.uniqueId();
+         this._uid = _.uniqueId('res');
+      }
+
+      static get():pow2.ResourceLoader {
+         if(!_shared){
+            _shared = new pow2.ResourceLoader();
+         }
+         return _shared;
       }
 
       // IWorldObject implementation
@@ -178,7 +187,5 @@ module pow2 {
          }
          return obj;
       }
-
-
    }
 }

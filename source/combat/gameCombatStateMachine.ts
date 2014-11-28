@@ -28,11 +28,12 @@
 /// <reference path="./components/combatCameraComponent.ts" />
 /// <reference path="../game/models/entityModel.ts" />
 /// <reference path="../game/models/creatureModel.ts" />
+/// <reference path="./combat.ts" />
 
 module pow2 {
    // Combat State Machine
    //--------------------------------------------------------------------------
-   export class CombatStateMachine extends TickedStateMachine {
+   export class CombatStateMachine extends StateMachine {
       parent:GameStateMachine;
       defaultState:string = CombatStartState.NAME;
       states:IState[] = [
@@ -54,7 +55,7 @@ module pow2 {
 
       isFriendlyTurn():boolean {
          return this.current && !!_.find(this.party,(h:GameEntityObject) => {
-            return h.id === this.current.id;
+            return h._uid === this.current._uid;
          });
       }
 
@@ -115,23 +116,16 @@ module pow2 {
    export class GameCombatState extends State {
       static NAME:string = "combat";
       name:string = GameCombatState.NAME;
-      transitions:IStateTransition[] = [
-         new GameMapTransition()
-      ];
       machine:CombatStateMachine = null;
       parent:GameStateMachine = null;
-      scene:Scene;
       tileMap:GameTileMap;
       finished:boolean = false; // Trigger state to exit when true.
-
-      public googSpreadsheetId:string = "1IAQbt_-Zq1BUwRNiJorvt4iPEYb5HmZrpyMOkb-OuJo";
-
       enter(machine:GameStateMachine){
          super.enter(machine);
          this.parent = machine;
          this.machine = new CombatStateMachine(machine);
-         this.scene = new Scene();
-         machine.world.mark(this.scene);
+         var combatScene = machine.world.combatScene = new Scene();
+         machine.world.mark(combatScene);
 
          // Build party
          _.each(machine.model.party,(hero:HeroModel,index:number) => {
@@ -141,102 +135,62 @@ module pow2 {
                icon: hero.attributes.icon,
                model:hero
             });
-            heroEntity.addComponent(new combat.PlayerCombatRenderComponent());
+
+            // Instantiate a [Class]CombatRenderComponent implementation for the
+            // hero type, if available.
+            var playerType:string = hero.attributes.type[0].toUpperCase() + hero.attributes.type.substr(1);
+            var playerRender:any = pow2.combat[playerType + 'CombatRenderComponent'];
+            if(typeof playerRender === 'undefined'){
+               playerRender = new pow2.combat.PlayerCombatRenderComponent();
+            }
+            else {
+               playerRender = new playerRender();
+            }
+            heroEntity.addComponent(<pow2.combat.PlayerCombatRenderComponent>playerRender);
             heroEntity.addComponent(new AnimatedComponent());
             if(heroEntity.isDefeated()){
                return;
             }
             heroEntity.icon = hero.get('icon');
             this.machine.party.push(heroEntity);
-            this.scene.addObject(heroEntity);
+            combatScene.addObject(heroEntity);
          });
 
-         machine.world.loader.load("/data/sounds/summon",(res:AudioResource) => {
-            if(res.isReady()){
-               res.data.play();
-            }
-
-            this.tileMap = new pow2.GameTileMap("combat");
+         this.tileMap = new pow2.GameTileMap("combat");
+         this.tileMap.once('loaded',() => {
+            // Hide all layers that don't correspond to the current combat zone
+            var zone:IZoneMatch = machine.encounterInfo;
+            var visibleZone:string = zone.target || zone.map;
+            _.each(this.tileMap.getLayers(),(l)=>{
+               l.visible = (l.name === visibleZone);
+            });
+            this.tileMap.dirtyLayers = true;
             this.tileMap.addComponent(new pow2.CombatCameraComponent);
-            this.scene.addObject(this.tileMap);
+            combatScene.addObject(this.tileMap);
 
-            this.scene.once('map:loaded',() => {
-               // Position Party/Enemies
+            // Position Party/Enemies
 
-
-               this.scene.world.loader.loadAsType(this.googSpreadsheetId,pow2.GoogleSpreadsheetResource,(enemiesSpreadsheet:pow2.GoogleSpreadsheetResource) => {
-
-                  //-----------------------------------------------------------------------------------
-                  // TERRIBLE INLINE GOOGLE SPREADSHEET PARSING HACKS OMG WAT THE HECK?
-
-
-                  var enemies = [];
-                  if(enemiesSpreadsheet && enemiesSpreadsheet.isReady()){
-
-                     console.log("Loading enemies data from custom spreadsheet: " + enemiesSpreadsheet.url);
-                     var json:any = enemiesSpreadsheet.data;
-                     if(!json || json.version !== "1.0"){
-                        throw new Error("I'm not smart enough to parse this.  I expect version 1.0");
-                     }
-                     json = json.feed;
-
-                     // This is bad, we really need to associate this prefix with the xmlns definitions.
-                     var keyExtractor = /gsx\$(.+)/;
-                     var numberMatcher = /\d+/;
-                     enemies = _.map(json.entry,(entry:any) => {
-                        var enemyData = {};
-                        _.each(entry,(value:any,key:string)=>{
-                           var matches = key.match(keyExtractor);
-                           if(matches && matches.length == 2 && value && value.hasOwnProperty('$t')){
-                              var data = value['$t'];
-                              if(typeof data === 'string' && data.match(numberMatcher)){
-                                 data = parseInt(data);
-                              }
-                              var finalKey = matches[1];
-                              if(finalKey === 'attacklow'){
-                                 finalKey = 'attackLow';
-                              }
-                              else if(finalKey === 'attackhigh'){
-                                 finalKey = 'attackHigh';
-                              }
-                              else if(finalKey === 'hitpercent'){
-                                 finalKey = 'hitPercent';
-                              }
-                              else if(finalKey === 'groups'){
-                                 data = data.split('|');
-                              }
-                              enemyData[finalKey] = data;
-                           }
-                        });
-                        return enemyData;
-                     });
-                     console.log(enemies);
+            // Get enemies data from spreadsheet
+            GameStateModel.getDataSource((enemiesSpreadsheet:pow2.GameDataResource) => {
+               var enemyList:any[] = enemiesSpreadsheet.getSheetData("enemies");
+               var enemiesLength:number = machine.encounter.enemies.length;
+               for(var i:number = 0; i < enemiesLength; i++){
+                  var tpl = _.where(enemyList,{id:machine.encounter.enemies[i]});
+                  if(tpl.length === 0){
+                     continue;
                   }
-
-                  // YOU CAN OPEN YOUR EYES AGAIN ...
-                  //-----------------------------------------------------------------------------------
-                  // Create the enemy
-                  var max = 3;
-                  var min = 1;
-                  var enemyCount = Math.floor(Math.random() * (max - min + 1)) + min;
-                  for(var i = 0; i < enemyCount; i++){
-
-                     var rndEnemy = Math.floor(Math.random() * ((enemies.length - 1) - 0 + 1)) + 0;
-                     //
-                     var nmeModel = enemies.length > 0 ? new CreatureModel(enemies[rndEnemy]) : CreatureModel.fromName("Snake");
-
-                     var nme = new pow2.GameEntityObject({
-                        model: nmeModel
-                     });
-                     this.scene.addObject(nme);
-                     nme.addComponent(new pow2.SpriteComponent({
-                        name:"enemy",
-                        icon:nme.model.get('icon')
-                     }));
-                     this.machine.enemies.push(nme);
-
-                  }
-
+                  var nmeModel = new CreatureModel(tpl[0]);
+                  var nme = new pow2.GameEntityObject({
+                     model: nmeModel
+                  });
+                  combatScene.addObject(nme);
+                  nme.addComponent(new pow2.SpriteComponent({
+                     name:"enemy",
+                     icon:nme.model.get('icon')
+                  }));
+                  this.machine.enemies.push(nme);
+               }
+               if(this.machine.enemies.length){
                   _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
                      var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
                      heroEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
@@ -248,61 +202,30 @@ module pow2 {
                         enemyEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
                      }
                   });
-//
-//               var enemy = this.tileMap.getFeature('e1');
-//               this.machine.enemies[0].point = new Point(enemy.x / 16, enemy.y / 16);
                   machine.trigger('combat:begin',this);
+                  this.machine.update(this);
+               }
+               else {
+                  // TODO: This is an error, I think.  Player entered combat with no valid enemies.
+                  machine.trigger('combat:end',this);
+               }
 
-               });
             });
          });
-
+         this.tileMap.load();
       }
       exit(machine:GameStateMachine){
          machine.trigger('combat:end',this);
-         this.scene.destroy();
-         machine.updatePlayer();
+         var world:GameWorld = this.parent.world;
+         if(world && world.combatScene){
+            world.combatScene.destroy();
+            world.combatScene = null;
+         }
          this.tileMap.destroy();
-         this.scene.destroy();
+         machine.update(this);
          this.finished = false;
          this.machine = null;
          this.parent = null;
-         if(machine.combatant){
-            machine.combatant.destroy();
-         }
-      }
-      update(machine:IStateMachine){
-         if(this.machine){
-            this.machine.update(machine);
-         }
-      }
-   }
-   export class GameCombatTransition extends StateTransition {
-      targetState:string = GameCombatState.NAME;
-      evaluate(machine:GameStateMachine):boolean {
-         if(!super.evaluate(machine) || !machine.player || !machine.player.tileMap){
-            return false;
-         }
-         if(machine.encounter && machine.encounter.combatFlag === true){
-            return true;
-         }
-         var coll = <CollisionComponent>machine.player.findComponent(CollisionComponent);
-         if(coll){
-            var results = [];
-            if(coll.collide(machine.player.point.x,machine.player.point.y,GameFeatureObject,results)){
-               var touched = <GameFeatureObject>_.find(results,(r:GameFeatureObject) => {
-                  return !!r.findComponent(CombatFeatureComponent);
-               });
-               if(touched){
-                  var combat = <CombatFeatureComponent>touched.findComponent(CombatFeatureComponent);
-                  if(combat.isEntered){
-                     machine.combatant = touched;
-                     return true;
-                  }
-               }
-            }
-         }
-         return false;
       }
    }
 }

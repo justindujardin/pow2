@@ -35,6 +35,7 @@ module pow2 {
          machine.turnList = <GameEntityObject[]>_.shuffle(_.union(machine.getLiveParty(),machine.getLiveEnemies()));
          machine.current = machine.turnList.shift();
          machine.currentDone = true;
+         machine.update(this);
       }
    }
 

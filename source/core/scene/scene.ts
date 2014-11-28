@@ -24,8 +24,9 @@
 module pow2 {
 
    export class Scene extends Events implements IProcessObject, IWorldObject {
-      id:number = _.uniqueId();
-      name:string = _.uniqueId('scene');
+      id:string;
+      _uid:string = _.uniqueId('scene');
+      name:string;
       db:SceneSpatialDatabase = new SceneSpatialDatabase;
       options:any = {};
       private _objects:SceneObject[] = [];
@@ -103,7 +104,7 @@ module pow2 {
       // -----------------------------------------------------------------------------
       removeIt(property:string,object:any){
          this[property] = _.filter(this[property], (obj:any) => {
-            if(obj.id === object.id){
+            if(obj._uid === object._uid){
                this.db.removeSpatialObject(obj);
                if(obj.onRemoveFromScene){
                   obj.onRemoveFromScene(this);
@@ -127,7 +128,7 @@ module pow2 {
 
          // Check that we're not adding this twice (though, I suspect the above
          // should make that pretty unlikely)
-         if(_.where(this[property],{ id: object.id}).length > 0){
+         if(_.where(this[property],{ _uid: object._uid}).length > 0){
             throw new Error("Object added to scene twice");
          }
          this[property].push(object);
@@ -146,7 +147,7 @@ module pow2 {
       }
 
       findIt(property:string,object:any){
-         return _.where(this[property],{id:object.id});
+         return _.where(this[property],{_uid:object._uid});
       }
 
 

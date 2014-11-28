@@ -25,13 +25,19 @@ module pow2.ui {
       tileMap:GameTileMap;
       sprite:GameEntityObject;
       machine:GameStateMachine;
-      model:GameStateModel;
       currentScene:Scene;
       private _renderCanvas:HTMLCanvasElement;
       private _canvasAcquired:boolean = false;
+      private _stateKey:string = "_test2Pow2State";
       constructor(
          public compile:ng.ICompileService,
          public scope:ng.IRootScopeService){
+
+         if(this.qs().hasOwnProperty('dev')){
+            console.log("Clearing gameData cache and loading live from Google Spreadsheets");
+            GameDataResource.clearCache();
+         }
+
          this._renderCanvas = <HTMLCanvasElement>compile('<canvas style="position:absolute;left:-9000px;top:-9000px;" width="64" height="64"></canvas>')(scope)[0];
 
          this.loader = new ResourceLoader();
@@ -41,45 +47,88 @@ module pow2.ui {
          });
          this.world = new GameWorld({
             scene:this.currentScene,
+            model:new GameStateModel(),
             state:new GameStateMachine()
          });
          this.machine = this.world.state;
-         this.model = this.world.state.model;
-         this.world.scene.once('map:loaded',() => {
-            // Create a movable character with basic components.
+         pow2.registerWorld('pow2',this.world);
+      }
 
-            var model:HeroModel = this.model.party[0];
-            this.sprite = new GameEntityObject({
-               name:"Hero!",
-               icon: model.attributes.icon,
-               model:model
-            });
-            this.sprite.addComponent(new PlayerRenderComponent());
-            this.sprite.setPoint(this.tileMap.bounds.getCenter());
-            this.sprite.addComponent(new CollisionComponent());
-            this.sprite.addComponent(new PlayerComponent());
-            this.sprite.addComponent(new PlayerCameraComponent());
-            this.sprite.addComponent(new PlayerTouchComponent());
-            this.world.scene.addObject(this.sprite);
+      getSaveData():any {
+         return localStorage.getItem(this._stateKey);
+      }
+      resetGame(){
+         localStorage.removeItem(this._stateKey);
+      }
+      saveGame(data:any){
+         localStorage.setItem(this._stateKey,data);
+      }
+
+
+
+      createPlayer(from:HeroModel,at?:pow2.Point){
+         if(!from){
+            throw new Error("Cannot create player without valid model");
+         }
+         if(this.sprite){
+            this.sprite.destroy();
+            this.sprite = null;
+         }
+         this.sprite = new GameEntityObject({
+            name: from.attributes.name,
+            icon: from.attributes.icon,
+            model:from
          });
-         this.tileMap = new GameTileMap("town");
+         this.sprite.addComponent(new PlayerRenderComponent());
+         this.sprite.addComponent(new CollisionComponent());
+         this.sprite.addComponent(new PlayerComponent());
+         this.sprite.addComponent(new PlayerCameraComponent());
+         this.sprite.addComponent(new PlayerTouchComponent());
+         this.world.scene.addObject(this.sprite);
+
+         if(typeof at === 'undefined' && this.tileMap instanceof pow2.TileMap) {
+            at = this.tileMap.bounds.getCenter();
+         }
+         this.sprite.setPoint(at || new Point());
+      }
+
+      loadMap(mapName:string,then?:()=>any,player?:HeroModel,at?:pow2.Point){
+         if(this.tileMap){
+            this.tileMap.destroy();
+            this.tileMap = null;
+         }
+         this.tileMap = new GameTileMap(mapName);
+         this.tileMap.once('loaded',() => {
+            // Create a movable character with basic components.
+            var model:HeroModel = player || this.world.model.party[0];
+            this.createPlayer(model,at);
+            then && then();
+         });
          this.world.scene.addObject(this.tileMap);
       }
 
-      loadGame(data:any){
-         if(data){
-            this.model.clear();
-            this.model.set(this.model.parse(data));
-         }
-         // Only add a hero if none exists.
-         // TODO: This init stuff should go in a 'newGame' method or something.
-         //
-         if(this.model.party.length === 0){
-            this.model.addHero(HeroModel.create(HeroType.Warrior,"Warrior"));
-            this.model.addHero(HeroModel.create(HeroType.DeathMage,"DeathMage"));
-            this.model.addHero(HeroModel.create(HeroType.Ranger,"Ranger"));
-         }
+      newGame(then?:()=>any){
+         this.loadMap("town",then,this.world.model.party[0]);
+      }
 
+      loadGame(data:any, then?:()=>any){
+         if(data){
+            //this.world.model.clear();
+            this.world.model.initData(()=>{
+               this.world.model.parse(data);
+               var at = this.world.model.getKeyData('playerPosition');
+               at = at ? new Point(at.x,at.y) : undefined;
+               this.loadMap(this.world.model.getKeyData('playerMap') || "town",then,this.world.model.party[0],at);
+            });
+         }
+         else {
+            if(this.world.model.party.length === 0){
+               this.world.model.addHero(HeroModel.create(HeroTypes.Warrior,"Warrior"));
+               this.world.model.addHero(HeroModel.create(HeroTypes.Ranger,"Ranger"));
+               this.world.model.addHero(HeroModel.create(HeroTypes.DeathMage,"Mage"));
+            }
+            this.newGame(then);
+         }
       }
 
       /**
@@ -107,6 +156,29 @@ module pow2.ui {
       releaseRenderContext():string{
          this._canvasAcquired = false;
          return this._renderCanvas.toDataURL();
+      }
+
+      /**
+       * Extract the browser location query params
+       * http://stackoverflow.com/questions/9241789/how-to-get-url-params-with-javascript
+       */
+      qs():any {
+         if(window.location.search){
+            var query_string = {};
+            (function () {
+               var e,
+                  a = /\+/g,  // Regex for replacing addition symbol with a space
+                  r = /([^&=]+)=?([^&]*)/g,
+                  d = function (s) { return decodeURIComponent(s.replace(a, " ")); },
+                  q = window.location.search.substring(1);
+
+               while ((e = r.exec(q))){
+                  query_string[d(e[1])] = d(e[2]);
+               }
+            })();
+            return query_string;
+         }
+         return {};
       }
    }
    app.factory('game', [

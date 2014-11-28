@@ -37,14 +37,14 @@ module pow2 {
    ];
 
 
-   export enum HeroType {
-      Warrior = 1,
-      LifeMage = 2,
-      DeathMage = 3,
-      Ranger = 4
-   }
+   export var HeroTypes:any = {
+      Warrior: "warrior",
+      LifeMage: "mage",
+      DeathMage:"necromancer",
+      Ranger:"ranger"
+   };
    export interface HeroModelOptions extends EntityModelOptions {
-      type:HeroType;
+      type:string;
       description:string; // An description of the hero.
 
       combatSprite:string;
@@ -80,7 +80,7 @@ module pow2 {
          name: "Hero",
          icon: "",
          combatSprite:"",
-         type: HeroType.Warrior,
+         type: HeroTypes.Warrior,
          level: 1,
          exp:0,
          nextLevelExp:0,
@@ -93,7 +93,7 @@ module pow2 {
          baseAgility:0,
          baseIntelligence:0,
          baseVitality:0,
-         hitPercent:5,
+         hitpercent:5,
          hitPercentPerLevel:1,
          evade:0
       };
@@ -211,18 +211,22 @@ module pow2 {
          if(!data){
             return {};
          }
-         _.each(HeroModel.ARMOR_TYPES,(type:string) => {
-            if(data[type]){
-               var piece = _.where(pow2.getData('armor'),{name:data[type]})[0];
-               if(piece){
-                  this[type] = new ArmorModel(piece);
+
+         GameStateModel.getDataSource((spreadsheet:GameDataResource)=>{
+            _.each(HeroModel.ARMOR_TYPES,(type:string) => {
+               if(data[type]){
+                  var piece = _.where(spreadsheet.getSheetData('armor'),{name:data[type]})[0];
+                  if(piece){
+                     this[type] = new ArmorModel(piece);
+                  }
                }
+            });
+            if(data.weapon){
+               var weapon = _.where(spreadsheet.getSheetData('weapons'),{name:data.weapon})[0];
+               this.weapon = new WeaponModel(weapon);
             }
+
          });
-         if(data.weapon){
-            var weapon = _.where(pow2.getData('weapons'),{name:data.weapon})[0];
-            this.weapon = new WeaponModel(weapon);
-         }
          return _.omit(data, _.flatten(['weapon',HeroModel.ARMOR_TYPES]));
       }
 
@@ -256,10 +260,10 @@ module pow2 {
       }
 
 
-      static create(type:HeroType,name:string){
+      static create(type:string,name:string){
          var character:HeroModel = null;
          switch(type){
-            case HeroType.Warrior:
+            case HeroTypes.Warrior:
                character = new HeroModel({
                   type:type,
                   level:0,
@@ -269,11 +273,11 @@ module pow2 {
                   baseAgility:2,
                   baseIntelligence:1,
                   baseVitality:7,
-                  hitPercent:10,
+                  hitpercent:10,
                   hitPercentPerLevel:3
                });
                break;
-            case HeroType.LifeMage:
+            case HeroTypes.LifeMage:
                character = new HeroModel({
                   type:type,
                   name:name,
@@ -283,11 +287,11 @@ module pow2 {
                   baseAgility:6,
                   baseIntelligence:9,
                   baseVitality:4,
-                  hitPercent:5,
+                  hitpercent:5,
                   hitPercentPerLevel:1
                });
                break;
-            case HeroType.Ranger:
+            case HeroTypes.Ranger:
                character = new HeroModel({
                   type:type,
                   name:name,
@@ -297,11 +301,11 @@ module pow2 {
                   baseAgility:10,
                   baseIntelligence:2,
                   baseVitality:5,
-                  hitPercent:7,
+                  hitpercent:7,
                   hitPercentPerLevel:2
                });
                break;
-            case HeroType.DeathMage:
+            case HeroTypes.DeathMage:
                character = new HeroModel({
                   type:type,
                   name:name,
@@ -311,10 +315,12 @@ module pow2 {
                   baseAgility:10,
                   baseIntelligence:4,
                   baseVitality:4,
-                  hitPercent:5,
+                  hitpercent:5,
                   hitPercentPerLevel:2
                });
                break;
+            default:
+               throw new Error("Unknown character class: " + type);
          }
          character.awardLevelUp();
          character.set({

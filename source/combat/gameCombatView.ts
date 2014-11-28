@@ -20,6 +20,7 @@
 
 module pow2{
    export class GameCombatView extends TileMapView {
+      world:GameWorld;
       objectRenderer:TileObjectRenderer = new TileObjectRenderer;
       mouse:NamedMouseElement = null;
 
@@ -29,22 +30,23 @@ module pow2{
       }
       onAddToScene(scene:Scene) {
          this.mouse = scene.world.input.mouseHook(this,"combat");
-         this.$el.on('click',this.mouseClick);
+         this.$el.on('click touchstart',this.mouseClick);
       }
       onRemoveFromScene(scene:Scene) {
          scene.world.input.mouseUnhook("combat");
-         this.$el.off('click',this.mouseClick);
+         this.$el.off('click touchstart',this.mouseClick);
       }
 
 
       /*
        * Mouse input
        */
-      mouseClick() {
+      mouseClick(e:any) {
          //console.log("clicked at " + this.mouse.world);
          var hits = [];
-         if(this.scene.db.queryPoint(this.mouse.world,GameEntityObject,hits)) {
-            this.scene.trigger('click',this.mouse,hits);
+         Input.mouseOnView(e.originalEvent,this.mouse.view,this.mouse);
+         if(this.world.combatScene.db.queryPoint(this.mouse.world,GameEntityObject,hits)) {
+            this.world.combatScene.trigger('click',this.mouse,hits);
          }
       }
       /*

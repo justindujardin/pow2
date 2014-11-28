@@ -27,11 +27,9 @@ module pow2 {
          console.log("SORRY BRO, YOU LOSE.");
          // callback(winner,loser);
          machine.trigger("combat:defeat",machine.enemies,machine.party);
+         machine.update(this);
       }
       update(machine:CombatStateMachine){
-         if(machine.paused){
-            return;
-         }
          machine.parent.setCurrentState(GameMapState.NAME);
       }
    }

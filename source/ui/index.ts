@@ -21,42 +21,9 @@
 module pow2.ui {
    export var app = angular.module('pow2', [
       'ngAnimate',
-      'ngSanitize'
+      'ngSanitize',
+      'ngTouch'
    ]);
-
-// CombatView directive
-// ----------------------------------------------------------------------------
-   app.directive('combatView', function () {
-      return {
-         restrict: 'E',
-         replace:true,
-         templateUrl: '/source/ui/directives/combatView.html'
-      };
-   });
-
-// PartyView directive
-// ----------------------------------------------------------------------------
-   app.directive('partyView', function () {
-      return {
-         restrict: 'E',
-         templateUrl: '/source/ui/directives/partyView.html'
-      };
-   });
-// HeroView directive
-// ----------------------------------------------------------------------------
-   app.directive('heroView', function () {
-      return {
-         restrict: 'E',
-         scope:true,
-         templateUrl: '/source/ui/directives/heroView.html',
-         link: function ($scope, element, attrs) {
-            $scope.hero = attrs.hero;
-            $scope.$watch(attrs.hero, function(hero) {
-               $scope.hero = hero;
-            });
-         }
-      };
-   });
 
 // HeroView directive
 // ----------------------------------------------------------------------------

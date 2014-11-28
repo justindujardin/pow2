@@ -31,6 +31,7 @@
     "angular-animate": "~1.2.16",
     "angular-touch": "~1.2.16",
     "astar": "~0.2.0",
-    "bootstrap": "~3.1.1"
+    "bootstrap": "~3.1.1",
+    "tabletop": "~1.3.5"
   }
 }

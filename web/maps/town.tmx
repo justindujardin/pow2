@@ -24,10 +24,10 @@
 46,46,46,9,46,46,46,46,46,46,46,46,46,46,46,18,12,18,18,18,18,18,18,18,18,18,18,
 46,46,46,9,69,18,18,69,46,46,46,46,46,46,69,46,69,69,46,46,46,18,18,18,18,18,18,
 46,18,18,9,18,18,18,18,18,46,46,18,18,46,46,46,46,46,69,18,18,18,18,18,18,18,18,
-18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,
-18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,
-18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,
-18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18
+18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,69,69,69,18,18,
+18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,69,46,69,18,18,
+18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,46,46,46,18,18,18,
+18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,46,46,18,18,18,18
 </data>
  </layer>
  <objectgroup draworder="topdown" name="Features" width="27" height="22">
@@ -51,7 +51,7 @@
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="soldier.png"/>
-    <property name="text" value="May you find glory on your noble quest!"/>
+    <property name="text" value="Don't forget to equip basic weapons and armor before wandering too far from town."/>
     <property name="title" value="Guard"/>
     <property name="type" value="sign"/>
    </properties>
@@ -60,7 +60,7 @@
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="soldier.png"/>
-    <property name="text" value="Be sure to avoid the forests at first, there are some really dangerous creatures lurking amongst the trees."/>
+    <property name="text" value="Be careful exploring heavily forested areas as they tend to contain more monsters than the plains."/>
     <property name="title" value="Guard"/>
     <property name="type" value="sign"/>
    </properties>
@@ -69,7 +69,7 @@
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="man.png"/>
-    <property name="text" value="Ever since the volcano erupted up North, things have taken an awful turn. Monsters lurk everywhere, preventing regular folk from travelling or trading."/>
+    <property name="text" value="I'm just the crazy guy that hangs out in the corner of town."/>
     <property name="title" value="Citizen"/>
     <property name="type" value="sign"/>
    </properties>
@@ -83,8 +83,8 @@
   </object>
   <object name="Weapons" type="store" x="96" y="112" width="16" height="16">
    <properties>
-    <property name="buyRate" value="100"/>
-    <property name="groups" value="[&quot;weapon&quot;]"/>
+    <property name="category" value="weapons"/>
+    <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
     <property name="level" value="1"/>
     <property name="name" value="Weapons"/>
@@ -95,7 +95,8 @@
   <object name="Armors" type="store" x="96" y="176" width="16" height="16">
    <properties>
     <property name="buyRate" value="100"/>
-    <property name="groups" value="[&quot;armor&quot;]"/>
+    <property name="category" value="armor"/>
+    <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
     <property name="level" value="1"/>
     <property name="name" value="Armors"/>
@@ -103,12 +104,12 @@
     <property name="type" value="store"/>
    </properties>
   </object>
-  <object name="chest.png" type="encounter" x="272" y="144" width="16" height="16">
+  <object name="chest.png" type="treasure" x="368" y="304" width="16" height="16">
    <properties>
-    <property name="after" value="ruinsDone"/>
-    <property name="gold" value="20"/>
-    <property name="icon" value="skull.png"/>
-    <property name="type" value="encounter"/>
+    <property name="gold" value="5000"/>
+    <property name="icon" value="chest.png"/>
+    <property name="id" value="bryarlake-chest"/>
+    <property name="type" value="treasure"/>
    </properties>
   </object>
  </objectgroup>

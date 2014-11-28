@@ -33,8 +33,10 @@ module pow2 {
       tiles:any = []; // TODO: TilesetProperties
 //      terrain:any;
       features:any;
+      zones:any;
       mapName: string;
       bounds: pow2.Rect;
+      dirtyLayers:boolean = false;
       private _loaded:boolean = false;
 
       constructor(mapName: string) {
@@ -47,8 +49,6 @@ module pow2 {
       // Scene Object Lifetime
       //
       onAddToScene(scene) {
-         this.world.loader.ensureType('tmx',TiledTMXResource);
-         this.world.loader.ensureType('tsx',TiledTSXResource);
          // If there is no camera, create a basic one.
          if(!this.findComponent(CameraComponent)){
             this.addComponent(new TileMapCameraComponent());
@@ -57,7 +57,10 @@ module pow2 {
       }
 
       load(mapName:string=this.mapName){
-         this.world.loader.load("/maps/" + mapName + ".tmx", (mapResource:TiledTMXResource) => {
+         var loader:pow2.ResourceLoader = pow2.ResourceLoader.get();
+         loader.ensureType('tmx',TiledTMXResource);
+         loader.ensureType('tsx',TiledTSXResource);
+         loader.load("/maps/" + mapName + ".tmx", (mapResource:TiledTMXResource) => {
             this.mapName = mapName;
             this.setMap(mapResource);
          });
@@ -68,12 +71,18 @@ module pow2 {
       }
 
       loaded(){
-         this.scene.trigger("map:loaded",this);
+         this.trigger('loaded',this);
+         if(this.scene){
+            this.scene.trigger("map:loaded",this);
+         }
          this._loaded = true;
       }
 
       unloaded(){
-         this.scene.trigger("map:unloaded",this);
+         this.trigger('unloaded',this);
+         if(this.scene){
+            this.scene.trigger("map:unloaded",this);
+         }
          this._loaded = false;
       }
 
@@ -97,6 +106,7 @@ module pow2 {
             this.tiles = this.tiles.concat(tiles.tiles);
          });
          this.features = _.where(this.map.objectGroups,{name:"Features"})[0] || [];
+         this.zones = _.where(this.map.objectGroups,{name:"Zones"})[0] || [];
          this.loaded();
          return true;
       }

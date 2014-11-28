@@ -1,12 +1,13 @@
+<button class="btn-close btn btn-flap" ng-click="store=null"><i class="glyphicon glyphicon-remove"></i></button>
 <div class="title" ng-show="store">
-    <div class="name ebp">
-        <h1>{{store.name}}</h1> <span>Gold: {{gameModel.attributes.gold}}</span>
+    <div class="name">
+        <h1>{{store.name}}</h1> <span>Gold: {{gameModel.gold}}</span>
     </div>
 </div>
 
 <div class="store" ng-show="store">
-    <div class="inventory ebp">
-        <ul class="container">
+    <div class="inventory">
+        <ul>
             <li class="item" ng-repeat="item in store.inventory" ng-click="buyItem(item)">
                 <span class="icon" icon-render icon="item.icon">
                 </span>

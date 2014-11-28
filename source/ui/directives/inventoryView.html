@@ -1,7 +1,10 @@
-<div class="ebp container">
-    <button class="btn btn-primary btn-lg" ng-click="previousCharacter()">Previous</button>
-    <button class="btn btn-default btn-lg" ng-click="nextCharacter()">Next</button>
-    <h2>Level{{character.attributes.level}} {{character.attributes.name}} <i class="image" icon-render icon="character.attributes.icon" frame="7"></i></h2>
+<div class="container">
+    <button class="btn btn-flat previous" ng-click="previousCharacter()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+    <button class="btn btn-flat next" ng-click="nextCharacter()"><span class="glyphicon glyphicon-chevron-right"></span></button>
+    <h2>{{character.attributes.name}} <i class="image" icon-render icon="character.attributes.icon" frame="7"></i></h2>
+    <div class="hero-stat">Damage : {{character.getDamage()}}</div>
+    <div class="hero-stat">Defense : {{character.getDefense()}}</div>
+
     <ul class="equipped">
         <li class="weapon">
             <span class="desc">Weapon</span>
@@ -30,10 +33,10 @@
     </ul>
 </div>
 
-<div class="ebp container">
+<div class="container">
     <h1>Inventory</h1>
     <ul class="unequipped" ng-init="setPartyMember=false">
-        <li class="item" ng-repeat="item in inventory" ng-click="equipItem(item)">
+        <li class="item" ng-repeat="item in inventory track by $index" ng-click="equipItem(item)">
             <span class="desc">{{item.attributes.name}}</span>
             <i class="icon" icon-render icon="item.attributes.icon"></i>
         </li>

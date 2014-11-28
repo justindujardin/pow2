@@ -18,10 +18,11 @@ format that includes a **type**, a **scope** and a **subject**:
 Is recommended to be one of these. Only **feat** and **fix** show up in the changelog, in addition to breaking changes (see breaking changes section at bottom).
 
 * **feat**: A new feature
+* **game**: A gameplay change
 * **fix**: A bug fix
-* **docs**: Documentation only changes
+* **perf**: Performance optimizations
 * **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing
-  semi-colons, etc)
+  semi-colons, etc), or affect only visual style
 * **refactor**: A code change that neither fixes a bug or adds a feature
 * **test**: Adding missing tests
 * **chore**: Changes to the build process or auxiliary tools and libraries such as documentation

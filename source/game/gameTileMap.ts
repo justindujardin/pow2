@@ -22,7 +22,20 @@ module pow2 {
    declare var astar:any;
    declare var Graph:any;
 
+   /**
+    * Describe a set of combat zones for a given point on a map.
+    */
+   export interface IZoneMatch {
+      // The zone name for the current map
+      map:string;
+      // The zone name for the target location on the map
+      target:string;
+      // The point that target refers to.
+      targetPoint:pow2.Point;
+   }
+
    export class GameTileMap extends TileMap {
+      world:GameWorld;
       featureHash:any = {};
       graph:any;
       loaded(){
@@ -41,7 +54,7 @@ module pow2 {
             if(typeof props.music === 'string'){
                this.addComponent(new SoundComponent({
                   url:<string>props.music,
-                  volume:0.5,
+                  volume:0.1,
                   loop:true
                }));
             }
@@ -49,6 +62,12 @@ module pow2 {
 
          this.buildFeatures();
       }
+
+      destroy(){
+         this.unloaded();
+         return super.destroy();
+      }
+
       unloaded(){
          this.removeComponentByType(GameFeatureInputComponent);
          this.removeComponentByType(CombatEncounterComponent);
@@ -111,18 +130,25 @@ module pow2 {
          return true;
       }
       createFeatureObject(tiledObject:tiled.ITiledObject):TileObject {
-         var feature = tiledObject.properties;
+         var feature = typeof tiledObject.properties !== 'undefined' ? tiledObject.properties : tiledObject;
          var options = _.extend({}, feature, {
             tileMap: this,
             x: Math.round(tiledObject.x / this.map.tilewidth),
             y: Math.round(tiledObject.y / this.map.tileheight)
          });
          var object = new GameFeatureObject(options);
+         this.world.mark(object);
          var componentType:any = null;
          var type:string = (feature && feature.type) ? feature.type : tiledObject.type;
          switch(type){
             case 'transition':
                componentType = PortalFeatureComponent;
+               break;
+            case 'treasure':
+               componentType = TreasureFeatureComponent;
+               if(typeof options.id === 'undefined'){
+                  console.error("Treasure must have a given id so it may be hidden");
+               }
                break;
             case 'ship':
                componentType = ShipFeatureComponent;
@@ -132,6 +158,9 @@ module pow2 {
                break;
             case 'encounter':
                componentType = CombatFeatureComponent;
+               if(typeof options.id === 'undefined'){
+                  console.error("Fixed encounters must have a given id so they may be hidden");
+               }
                break;
             case 'temple':
                componentType = TempleFeatureComponent;
@@ -160,7 +189,11 @@ module pow2 {
          for(var x:number = 0; x < this.bounds.extent.x; x++){
             for(var y:number = 0; y < this.bounds.extent.y; y++){
                var tile = this.getTerrain("Terrain",x,y);
-               grid[x][y] = (tile && tile.passable) ? 1 : 1000;
+               grid[x][y] = (tile && tile.passable) ? 10 : 1000;
+               // Prefer tiles that are paths over just passable ones
+               if(tile && tile.isPath){
+                  grid[x][y] = 1;
+               }
             }
          }
 
@@ -186,15 +219,18 @@ module pow2 {
       }
 
       calculatePath(from:Point,to:Point):Point[]{
+         if(!this.graph || !this.graph.nodes){
+            return [];
+         }
          // Treat out of range errors as non-critical, and just
          // return an empty array.
-         if(from.x >= this.graph.nodes.length){
+         if(from.x >= this.graph.nodes.length || from.x < 0){
             return [];
          }
          if(from.y >= this.graph.nodes[from.x].length){
             return [];
          }
-         if(to.x >= this.graph.nodes.length){
+         if(to.x >= this.graph.nodes.length || to.x < 0){
             return [];
          }
          if(to.y >= this.graph.nodes[to.x].length){
@@ -206,6 +242,44 @@ module pow2 {
          return _.map(result,(graphNode:any) => {
             return new Point(graphNode.pos.x,graphNode.pos.y);
          });
+      }
+
+      /**
+       * Enumerate the map and target combat zones for a given position on this map.
+       * @param at The position to check for a sub-zone in the map
+       * @returns {IZoneMatch} The map and target zones that are null if they don't exist
+       */
+      getCombatZones(at:pow2.Point):IZoneMatch {
+         var result:IZoneMatch = {
+            map:null,
+            target:null,
+            targetPoint:at
+         };
+         if(this.map && this.map.properties && this.map.properties){
+            if(typeof this.map.properties.combatZone !== 'undefined'){
+               result.map = this.map.properties.combatZone
+            }
+         }
+         // Determine which zone and combat type
+         var invTileSize = 1 / this.map.tilewidth;
+         var zones:any[] = _.map(this.zones.objects,(z:any)=>{
+            var x =  z.x * invTileSize;
+            var y =  z.y * invTileSize;
+            var w =  z.width * invTileSize;
+            var h =  z.height * invTileSize;
+            return {
+               bounds:new Rect(x,y,w,h),
+               name:z.name
+            }
+         });
+         // TODO: This will always get the first zone.  What about overlapping zones?
+         var zone = _.find(zones,(z:any)=>{
+            return z.bounds.pointInRect(at) && z.name;
+         });
+         if(zone){
+            result.target = zone.name;
+         }
+         return result;
       }
 
    }

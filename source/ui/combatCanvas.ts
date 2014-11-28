@@ -27,10 +27,10 @@ module pow2.ui {
             window.addEventListener('resize',onResize,false);
             var $window = $(window);
             function onResize(){
-//               context.canvas.width = $window.width();
-//               context.canvas.height = $window.height();
-//               context.webkitImageSmoothingEnabled = false;
-//               context.mozImageSmoothingEnabled = false;
+               context.canvas.width = $window.width();
+               context.canvas.height = $window.height();
+               context.webkitImageSmoothingEnabled = false;
+               context.mozImageSmoothingEnabled = false;
             }
             var tileView = new GameCombatView(element[0], game.loader);
 
@@ -41,8 +41,9 @@ module pow2.ui {
                }
                state.machine.on('combat:attack',function(damage,attacker,defender:pow2.GameEntityObject){
                   var targetPos:pow2.Point = defender.point.clone();
-                  targetPos.y -= 1.25;
-                  var screenPos:pow2.Point = tileView.worldToScreen(targetPos,4);
+                  targetPos.y -= (tileView.camera.point.y + 1.25);
+                  targetPos.x -= tileView.camera.point.x;
+                  var screenPos:pow2.Point = tileView.worldToScreen(targetPos,tileView.cameraScale);
                   var damageValue = $compile('<span class="damage-value' + (damage === 0 ? ' miss' : '') + '" style="position:absolute;left:' + screenPos.x + 'px;top:' + screenPos.y + 'px;">' + damage + '</span>')($scope);
                   $scope.$apply(() => {
                      $animate.enter(damageValue, element.parent(),null,() => {
@@ -55,7 +56,7 @@ module pow2.ui {
             game.machine.on('combat:begin',(state:GameCombatState) => {
                // Scope apply?
                // Transition canvas views, and such
-               state.scene.addView(tileView);
+               game.world.combatScene.addView(tileView);
                game.tileMap.scene.paused = true;
 
                tileView.setTileMap(state.tileMap);
@@ -73,7 +74,7 @@ module pow2.ui {
 
             });
             game.machine.on('combat:end',(state:GameCombatState) => {
-               state.scene.removeView(tileView);
+               game.world.combatScene.removeView(tileView);
                game.tileMap.scene.paused = false;
                state.machine.off('combat:beginTurn',null,this);
 

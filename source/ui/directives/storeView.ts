@@ -14,6 +14,7 @@
  limitations under the License.
  */
 /// <reference path="../services/gameService.ts"/>
+/// <reference path="../services/alertService.ts"/>
 module pow2.ui {
 // StoreBubble directive
 // ----------------------------------------------------------------------------
@@ -26,39 +27,56 @@ module pow2.ui {
                if(!$scope.store || !item){
                   return;
                }
-               var model:GameStateModel = game.model;
-               var money:number = model.get('gold');
+               var model:GameStateModel = game.world.model;
                var cost:number = parseInt(item.cost);
-               if(cost > money){
+               if(cost > model.gold){
                   powAlert.show("You don't have enough money");
                }
                else {
-                  model.set({
-                     gold: money - cost
-                  });
-                  var inventoryModel:any = null;
-                  if(item.itemType === 'armor'){
-                     inventoryModel = new ArmorModel(item);
-                  }
-                  else if(item.itemType === 'weapon'){
-                     inventoryModel = new WeaponModel(item);
-                  }
+                  model.gold -= cost;
                   powAlert.show("Purchased " + item.name + ".",null,1500);
-                  model.inventory.push(inventoryModel);
+                  model.inventory.push(item.instanceModel.clone());
 
                }
             };
+            $scope.initStoreFromFeature = (feature:pow2.StoreFeatureComponent) => {
+               // Get enemies data from spreadsheet
+               GameStateModel.getDataSource((data:pow2.GameDataResource) => {
+
+                  var hasCategory:boolean = typeof feature.host.category !== 'undefined';
+                  var theChoices: any[] = [];
+                  if(!hasCategory || feature.host.category === 'weapons'){
+                     theChoices = theChoices.concat(_.map(data.getSheetData('weapons'),(w)=>{
+                        return _.extend({ instanceModel: new WeaponModel(w) },w);
+                     }));
+                  }
+                  if(!hasCategory || feature.host.category === 'armor') {
+                     theChoices = theChoices.concat(_.map(data.getSheetData('armor'), (a)=> {
+                        return _.extend({ instanceModel: new ArmorModel(a) }, a);
+                     }));
+                  }
+                  var items = [];
+                  _.each(feature.host.groups,(group:string)=>{
+                     items = items.concat(_.filter(theChoices,(c:any)=>{
+                        return _.indexOf(c.groups,group) !== -1;
+                     }));
+                  });
+
+                  feature.inventory =  _.where(items,{level:feature.feature.level});
+                  $scope.$apply(() => {
+                     $scope.store = feature;
+                  });
+               });
+            };
          },
-         link: function($scope,$element,$attrs){
+         link: ($scope) => {
 
             // Stores
-            game.world.scene.on('store:entered',function(feature){
-               $scope.$apply(function(){
-                  $scope.store = feature;
-               });
+            game.world.scene.on('store:entered',(feature:StoreFeatureComponent) =>{
+               $scope.initStoreFromFeature(feature);
             });
-            game.world.scene.on('store:exited',function(){
-               $scope.$apply(function(){
+            game.world.scene.on('store:exited',() => {
+               $scope.$apply(() => {
                   $scope.store = null;
                });
             });

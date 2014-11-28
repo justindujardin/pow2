@@ -2,6 +2,7 @@
 <map version="1.0" orientation="orthogonal" width="28" height="31" tilewidth="16" tileheight="16">
  <properties>
   <property name="combat" value="true"/>
+  <property name="combatZone" value="zone-goblin-fortress"/>
  </properties>
  <tileset firstgid="1" source="tiles/environment.tsx"/>
  <layer name="Terrain" width="28" height="31">
@@ -123,5 +124,11 @@
     <property name="type" value="transition"/>
    </properties>
   </object>
+ </objectgroup>
+ <objectgroup draworder="topdown" name="Zones" width="28" height="31" visible="0">
+  <object name="world-plains" type="danger-zone" x="208" y="128" width="144" height="240"/>
+  <object name="zone-dungeon" type="danger-zone" x="0" y="0" width="352" height="128"/>
+  <object name="zone-dungeon" type="danger-zone" x="0" y="128" width="208" height="368"/>
+  <object name="zone-dungeon" type="danger-zone" x="208" y="368" width="144" height="128"/>
  </objectgroup>
 </map>

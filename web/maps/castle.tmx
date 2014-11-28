@@ -22,7 +22,7 @@
 39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,61,39,61,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39
 </data>
  </layer>
- <objectgroup name="Features" width="33" height="17">
+ <objectgroup draworder="topdown" name="Features" width="33" height="17">
   <object name="wilderness" type="transition" x="256" y="176" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
@@ -39,7 +39,7 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object name="Guard" type="barrier" x="256" y="144" width="16" height="16">
+  <object name="Guard" type="barrier" x="272" y="192" width="16" height="16">
    <properties>
     <property name="icon" value="guard2.png"/>
     <property name="text" value="The Castle is closed to all but heroes of the Three Kingdoms! Prove yourself elsewhere before demanding an audience of the Suvian King!"/>
@@ -191,9 +191,10 @@
   <object name="Suvian Armors" type="store" x="480" y="64" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
-    <property name="groups" value="[&quot;armor&quot;]"/>
+    <property name="category" value="armor"/>
+    <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
-    <property name="level" value="3"/>
+    <property name="level" value="2"/>
     <property name="name" value="Suvian Armors"/>
     <property name="sellRate" value="30"/>
     <property name="type" value="store"/>
@@ -202,9 +203,10 @@
   <object name="Suvian Arms" type="store" x="416" y="64" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
-    <property name="groups" value="[&quot;weapon&quot;]"/>
+    <property name="category" value="weapons"/>
+    <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
-    <property name="level" value="3"/>
+    <property name="level" value="2"/>
     <property name="name" value="Suvian Arms"/>
     <property name="sellRate" value="30"/>
     <property name="type" value="store"/>
@@ -213,9 +215,10 @@
   <object name="Suvian Artifacts" type="store" x="448" y="32" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
-    <property name="groups" value="[&quot;misc&quot;]"/>
+    <property name="category" value="accessories"/>
+    <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
-    <property name="level" value="3"/>
+    <property name="level" value="2"/>
     <property name="name" value="Suvian Artifacts"/>
     <property name="sellRate" value="20"/>
     <property name="type" value="store"/>
@@ -224,9 +227,10 @@
   <object name="Ashvari Apothecary" type="store" x="64" y="128" width="16" height="16">
    <properties>
     <property name="buyRate" value="120"/>
-    <property name="groups" value="[&quot;potion&quot;]"/>
+    <property name="category" value="items"/>
+    <property name="groups" value="default"/>
     <property name="icon" value="shop.png"/>
-    <property name="level" value="3"/>
+    <property name="level" value="2"/>
     <property name="name" value="Ashvari Apothecary"/>
     <property name="sellRate" value="22"/>
     <property name="type" value="store"/>
@@ -242,12 +246,6 @@
   <object name="well.png" type="sign" x="448" y="128" width="16" height="16">
    <properties>
     <property name="icon" value="well.png"/>
-    <property name="type" value="sign"/>
-   </properties>
-  </object>
-  <object name="blueBannerDoor.png" type="sign" x="256" y="96" width="16" height="16">
-   <properties>
-    <property name="icon" value="blueBannerDoor.png"/>
     <property name="type" value="sign"/>
    </properties>
   </object>

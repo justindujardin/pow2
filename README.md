@@ -47,5 +47,5 @@ can edit your files and refresh your webpage a few moments later when the new bu
 
 ### Committing
 
-Commit messages should [follow conventions](https://github.com/justindujardin/pow2/blob/master/CONVENTIONS.md)
+Commit messages should [follow conventions](https://github.com/justindujardin/pow2/blob/develop/CONVENTIONS.md)
 

@@ -23,7 +23,6 @@ module pow2 {
    // State Machine Interfaces
    // -------------------------------------------------------------------------
    export interface IStateMachine extends IEvents {
-      paused:boolean;
       update(data:any);
       addState(state:IState);
       addStates(states:IState[]);
@@ -38,15 +37,19 @@ module pow2 {
 
    // Implementation
    // -------------------------------------------------------------------------
-   export class StateMachine extends Events implements IStateMachine {
+   export class StateMachine extends Events implements IStateMachine, IWorldObject{
       defaultState:string = null;
       states:IState[] = [];
       private _currentState:IState = null;
       private _previousState:IState = null;
       private _newState:boolean = false;
-      paused:boolean = false;
 
-      update(data:any){
+      world:IWorld;
+      onAddToWorld(world){}
+      onRemoveFromWorld(world){}
+
+
+      update(data?:any){
          this._newState = false;
          if(this._currentState === null){
             this.setCurrentState(this.defaultState);
@@ -73,7 +76,7 @@ module pow2 {
          return this._currentState !== null ? this._currentState.name : null;
       }
       setCurrentState(state:IState):boolean;
-      setCurrentState(state:string):boolean
+      setCurrentState(state:string):boolean;
       setCurrentState(newState:any):boolean{
          var state = typeof newState === 'string' ? this.getState(newState) : <IState>newState;
          var oldState:IState = this._currentState;
@@ -81,9 +84,16 @@ module pow2 {
             console.error("STATE NOT FOUND: " + newState);
             return false;
          }
+         // Already in the desired state.
+         if(this._currentState && state.name === this._currentState.name){
+            console.warn("Attempting to set current state to already active state");
+            return true;
+         }
          this._newState = true;
          this._previousState = this._currentState;
          this._currentState = state;
+         // DEBUG:
+         //console.log("STATE: " + (!!oldState ? oldState.name : oldState) + " -> " + this._currentState.name);
          if(oldState){
             this.trigger("exit",oldState,state);
             oldState.exit(this);
@@ -106,7 +116,8 @@ module pow2 {
    /**
     * A state machine that updates with every game tick.
     */
-   export class TickedStateMachine extends StateMachine implements IWorldObject {
+   export class TickedStateMachine extends StateMachine {
+      paused:boolean = false;
       // IWorldObject interface
       world:IWorld;
       onAddToWorld(world){
