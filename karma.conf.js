@@ -2,6 +2,8 @@
 module.exports = function(config) {
    "use strict";
 
+   var coverageDebug = false;
+
    config.set({
       basePath: '',
       frameworks: ['jasmine'],
@@ -18,12 +20,11 @@ module.exports = function(config) {
          "web/bower/pow-core/lib/pow-core.js",
          "lib/pow2.js",
          "lib/pow2.game.js",
-         "lib/pow2.data.js",
          "lib/pow2.sprites.js",
          "lib/pow2.ui.js",
          "lib/test/*.js"
       ],
-      reporters: ['dots'],
+      reporters: ['dots','coverage'],
       port: 9876,
       autoWatch: true,
       background:true,
@@ -34,7 +35,13 @@ module.exports = function(config) {
       plugins: [
          'karma-firefox-launcher',
          'karma-chrome-launcher',
-         'karma-jasmine'
-      ]
+         'karma-jasmine',
+         'karma-coverage'
+      ],
+      preprocessors: (process.env.TRAVIS || coverageDebug) ? { "lib/*.js": "coverage" } : {},
+      coverageReporter: {
+         type: "lcov",
+         dir: ".coverage/"
+      }
    });
 };

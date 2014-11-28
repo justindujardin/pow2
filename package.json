@@ -47,6 +47,8 @@
     "karma-jasmine": "~0.1.5",
     "grunt-bump": "0.0.16",
     "grunt-npm": "0.0.2",
-    "grunt-conventional-changelog": "~1.1.0"
+    "grunt-conventional-changelog": "~1.1.0",
+    "grunt-karma-coveralls": "~2.5.3",
+    "karma-coverage": "~0.2.6"
   }
 }

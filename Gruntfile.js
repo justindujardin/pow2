@@ -343,6 +343,8 @@ module.exports = function(grunt) {
 
    });
 
+   // Build sprite sheets
+   // --------------------------------------------------
    grunt.registerMultiTask('sprites', 'Pack sprites into output sheets', function()
    {
       var done = this.async();
@@ -412,15 +414,12 @@ module.exports = function(grunt) {
    }
 
 
-   // -----------------------------
-   // Release
-
    // Test Coverage
+   // --------------------------------------------------
    grunt.loadNpmTasks('grunt-karma-coveralls');
 
-
-
    // Release a version
+   // --------------------------------------------------
    grunt.loadNpmTasks('grunt-bump');
    grunt.loadNpmTasks('grunt-conventional-changelog');
    grunt.loadNpmTasks('grunt-npm');
