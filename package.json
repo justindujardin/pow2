@@ -50,5 +50,10 @@
     "grunt-conventional-changelog": "~1.1.0",
     "grunt-karma-coveralls": "~2.5.3",
     "karma-coverage": "~0.2.6"
-  }
+  },
+  "contributors": [
+    "John Watkinson <watkinson@gmail.com>",
+    "John Quigley <jmquigs@gmail.com>",
+    "Todd Kennedy <toddself@users.noreply.github.com>"
+  ]
 }
