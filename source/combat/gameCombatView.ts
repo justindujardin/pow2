@@ -47,6 +47,8 @@ module pow2{
          Input.mouseOnView(e.originalEvent,this.mouse.view,this.mouse);
          if(this.world.combatScene.db.queryPoint(this.mouse.world,GameEntityObject,hits)) {
             this.world.combatScene.trigger('click',this.mouse,hits);
+            e.stopImmediatePropagation();
+            return false;
          }
       }
       /*
