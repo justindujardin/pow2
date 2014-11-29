@@ -1,13 +1,9 @@
-store-view {
-
-  position: fixed;
-  top: 0;
-  bottom:0;
-  left:0;
-  width:320px;
-  .ebp;
-  padding:0 25px;
-  pointer-events:auto;
+.store-view {
+  text-align: center;
+  margin:auto;
+  display: block;
+  max-width: 420px;
+  padding:1em;
 
   // Stores
   // --------------------------------------------------------------------------
@@ -15,124 +11,59 @@ store-view {
     margin-bottom: 20px;
   }
 
-  .store {
+  .name {
+    h1 {
+      margin:10px;
+      font-size: 24px;
+    }
+  }
+  .inventory {
     text-align:center;
-    .name {
-      h1 {
-        margin:10px;
-        font-size: 24px;
-      }
-    }
-    .inventory {
-      text-align:center;
-      padding:0;
-      .item-price {
-        color: @gameGold;
-        padding-left:10px;
-      }
-    }
-    ul {
-      padding:0;
-      margin:0;
-      text-align: left;
-      list-style-type: none;
-      max-width: 100%;
-      li {
-        cursor: pointer;
-        border:1px solid transparent;
-        padding:5px;
-        font-size: 16px;
-        margin-left:0;
-        margin-right:0;
-        .item-name {
-          display: inline-block;
-          min-width: 150px;
-          max-width: 160px;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-
-        .icon {
-          line-height: 28px;
-          img {
-            width:32px;
-          }
-        }
-        &:hover {
-          * {
-            color:#0FF !important;
-          }
-        }
-      }
+    padding:0;
+    .item-price {
+      color: @gameGold;
+      padding-left:10px;
     }
   }
-}
 
-
-
-/* Small devices (tablets, 768px and up) */
-@media (min-width: @screen-sm-min) {
-  .game-container{
-    .store {
-      .name {
-        h1 {
-          font-size: 32px;
-        }
-      }
-      .inventory{
-        .item-name {
-          max-width: 160px;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-
-        }
-      }
-    }
-    .message {
-      .text {
-        font-size: 18px;
-      }
-    }
+  .btn-group {
+    margin-top:1em;
+    text-align:center;
   }
-}
+  ul {
+    padding:0;
+    margin:0;
+    text-align: center;
+    list-style-type: none;
+    max-width: 100%;
+    li.item {
+      cursor: pointer;
+      border:1px solid transparent;
+      padding:5px;
+      font-size: 16px;
+      margin-left:0;
+      margin-right:0;
 
+      &.selected {
+        padding:1em;
+      }
+      .item-name {
+        display: inline-block;
+        min-width: 150px;
+        max-width: 160px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
 
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: @screen-md-min) {
-  .game-container{
-    .store {
-      ul {
-        li {
-          font-size: 18px;
-          .item-name {
-            min-width: 200px;
-            font-size:20px;
-          }
-          .item-price {
-            font-size: 18px;
-            min-width: 50px;
-          }
+      .icon {
+        line-height: 28px;
+        img {
+          width:32px;
         }
       }
-    }
-  }
-}
-
-/* Large devices (large desktops, 1200px and up) */
-@media (min-width: @screen-lg-min) {
-  .game-container{
-    .store {
-      ul {
-        li {
-          font-size: 20px;
-          .item-name {
-            min-width: 250px;
-            font-size:24px;
-          }
-          .item-price {
-            font-size: 20px;
-            min-width: 50px;
-          }
+      &:hover {
+        * {
+          color:#0FF !important;
         }
       }
     }
