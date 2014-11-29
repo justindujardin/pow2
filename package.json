@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git://github.com/justindujardin/pow2.git"
   },
-  "author": "Justin DuJardin",
+  "author": "Justin DuJardin <justin@dujardinconsulting.com>",
   "license": "Apache2",
   "readmeFilename": "README.md",
   "dependencies": {
