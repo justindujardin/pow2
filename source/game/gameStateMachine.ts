@@ -23,9 +23,6 @@ module pow2 {
       name:string = GameDefaultState.NAME;
    }
 
-   // -------------------------------------------------------------------------
-   // TODO: This does not need to be time ticked.   Manual evaluation and state
-   // changing would be more appropriate.
    export class GameStateMachine extends StateMachine {
       world:GameWorld;
       model:GameStateModel = null;

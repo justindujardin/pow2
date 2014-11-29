@@ -17,6 +17,17 @@
 /// <reference path="../game/objects/gameEntityObject.ts" />
 
 module pow2 {
+
+   /**
+    * A Player action during combat
+    */
+   export interface IPlayerAction {
+      name:string;
+      from:GameEntityObject;
+      to:GameEntityObject;
+   }
+
+
    // Combat State Machine
    //--------------------------------------------------------------------------
    export class CombatStateMachine extends StateMachine {
@@ -27,13 +38,16 @@ module pow2 {
          new CombatVictoryState(),
          new CombatDefeatState(),
          new CombatBeginTurnState(),
+         new CombatChooseActionState(),
          new CombatEndTurnState()
       ];
 
       party:GameEntityObject[] = [];
       enemies:GameEntityObject[] = [];
       turnList:GameEntityObject[] = [];
-
+      playerChoices:{
+         [id:string]:IPlayerAction
+      } = {};
       focus:GameEntityObject;
       current:GameEntityObject;
       currentDone:boolean = false;

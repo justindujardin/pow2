@@ -60,12 +60,6 @@ module pow2.ui {
                game.tileMap.scene.paused = true;
 
                tileView.setTileMap(state.tileMap);
-
-
-               //tileView.camera.extent.set(state.tileMap.bounds.extent.x,state.tileMap.bounds.extent.y);
-               //tileView.camera.setCenter(state.tileMap.bounds.getCenter());
-               //tileView.setTileMap(<any>state.tileMap);
-
                state.machine.on('combat:beginTurn',(player:GameEntityObject) => {
                   $scope.$apply(function() {
                      $scope.combat = $scope.combat;

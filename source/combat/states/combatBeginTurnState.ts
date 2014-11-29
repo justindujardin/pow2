@@ -47,52 +47,33 @@ module pow2 {
             machine.focus = machine.current;
          }
 
-         machine.current.scene.on('click',this.sceneClick,this);
          machine.trigger("combat:beginTurn",machine.current);
-         if(!machine.isFriendlyTurn()){
-            this.attack(machine);
+         var target:GameEntityObject = machine.getRandomPartyMember();
+         if(machine.isFriendlyTurn()){
+            var choice:IPlayerAction = machine.playerChoices[machine.current._uid];
+            if(!choice){
+               throw new Error("Invalid Player Choice in Begin Turn State.  This should not happen.");
+            }
+            if(choice.to.isDefeated()){
+               target = machine.getRandomEnemy();
+            }
+            else {
+               target = choice.to;
+            }
          }
+         this.attack(machine, target);
       }
       exit(machine:CombatStateMachine){
          this.current.scale = 1;
-         machine.current.scene.off('click',this.sceneClick,this);
          super.exit(machine);
       }
-
-      sceneClick(mouse,hits) {
-         if(this.machine){
-            this.attack(this.machine,hits[0]);
-         }
-      }
-      keyPress(machine:CombatStateMachine,keyCode:KeyCode):boolean {
-         if(!machine.isFriendlyTurn()){
-            return true;
-         }
-         switch(keyCode){
-            case KeyCode.ENTER:
-               this.attack(machine);
-               break;
-            default:
-               return super.keyPress(machine,keyCode);
-         }
-         return false;
-      }
-
-      attack(machine:CombatStateMachine,defender?:GameEntityObject){
+      attack(machine:CombatStateMachine,defender:GameEntityObject){
          if(this.attacksLeft <= 0){
             return;
          }
          this.attacksLeft -= 1;
          //
-         var attacker:GameEntityObject = null;
-         if(machine.isFriendlyTurn()){
-            attacker = machine.current;
-            defender = defender || machine.getRandomEnemy();
-         }
-         else {
-            attacker = machine.current;
-            defender = defender || machine.getRandomPartyMember();
-         }
+         var attacker:GameEntityObject = machine.current;
          var attackerPlayer:combat.PlayerCombatRenderComponent = <any>attacker.findComponent(combat.PlayerCombatRenderComponent);
          var attack = () => {
             var damage:number = attacker.model.attack(defender.model);
@@ -156,7 +137,7 @@ module pow2 {
    export class CombatBeginTurnTransition extends StateTransition {
       targetState:string = CombatBeginTurnState.NAME;
       evaluate(machine:CombatStateMachine):boolean {
-         return super.evaluate(machine) && machine.current !== null && machine.currentDone === true;
+         return super.evaluate(machine) && machine.currentDone === true;
       }
    }
 

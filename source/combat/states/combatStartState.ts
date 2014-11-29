@@ -25,17 +25,12 @@ module pow2 {
    export class CombatStartState extends CombatState {
       static NAME:string = "Combat Started";
       name:string = CombatStartState.NAME;
-      transitions:IStateTransition[] = [
-         new CombatBeginTurnTransition()
-      ];
-
       enter(machine:CombatStateMachine){
          super.enter(machine);
-
          machine.turnList = <GameEntityObject[]>_.shuffle(_.union(machine.getLiveParty(),machine.getLiveEnemies()));
          machine.current = machine.turnList.shift();
          machine.currentDone = true;
-         machine.update(this);
+         machine.setCurrentState(CombatChooseActionState.NAME);
       }
    }
 

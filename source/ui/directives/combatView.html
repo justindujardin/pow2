@@ -1,5 +1,5 @@
 <div class="combat-view" ng-show="combat">
-    <div class="status" ng-repeat="member in combat.party" ng-class="getMemberClass(member,combat.focus)">
+    <div class="status" ng-repeat="member in combat.party" ng-class="combatView.getMemberClass(member,combat.focus)">
         <span class="name">{{member.model.attributes.name}}</span>
         <span class="hp">HP {{member.model.attributes.hp}} / {{member.model.attributes.maxHP}}</span>
         <health-bar model="member.model"></health-bar>
