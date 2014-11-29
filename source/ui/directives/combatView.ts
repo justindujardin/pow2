@@ -62,9 +62,13 @@ module pow2.ui {
 
       getMemberClass(member,focused):string {
          var result:string[] = [];
+         var choosing = this.$scope.choosing;
+         if(choosing && choosing.model && choosing.model.get('name') === member.model.get('name')){
+            result.push('choosing');
+         }
 
          if (focused && focused.model && member.model.get('name') === focused.model.get('name')) {
-            result.push("focused");
+            result.push('focused');
          }
          return result.join(' ');
       }
@@ -85,6 +89,9 @@ module pow2.ui {
                var choices:GameEntityObject[] = data.players.slice();
                var next = () => {
                   var p:GameEntityObject = choices.shift();
+                  scope.$apply(()=>{
+                     scope.choosing = p;
+                  });
                   if(!p){
                      el.hide();
                      return;
