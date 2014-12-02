@@ -21,7 +21,7 @@ module pow2 {
    export interface IChooseActionEvent {
       players:GameEntityObject[];
       enemies:GameEntityObject[];
-      choose:(player:GameEntityObject,action:any)=>any;
+      choose:(from:GameEntityObject,to:GameEntityObject,action:string)=>any;
    }
 
    /**
@@ -31,12 +31,8 @@ module pow2 {
       static NAME:string = "Combat Choose Actions";
       name:string = CombatChooseActionState.NAME;
       pending:GameEntityObject[] = [];
-      choices: {
-         [id:string]:IPlayerAction
-      } = {};
       enter(machine:CombatStateMachine){
          super.enter(machine);
-         console.log("ENTERING CHOOSE TURN(z) STATE");
          this.pending = machine.getLiveParty();
          machine.playerChoices = {};
 
@@ -46,18 +42,17 @@ module pow2 {
          // of moves.  Once data.choose(g,a) has been called for all party members
          // the state will transition to begin execution of player and enemy turns.
          machine.trigger("combat:chooseMoves", {
-            choose:(g:GameEntityObject,action:GameEntityObject)=>{
-               machine.playerChoices[g._uid] = {
-                  name:"attack",
-                  from:g,
-                  to:action
+            choose:(from:GameEntityObject,to:GameEntityObject,action:string)=>{
+               machine.playerChoices[from._uid] = {
+                  name:action,
+                  from:from,
+                  to:to
                };
                this.pending = _.filter(this.pending,(p:GameEntityObject)=>{
-                  return g._uid !== p._uid;
+                  return from._uid !== p._uid;
                });
-               console.log(g.model.get('name') + " chose " + action.model.get('name'));
+               console.log(from.model.get('name') + " chose " + to.model.get('name'));
                if(this.pending.length === 0){
-                  console.log(this.choices);
                   machine.setCurrentState(CombatBeginTurnState.NAME);
                }
             },

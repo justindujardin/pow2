@@ -72,9 +72,6 @@ module pow2.combat {
 
 
       attack(attackCb:() => any, cb?:() => void) {
-         if(!this.animator || this.animating){
-            return;
-         }
          this._attack(attackCb,cb);
       }
 
@@ -110,7 +107,47 @@ module pow2.combat {
          ];
       }
 
+      moveForward(then?:()=>any){
+         this._playAnimation([{
+            name: "Move Forward",
+            repeats: 0,
+            duration: 250,
+            frames: [9, 11, 10],
+            move: new Point(-1, 0)
+         }],then);
+      }
+      moveBackward(then?:()=>any){
+         this._playAnimation([{
+            name: "Move Backward",
+            repeats: 0,
+            duration: 250,
+            frames: [9, 11, 10],
+            move: new Point(1, 0)
+         }],then);
+      }
+
+      _playAnimation(animation:IAnimationConfig[],then:()=>any){
+         if(!this.animator || this.animating){
+            return;
+         }
+         var animations:IAnimationConfig[] = _.map(animation,(anim:IAnimationConfig) => {
+            var result = _.extend({},anim);
+            if(typeof result.move !== 'undefined'){
+               result.move = result.move.clone();
+            }
+            return result;
+         });
+         this.animating = true;
+         this.animator.playChain(animations,() => {
+            this.animating = false;
+            then && then();
+         });
+      }
+
       _attack(attackCb:() => any, cb?:() => void) {
+         if(!this.animator || this.animating){
+            return;
+         }
          var attackAnimation = this.getAttackAnimation(attackCb);
          var animations:IAnimationConfig[] = _.map(attackAnimation,(anim:IAnimationConfig) => {
             var result = _.extend({},anim);
