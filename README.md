@@ -4,10 +4,6 @@ Pow is going to be a real game one day.  For now it's an experimental Typescript
 
 > You need to have Node.JS and Grunt.JS installed, and a basic familiarity with executing commands in your system terminal.
 
-## Getting Started
-
-You should really only need Node.JS and Grunt.  Let's do it:
-
 ### Node.JS
 
 [Download](http://nodejs.org/) and install it.
