@@ -55,11 +55,10 @@ module pow2 {
                throw new Error("Invalid Player Choice in Begin Turn State.  This should not happen.");
             }
             if(choice.to.isDefeated()){
-               target = machine.getRandomEnemy();
+               choice.to = machine.getRandomEnemy();
             }
-            else {
-               target = choice.to;
-            }
+            choice.act();
+            target = choice.to;
          }
          this.attack(machine, target);
       }

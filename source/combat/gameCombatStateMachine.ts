@@ -19,12 +19,19 @@
 module pow2 {
 
    /**
+    * Completion callback for a player action.
+    */
+   export interface IPlayerActionCallback {
+      (action:IPlayerAction,error?:any):void;
+   }
+   /**
     * A Player action during combat
     */
    export interface IPlayerAction {
       name:string;
       from:GameEntityObject;
       to:GameEntityObject;
+      act(then?:IPlayerActionCallback):boolean;
    }
 
 
@@ -113,6 +120,24 @@ module pow2 {
 
    // Combat Lifetime State Machine
    //--------------------------------------------------------------------------
+
+   /**
+    * Construct a combat scene with appropriate GameEntityObjects for the players
+    * and enemies.
+    *
+    * TODO: This should be loaded from a serializable composite object format for
+    * easier customization.   JSON with fully qualified type names as strings?
+    * e.g.
+    * "WarriorPlayer": {
+    *    "type":"pow2.GameEntityObject",
+    *    "properties":{},
+    *    "components":[
+    *       "pow2.PlayerComponent",
+    *       "pow2.combat.PlayerCombatRenderComponent"
+    *    ]
+    * }
+    *
+    */
    export class GameCombatState extends State {
       static NAME:string = "combat";
       name:string = GameCombatState.NAME;
@@ -146,8 +171,12 @@ module pow2 {
             else {
                playerRender = new playerRender();
             }
-            heroEntity.addComponent(<pow2.combat.PlayerCombatRenderComponent>playerRender);
+            heroEntity.addComponent(playerRender);
             heroEntity.addComponent(new AnimatedComponent());
+
+            // Player Actions
+            heroEntity.addComponent(new pow2.combat.CombatAttackComponent(this));
+            heroEntity.addComponent(new pow2.combat.CombatRunComponent(this));
             if(heroEntity.isDefeated()){
                return;
             }

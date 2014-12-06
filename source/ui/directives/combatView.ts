@@ -31,9 +31,9 @@ module pow2.ui {
     * A state machine to represent the various UI states involved in
     * choosing a combat action.
     *
-    *     +------+ +--------+ +--------+
-    *     | type +-> target +-> submit |
-    *     +------+ +--------+ +--------+
+    *     +------+   +--------+   +--------+
+    *     | type |-->| target |-->| submit |
+    *     +------+   +--------+   +--------+
     *
     * When the user properly selects an action type (Attack, Magic, Item)
     * and a target to apply the action to (Hero, All Enemies, etc.) the
@@ -43,19 +43,21 @@ module pow2.ui {
    export class ChooseActionStateMachine extends pow2.StateMachine {
       current:pow2.GameEntityObject = null;
       target:pow2.GameEntityObject = null;
-      action:string = null;
       scene:pow2.Scene;
       player:pow2.combat.PlayerCombatRenderComponent = null;
+      action:pow2.combat.CombatActionComponent = null;
+      scope:any;
       constructor(
          public controller:CombatViewController,
          public data:IChooseActionEvent,
-         submit:(from:GameEntityObject,to:GameEntityObject,action:string)=>any){
+         submit:(action:pow2.combat.CombatActionComponent)=>any){
          super();
          this.states = [
             new ChooseActionTarget(),
             new ChooseActionType(),
             new ChooseActionSubmit(submit)
          ];
+         this.scope = controller.$scope;
          this.scene = <pow2.Scene>data.players[0].scene;
       }
    }
@@ -64,7 +66,7 @@ module pow2.ui {
     * Choose a specific action type to apply in combat.
     */
    export class ChooseActionType extends pow2.State {
-      static NAME:string = "Choose Combat Action";
+      static NAME:string = "choose-type";
       name:string = ChooseActionType.NAME;
 
       enter(machine:ChooseActionStateMachine) {
@@ -88,13 +90,13 @@ module pow2.ui {
             el.hide();
             return;
          }
-         machine.controller.$scope.$apply(()=>{
-            machine.controller.$scope.choosing = p;
+         machine.scope.$apply(()=>{
+            machine.controller.choosing = p;
          });
 
          var clickSelect = (mouse,hits) => {
             machine.scene.off('click',clickSelect);
-            machine.action = "attack";
+            machine.action = <pow2.combat.CombatAttackComponent>machine.current.findComponent(pow2.combat.CombatAttackComponent);
             machine.target = hits[0];
             machine.setCurrentState(ChooseActionTarget.NAME);
          };
@@ -105,7 +107,9 @@ module pow2.ui {
          });
       }
       exit(machine:ChooseActionStateMachine) {
-
+         machine.scope.$apply(()=>{
+            machine.controller.choosing = null;
+         });
       }
    }
 
@@ -113,7 +117,7 @@ module pow2.ui {
     * Choose a target to apply a combat action to
     */
    export class ChooseActionTarget extends pow2.State {
-      static NAME:string = "Choose Action Target";
+      static NAME:string = "choose-target";
       name:string = ChooseActionTarget.NAME;
       enter(machine:ChooseActionStateMachine) {
          if(!machine.controller || !machine.controller.pointer){
@@ -123,7 +127,7 @@ module pow2.ui {
 
          var p:GameEntityObject = machine.target || enemies[0];
          var el:JQuery = $(machine.controller.pointer.element);
-         machine.controller.addPointerClass(machine.action);
+         machine.controller.addPointerClass(machine.action.getActionName());
          if(!p){
             el.hide();
             return;
@@ -150,9 +154,9 @@ module pow2.ui {
     * implementation.
     */
    export class ChooseActionSubmit extends pow2.State {
-      static NAME:string = "Submit Player Choice";
+      static NAME:string = "choose-submit";
       name:string = ChooseActionSubmit.NAME;
-      constructor(public submit:(from:GameEntityObject,to:GameEntityObject,action:string)=>any){
+      constructor(public submit:(action:pow2.combat.CombatActionComponent)=>any){
          super();
       }
       enter(machine:ChooseActionStateMachine) {
@@ -163,8 +167,10 @@ module pow2.ui {
             if(machine.controller.pointer){
                $(machine.controller.pointer.element).hide();
             }
-            machine.controller.removePointerClass(machine.action);
-            this.submit(machine.current,machine.target,machine.action);
+            machine.action.from = machine.current;
+            machine.action.to = machine.target;
+            machine.controller.removePointerClass(machine.action.getActionName());
+            this.submit(machine.action);
          });
       }
    }
@@ -180,6 +186,7 @@ module pow2.ui {
       }
       pointer:UIAttachment = null;
       combatView:GameCombatView = null;
+      choosing:GameEntityObject = null;
 
       tick(elapsed:number) {
          if(!this.combatView || !this.pointer || !this.pointer.object){
@@ -222,15 +229,21 @@ module pow2.ui {
 
       getMemberClass(member,focused):string {
          var result:string[] = [];
-         var choosing = this.$scope.choosing;
+         var choosing = this.choosing;
          if(choosing && choosing.model && choosing.model.get('name') === member.model.get('name')){
             result.push('choosing');
          }
-
          if (focused && focused.model && member.model.get('name') === focused.model.get('name')) {
             result.push('focused');
          }
          return result.join(' ');
+      }
+
+      getActions():pow2.combat.CombatActionComponent[]{
+         if(!this.choosing){
+            throw new Error("cannot get actions for non-existent game entity");
+         }
+         return <pow2.combat.CombatActionComponent[]>this.choosing.findComponents(pow2.combat.CombatActionComponent);
       }
    }
 
@@ -240,7 +253,7 @@ module pow2.ui {
          replace:true,
          templateUrl: '/source/ui/directives/combatView.html',
          controller:CombatViewController,
-         controllerAs:"combatView",
+         controllerAs:"combatCtrl",
          link:(scope, element, attrs,controller:CombatViewController) => {
             controller.destroy();
             var el = $compile('<span class="point-to-player" style="position:absolute;left:0;top:0;"></span>')(scope);
@@ -254,8 +267,8 @@ module pow2.ui {
                   throw new Error("CombatView requires a GameCombatView for coordinate conversions");
                }
 
-               var chooseSubmit = (from:GameEntityObject,to:GameEntityObject,action:string)=>{
-                  inputState.data.choose(from,to,action);
+               var chooseSubmit = (action:pow2.combat.CombatActionComponent)=>{
+                  inputState.data.choose(action);
                   next();
                };
                var inputState = new ChooseActionStateMachine(controller,data,chooseSubmit);

@@ -15,13 +15,14 @@ limitations under the License.
 */
 /// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../../game/states/gameCombatState.ts" />
+/// <reference path="../components/combatActionComponent.ts" />
 
 module pow2 {
 
    export interface IChooseActionEvent {
       players:GameEntityObject[];
       enemies:GameEntityObject[];
-      choose:(from:GameEntityObject,to:GameEntityObject,action:string)=>any;
+      choose:(action:pow2.combat.CombatActionComponent)=>any;
    }
 
    /**
@@ -42,16 +43,12 @@ module pow2 {
          // of moves.  Once data.choose(g,a) has been called for all party members
          // the state will transition to begin execution of player and enemy turns.
          machine.trigger("combat:chooseMoves", {
-            choose:(from:GameEntityObject,to:GameEntityObject,action:string)=>{
-               machine.playerChoices[from._uid] = {
-                  name:action,
-                  from:from,
-                  to:to
-               };
+            choose:(action:pow2.combat.CombatActionComponent)=>{
+               machine.playerChoices[action.from._uid] = action;
                this.pending = _.filter(this.pending,(p:GameEntityObject)=>{
-                  return from._uid !== p._uid;
+                  return action.from._uid !== p._uid;
                });
-               console.log(from.model.get('name') + " chose " + to.model.get('name'));
+               console.log(action.from.model.get('name') + " chose " + action.to.model.get('name'));
                if(this.pending.length === 0){
                   machine.setCurrentState(CombatBeginTurnState.NAME);
                }

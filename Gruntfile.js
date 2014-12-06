@@ -103,6 +103,7 @@ module.exports = function(grunt) {
                "source/combat/*.ts",
                "source/combat/states/*.ts",
                "source/combat/components/*.ts",
+               "source/combat/components/actions/*.ts",
                "source/combat/components/players/*.ts"
             ],
             dest: 'lib/<%= pkg.name %>.game.js'
