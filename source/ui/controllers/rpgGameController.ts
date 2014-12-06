@@ -139,7 +139,7 @@ module pow2.ui {
                   });
                   state.machine.on('combat:defeat',(enemies,party) => {
                      powAlert.show("Your party was defeated...",() => {
-                        state.machine.update(state.machine);
+                        //state.machine.update(state.machine);
                         game.loadGame(game.getSaveData(),()=>{
                            $scope.$apply(()=>{
                               $scope.gameModel = game.world.model;

@@ -23,10 +23,8 @@ module pow2.ui {
          this.$scope.currentClass = "warrior";
          GameStateModel.getDataSource((res:pow2.GameDataResource)=> {
             var data = res.getSheetData('classes');
-            this.$scope.$apply(()=>{
-               this.$scope.classes = data;
-            });
-            console.log(JSON.stringify(data,null,3));
+            this.$scope.classes = data;
+            //console.log(JSON.stringify(data,null,3));
          });
       }
 
