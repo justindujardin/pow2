@@ -18,6 +18,14 @@
 /// <reference path="../gameFeatureComponent.ts" />
 
 module pow2 {
+
+   /**
+    * A map feature that represents a fixed combat encounter.
+    *
+    * When a player enters the tile of a feature with this component
+    * it will trigger a combat encounter that must be defeated before
+    * the tile may be passed.
+    */
    export class CombatFeatureComponent extends GameFeatureComponent {
       party:PlayerComponent;
       enter(object:GameEntityObject):boolean {
@@ -25,19 +33,19 @@ module pow2 {
          if(!this.party){
             return false;
          }
+
+         // Stop the moving entity until it has defeated the combat encounter.
          this.party.velocity.zero();
          object.setPoint(object.point);
+
+         // Find the combat zone and launch a fixed encounter.
          var zone:IZoneMatch = this.host.tileMap.getCombatZones(this.party.host.point);
          this.host.world.fixedEncounter(zone,this.host.id,(victory:boolean)=>{
             if(victory){
                this.setDataHidden(true);
             }
          });
-
          return true;
-      }
-      exited(object:GameEntityObject):boolean {
-         return super.exited(object);
       }
    }
 }
