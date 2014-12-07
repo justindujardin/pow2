@@ -118,6 +118,7 @@ module pow2.ui {
          }
          this._current = this._queue.shift();
          this.scope.$apply(() => {
+            this.paused = true;
             this.scope.powAlert = this._current;
             this.animate.enter(this.element, this.container, null,() => {
                this.paused = false;
@@ -126,15 +127,25 @@ module pow2.ui {
       }
 
       dismiss() {
+         if(this.paused){
+            return;
+         }
          this.paused = true;
          this.scope.$apply(() => {
             this.animate.leave(this.element, () => {
                if(this._current){
-                  this._current.done && this._current.done(this._current);
+                  // Don't let exceptions in callback mess up current = null;
+                  try{
+                     this._current.done && this._current.done(this._current);
+                  }
+                  catch(e){
+                     console.log(e);
+                  }
                   this._current = null;
                }
                this.scope.powAlert = null;
                this.paused = false;
+
             });
          });
          if(this._current){
