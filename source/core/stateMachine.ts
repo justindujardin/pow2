@@ -37,7 +37,7 @@ module pow2 {
    // -------------------------------------------------------------------------
    export class StateMachine extends Events implements IStateMachine, IWorldObject{
 
-      static DEBUG_STATES:boolean = true;
+      static DEBUG_STATES:boolean = false;
 
       defaultState:string = null;
       states:IState[] = [];
