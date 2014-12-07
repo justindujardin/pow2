@@ -90,11 +90,11 @@ module pow2 {
             console.error("STATE NOT FOUND: " + newState);
             return false;
          }
-         if(this._pendingState !== null){
+         if(this._pendingState !== null && this._pendingState.name !== state.name){
             console.log("Overwriting pending state (" + this._pendingState.name + ") with (" + state.name + ")");
             this._pendingState = state;
          }
-         else {
+         else if(!this._pendingState) {
             this._pendingState = state;
             _.defer(()=>{
                state = this._pendingState;
