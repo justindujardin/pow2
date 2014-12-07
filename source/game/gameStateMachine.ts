@@ -41,13 +41,6 @@ module pow2 {
          this.model = world.model || new GameStateModel();
       }
 
-      setCurrentState(newState:any):boolean{
-         if(super.setCurrentState(newState)){
-            this.update(this);
-            return true;
-         }
-         return false;
-      }
       update(data?:any){
          if(this.world && this.world.scene){
             var scene:Scene = this.world.scene;
