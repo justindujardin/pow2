@@ -85,6 +85,30 @@ module pow2 {
          }
       }
 
+      /**
+       * Determine if a point on the map collides with a given terrain
+       * attribute.  If the attribute is set to false, a collision occurs.
+       *
+       * @param at {pow2.Point} The point to check.
+       * @param passableAttribute {string} The attribute to check.
+       * @returns {boolean} True if the passable attribute was found and set to false.
+       */
+      collideWithMap(at:pow2.Point,passableAttribute:string):boolean{
+         var map:TileMap = <TileMap>this.host.scene.objectByType(TileMap);
+         if (map) {
+            var layers:tiled.ITiledLayer[] = map.getLayers();
+            for(var i = 0; i < layers.length; i++) {
+               var terrain = map.getTileData(layers[i],at.x,at.y);
+               if (!terrain) {
+                  continue;
+               }
+               if(terrain[passableAttribute] === false){
+                  return true;
+               }
+            }
+         }
+         return false;
+      }
 
       collideMove(x:number,y:number,results:GameFeatureObject[]=[]){
          var collision:boolean = this.collider.collide(x,y,GameFeatureObject,results);
