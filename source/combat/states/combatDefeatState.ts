@@ -19,18 +19,24 @@
 
 module pow2 {
 
+   export interface CombatDefeatSummary {
+      party:GameEntityObject[];
+      enemies:GameEntityObject[];
+   }
+
    export class CombatDefeatState extends CombatState {
       static NAME:string = "Combat Defeat";
       name:string = CombatDefeatState.NAME;
       enter(machine:CombatStateMachine){
          super.enter(machine);
-         console.log("SORRY BRO, YOU LOSE.");
-         // callback(winner,loser);
-         machine.trigger("combat:defeat",machine.enemies,machine.party);
-         machine.update(this);
-      }
-      update(machine:CombatStateMachine){
-         machine.parent.setCurrentState(GameMapState.NAME);
+         var data:CombatDefeatSummary = {
+            enemies:machine.enemies,
+            party:machine.party
+         };
+         machine.notify("combat:defeat",data,()=>{
+            machine.parent.world.reportEncounterResult(false);
+            machine.parent.setCurrentState(GameMapState.NAME);
+         });
       }
    }
 

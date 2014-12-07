@@ -113,33 +113,41 @@ module pow2.ui {
                $scope.$apply(()=>{
                   $scope.combat = state.machine;
                   $scope.inCombat = true;
-                  state.machine.on('combat:attack',(damage,attacker,defender)=>{
+                  state.machine.on('combat:attack',(data:CombatAttackSummary)=>{
+                     var _done = state.machine.notifyWait();
                      var msg:string = '';
-                     var a = attacker.model.get('name');
-                     var b = defender.model.get('name');
-                     if(damage > 0){
-                        msg = a + " attacked " + b + " for " + damage + " damage!";
+                     var a = data.attacker.model.get('name');
+                     var b = data.defender.model.get('name');
+                     if(data.damage > 0){
+                        msg = a + " attacked " + b + " for " + data.damage + " damage!";
                      }
                      else {
                         msg = a + " attacked " + b + ", and MISSED!";
                      }
-                     powAlert.show(msg,() => {
-                        state.machine.update(state.machine);
-                     });
+                     powAlert.show(msg,_done);
+                  });
+                  state.machine.on('combat:run',(data:pow2.CombatRunSummary)=>{
+                     var _done = state.machine.notifyWait();
+                     var msg:string = data.player.model.get('name');
+                     if(data.success){
+                         msg += ' successfully ran away!';
+                     }
+                     else {
+                        msg += ' failed to escape!';
+                     }
+                     powAlert.show(msg,_done);
                   });
                   state.machine.on('combat:victory',(data:CombatVictorySummary) => {
+                     var _done = state.machine.notifyWait();
                      powAlert.show("Found " + data.gold + " gold!",null,0);
                      powAlert.show("Gained " + data.exp + " experience!",null,0);
                      angular.forEach(data.levels,(hero:HeroModel) => {
                         powAlert.show(hero.get('name') + " reached level " + hero.get('level') + "!",null,0);
                      });
-                     powAlert.show("Enemies Defeated!",() => {
-                        state.machine.update(state.machine);
-                     });
+                     powAlert.show("Enemies Defeated!",_done);
                   });
-                  state.machine.on('combat:defeat',(enemies,party) => {
+                  state.machine.on('combat:defeat',(data:CombatDefeatSummary) => {
                      powAlert.show("Your party was defeated...",() => {
-                        state.machine.update(state.machine);
                         game.loadGame(game.getSaveData(),()=>{
                            $scope.$apply(()=>{
                               $scope.gameModel = game.world.model;

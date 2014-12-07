@@ -15,6 +15,19 @@
 
   background-color: @menuOverlayBackground;
 
+  .action-menu {
+    position: absolute;
+    bottom:100%;
+    margin:20px;
+    padding:5px 25px;
+    list-style-type: none;
+    li {
+      text-transform: capitalize;
+      cursor:pointer;
+      padding:10px;
+    }
+  }
+
   .progress {
     margin-bottom:0;
   }
@@ -60,13 +73,23 @@
   }
 }
 
-.point-to-right {
+.point-to-player {
   .glyphicon;
-  .glyphicon-chevron-right;
+  &.left {
+    .glyphicon-chevron-left;
+  }
+  &.right {
+    .glyphicon-chevron-right;
+  }
+  &.attack {
+    .glyphicon-screenshot;
+    color:red;
+  }
   font-size:2em;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
+  -webkit-transition: all 0.1s;
+  -moz-transition: all 0.1s;
+  transition: all 0.1s;
   color:#fff;
   text-shadow: 2px 2px 1px rgba(0,0,0,0.8);
+  pointer-events: none;
 }

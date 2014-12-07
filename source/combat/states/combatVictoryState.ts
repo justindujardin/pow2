@@ -62,11 +62,10 @@ module pow2 {
             gold:gold,
             exp:exp
          };
-         machine.trigger("combat:victory",summary);
-      }
-
-      update(machine:CombatStateMachine){
-         machine.parent.setCurrentState(GameMapState.NAME);
+         machine.notify("combat:victory",summary,()=>{
+            machine.parent.world.reportEncounterResult(true);
+            machine.parent.setCurrentState(GameMapState.NAME);
+         });
       }
    }
 }

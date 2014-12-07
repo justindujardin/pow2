@@ -39,8 +39,15 @@ module pow2 {
          }
       }
 
+      private _encounterCallback:IGameEncounterCallback = null;
+      reportEncounterResult(victory:boolean){
+         if(this._encounterCallback){
+            this._encounterCallback(victory);
+            this._encounterCallback = null;
+         }
+      }
 
-      randomEncounter(zone:IZoneMatch){
+      randomEncounter(zone:IZoneMatch,then?:IGameEncounterCallback){
          GameStateModel.getDataSource((gsr:GameDataResource)=>{
             var encounters:IGameEncounter[] = _.filter(gsr.getSheetData("encounters"),(enc:any)=>{
                return _.indexOf(enc.zones,zone.map) !== -1 || _.indexOf(enc.zones,zone.target) !== -1;
@@ -51,10 +58,10 @@ module pow2 {
             var max = encounters.length - 1;
             var min = 0;
             var encounter = encounters[Math.floor(Math.random() * (max - min + 1)) + min];
-            this._encounter(zone,encounter);
+            this._encounter(zone,encounter,then);
          });
       }
-      fixedEncounter(zone:IZoneMatch,encounterId:string){
+      fixedEncounter(zone:IZoneMatch,encounterId:string,then?:IGameEncounterCallback){
          GameStateModel.getDataSource((gsr:GameDataResource)=>{
             var encounters = <IGameEncounter[]>_.where(gsr.getSheetData("encounters"),{
                id:encounterId
@@ -62,15 +69,16 @@ module pow2 {
             if(encounters.length === 0){
                throw new Error("No encounter found with id: " + encounterId);
             }
-            this._encounter(zone,encounters[0]);
+            this._encounter(zone,encounters[0],then);
          });
       }
 
-      private _encounter(zoneInfo:IZoneMatch,encounter:IGameEncounter){
-            this.scene.trigger('combat:encounter',this);
-            this.state.encounter = encounter;
-            this.state.encounterInfo = zoneInfo;
-            this.state.setCurrentState("combat");
+      private _encounter(zoneInfo:IZoneMatch,encounter:IGameEncounter,then?:IGameEncounterCallback){
+         this.scene.trigger('combat:encounter',this);
+         this.state.encounter = encounter;
+         this.state.encounterInfo = zoneInfo;
+         this.state.setCurrentState(GameCombatState.NAME);
+         this._encounterCallback = then;
       }
    }
 }

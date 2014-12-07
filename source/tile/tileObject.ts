@@ -82,7 +82,7 @@ module pow2 {
       /**
        * When added to a scene, resolve a feature icon to a renderable sprite.
        */
-         onAddToScene() {
+      onAddToScene() {
          if(this.icon){
             this.setSprite(this.icon);
          }
@@ -94,7 +94,7 @@ module pow2 {
       /**
        * Set the current sprite name.  Returns the previous sprite name.
        */
-         setSprite(name:string,frame:number = 0):string {
+      setSprite(name:string,frame:number = 0):string {
          var oldSprite:string = this.icon;
          if (!name) {
             this.meta = null;

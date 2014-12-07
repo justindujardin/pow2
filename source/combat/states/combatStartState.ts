@@ -34,32 +34,4 @@ module pow2 {
       }
    }
 
-   // Combat Transitions
-   //--------------------------------------------------------------------------
-   export class CombatStartTransition extends StateTransition {
-      targetState:string = CombatStartState.NAME;
-      evaluate(machine:CombatStateMachine):boolean {
-         return super.evaluate(machine)
-            && machine.currentDone === true
-            && machine.turnList.length === 0
-            && machine.current === null;
-      }
-   }
-   export class CombatCompletedTransition extends StateTransition {
-      targetState:string = "";
-      evaluate(machine:CombatStateMachine):boolean {
-         if(!super.evaluate(machine)){
-            return false;
-         }
-         if(machine.partyDefeated()){
-            this.targetState = CombatDefeatState.NAME;
-            return true;
-         }
-         if(machine.enemiesDefeated()){
-            this.targetState = CombatVictoryState.NAME;
-            return true;
-         }
-         return false;
-      }
-   }
 }

@@ -25,6 +25,19 @@ module pow2 {
    export class GameFeatureComponent extends GameComponent {
       host:GameFeatureObject;
 
+      connectComponent():boolean {
+         if(!super.connectComponent()){
+            return false;
+         }
+         if(!this.host.feature){
+            console.log("Feature host missing feature data.");
+            return false;
+         }
+         // Inherit ID from the unique feature data's id.
+         this.id = this.host.feature.id;
+         return true;
+      }
+
       syncComponent():boolean{
          if(!super.syncComponent()){
             return false;

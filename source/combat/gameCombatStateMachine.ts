@@ -18,6 +18,16 @@
 
 module pow2 {
 
+   export interface IResumeCallback {
+      ():void;
+   }
+
+   /**
+    * Completion callback for a player action.
+    */
+   export interface IPlayerActionCallback {
+      (action:IPlayerAction,error?:any):void;
+   }
    /**
     * A Player action during combat
     */
@@ -25,6 +35,7 @@ module pow2 {
       name:string;
       from:GameEntityObject;
       to:GameEntityObject;
+      act(then?:IPlayerActionCallback):boolean;
    }
 
 
@@ -39,7 +50,8 @@ module pow2 {
          new CombatDefeatState(),
          new CombatBeginTurnState(),
          new CombatChooseActionState(),
-         new CombatEndTurnState()
+         new CombatEndTurnState(),
+         new CombatEscapeState()
       ];
 
       party:GameEntityObject[] = [];
@@ -52,6 +64,37 @@ module pow2 {
       current:GameEntityObject;
       currentDone:boolean = false;
 
+      /**
+       * Notify the game UI of a combat event, and wait for it to handled
+       * if there is a specified handler.
+       */
+      notify(msg:string,data:any,callback?:()=>any){
+         if(this._asyncProcessing){
+            throw new Error("TODO: CombatStateMachine cannot handle multiple async UI waits");
+         }
+         this._asyncProcessing = false;
+         this._asyncCurrentCallback = () => {
+            if(msg === 'combat:victory'){
+               var foo = "bar";
+            }
+            console.log("Done ASYNC " + msg);
+            this._asyncProcessing = false;
+            callback && callback();
+         };
+         this.trigger(msg,data);
+         if(!this._asyncProcessing){
+            callback && callback();
+         }
+      }
+      private _asyncProcessing:boolean = false;
+      private _asyncCurrentCallback:IResumeCallback = null;
+      notifyWait():IResumeCallback {
+         if(!this._asyncCurrentCallback){
+            throw new Error("No valid async callback set!  Perhaps you called this outside of a notify event handler?");
+         }
+         this._asyncProcessing = true;
+         return this._asyncCurrentCallback;
+      }
 
       isFriendlyTurn():boolean {
          return this.current && !!_.find(this.party,(h:GameEntityObject) => {
@@ -113,6 +156,24 @@ module pow2 {
 
    // Combat Lifetime State Machine
    //--------------------------------------------------------------------------
+
+   /**
+    * Construct a combat scene with appropriate GameEntityObjects for the players
+    * and enemies.
+    *
+    * TODO: This should be loaded from a serializable composite object format for
+    * easier customization.   JSON with fully qualified type names as strings?
+    * e.g.
+    * "WarriorPlayer": {
+    *    "type":"pow2.GameEntityObject",
+    *    "properties":{},
+    *    "components":[
+    *       "pow2.PlayerComponent",
+    *       "pow2.PlayerCombatRenderComponent"
+    *    ]
+    * }
+    *
+    */
    export class GameCombatState extends State {
       static NAME:string = "combat";
       name:string = GameCombatState.NAME;
@@ -139,15 +200,19 @@ module pow2 {
             // Instantiate a [Class]CombatRenderComponent implementation for the
             // hero type, if available.
             var playerType:string = hero.attributes.type[0].toUpperCase() + hero.attributes.type.substr(1);
-            var playerRender:any = pow2.combat[playerType + 'CombatRenderComponent'];
+            var playerRender:any = pow2[playerType + 'CombatRenderComponent'];
             if(typeof playerRender === 'undefined'){
-               playerRender = new pow2.combat.PlayerCombatRenderComponent();
+               playerRender = new pow2.PlayerCombatRenderComponent();
             }
             else {
                playerRender = new playerRender();
             }
-            heroEntity.addComponent(<pow2.combat.PlayerCombatRenderComponent>playerRender);
+            heroEntity.addComponent(playerRender);
             heroEntity.addComponent(new AnimatedComponent());
+
+            // Player Actions
+            heroEntity.addComponent(new pow2.CombatAttackComponent(this));
+            heroEntity.addComponent(new pow2.CombatRunComponent(this));
             if(heroEntity.isDefeated()){
                return;
             }
@@ -184,6 +249,7 @@ module pow2 {
                      model: nmeModel
                   });
                   combatScene.addObject(nme);
+                  nme.addComponent(new pow2.CombatAttackComponent(this));
                   nme.addComponent(new pow2.SpriteComponent({
                      name:"enemy",
                      icon:nme.model.get('icon')

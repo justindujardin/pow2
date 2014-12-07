@@ -39,12 +39,12 @@ module pow2.ui {
                if(state.name !== GameCombatState.NAME){
                   return;
                }
-               state.machine.on('combat:attack',function(damage,attacker,defender:pow2.GameEntityObject){
-                  var targetPos:pow2.Point = defender.point.clone();
+               state.machine.on('combat:attack',(data:CombatAttackSummary) => {
+                  var targetPos:pow2.Point = data.defender.point.clone();
                   targetPos.y -= (tileView.camera.point.y + 1.25);
                   targetPos.x -= tileView.camera.point.x;
                   var screenPos:pow2.Point = tileView.worldToScreen(targetPos,tileView.cameraScale);
-                  var damageValue = $compile('<span class="damage-value' + (damage === 0 ? ' miss' : '') + '" style="position:absolute;left:' + screenPos.x + 'px;top:' + screenPos.y + 'px;">' + damage + '</span>')($scope);
+                  var damageValue = $compile('<span class="damage-value' + (data.damage === 0 ? ' miss' : '') + '" style="position:absolute;left:' + screenPos.x + 'px;top:' + screenPos.y + 'px;">' + data.damage + '</span>')($scope);
                   $scope.$apply(() => {
                      $animate.enter(damageValue, element.parent(),null,() => {
                         damageValue.remove();

@@ -65,7 +65,7 @@ module pow2{
       renderFrame(elapsed) {
          super.renderFrame(elapsed);
 
-         var players = this.scene.objectsByComponent(pow2.combat.PlayerCombatRenderComponent);
+         var players = this.scene.objectsByComponent(pow2.PlayerCombatRenderComponent);
          _.each(players, (player) => {
             this.objectRenderer.render(player,player,this);
          });

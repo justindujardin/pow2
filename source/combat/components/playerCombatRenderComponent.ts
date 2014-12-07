@@ -1,5 +1,5 @@
-/**
- Copyright (C) 2013 by Justin DuJardin
+/*
+ Copyright (C) 2014 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 /// <reference path="../../game/components/animatedComponent.ts" />
 /// <reference path="../../game/objects/gameEntityObject.ts" />
 
-module pow2.combat {
+module pow2 {
    export enum StateFrames {
       DEFAULT = 10,
       SWING = 1,
@@ -72,10 +72,38 @@ module pow2.combat {
 
 
       attack(attackCb:() => any, cb?:() => void) {
-         if(!this.animator || this.animating){
-            return;
-         }
          this._attack(attackCb,cb);
+      }
+
+
+      getMagicAnimation(strikeCb:()=>any){
+         return [
+            {
+               name : "Prep Animation",
+               callback: () => {
+                  this.host.setSprite(this.host.icon.replace(".png","-magic.png"),19);
+               }
+            },
+            {
+               name : "Magic cast",
+               repeats: 0,
+               duration:1000,
+               frames : [19,18,17,16,15],
+               callback: () => {
+                  strikeCb && strikeCb();
+               }
+            },
+            {
+               name : "Back to rest",
+               repeats: 0,
+               duration:1000,
+               frames : [15,16,17,18,19],
+               callback: () => {
+                  this.host.setSprite(this.host.icon.replace("-magic.png",".png"),10);
+               }
+            }
+
+         ];
       }
 
       getAttackAnimation(strikeCb:()=>any){
@@ -110,7 +138,47 @@ module pow2.combat {
          ];
       }
 
+      moveForward(then?:()=>any){
+         this._playAnimation([{
+            name: "Move Forward",
+            repeats: 0,
+            duration: 250,
+            frames: [9, 11, 10],
+            move: new Point(-1, 0)
+         }],then);
+      }
+      moveBackward(then?:()=>any){
+         this._playAnimation([{
+            name: "Move Backward",
+            repeats: 0,
+            duration: 250,
+            frames: [9, 11, 10],
+            move: new Point(1, 0)
+         }],then);
+      }
+
+      _playAnimation(animation:IAnimationConfig[],then:()=>any){
+         if(!this.animator || this.animating){
+            return;
+         }
+         var animations:IAnimationConfig[] = _.map(animation,(anim:IAnimationConfig) => {
+            var result = _.extend({},anim);
+            if(typeof result.move !== 'undefined'){
+               result.move = result.move.clone();
+            }
+            return result;
+         });
+         this.animating = true;
+         this.animator.playChain(animations,() => {
+            this.animating = false;
+            then && then();
+         });
+      }
+
       _attack(attackCb:() => any, cb?:() => void) {
+         if(!this.animator || this.animating){
+            return;
+         }
          var attackAnimation = this.getAttackAnimation(attackCb);
          var animations:IAnimationConfig[] = _.map(attackAnimation,(anim:IAnimationConfig) => {
             var result = _.extend({},anim);
