@@ -44,6 +44,7 @@ module pow2 {
       private _currentState:IState = null;
       private _previousState:IState = null;
       private _newState:boolean = false;
+      private _pendingState:IState = null;
 
       world:IWorld;
       onAddToWorld(world){}
@@ -76,18 +77,44 @@ module pow2 {
       getCurrentName():string{
          return this._currentState !== null ? this._currentState.name : null;
       }
+
+      /**
+       * Set the current state after the callstack unwinds.
+       * @param state {string|pow2.IState} Either a state object or the name of one.
+       */
       setCurrentState(state:IState):boolean;
       setCurrentState(state:string):boolean;
-      setCurrentState(newState:any):boolean{
+      setCurrentState(newState:any):boolean {
          var state = typeof newState === 'string' ? this.getState(newState) : <IState>newState;
-         var oldState:IState = this._currentState;
          if(!state){
             console.error("STATE NOT FOUND: " + newState);
             return false;
          }
+         if(this._pendingState !== null){
+            console.log("Overwriting pending state (" + this._pendingState.name + ") with (" + state.name + ")");
+            this._pendingState = state;
+         }
+         else {
+            this._pendingState = state;
+            _.defer(()=>{
+               state = this._pendingState;
+               this._pendingState = null;
+               if(!this._setCurrentState(state)){
+                  console.error("Failed to set state: " + state.name);
+               }
+            });
+         }
+         return true;
+      }
+
+      private _setCurrentState(state:IState){
+         if(!state){
+            return false;
+         }
+         var oldState:IState = this._currentState;
          // Already in the desired state.
          if(this._currentState && state.name === this._currentState.name){
-            console.warn("Attempting to set current state to already active state");
+            console.warn(this._currentState.name + ": Attempting to set current state to already active state");
             return true;
          }
          this._newState = true;
