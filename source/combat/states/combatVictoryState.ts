@@ -63,6 +63,7 @@ module pow2 {
             exp:exp
          };
          machine.notify("combat:victory",summary,()=>{
+            machine.parent.world.reportEncounterResult(true);
             machine.parent.setCurrentState(GameMapState.NAME);
          });
       }

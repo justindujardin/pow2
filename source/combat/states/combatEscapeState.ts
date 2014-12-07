@@ -27,6 +27,7 @@ module pow2 {
          machine.notify("combat:escape",{
             player:machine.current
          },()=>{
+            machine.parent.world.reportEncounterResult(false);
             machine.parent.setCurrentState(GameMapState.NAME);
          });
       }

@@ -27,4 +27,8 @@ module pow2 {
       zones:string[]; // array of zones this encounter can happen in
       enemies:string[]; // array of enemies in this encounter
    }
+
+   export interface IGameEncounterCallback {
+      (victory:boolean):void;
+   }
 }

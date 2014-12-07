@@ -20,17 +20,23 @@
 module pow2 {
    export class CombatFeatureComponent extends GameFeatureComponent {
       party:PlayerComponent;
-      enter(object:GameFeatureObject):boolean {
+      enter(object:GameEntityObject):boolean {
          this.party = <PlayerComponent>object.findComponent(PlayerComponent);
          if(!this.party){
             return false;
          }
+         this.party.velocity.zero();
+         object.setPoint(object.point);
          var zone:IZoneMatch = this.host.tileMap.getCombatZones(this.party.host.point);
-         this.host.world.fixedEncounter(zone,this.host.id);
-         this.setDataHidden(true);
+         this.host.world.fixedEncounter(zone,this.host.id,(victory:boolean)=>{
+            if(victory){
+               this.setDataHidden(true);
+            }
+         });
+
          return true;
       }
-      exited(object:GameFeatureObject):boolean {
+      exited(object:GameEntityObject):boolean {
          return super.exited(object);
       }
    }

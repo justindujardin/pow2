@@ -34,6 +34,7 @@ module pow2 {
             party:machine.party
          };
          machine.notify("combat:defeat",data,()=>{
+            machine.parent.world.reportEncounterResult(false);
             machine.parent.setCurrentState(GameMapState.NAME);
          });
       }
