@@ -26,7 +26,6 @@ module pow2 {
          super.enter(machine);
          machine.current = null;
          // Find the next turn.
-         console.log(machine.turnList.length + " turns left.");
          while(machine.turnList.length > 0 && !machine.current){
             machine.current = machine.turnList.shift();
             // Strip out defeated players.
