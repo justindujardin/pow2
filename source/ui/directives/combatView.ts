@@ -44,13 +44,13 @@ module pow2.ui {
       current:pow2.GameEntityObject = null;
       target:pow2.GameEntityObject = null;
       scene:pow2.Scene;
-      player:pow2.combat.PlayerCombatRenderComponent = null;
-      action:pow2.combat.CombatActionComponent = null;
+      player:pow2.PlayerCombatRenderComponent = null;
+      action:pow2.CombatActionComponent = null;
       scope:any;
       constructor(
          public controller:CombatViewController,
          public data:IChooseActionEvent,
-         submit:(action:pow2.combat.CombatActionComponent)=>any){
+         submit:(action:pow2.CombatActionComponent)=>any){
          super();
          this.states = [
             new ChooseActionTarget(),
@@ -77,13 +77,31 @@ module pow2.ui {
             throw new Error("Requires Current Player");
          }
          var p:GameEntityObject = machine.current;
-         machine.player = <pow2.combat.PlayerCombatRenderComponent>p.findComponent(pow2.combat.PlayerCombatRenderComponent);
+         machine.player = <pow2.PlayerCombatRenderComponent>p.findComponent(pow2.PlayerCombatRenderComponent);
          if(!machine.player){
             throw new Error("Requires player render component for combat animations.");
          }
          var pointerOffset:pow2.Point = new pow2.Point(-1,-0.25);
          machine.action = null;
          machine.target = null;
+
+         // Enable menu selection of action type.
+         var selectAction = (action:IPlayerAction) => {
+            machine.action = <pow2.CombatActionComponent>action;
+
+            machine.scope.selectAction = null;
+            machine.scene.off('click',clickSelect);
+
+            _.defer(()=>{
+               if(machine.action.canTarget()){
+                  machine.setCurrentState(ChooseActionTarget.NAME);
+               }
+               else {
+                  machine.setCurrentState(ChooseActionSubmit.NAME);
+               }
+            });
+         };
+         machine.scope.selectAction = selectAction;
 
          var el:JQuery = $(machine.controller.pointer.element);
          if(!p){
@@ -96,9 +114,8 @@ module pow2.ui {
 
          var clickSelect = (mouse,hits) => {
             machine.scene.off('click',clickSelect);
-            machine.action = <pow2.combat.CombatAttackComponent>machine.current.findComponent(pow2.combat.CombatAttackComponent);
             machine.target = hits[0];
-            machine.setCurrentState(ChooseActionTarget.NAME);
+            selectAction(<pow2.CombatAttackComponent>machine.current.findComponent(pow2.CombatAttackComponent));
          };
          machine.player.moveForward(() => {
             machine.controller.setPointerTarget(p,"right",pointerOffset);
@@ -156,12 +173,15 @@ module pow2.ui {
    export class ChooseActionSubmit extends pow2.State {
       static NAME:string = "choose-submit";
       name:string = ChooseActionSubmit.NAME;
-      constructor(public submit:(action:pow2.combat.CombatActionComponent)=>any){
+      constructor(public submit:(action:pow2.CombatActionComponent)=>any){
          super();
       }
       enter(machine:ChooseActionStateMachine) {
-         if(!machine.current || !machine.target || !machine.action || !this.submit){
-            throw new Error("Invalid state")
+         if(!machine.current || !machine.action || !this.submit){
+            throw new Error("Invalid state");
+         }
+         if(machine.action.canTarget() && !machine.target){
+            throw new Error("Invalid target");
          }
          machine.player.moveBackward(()=>{
             if(machine.controller.pointer){
@@ -239,11 +259,11 @@ module pow2.ui {
          return result.join(' ');
       }
 
-      getActions():pow2.combat.CombatActionComponent[]{
+      getActions():pow2.CombatActionComponent[]{
          if(!this.choosing){
             throw new Error("cannot get actions for non-existent game entity");
          }
-         return <pow2.combat.CombatActionComponent[]>this.choosing.findComponents(pow2.combat.CombatActionComponent);
+         return <pow2.CombatActionComponent[]>this.choosing.findComponents(pow2.CombatActionComponent);
       }
    }
 
@@ -267,7 +287,7 @@ module pow2.ui {
                   throw new Error("CombatView requires a GameCombatView for coordinate conversions");
                }
 
-               var chooseSubmit = (action:pow2.combat.CombatActionComponent)=>{
+               var chooseSubmit = (action:pow2.CombatActionComponent)=>{
                   inputState.data.choose(action);
                   next();
                };

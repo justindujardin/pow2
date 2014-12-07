@@ -1,7 +1,7 @@
 <div class="combat-view" ng-show="combat">
 
     <ul ng-if="combatCtrl.choosing" class="ebp action-menu">
-        <li ng-repeat="action in combatCtrl.getActions()">{{action.getActionName()}}</li>
+        <li ng-repeat="action in combatCtrl.getActions()" ng-click="selectAction(action)">{{action.getActionName()}}</li>
     </ul>
     <div class="status" ng-repeat="member in combat.party" ng-class="combatCtrl.getMemberClass(member,combat.focus)">
         <span class="name">{{member.model.attributes.name}}</span>

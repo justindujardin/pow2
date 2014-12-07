@@ -22,16 +22,11 @@ module pow2 {
    export class CombatEndTurnState extends CombatState {
       static NAME:string = "Combat End Turn";
       name:string = CombatEndTurnState.NAME;
-      transitions:IStateTransition[] = [
-         new CombatCompletedTransition(),
-         new CombatStartTransition(),
-         new CombatBeginTurnTransition()
-      ];
-
       enter(machine:CombatStateMachine){
          super.enter(machine);
          machine.current = null;
          // Find the next turn.
+         console.log(machine.turnList.length + " turns left.");
          while(machine.turnList.length > 0 && !machine.current){
             machine.current = machine.turnList.shift();
             // Strip out defeated players.
@@ -39,18 +34,21 @@ module pow2 {
                machine.current = null;
             }
          }
-         machine.update(this);
+
+         var targetState:string = machine.current ? CombatBeginTurnState.NAME : CombatStartState.NAME;
+         if(machine.partyDefeated()){
+            targetState = CombatDefeatState.NAME;
+         }
+         else if(machine.enemiesDefeated()){
+            targetState = CombatVictoryState.NAME;
+         }
+         if(!targetState){
+            throw new Error("Invalid transition from end turn");
+         }
+         _.defer(()=>{
+            machine.setCurrentState(targetState);
+         });
       }
    }
 
-
-   // Combat Transitions
-   //--------------------------------------------------------------------------
-
-   export class CombatEndTurnTransition extends StateTransition {
-      targetState:string = CombatEndTurnState.NAME;
-      evaluate(machine:CombatStateMachine):boolean {
-         return super.evaluate(machine) && machine.currentDone === true;
-      }
-   }
 }

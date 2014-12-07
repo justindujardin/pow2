@@ -16,7 +16,7 @@
 
 /// <reference path="../../game/objects/gameEntityObject.ts" />
 
-module pow2.combat {
+module pow2 {
 
    export class CombatActionComponent extends SceneComponent implements IPlayerAction {
       name:string = "default";
@@ -31,6 +31,12 @@ module pow2.combat {
       }
       isCurrentTurn():boolean {
          return this.combat.machine.current === this.from;
+      }
+      canTarget():boolean {
+         return true;
+      }
+      canTargetMultiple():boolean {
+         return this.canTarget();
       }
 
       /**

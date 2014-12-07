@@ -15,23 +15,20 @@
  */
 
 /// <reference path="../../game/states/gameCombatState.ts" />
-/// <reference path="../gameCombatStateMachine.ts" />
 /// <reference path="../../../lib/pow2.d.ts" />
 
 module pow2 {
 
-   // Combat Begin
-   //--------------------------------------------------------------------------
-   export class CombatStartState extends CombatState {
-      static NAME:string = "Combat Started";
-      name:string = CombatStartState.NAME;
+   export class CombatEscapeState extends CombatState {
+      static NAME:string = "Combat Escaped";
+      name:string = CombatEscapeState.NAME;
       enter(machine:CombatStateMachine){
          super.enter(machine);
-         machine.turnList = <GameEntityObject[]>_.shuffle(_.union(machine.getLiveParty(),machine.getLiveEnemies()));
-         machine.current = machine.turnList.shift();
-         machine.currentDone = true;
-         machine.setCurrentState(CombatChooseActionState.NAME);
+         machine.notify("combat:escape",{
+            player:machine.current
+         },()=>{
+            machine.parent.setCurrentState(GameMapState.NAME);
+         });
       }
    }
-
 }

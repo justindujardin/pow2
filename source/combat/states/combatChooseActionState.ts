@@ -22,7 +22,7 @@ module pow2 {
    export interface IChooseActionEvent {
       players:GameEntityObject[];
       enemies:GameEntityObject[];
-      choose:(action:pow2.combat.CombatActionComponent)=>any;
+      choose:(action:pow2.CombatActionComponent)=>any;
    }
 
    /**
@@ -43,12 +43,12 @@ module pow2 {
          // of moves.  Once data.choose(g,a) has been called for all party members
          // the state will transition to begin execution of player and enemy turns.
          machine.trigger("combat:chooseMoves", {
-            choose:(action:pow2.combat.CombatActionComponent)=>{
+            choose:(action:pow2.CombatActionComponent)=>{
                machine.playerChoices[action.from._uid] = action;
                this.pending = _.filter(this.pending,(p:GameEntityObject)=>{
                   return action.from._uid !== p._uid;
                });
-               console.log(action.from.model.get('name') + " chose " + action.to.model.get('name'));
+               console.log(action.from.model.get('name') + " chose " + action.getActionName());
                if(this.pending.length === 0){
                   machine.setCurrentState(CombatBeginTurnState.NAME);
                }

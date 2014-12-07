@@ -36,6 +36,9 @@ module pow2 {
    // Implementation
    // -------------------------------------------------------------------------
    export class StateMachine extends Events implements IStateMachine, IWorldObject{
+
+      static DEBUG_STATES:boolean = true;
+
       defaultState:string = null;
       states:IState[] = [];
       private _currentState:IState = null;
@@ -91,7 +94,9 @@ module pow2 {
          this._previousState = this._currentState;
          this._currentState = state;
          // DEBUG:
-         //console.log("STATE: " + (!!oldState ? oldState.name : oldState) + " -> " + this._currentState.name);
+         if(StateMachine.DEBUG_STATES){
+            console.log("STATE: " + (oldState ? oldState.name : "NULL") + " -> " + this._currentState.name);
+         }
          if(oldState){
             this.trigger("exit",oldState,state);
             oldState.exit(this);

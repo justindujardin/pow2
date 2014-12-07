@@ -16,7 +16,7 @@
 
 /// <reference path="../playerCombatRenderComponent.ts" />
 
-module pow2.combat {
+module pow2 {
    export class MageCombatRenderComponent extends PlayerCombatRenderComponent {
       getAttackAnimation(strikeCb:()=>any){
          return [
