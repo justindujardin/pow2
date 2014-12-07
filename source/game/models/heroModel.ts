@@ -39,7 +39,7 @@ module pow2 {
    export var HeroTypes:any = {
       Warrior: "warrior",
       LifeMage: "mage",
-      DeathMage:"necromancer",
+      Necromancer:"necromancer",
       Ranger:"ranger"
    };
    export interface HeroModelOptions extends EntityModelOptions {
@@ -281,7 +281,7 @@ module pow2 {
                   type:type,
                   name:name,
                   level:0,
-                  icon: "healer-female.png",
+                  icon: "magician-female.png",
                   baseStrength:1,
                   baseAgility:6,
                   baseIntelligence:9,

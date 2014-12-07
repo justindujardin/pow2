@@ -127,7 +127,7 @@ module pow2.ui {
             if(this.world.model.party.length === 0){
                this.world.model.addHero(HeroModel.create(HeroTypes.Warrior,"Warrior"));
                this.world.model.addHero(HeroModel.create(HeroTypes.Ranger,"Ranger"));
-               this.world.model.addHero(HeroModel.create(HeroTypes.DeathMage,"Mage"));
+               this.world.model.addHero(HeroModel.create(HeroTypes.LifeMage,"Mage"));
             }
             this.newGame(then);
          }
