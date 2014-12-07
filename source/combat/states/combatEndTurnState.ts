@@ -44,9 +44,7 @@ module pow2 {
          if(!targetState){
             throw new Error("Invalid transition from end turn");
          }
-         _.defer(()=>{
-            machine.setCurrentState(targetState);
-         });
+         machine.setCurrentState(targetState);
       }
    }
 

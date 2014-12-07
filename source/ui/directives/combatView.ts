@@ -92,14 +92,12 @@ module pow2.ui {
             machine.scope.selectAction = null;
             machine.scene.off('click',clickSelect);
 
-            _.defer(()=>{
-               if(machine.action.canTarget()){
-                  machine.setCurrentState(ChooseActionTarget.NAME);
-               }
-               else {
-                  machine.setCurrentState(ChooseActionSubmit.NAME);
-               }
-            });
+            if(machine.action.canTarget()){
+               machine.setCurrentState(ChooseActionTarget.NAME);
+            }
+            else {
+               machine.setCurrentState(ChooseActionSubmit.NAME);
+            }
          };
          machine.scope.selectAction = selectAction;
 
@@ -149,20 +147,35 @@ module pow2.ui {
             el.hide();
             return;
          }
-         var pointerOffset:pow2.Point = new pow2.Point(0.5,-0.25);
-         var clickTarget = (mouse,hits) => {
-            if(machine.target && machine.target._uid === hits[0]._uid){
+         var selectTarget = (target:GameEntityObject) => {
+            if(machine.target && machine.target._uid === target._uid){
+               machine.target = target;
+               machine.scope.selectTarget = null;
                machine.scene.off('click',clickTarget);
                machine.setCurrentState(ChooseActionSubmit.NAME);
+               machine.controller.targeting = false;
+               return;
             }
-            machine.target = hits[0];
-            machine.controller.setPointerTarget(hits[0],"left",pointerOffset);
+            machine.target = target;
+            machine.controller.setPointerTarget(target,"left",pointerOffset);
+         };
+         machine.scope.selectTarget = selectTarget;
+
+         var pointerOffset:pow2.Point = new pow2.Point(0.5,-0.25);
+         var clickTarget = (mouse,hits) => {
+            selectTarget(hits[0]);
          };
          machine.controller.setPointerTarget(p,"left",pointerOffset);
          machine.scene.on('click',clickTarget);
+         machine.scope.$apply(()=>{
+            machine.controller.targeting = true;
+         });
+
       }
       exit(machine:ChooseActionStateMachine) {
-
+         machine.scope.$apply(()=>{
+            machine.controller.targeting = false;
+         });
       }
    }
 
@@ -206,7 +219,9 @@ module pow2.ui {
       }
       pointer:UIAttachment = null;
       combatView:GameCombatView = null;
+      combatData:IChooseActionEvent = null;
       choosing:GameEntityObject = null;
+      targeting:boolean = false;
 
       tick(elapsed:number) {
          if(!this.combatView || !this.pointer || !this.pointer.object){
@@ -265,6 +280,14 @@ module pow2.ui {
          }
          return <pow2.CombatActionComponent[]>this.choosing.findComponents(pow2.CombatActionComponent);
       }
+
+      getEnemyTargets():pow2.GameEntityObject[] {
+         var result:pow2.GameEntityObject[] = [];
+         if(this.combatData){
+            result = this.combatData.enemies;
+         }
+         return result;
+      }
    }
 
    app.directive('combatView', ['game','$compile','$animate',function (game:PowGameService,$compile,$animate) {
@@ -278,6 +301,7 @@ module pow2.ui {
             controller.destroy();
             var el = $compile('<span class="point-to-player" style="position:absolute;left:0;top:0;"></span>')(scope);
             var chooseTurns = (data:pow2.IChooseActionEvent) => {
+               controller.combatData = data;
                var combatScene:Scene = game.world.combatScene;
                if(!combatScene){
                   throw new Error("CombatView requires a combatScene to be present in the game world");
@@ -297,6 +321,7 @@ module pow2.ui {
                var next = () => {
                   var p:GameEntityObject = choices.shift();
                   if(!p){
+                     controller.combatData = null;
                      return;
                   }
                   inputState.current = p;
