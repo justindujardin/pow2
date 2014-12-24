@@ -37,6 +37,7 @@ module pow2 {
          if(!this.scene){
             this.setService('scene',new Scene());
          }
+         this.loader.registerType('powEntities',pow2.EntityContainerResource);
       }
 
       private _encounterCallback:IGameEncounterCallback = null;
