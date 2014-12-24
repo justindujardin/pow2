@@ -231,23 +231,18 @@ module pow2 {
                      }
                      var nmeModel = new CreatureModel(tpl[0]);
 
-               var nme:GameEntityObject = resource.createObject('CombatEnemy',{
-                  model:nmeModel,
-                  combat:this,
-                  sprite: {
-                     name:"enemy",
-                     icon:nmeModel.get('icon')
-                  }
-               });
-               if(!nme){
-                  throw new Error("Entity failed to validate with given inputs");
-               }
-               combatScene.addObject(nme);
-                     nme.addComponent(new pow2.CombatAttackComponent(this));
-                     nme.addComponent(new pow2.SpriteComponent({
-                        name:"enemy",
-                        icon:nme.model.get('icon')
-                     }));
+                     var nme:GameEntityObject = resource.createObject('CombatEnemy',{
+                        model:nmeModel,
+                        combat:this,
+                        sprite: {
+                           name:"enemy",
+                           icon:nmeModel.get('icon')
+                        }
+                     });
+                     if(!nme){
+                        throw new Error("Entity failed to validate with given inputs");
+                     }
+                     combatScene.addObject(nme);
                      this.machine.enemies.push(nme);
                   }
                   if(this.machine.enemies.length){

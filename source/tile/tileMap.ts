@@ -44,7 +44,8 @@ module pow2 {
       //
       // Scene Object Lifetime
       //
-      onAddToScene(scene) {
+      onAddToScene(scene:Scene) {
+         super.onAddToScene(scene);
          // If there is no camera, create a basic one.
          if(!this.findComponent(CameraComponent)){
             this.addComponent(new TileMapCameraComponent());

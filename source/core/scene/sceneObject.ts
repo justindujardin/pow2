@@ -82,7 +82,7 @@ module pow2 {
          }
       }
 
-      onAddToScene(scene:IScene){
+      onAddToScene(scene:Scene){
          this.syncComponents();
       }
 

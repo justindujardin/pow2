@@ -29,6 +29,7 @@ module pow2{
          this.mouseClick = _.bind(this.mouseClick,this);
       }
       onAddToScene(scene:Scene) {
+         super.onAddToScene(scene);
          this.mouse = scene.world.input.mouseHook(<SceneView>this,"world");
          // TODO: Move this elsewhere.
          this.$el.on('click touchstart',this.mouseClick);
