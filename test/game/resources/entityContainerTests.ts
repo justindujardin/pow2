@@ -1,5 +1,15 @@
 ///<reference path="../../fixtures/powTest.ts"/>
 module pow2.tests {
+
+   // TODO: Consider a refactor to produce metadata output JSON for components
+   // and their registered ports. Requires walking known component hierarchies
+   // and enumerating components, instantiating and then serializing.
+   //
+   // This will reduce duplication in output template files by omitting all but
+   // the type name. The ports would be looked up in metadata that was exported
+   // from the game.
+
+
    export class BooleanConstructComponent extends pow2.SceneComponent {
       constructor(public arg:boolean){
          super();
@@ -15,118 +25,112 @@ module pow2.tests {
       BasicClassSanityChecks("pow2.EntityContainerResource");
 
       var loader:pow2.ResourceLoader = new pow2.ResourceLoader();
-
-      // TODO: Refactor to produce metadata output JSON for components and their registered ports.   Requires walking known component
-      // hierarchies and enumerating components, instantiating and then serializing.
-      //
-      // This will reduce duplication in output template files by omitting all but the type name.  The ports would
-      // be looked up in the loaded metadata about component ports that was exported from the game.
-      it("should validate input names and types",(done)=>{
+      var factory:pow2.EntityContainerResource = null;
+      beforeEach((done)=>{
          loader.loadAsType('base/test/fixtures/basic.powEntities',pow2.EntityContainerResource,(resource:pow2.EntityContainerResource) => {
-
-            // works with exact input type match
-            expect(resource.createObject('SceneObjectWithModelInput',{
-               model:new pow2.EntityModel()
-            })).not.toBeNull();
-
-            // works with more specific instance type given common ancestor
-            expect(resource.createObject('SceneObjectWithModelInput',{
-               model:new pow2.CreatureModel()
-            })).not.toBeNull();
-
-            // fail with invalid instance of model input
-            expect(resource.createObject('SceneObjectWithModelInput',{
-               model:null
-            })).toBeNull();
-
-            // fail without proper input
-            expect(resource.createObject('SceneObjectWithModelInput')).toBeNull();
-            expect(resource.createObject('SceneObjectWithModelInput',{
-               other:null
-            })).toBeNull();
+            factory = resource;
             done();
          });
       });
-      it("should instantiate components",(done)=>{
-         loader.loadAsType('base/test/fixtures/basic.powEntities',pow2.EntityContainerResource,(resource:pow2.EntityContainerResource) => {
-            var object:pow2.GameEntityObject = resource.createObject('SceneObjectWithComponents');
+      afterEach(()=>{
+         factory = null;
+      });
 
-            var tpl:any = resource.getTemplate('SceneObjectWithComponents');
+      describe("createObject",()=> {
+         describe("should validate input names and types",()=>{
+            it("works with exact input type match",()=>{
+               expect(factory.createObject('SceneObjectWithModelInput',{
+                  model:new pow2.EntityModel()
+               })).not.toBeNull();
+            });
+            it("works with more specific instance type given common ancestor",()=>{
+               expect(factory.createObject('SceneObjectWithModelInput',{
+                  model:new pow2.CreatureModel()
+               })).not.toBeNull();
+            });
+            it("fails with invalid instance of model input",()=>{
+               expect(factory.createObject('SceneObjectWithModelInput',{
+                  model:null
+               })).toBeNull();
+            });
+            it("fails without proper input",()=>{
+               expect(factory.createObject('SceneObjectWithModelInput')).toBeNull();
+               expect(factory.createObject('SceneObjectWithModelInput',{
+                  other:null
+               })).toBeNull();
+            });
+         });
+         it('should instantiate entity object with constructor arguments',()=>{
+            var entity:BooleanConstructObject = <any>factory.createObject('SceneObjectWithParams',{
+               arg:true
+            });
+            expect(entity.arg).toBe(true);
+            entity.destroy();
+            entity = <any>factory.createObject('SceneObjectWithParams',{
+               arg:false
+            });
+            expect(entity.arg).toBe(false);
+            entity.destroy();
+         });
+         it('should instantiate components with constructor arguments',()=>{
+            var entity:pow2.SceneObject = factory.createObject('ComponentWithParams',{
+               arg:true
+            });
+            var boolComponent = <BooleanConstructComponent>entity.findComponent(BooleanConstructComponent);
+            expect(boolComponent).not.toBeNull();
+            expect(boolComponent.arg).toBe(true);
+
+            entity.destroy();
+            entity = factory.createObject('ComponentWithParams',{
+               arg:false
+            });
+            boolComponent = <BooleanConstructComponent>entity.findComponent(BooleanConstructComponent);
+            expect(boolComponent).not.toBeNull();
+            expect(boolComponent.arg).toBe(false);
+            entity.destroy();
+         });
+         it("should instantiate components",()=>{
+            var object:pow2.GameEntityObject = factory.createObject('SceneObjectWithComponents');
+
+            var tpl:any = factory.getTemplate('SceneObjectWithComponents');
             expect(tpl).not.toBeNull();
 
             // Check that we can find instantiated components of the type specified in the template.
-            _.each(tpl.components,(comp:any,name:string)=>{
+            _.each(tpl.components,(comp:any)=>{
                expect(object.findComponent(NamespaceClassToType(comp.type))).not.toBeNull();
             });
-            done();
          });
-      });
 
-      describe('createObject',()=>{
-         it('should instantiate entity object with constructor arguments',(done)=>{
-            loader.loadAsType('base/test/fixtures/basic.powEntities',pow2.EntityContainerResource,(resource:pow2.EntityContainerResource) => {
-               var entity:BooleanConstructObject = <any>resource.createObject('SceneObjectWithParams',{
-                  arg:true
-               });
-               expect(entity.arg).toBe(true);
-               entity.destroy();
-               entity = <any>resource.createObject('SceneObjectWithParams',{
-                  arg:false
-               });
-               expect(entity.arg).toBe(false);
-               entity.destroy();
-               done();
-            });
-
-         });
-         it('should instantiate components with constructor arguments',(done)=>{
-            loader.loadAsType('base/test/fixtures/basic.powEntities',pow2.EntityContainerResource,(resource:pow2.EntityContainerResource) => {
-               var entity:pow2.SceneObject = resource.createObject('ComponentWithParams',{
-                  arg:true
-               });
-               var boolComponent = <BooleanConstructComponent>entity.findComponent(BooleanConstructComponent);
-               expect(boolComponent).not.toBeNull();
-               expect(boolComponent.arg).toBe(true);
-
-               entity.destroy();
-               entity = resource.createObject('ComponentWithParams',{
-                  arg:false
-               });
-               boolComponent = <BooleanConstructComponent>entity.findComponent(BooleanConstructComponent);
-               expect(boolComponent).not.toBeNull();
-               expect(boolComponent.arg).toBe(false);
-               entity.destroy();
-               done();
-            });
-
-         });
       });
 
       describe('validateTemplate',()=>{
-         it("should validate input names and types",(done)=>{
-            loader.loadAsType('base/test/fixtures/basic.powEntities',pow2.EntityContainerResource,(resource:pow2.EntityContainerResource) => {
-               var tpl:any = resource.getTemplate('SceneObjectWithModelInput');
-               // works with exact input type match
-               expect(resource.validateTemplate(tpl,{
+         describe("should validate input names and types",()=> {
+            it("works with exact input type match",()=>{
+               var tpl:any = factory.getTemplate('SceneObjectWithModelInput');
+               expect(factory.validateTemplate(tpl,{
                   model:new pow2.EntityModel()
                })).toBe(pow2.EntityError.NONE);
-
-               // works with more specific instance type given common ancestor
-               expect(resource.validateTemplate(tpl,{
+            });
+            it("works with more specific instance type given common ancestor",()=>{
+               var tpl:any = factory.getTemplate('SceneObjectWithModelInput');
+               expect(factory.validateTemplate(tpl,{
                   model:new pow2.CreatureModel()
                })).toBe(EntityError.NONE);
 
-               // fail with invalid instance of model input
-               expect(resource.validateTemplate(tpl,{
+            });
+            it("fail with invalid instance of model input",()=>{
+               var tpl:any = factory.getTemplate('SceneObjectWithModelInput');
+               expect(factory.validateTemplate(tpl,{
                   model:null
                })).toBe(EntityError.INPUT_TYPE);
 
-               // fail without proper input
-               expect(resource.validateTemplate(tpl)).toBe(EntityError.INPUT_NAME);
-               expect(resource.validateTemplate(tpl,{
+            });
+            it("fail without proper input",()=>{
+               var tpl:any = factory.getTemplate('SceneObjectWithModelInput');
+               expect(factory.validateTemplate(tpl)).toBe(EntityError.INPUT_NAME);
+               expect(factory.validateTemplate(tpl,{
                   other:null
                })).toBe(EntityError.INPUT_NAME);
-               done();
             });
          });
 
