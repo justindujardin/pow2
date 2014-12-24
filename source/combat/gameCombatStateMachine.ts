@@ -188,97 +188,92 @@ module pow2 {
          var combatScene = machine.world.combatScene = new Scene();
          machine.world.mark(combatScene);
 
-         // Build party
-         _.each(machine.model.party,(hero:HeroModel,index:number) => {
+         machine.world.loader.load('entities/combat.powEntities',(resource:pow2.EntityContainerResource) => {
 
-            var heroEntity:GameEntityObject = new GameEntityObject({
-               name:hero.attributes.name,
-               icon: hero.attributes.icon,
-               model:hero
-            });
-
-            // Instantiate a [Class]CombatRenderComponent implementation for the
-            // hero type, if available.
-            var playerType:string = hero.attributes.type[0].toUpperCase() + hero.attributes.type.substr(1);
-            var playerRender:any = pow2[playerType + 'CombatRenderComponent'];
-            if(typeof playerRender === 'undefined'){
-               playerRender = new pow2.PlayerCombatRenderComponent();
-            }
-            else {
-               playerRender = new playerRender();
-            }
-            heroEntity.addComponent(playerRender);
-            heroEntity.addComponent(new AnimatedComponent());
-
-            // Player Actions
-            heroEntity.addComponent(new pow2.CombatAttackComponent(this));
-            heroEntity.addComponent(new pow2.CombatRunComponent(this));
-            if(heroEntity.isDefeated()){
-               return;
-            }
-            heroEntity.icon = hero.get('icon');
-            this.machine.party.push(heroEntity);
-            combatScene.addObject(heroEntity);
-         });
-
-         this.tileMap = new pow2.GameTileMap("combat");
-         this.tileMap.once('loaded',() => {
-            // Hide all layers that don't correspond to the current combat zone
-            var zone:IZoneMatch = machine.encounterInfo;
-            var visibleZone:string = zone.target || zone.map;
-            _.each(this.tileMap.getLayers(),(l)=>{
-               l.visible = (l.name === visibleZone);
-            });
-            this.tileMap.dirtyLayers = true;
-            this.tileMap.addComponent(new pow2.CombatCameraComponent);
-            combatScene.addObject(this.tileMap);
-
-            // Position Party/Enemies
-
-            // Get enemies data from spreadsheet
-            GameStateModel.getDataSource((enemiesSpreadsheet:pow2.GameDataResource) => {
-               var enemyList:any[] = enemiesSpreadsheet.getSheetData("enemies");
-               var enemiesLength:number = machine.encounter.enemies.length;
-               for(var i:number = 0; i < enemiesLength; i++){
-                  var tpl = _.where(enemyList,{id:machine.encounter.enemies[i]});
-                  if(tpl.length === 0){
-                     continue;
-                  }
-                  var nmeModel = new CreatureModel(tpl[0]);
-                  var nme = new pow2.GameEntityObject({
-                     model: nmeModel
-                  });
-                  combatScene.addObject(nme);
-                  nme.addComponent(new pow2.CombatAttackComponent(this));
-                  nme.addComponent(new pow2.SpriteComponent({
-                     name:"enemy",
-                     icon:nme.model.get('icon')
-                  }));
-                  this.machine.enemies.push(nme);
+            // Build party
+            _.each(machine.model.party,(hero:HeroModel,index:number) => {
+               var heroEntity:GameEntityObject = resource.createObject('CombatPlayer',{
+                  model: hero,
+                  combat: this
+               });
+               if(!heroEntity){
+                  throw new Error("Entity failed to validate with given inputs");
                }
-               if(this.machine.enemies.length){
-                  _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
-                     var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
-                     heroEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
-                  });
+               if(!heroEntity.isDefeated()){
+                  heroEntity.icon = hero.get('icon');
+                  this.machine.party.push(heroEntity);
+                  combatScene.addObject(heroEntity);
+               }
+            });
 
-                  _.each(this.machine.enemies,(enemyEntity:GameEntityObject,index:number) => {
-                     var battleSpawn = this.tileMap.getFeature('e' + (index + 1));
-                     if(battleSpawn){
-                        enemyEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+            this.tileMap = new pow2.GameTileMap("combat");
+            this.tileMap.once('loaded',() => {
+               // Hide all layers that don't correspond to the current combat zone
+               var zone:IZoneMatch = machine.encounterInfo;
+               var visibleZone:string = zone.target || zone.map;
+               _.each(this.tileMap.getLayers(),(l)=>{
+                  l.visible = (l.name === visibleZone);
+               });
+               this.tileMap.dirtyLayers = true;
+               this.tileMap.addComponent(new pow2.CombatCameraComponent);
+               combatScene.addObject(this.tileMap);
+
+               // Position Party/Enemies
+
+               // Get enemies data from spreadsheet
+               GameStateModel.getDataSource((enemiesSpreadsheet:pow2.GameDataResource) => {
+                  var enemyList:any[] = enemiesSpreadsheet.getSheetData("enemies");
+                  var enemiesLength:number = machine.encounter.enemies.length;
+                  for(var i:number = 0; i < enemiesLength; i++){
+                     var tpl = _.where(enemyList,{id:machine.encounter.enemies[i]});
+                     if(tpl.length === 0){
+                        continue;
                      }
-                  });
-                  machine.trigger('combat:begin',this);
-                  this.machine.update(this);
-               }
-               else {
-                  // TODO: This is an error, I think.  Player entered combat with no valid enemies.
-                  machine.trigger('combat:end',this);
-               }
+                     var nmeModel = new CreatureModel(tpl[0]);
 
+               var nme:GameEntityObject = resource.createObject('CombatEnemy',{
+                  model:nmeModel,
+                  combat:this,
+                  sprite: {
+                     name:"enemy",
+                     icon:nmeModel.get('icon')
+                  }
+               });
+               if(!nme){
+                  throw new Error("Entity failed to validate with given inputs");
+               }
+               combatScene.addObject(nme);
+                     nme.addComponent(new pow2.CombatAttackComponent(this));
+                     nme.addComponent(new pow2.SpriteComponent({
+                        name:"enemy",
+                        icon:nme.model.get('icon')
+                     }));
+                     this.machine.enemies.push(nme);
+                  }
+                  if(this.machine.enemies.length){
+                     _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
+                        var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
+                        heroEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+                     });
+
+                     _.each(this.machine.enemies,(enemyEntity:GameEntityObject,index:number) => {
+                        var battleSpawn = this.tileMap.getFeature('e' + (index + 1));
+                        if(battleSpawn){
+                           enemyEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+                        }
+                     });
+                     machine.trigger('combat:begin',this);
+                     this.machine.update(this);
+                  }
+                  else {
+                     // TODO: This is an error, I think.  Player entered combat with no valid enemies.
+                     machine.trigger('combat:end',this);
+                  }
+
+               });
             });
+            this.tileMap.load();
          });
-         this.tileMap.load();
       }
       exit(machine:GameStateMachine){
          machine.trigger('combat:end',this);

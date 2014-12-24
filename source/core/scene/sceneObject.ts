@@ -70,6 +70,7 @@ module pow2 {
          _.each(this._components,(o:ISceneComponent) => {
             o.disconnectComponent();
          });
+         this._components.length = 0;
          if (this.scene) {
             this.scene.removeObject(this,false);
          }

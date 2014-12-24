@@ -1,0 +1,47 @@
+[
+  {
+    "name":"CombatPlayer",
+    "type":"pow2.GameEntityObject",
+    "inputs":{
+      "model":"pow2.HeroModel",
+      "combat":"pow2.GameCombatState"
+    },
+    "components":{
+      "render":{
+        "type":"pow2.PlayerCombatRenderComponent"
+      },
+      "animation":{
+        "type":"pow2.AnimatedComponent"
+      },
+      "attack":{
+        "type":"pow2.CombatAttackComponent",
+        "inputs":["combat"]
+      },
+      "run":{
+        "type":"pow2.CombatRunComponent",
+        "inputs":["combat"]
+      }
+    }
+  },
+  {
+    "name":"CombatEnemy",
+    "type":"pow2.GameEntityObject",
+    "inputs":{
+      "model":"pow2.EntityModel",
+      "combat":"pow2.GameCombatState",
+      "sprite":"Object"
+    },
+    "components":{
+      "sprite":{
+        "type":"pow2.SpriteComponent",
+        "inputs":["sprite"]
+      },
+      "attack":{
+        "type":"pow2.CombatAttackComponent",
+        "inputs":["combat"]
+      }
+    }
+  }
+
+
+]

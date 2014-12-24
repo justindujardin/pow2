@@ -48,9 +48,11 @@ module pow2 {
          }
       }
 
-      connectComponent():boolean {
-         this.setSprite(this.icon,this.frame);
-         return super.connectComponent();
+      syncComponent():boolean {
+         if(this.host.world){
+            this.setSprite(this.icon,this.frame);
+         }
+         return super.syncComponent();
       }
 
       /**

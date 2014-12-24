@@ -42,8 +42,10 @@ module pow2 {
       setAnimationSource(spriteName:string){
          console.log("Sprite is " + spriteName);
          this.sourceMeta = pow2.getSpriteMeta(spriteName);
-         this.sourceAnims = this.sourceMeta.animations;
-         this.setAnimation('down');
+         if(this.sourceMeta){
+            this.sourceAnims = this.sourceMeta.animations;
+            this.setAnimation('down');
+         }
       }
 
       setAnimation(name:string){
