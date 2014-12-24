@@ -23,7 +23,7 @@ module pow2 {
       id:string;
       _uid:string = _.uniqueId('so');
       name:string;
-      scene: IScene;
+      scene: Scene;
       world: IWorld;
       enabled:boolean;
       // The object point
@@ -80,6 +80,10 @@ module pow2 {
          if (this.scene) {
             this.scene.removeObject(this,false);
          }
+      }
+
+      onAddToScene(scene:IScene){
+         this.syncComponents();
       }
 
       // ISceneComponentHost implementation

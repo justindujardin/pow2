@@ -52,12 +52,12 @@ module pow2 {
       }
 
       updateVelocity(){
-         if(!this.scene.world || !this.scene.world.input){
+         if(!this.host.scene || !this.host.scene.world || !this.host.scene.world.input){
             return;
          }
          // Touch movement
          var hasCreateTouch = (<any>document).createTouch;
-         var worldInput = <any>this.scene.world.input;
+         var worldInput = <any>this.host.scene.world.input;
          if (hasCreateTouch && worldInput.analogVector instanceof pow2.Point) {
             this.velocity.x = 0;
             if (worldInput.analogVector.x < -20) {

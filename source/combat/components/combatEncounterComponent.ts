@@ -54,10 +54,13 @@ module pow2 {
          super.syncComponent();
          if(this.player){
             this.player.off(null,null,this);
+            this.player = null;
          }
-         this.player = <GameEntityObject>this.scene.objectByComponent(PlayerComponent);
-         if(this.player){
-            this.player.on('move:begin',this.moveProcess,this);
+         if(this.host.scene){
+            this.player = <GameEntityObject>this.host.scene.objectByComponent(PlayerComponent);
+            if(this.player){
+               this.player.on('move:begin',this.moveProcess,this);
+            }
          }
          return !!this.player;
       }

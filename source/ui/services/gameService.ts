@@ -25,6 +25,7 @@ module pow2.ui {
       sprite:GameEntityObject;
       machine:GameStateMachine;
       currentScene:Scene;
+      entities:pow2.EntityContainerResource;
       private _renderCanvas:HTMLCanvasElement;
       private _canvasAcquired:boolean = false;
       private _stateKey:string = "_test2Pow2State";
@@ -53,6 +54,8 @@ module pow2.ui {
          pow2.registerWorld('pow2',this.world);
          // Tell the world time manager to start ticking.
          this.world.time.start();
+
+         this.entities = <pow2.EntityContainerResource>this.world.loader.load('entities/map.powEntities');
       }
 
       getSaveData():any {
@@ -71,23 +74,19 @@ module pow2.ui {
          if(!from){
             throw new Error("Cannot create player without valid model");
          }
+         if(!this.entities.isReady()){
+            throw new Error("Cannot create player before entities container is loaded");
+         }
          if(this.sprite){
             this.sprite.destroy();
             this.sprite = null;
          }
-         this.sprite = new GameEntityObject({
-            name: from.attributes.name,
-            icon: from.attributes.icon,
+         this.sprite = this.entities.createObject('MapPlayer',{
             model:from
          });
+         this.sprite.name = from.attributes.name;
+         this.sprite.icon = from.attributes.icon;
          this.world.scene.addObject(this.sprite);
-         this.sprite.addComponent(new PlayerRenderComponent());
-         this.sprite.addComponent(new CollisionComponent());
-         this.sprite.addComponent(new PlayerComponent());
-         this.sprite.addComponent(new PlayerCameraComponent());
-         this.sprite.addComponent(new PlayerTouchComponent());
-
-
          if(typeof at === 'undefined' && this.tileMap instanceof pow2.TileMap) {
             at = this.tileMap.bounds.getCenter();
          }

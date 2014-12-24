@@ -20,10 +20,11 @@ module pow2 {
       NONE = 0,
       ENTITY_TYPE = 1,
       COMPONENT_TYPE = 2,
-      COMPONENT_REGISTER = 4,
-      COMPONENT_INPUT = 8,
-      INPUT_NAME = 16,
-      INPUT_TYPE = 32
+      COMPONENT_NAME_DUPLICATE = 4,
+      COMPONENT_REGISTER = 8,
+      COMPONENT_INPUT = 16,
+      INPUT_NAME = 32,
+      INPUT_TYPE = 64
    }
 
    export interface IEntityComponentDescription {
@@ -73,17 +74,17 @@ module pow2 {
                   // Attempt to validate inputs with two type specifications:
                   var inputType:any = this.getClassType(type);
                   if(typeof inputs[name] === 'undefined'){
-                     console.info("missing input with name: " + name);
+                     console.error("missing input with name: " + name);
                      unsatisfied |= EntityError.INPUT_NAME;
                   }
                   // Match using instanceof if the inputType was found
                   else if(inputType && !(inputs[name] instanceof inputType)){
-                     console.info("bad input type for input: " + name);
+                     console.error("bad input type for input: " + name);
                      unsatisfied |= EntityError.INPUT_TYPE;
                   }
                   // Match using typeof as a last resort
                   else if(!inputType && typeof inputs[name] !== type){
-                     console.info("bad input type for input: " + name);
+                     console.error("bad input type for input: " + name);
                      unsatisfied |= EntityError.INPUT_TYPE;
                   }
                });
@@ -93,9 +94,20 @@ module pow2 {
             }
          }
 
+         if(templateData.components){
+            var keys:string[] = _.map(templateData.components,(c:any)=>{
+               return c.name;
+            });
+            var unique:boolean = _.uniq(keys).length === keys.length;
+            if(!unique){
+               console.error("duplicate name in template components: " + keys.join(', '));
+               return EntityError.COMPONENT_NAME_DUPLICATE;
+            }
+         }
+
          // Verify component types are known
          unsatisfied = EntityError.NONE;
-         _.each(templateData.components,(comp:any,name:string)=>{
+         _.each(templateData.components,(comp:any)=>{
             var compType:any = this.getClassType(comp.type);
             if(!compType){
                unsatisfied |= EntityError.COMPONENT_TYPE;
@@ -154,7 +166,7 @@ module pow2 {
          // and component types should already be resolved.  Be optimistic
          // here and don't check for errors surrounding types and input names.
          var unsatisfied:EntityError = EntityError.NONE;
-         _.each(tpl.components,(comp:any,name:string)=>{
+         _.each(tpl.components,(comp:any)=>{
             var inputNames:string[] = comp.inputs || [];
             var inputValues:any[] = _.map(inputNames,(n:string)=>{
                return inputs[n];

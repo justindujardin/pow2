@@ -25,16 +25,16 @@ module pow2 {
       mouse:NamedMouseElement = null;
 
       syncComponent():boolean{
-         if(!super.syncComponent() || !this.scene || !this.scene.world || !this.scene.world.input){
+         if(!super.syncComponent() || !this.host.scene || !this.host.scene.world || !this.host.scene.world.input){
             return false;
          }
-         this.mouse = this.scene.world.input.getMouseHook("world");
+         this.mouse = this.host.scene.world.input.getMouseHook("world");
          return !!this.mouse;
       }
 
       tick(elapsed:number) {
          // Calculate hits in Scene for machine usage.
-         if(!this.scene || !this.mouse){
+         if(!this.host.scene || !this.mouse){
             return;
          }
          _.each(this.hits,(tile:TileObject) => {
@@ -45,7 +45,7 @@ module pow2 {
          this.hits.length = 0;
 
          this.hitBox.point.set(this.mouse.world);
-         this.scene.db.queryRect(this.hitBox, GameFeatureObject, this.hits);
+         this.host.scene.db.queryRect(this.hitBox, GameFeatureObject, this.hits);
 
          _.each(this.hits,(obj:any) => {
             obj.scale = 1.25;

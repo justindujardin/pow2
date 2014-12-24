@@ -59,7 +59,7 @@ module pow2 {
             this.audio.data.volume = this.volume;
             return true;
          }
-         this.audio = this.scene.world.loader.load(this.url,() => {
+         this.audio = pow2.ResourceLoader.get().load(this.url,() => {
             if(this.audio.isReady()){
                this.audio.data.currentTime = 0;
                this.audio.data.volume = this.volume;

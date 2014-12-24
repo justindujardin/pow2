@@ -1,0 +1,31 @@
+[
+  {
+    "name":"MapPlayer",
+    "type":"pow2.GameEntityObject",
+    "inputs":{
+      "model":"pow2.HeroModel"
+    },
+    "components": [
+      {
+        "name":"render",
+        "type":"pow2.PlayerRenderComponent"
+      },
+      {
+        "name":"collision",
+        "type":"pow2.CollisionComponent"
+      },
+      {
+        "name":"player",
+        "type":"pow2.PlayerComponent"
+      },
+      {
+        "name":"camera",
+        "type":"pow2.PlayerCameraComponent"
+      },
+      {
+        "name":"touch",
+        "type":"pow2.PlayerTouchComponent"
+      }
+    ]
+  }
+]
