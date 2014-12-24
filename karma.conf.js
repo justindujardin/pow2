@@ -22,14 +22,15 @@ module.exports = function(config) {
          "lib/pow2.game.js",
          "lib/pow2.sprites.js",
          "lib/pow2.ui.js",
-         "lib/test/*.js"
+         "lib/test/*.js",
+         {pattern: 'test/fixtures/*.*', watched: true, included: false, served: true}
       ],
       reporters: ['dots','coverage'],
       port: 9876,
       autoWatch: true,
       background:true,
       // - Chrome, ChromeCanary, Firefox, Opera, Safari (only Mac), PhantomJS, IE (only Windows)
-      browsers: process.env.TRAVIS ? ['Firefox'] : ['Firefox'],
+      browsers: process.env.TRAVIS ? ['Firefox'] : ['Chrome'],
       singleRun: false,
       reportSlowerThan: 500,
       plugins: [
