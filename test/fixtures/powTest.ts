@@ -22,15 +22,4 @@ module pow2.tests {
          expect(NamespaceClassToType(fullTypeName)).not.toBeNull();
       });
    }
-
-   export class BooleanConstructComponent extends pow2.SceneComponent {
-      constructor(public arg:boolean){
-         super();
-      }
-   }
-   export class BooleanConstructObject extends pow2.SceneObject {
-      constructor(public arg:boolean){
-         super();
-      }
-   }
 }

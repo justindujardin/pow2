@@ -1,6 +1,6 @@
 [
   {
-    "name":"ValidEntityWithComponentDependency",
+    "name":"SceneObjectWithComponents",
     "type":"pow2.SceneObject",
     "components":[
       {
@@ -22,21 +22,15 @@
     }
   },
   {
-    "name":"ValidEntityWithModelInput",
+    "name":"SceneObjectWithModelInput",
     "type":"pow2.GameEntityObject",
     "inputs":{
       "model":"pow2.EntityModel"
-    },
-    "components":[
-      {
-        "name":"one",
-        "type":"pow2.GameComponent"
-      }
-    ]
+    }
   },
 
   {
-    "name":"ConstructComponentBooleanArg",
+    "name":"ComponentWithParams",
     "type":"pow2.SceneObject",
     "inputs":{
       "arg":"boolean"

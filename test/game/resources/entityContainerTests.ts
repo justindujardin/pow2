@@ -1,5 +1,16 @@
 ///<reference path="../../fixtures/powTest.ts"/>
 module pow2.tests {
+   export class BooleanConstructComponent extends pow2.SceneComponent {
+      constructor(public arg:boolean){
+         super();
+      }
+   }
+   export class BooleanConstructObject extends pow2.SceneObject {
+      constructor(public arg:boolean){
+         super();
+      }
+   }
+
    describe("pow2.EntityContainerResource",()=>{
       BasicClassSanityChecks("pow2.EntityContainerResource");
 
@@ -14,23 +25,23 @@ module pow2.tests {
          loader.loadAsType('base/test/fixtures/basic.powEntities',pow2.EntityContainerResource,(resource:pow2.EntityContainerResource) => {
 
             // works with exact input type match
-            expect(resource.createObject('ValidEntityWithModelInput',{
+            expect(resource.createObject('SceneObjectWithModelInput',{
                model:new pow2.EntityModel()
             })).not.toBeNull();
 
             // works with more specific instance type given common ancestor
-            expect(resource.createObject('ValidEntityWithModelInput',{
+            expect(resource.createObject('SceneObjectWithModelInput',{
                model:new pow2.CreatureModel()
             })).not.toBeNull();
 
             // fail with invalid instance of model input
-            expect(resource.createObject('ValidEntityWithModelInput',{
+            expect(resource.createObject('SceneObjectWithModelInput',{
                model:null
             })).toBeNull();
 
             // fail without proper input
-            expect(resource.createObject('ValidEntityWithModelInput')).toBeNull();
-            expect(resource.createObject('ValidEntityWithModelInput',{
+            expect(resource.createObject('SceneObjectWithModelInput')).toBeNull();
+            expect(resource.createObject('SceneObjectWithModelInput',{
                other:null
             })).toBeNull();
             done();
@@ -38,9 +49,9 @@ module pow2.tests {
       });
       it("should instantiate components",(done)=>{
          loader.loadAsType('base/test/fixtures/basic.powEntities',pow2.EntityContainerResource,(resource:pow2.EntityContainerResource) => {
-            var object:pow2.GameEntityObject = resource.createObject('ValidEntityWithComponentDependency');
+            var object:pow2.GameEntityObject = resource.createObject('SceneObjectWithComponents');
 
-            var tpl:any = _.where(resource.data,{name:'ValidEntityWithComponentDependency'})[0];
+            var tpl:any = resource.getTemplate('SceneObjectWithComponents');
             expect(tpl).not.toBeNull();
 
             // Check that we can find instantiated components of the type specified in the template.
@@ -54,7 +65,7 @@ module pow2.tests {
       describe('createObject',()=>{
          it('should instantiate entity object with constructor arguments',(done)=>{
             loader.loadAsType('base/test/fixtures/basic.powEntities',pow2.EntityContainerResource,(resource:pow2.EntityContainerResource) => {
-               var entity:pow2.tests.BooleanConstructObject = <any>resource.createObject('SceneObjectWithParams',{
+               var entity:BooleanConstructObject = <any>resource.createObject('SceneObjectWithParams',{
                   arg:true
                });
                expect(entity.arg).toBe(true);
@@ -70,7 +81,7 @@ module pow2.tests {
          });
          it('should instantiate components with constructor arguments',(done)=>{
             loader.loadAsType('base/test/fixtures/basic.powEntities',pow2.EntityContainerResource,(resource:pow2.EntityContainerResource) => {
-               var entity:pow2.SceneObject = resource.createObject('ConstructComponentBooleanArg',{
+               var entity:pow2.SceneObject = resource.createObject('ComponentWithParams',{
                   arg:true
                });
                var boolComponent = <BooleanConstructComponent>entity.findComponent(BooleanConstructComponent);
@@ -78,7 +89,7 @@ module pow2.tests {
                expect(boolComponent.arg).toBe(true);
 
                entity.destroy();
-               entity = resource.createObject('ConstructComponentBooleanArg',{
+               entity = resource.createObject('ComponentWithParams',{
                   arg:false
                });
                boolComponent = <BooleanConstructComponent>entity.findComponent(BooleanConstructComponent);
@@ -94,7 +105,7 @@ module pow2.tests {
       describe('validateTemplate',()=>{
          it("should validate input names and types",(done)=>{
             loader.loadAsType('base/test/fixtures/basic.powEntities',pow2.EntityContainerResource,(resource:pow2.EntityContainerResource) => {
-               var tpl:any = resource.getTemplate('ValidEntityWithModelInput');
+               var tpl:any = resource.getTemplate('SceneObjectWithModelInput');
                // works with exact input type match
                expect(resource.validateTemplate(tpl,{
                   model:new pow2.EntityModel()
