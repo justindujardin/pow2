@@ -28,4 +28,9 @@ module pow2.tests {
          super();
       }
    }
+   export class BooleanConstructObject extends pow2.SceneObject {
+      constructor(public arg:boolean){
+         super();
+      }
+   }
 }

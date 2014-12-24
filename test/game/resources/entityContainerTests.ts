@@ -52,6 +52,22 @@ module pow2.tests {
       });
 
       describe('createObject',()=>{
+         it('should instantiate entity object with constructor arguments',(done)=>{
+            loader.loadAsType('base/test/fixtures/basic.powEntities',pow2.EntityContainerResource,(resource:pow2.EntityContainerResource) => {
+               var entity:pow2.tests.BooleanConstructObject = <any>resource.createObject('SceneObjectWithParams',{
+                  arg:true
+               });
+               expect(entity.arg).toBe(true);
+               entity.destroy();
+               entity = <any>resource.createObject('SceneObjectWithParams',{
+                  arg:false
+               });
+               expect(entity.arg).toBe(false);
+               entity.destroy();
+               done();
+            });
+
+         });
          it('should instantiate components with constructor arguments',(done)=>{
             loader.loadAsType('base/test/fixtures/basic.powEntities',pow2.EntityContainerResource,(resource:pow2.EntityContainerResource) => {
                var entity:pow2.SceneObject = resource.createObject('ConstructComponentBooleanArg',{

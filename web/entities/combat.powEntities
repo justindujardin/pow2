@@ -18,12 +18,12 @@
       {
         "name":"attack",
         "type":"pow2.CombatAttackComponent",
-        "inputs":["combat"]
+        "params":["combat"]
       },
       {
         "name":"run",
         "type":"pow2.CombatRunComponent",
-        "inputs":["combat"]
+        "params":["combat"]
       }
     ]
   },
@@ -39,12 +39,12 @@
       {
         "name":"sprite",
         "type":"pow2.SpriteComponent",
-        "inputs":["sprite"]
+        "params":["sprite"]
       },
       {
         "name":"attack",
         "type":"pow2.CombatAttackComponent",
-        "inputs":["combat"]
+        "params":["combat"]
       }
     ]
   }

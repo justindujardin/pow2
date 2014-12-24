@@ -112,8 +112,8 @@ module pow2 {
             if(!compType){
                unsatisfied |= EntityError.COMPONENT_TYPE;
             }
-            else if(comp.inputs){
-               _.each(comp.inputs,(i:string)=>{
+            else if(comp.params){
+               _.each(comp.params,(i:string)=>{
                   if(typeof inputs[i] === 'undefined'){
                      unsatisfied |= EntityError.COMPONENT_INPUT;
                   }
@@ -158,7 +158,15 @@ module pow2 {
          var type:any = this.getClassType(tpl.type);
 
          // Create entity object
-         var object:GameEntityObject = new type(inputs);
+         //
+         // If inputs.params are specified use them explicitly, otherwise pass the inputs
+         // dire
+         var inputValues:any[] = tpl.params ? _.map(tpl.params,(n:string)=>{
+            return inputs[n];
+         }) : [inputs];
+
+
+         var object:GameEntityObject = this.constructObject(type,inputValues);
 
          // Create components.
          //
@@ -167,8 +175,7 @@ module pow2 {
          // here and don't check for errors surrounding types and input names.
          var unsatisfied:EntityError = EntityError.NONE;
          _.each(tpl.components,(comp:any)=>{
-            var inputNames:string[] = comp.inputs || [];
-            var inputValues:any[] = _.map(inputNames,(n:string)=>{
+            var inputValues:any[] = _.map(comp.params || [],(n:string)=>{
                return inputs[n];
             });
             var ctor:any = this.getClassType(comp.type);

@@ -1,17 +1,25 @@
 [
   {
     "name":"ValidEntityWithComponentDependency",
-    "type":"pow2.GameEntityObject",
+    "type":"pow2.SceneObject",
     "components":[
       {
         "name":"one",
-        "type":"pow2.GameComponent"
+        "type":"pow2.SceneComponent"
       },
       {
         "name":"two",
         "type":"pow2.SceneComponent"
       }
     ]
+  },
+  {
+    "name":"SceneObjectWithParams",
+    "type":"pow2.tests.BooleanConstructObject",
+    "params":["arg"],
+    "inputs":{
+      "arg":"boolean"
+    }
   },
   {
     "name":"ValidEntityWithModelInput",
@@ -37,7 +45,7 @@
       {
         "name":"test",
         "type":"pow2.tests.BooleanConstructComponent",
-        "inputs":["arg"]
+        "params":["arg"]
       }
     ]
   }
