@@ -54,14 +54,7 @@ module pow2 {
       syncComponent():boolean{
          super.syncComponent();
          // Determine if the map wants this component to be enabled.
-         if(this.host.map && this.host.map.properties){
-            if(typeof this.host.map.properties.combat !== 'undefined'){
-               this.enabled = !!this.host.map.properties.combat;
-            }
-            else {
-               this.enabled = false;
-            }
-         }
+         this.enabled = this.host.map && this.host.map.properties && this.host.map.properties.combat;
          if(this.player){
             this.player.off(null,null,this);
             this.player = null;
