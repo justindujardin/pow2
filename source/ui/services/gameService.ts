@@ -54,7 +54,6 @@ module pow2.ui {
          pow2.registerWorld('pow2',this.world);
          // Tell the world time manager to start ticking.
          this.world.time.start();
-
          this.entities = <pow2.EntityContainerResource>this.world.loader.load('entities/map.powEntities');
       }
 
@@ -81,7 +80,7 @@ module pow2.ui {
             this.sprite.destroy();
             this.sprite = null;
          }
-         this.sprite = this.entities.createObject('MapPlayer',{
+         this.sprite = this.entities.createObject('GameMapPlayer',{
             model:from
          });
          this.sprite.name = from.attributes.name;
@@ -98,14 +97,17 @@ module pow2.ui {
             this.tileMap.destroy();
             this.tileMap = null;
          }
-         this.tileMap = new GameTileMap(mapName);
-         this.tileMap.once('loaded',() => {
-            // Create a movable character with basic components.
+
+         this.world.loader.load('/maps/' + mapName + '.tmx',(map:pow2.TiledTMXResource)=>{
+            this.tileMap = this.entities.createObject('GameMapObject',{
+               resource:map
+            });
             var model:HeroModel = player || this.world.model.party[0];
             this.createPlayer(model,at);
+            this.world.scene.addObject(this.tileMap);
+            this.tileMap.loaded();
             then && then();
          });
-         this.world.scene.addObject(this.tileMap);
       }
 
       newGame(then?:()=>any){

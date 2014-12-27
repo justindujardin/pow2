@@ -32,7 +32,7 @@ module pow2 {
       encounter:IGameEncounter = null;
       states:IState[] = [
          new GameDefaultState(),
-         new GameMapState(''),
+         new GameMapState(),
          new GameCombatState()
       ];
       onAddToWorld(world){
@@ -40,13 +40,13 @@ module pow2 {
          GameStateModel.getDataSource();
          this.model = world.model || new GameStateModel();
       }
-
-      update(data?:any){
+      setCurrentState(newState:any):boolean {
          if(this.world && this.world.scene){
             var scene:Scene = this.world.scene;
             this.player = <TileObject>scene.objectByComponent(PlayerComponent);
          }
-         super.update(data);
+         return super.setCurrentState(newState);
       }
+
   }
 }

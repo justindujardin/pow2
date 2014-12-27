@@ -143,7 +143,7 @@ module pow2 {
       }
 
 
-      createObject(templateName:string, inputs?:any):GameEntityObject {
+      createObject(templateName:string, inputs?:any):any {
          // Valid template name.
          var tpl:any = this.getTemplate(templateName);
          if(!tpl){

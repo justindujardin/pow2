@@ -131,7 +131,7 @@ module pow2{
                destination.x -= 0.5;
                destination.y -= 0.5;
 
-               var screenTile = this.worldToScreen(new Rect(destination, new Point(1,1)));
+               var screenTile:pow2.Rect = this.worldToScreen(new Rect(destination, new Point(1,1)));
                this.context.fillStyle = "rgba(10,255,10,0.3)";
                this.context.fillRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
                this.context.strokeStyle = "rgba(10,255,10,0.9)";
@@ -159,7 +159,7 @@ module pow2{
             var half = tileRect.getHalfSize();
             tileRect.point.x -= half.x;
             tileRect.point.y -= half.y;
-            var screenTile = this.worldToScreen(tileRect,1);
+            var screenTile:pow2.Rect = this.worldToScreen(tileRect,1);
 
 
             var results:TileObject[] = [];

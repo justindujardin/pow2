@@ -41,9 +41,6 @@ module pow2 {
       }
 
       enter(object:GameFeatureObject):boolean {
-         if(!this.tileMap){
-            return false;
-         }
          // Must have a party component to board a ship.  Don't want buildings
          // and NPCs boarding ships... or do we?  [maniacal laugh]
          this.party = <PlayerComponent>object.findComponent(PlayerComponent);

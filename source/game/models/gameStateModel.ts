@@ -14,7 +14,6 @@
  limitations under the License.
  */
 
-/// <reference path="../../../types/backbone/backbone.d.ts" />
 /// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="./entityModel.ts" />
 /// <reference path="./heroModel.ts" />

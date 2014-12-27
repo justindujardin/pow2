@@ -21,35 +21,21 @@ module pow2 {
    export class GameMapState extends State {
       static NAME:string = "map";
       name:string = GameMapState.NAME;
-      mapName:string;
-      mapPoint:Point;
-
-      constructor(name:string){
-         super();
-         this.mapName = name;
-      }
+      mapPoint:Point = null;
+      map:pow2.GameTileMap = null;
 
       enter(machine:GameStateMachine){
          super.enter(machine);
-         if(this.mapName && machine.player){
-            machine.player.scene.once("map:loaded",(map) => {
-               if(this.mapPoint){
-                  machine.player.setPoint(this.mapPoint);
-               }
-            });
-            machine.player.tileMap.load(this.mapName);
+         if(machine.player && this.mapPoint){
+            machine.player.setPoint(this.mapPoint);
+            this.mapPoint = null;
          }
          console.log("MAPPPPPPP");
       }
       exit(machine:GameStateMachine){
-         if(!machine.player){
-            throw new Error("Defensive exception: I _think_ this state needs a player.");
+         if(machine.player){
+            this.mapPoint = machine.player.point.clone();
          }
-         if(!machine.player.tileMap){
-            throw new Error("Defensive exception: The player must have a tileMap.");
-         }
-         this.mapName = machine.player.tileMap.mapName;
-         this.mapPoint = machine.player.point.clone();
       }
    }
 }

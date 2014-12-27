@@ -25,7 +25,6 @@ module pow2 {
 
    export class TileMap extends SceneObject {
       map: TiledTMXResource;
-//      tileSet:any; // TODO: Tileset
       tiles:any = []; // TODO: TilesetProperties
       scene:Scene;
       features:any;
@@ -147,16 +146,6 @@ module pow2 {
             return null;
          }
          return source.getTileMeta(gid);
-      }
-
-      // TODO: Calculate texture with two array index lookups like in getTerrain.  No need for FN call here.
-      getTerrainTexture(x, y) {
-         var terrain = this.getTerrain("Terrain", x, y);
-         if (terrain) {
-            return terrain.icon;
-         } else {
-            return null;
-         }
       }
    }
 }

@@ -30,16 +30,20 @@ module pow2 {
          return !!this.map;
       }
       entered(object:TileObject):boolean {
-         if(!this.target || !this.tileMap){
+         if(!this.target || !this.host.tileMap){
             return false;
          }
+         // TODO: What about all this map loading crap?  Have to load TMX resource
+         // in each spot and then call createObject on it with the entity container.
+         // Kind of a PITA if you ask me, and we keep duplicating the "/maps/{name}.tmx"
+         // stuff all over the place.  Maybe a wrapper function that does that?
          var oldMap:string = this.host.tileMap.mapName;
          object.scene.once("map:loaded",(map:TileMap) => {
             console.log("Transition from " + oldMap + " to " + this.map);
-            // TODO: Remove this targetX targetY feature transition crap.
             object.setPoint(this.target);
+            this.host.tileMap.syncComponents();
          });
-         this.tileMap.load(this.map);
+         this.host.tileMap.load(this.map);
          return true;
       }
 

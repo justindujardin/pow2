@@ -42,11 +42,9 @@ module pow2 {
          };
          this.combat.machine.notify("combat:run",data,()=>{
             if(success){
-               console.log("Escape succeeded!");
                this.combat.machine.setCurrentState(CombatEscapeState.NAME);
             }
             else {
-               console.error("Escape failed...");
                this.combat.machine.setCurrentState(CombatEndTurnState.NAME);
             }
             then && then(this);

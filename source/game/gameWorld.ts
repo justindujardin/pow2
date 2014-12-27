@@ -19,6 +19,9 @@
 /// <reference path="./resources/gameData.ts" />
 
 module pow2 {
+
+   var _sharedGameWorld:GameWorld=null;
+
    export class GameWorld extends SceneWorld {
       state:GameStateMachine;
       // TODO: Fix game loading and multiple scenes/maps state.
@@ -39,6 +42,14 @@ module pow2 {
          }
          this.loader.registerType('powEntities',pow2.EntityContainerResource);
       }
+
+      static get():pow2.GameWorld {
+         if(!_sharedGameWorld){
+            _sharedGameWorld = new pow2.GameWorld();
+         }
+         return _sharedGameWorld;
+      }
+
 
       private _encounterCallback:IGameEncounterCallback = null;
       reportEncounterResult(victory:boolean){

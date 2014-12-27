@@ -1,6 +1,24 @@
 [
   {
-    "name":"MapPlayer",
+    "name":"GameMapObject",
+    "type":"pow2.GameTileMap",
+    "inputs":{
+      "resource":"pow2.TiledTMXResource"
+    },
+    "params":["resource"],
+    "components": [
+      {
+        "name":"encounters",
+        "type":"pow2.CombatEncounterComponent"
+      },
+      {
+        "name":"input",
+        "type":"pow2.GameFeatureInputComponent"
+      }
+    ]
+  },
+  {
+    "name":"GameMapPlayer",
     "type":"pow2.GameEntityObject",
     "inputs":{
       "model":"pow2.HeroModel"

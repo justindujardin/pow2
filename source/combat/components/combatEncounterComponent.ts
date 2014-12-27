@@ -29,6 +29,7 @@ module pow2 {
       combatFlag:boolean = false;
       combatZone:string = 'default';
       isDangerous:boolean = false;
+      enabled:boolean = false;
       world:GameWorld = pow2.getWorld<GameWorld>('pow2');
 
       connectComponent():boolean {
@@ -52,17 +53,36 @@ module pow2 {
       player:GameEntityObject = null;
       syncComponent():boolean{
          super.syncComponent();
+         // Determine if the map wants this component to be enabled.
+         if(this.host.map && this.host.map.properties){
+            if(typeof this.host.map.properties.combat !== 'undefined'){
+               this.enabled = !!this.host.map.properties.combat;
+            }
+            else {
+               this.enabled = false;
+            }
+         }
          if(this.player){
             this.player.off(null,null,this);
             this.player = null;
          }
          if(this.host.scene){
             this.player = <GameEntityObject>this.host.scene.objectByComponent(PlayerComponent);
-            if(this.player){
-               this.player.on('move:begin',this.moveProcess,this);
-            }
          }
+         this.listenMoves();
          return !!this.player;
+      }
+
+      listenMoves() {
+         this.stopListening();
+         if(this.player && this.enabled){
+            this.player.on('move:begin',this.moveProcess,this);
+         }
+      }
+      stopListening() {
+         if(this.player){
+            this.player.off(null,null,this);
+         }
       }
 
       moveProcess(player:PlayerComponent,from:Point,to:Point) {
@@ -86,9 +106,11 @@ module pow2 {
          var zones:IZoneMatch = this.host.getCombatZones(at);
          this.combatZone = zones.map || zones.target;
          console.log("Combat in zone : " + this.combatZone);
-         this.host.world.randomEncounter(zones);
-         this.host.trigger('combat:encounter',this);
-         this.resetBattleCounter();
+         this.stopListening();
+         this.host.world.randomEncounter(zones,()=>{
+            this.resetBattleCounter();
+            this.listenMoves();
+         });
          this.combatFlag = true;
       }
 

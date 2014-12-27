@@ -37,26 +37,22 @@ module pow2 {
       world:GameWorld;
       featureHash:any = {};
       graph:any;
+
+      constructor(map:pow2.TiledTMXResource) {
+         super(map.url);
+         this.setMap(map);
+      }
+
       loaded(){
          super.loaded();
          this.buildAStarGraph();
-         this.addComponent(new GameFeatureInputComponent());
-
          // If there are map properties, take them into account.
-         if(this.map.properties){
-            var props = this.map.properties;
-            // Does this map have random encounters?
-            if(props.combat === true){
-               this.addComponent(new CombatEncounterComponent());
-            }
-            // Does it have a music track?
-            if(typeof props.music === 'string'){
-               this.addComponent(new SoundComponent({
-                  url:<string>props.music,
-                  volume:0.1,
-                  loop:true
-               }));
-            }
+         if(this.map.properties && this.map.properties.music){
+            this.addComponent(new SoundComponent({
+               url:this.map.properties.music,
+               volume:0.1,
+               loop:true
+            }));
          }
 
          this.buildFeatures();
