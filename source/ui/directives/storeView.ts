@@ -17,7 +17,7 @@
 /// <reference path="../services/alertService.ts"/>
 module pow2.ui {
 
-   export class StoreViewController {
+   export class StoreViewController implements IProcessObject {
       static $inject:string[] = ['game','powAlert','$scope'];
       constructor(
          public game:PowGameService,
