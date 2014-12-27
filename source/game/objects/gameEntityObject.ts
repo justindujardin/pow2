@@ -14,14 +14,12 @@
  limitations under the License.
  */
 
-/// <reference path="../../tile/tileObject.ts" />
-/// <reference path="../gameTileMap.ts" />
+/// <reference path="./gameObject.ts" />
 /// <reference path="../models/entityModel.ts" />
 /// <reference path="../../tile/components/spriteComponent.ts" />
 
 module pow2 {
-   export class GameEntityObject extends TileObject {
-      tileMap:GameTileMap;
+   export class GameEntityObject extends GameObject {
       model:EntityModel;
       feature:any; // TODO: Feature Interface
       type: string; // TODO: enum?

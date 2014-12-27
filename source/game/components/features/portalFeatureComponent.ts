@@ -25,8 +25,8 @@ module pow2 {
          if(!super.syncComponent()){
             return false;
          }
-         this.map = this.feature.target;
-         this.target = new Point(this.feature.targetX,this.feature.targetY);
+         this.map = this.host.feature.target;
+         this.target = new Point(this.host.feature.targetX,this.host.feature.targetY);
          return !!this.map;
       }
       entered(object:TileObject):boolean {

@@ -143,7 +143,7 @@ module pow2.ui {
                }));
             });
 
-            feature.inventory =  _.where(items,{level:feature.feature.level});
+            feature.inventory =  _.where(items,{level:feature.host.feature.level});
             this.$scope.$apply(() => {
                this.$scope.store = feature;
             });

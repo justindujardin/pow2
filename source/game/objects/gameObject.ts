@@ -1,5 +1,5 @@
-/**
- Copyright (C) 2013 by Justin DuJardin
+/*
+ Copyright (C) 2014 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,14 +14,13 @@
  limitations under the License.
  */
 
-/// <reference path="../tile/tileComponent.ts" />
-/// <reference path="./gameTileMap.ts" />
-module pow2 {
-   export class GameComponent extends TileComponent {
-      host:GameFeatureObject = null;
-      syncComponent():boolean{
-         return super.syncComponent() && this.host.tileMap instanceof GameTileMap;
-      }
-   }
+/// <reference path="../../tile/tileObject.ts" />
+/// <reference path="../gameTileMap.ts" />
 
+module pow2 {
+   export class GameObject extends pow2.TileObject {
+      id:string;
+      world:GameWorld;
+      tileMap:GameTileMap;
+   }
 }

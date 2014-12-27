@@ -23,20 +23,20 @@ module pow2 {
       item:string;
       icon:string;
       connectComponent():boolean {
-         if(typeof this.feature.id === 'undefined'){
+         if(typeof this.host.id === 'undefined'){
             console.error("Treasure must have a given id so it may be hidden");
             return false;
          }
          return super.connectComponent();
       }
       syncComponent():boolean{
-         if(!super.syncComponent()){
+         if(!super.syncComponent() || !this.host.feature){
             return false;
          }
          this.name = "Treasure Chest";
-         this.gold = this.feature.gold;
-         this.item = this.feature.item;
-         this.icon = this.feature.icon;
+         this.gold = this.host.feature.gold;
+         this.item = this.host.feature.item;
+         this.icon = this.host.feature.icon;
          return true;
       }
       enter(object:TileObject):boolean {

@@ -14,14 +14,10 @@
  limitations under the License.
  */
 
-/// <reference path="../../tile/tileObject.ts" />
-/// <reference path="../gameTileMap.ts" />
+/// <reference path="./gameObject.ts" />
 
 module pow2 {
-   export class GameFeatureObject extends pow2.TileObject {
-      id:string;
-      world:GameWorld;
-      tileMap:GameTileMap;
+   export class GameFeatureObject extends GameObject {
       feature:any; // TODO: Feature Interface
       type: string; // TODO: enum?
       passable:boolean;

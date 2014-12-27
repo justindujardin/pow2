@@ -44,7 +44,29 @@ module pow2 {
                return null;
             }
          }
+         // Determine if this resolves to a native browser function.
+         // e.g. if given a typename of "alert" this would return that
+         // function, which is not a valid type constructor.
+         //
+         // Ignore all native methods until there's a compelling reason
+         // not to.
+         if(Function.prototype.toString.call(obj).indexOf('[native code]') !== -1){
+            return null;
+         }
          return obj;
+      }
+
+      /**
+       * Do a case-insensitive typeof compare to allow generally simpler
+       * type specifications in entity files.
+       * @param type The type
+       * @param expected The expected typeof result
+       * @returns {boolean} True if the expected type matches the type
+       */
+      typeofCompare(type:any,expected:string):boolean{
+         var typeString:string = typeof type;
+         var expected:string = '' + expected;
+         return typeString.toUpperCase() === expected.toUpperCase();
       }
 
       /**
@@ -83,8 +105,8 @@ module pow2 {
                      unsatisfied |= EntityError.INPUT_TYPE;
                   }
                   // Match using typeof as a last resort
-                  else if(!inputType && typeof inputs[name] !== type){
-                     console.error("bad input type for input: " + name);
+                  else if(!inputType && !this.typeofCompare(inputs[name],type)){
+                     console.error("bad input type for input (" + name + ") expected (" + type + ") but got (" + typeof inputs[name] + ")");
                      unsatisfied |= EntityError.INPUT_TYPE;
                   }
                });

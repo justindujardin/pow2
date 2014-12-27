@@ -22,12 +22,12 @@ module pow2 {
       text:string;
       icon:string;
       syncComponent():boolean{
-         if(!super.syncComponent()){
+         if(!super.syncComponent() || !this.host.feature){
             return false;
          }
-         this.title = this.feature.title;
-         this.text = this.feature.text;
-         this.icon = this.feature.icon;
+         this.title = this.host.feature.title;
+         this.text = this.host.feature.text;
+         this.icon = this.host.feature.icon;
          return true;
       }
       enter(object:TileObject):boolean {
