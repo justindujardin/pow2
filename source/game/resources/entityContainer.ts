@@ -33,7 +33,7 @@ module pow2 {
 
    export class EntityContainerResource extends pow2.JSONResource {
 
-      getClassType(fullTypeName:string):any {
+      static getClassType(fullTypeName:string):any {
          if(!fullTypeName){
             return null;
          }
@@ -55,7 +55,7 @@ module pow2 {
        */
       validateTemplate(templateData:any,inputs?:any):EntityError {
          // Valid entity class type
-         var type:any = this.getClassType(templateData.type);
+         var type:any = EntityContainerResource.getClassType(templateData.type);
          if(!type){
             return EntityError.ENTITY_TYPE;
          }
@@ -72,7 +72,7 @@ module pow2 {
                }
                _.each(templateData.inputs,(type:string,name:string)=>{
                   // Attempt to validate inputs with two type specifications:
-                  var inputType:any = this.getClassType(type);
+                  var inputType:any = EntityContainerResource.getClassType(type);
                   if(typeof inputs[name] === 'undefined'){
                      console.error("missing input with name: " + name);
                      unsatisfied |= EntityError.INPUT_NAME;
@@ -108,7 +108,7 @@ module pow2 {
          // Verify component types are known
          unsatisfied = EntityError.NONE;
          _.each(templateData.components,(comp:any)=>{
-            var compType:any = this.getClassType(comp.type);
+            var compType:any = EntityContainerResource.getClassType(comp.type);
             if(!compType){
                unsatisfied |= EntityError.COMPONENT_TYPE;
             }
@@ -155,7 +155,7 @@ module pow2 {
             console.log("failed to validate template: " + tpl.name + ":" + tpl.type );
             return null;
          }
-         var type:any = this.getClassType(tpl.type);
+         var type:any = EntityContainerResource.getClassType(tpl.type);
 
          // Create entity object
          //
@@ -178,7 +178,7 @@ module pow2 {
             var inputValues:any[] = _.map(comp.params || [],(n:string)=>{
                return inputs[n];
             });
-            var ctor:any = this.getClassType(comp.type);
+            var ctor:any = EntityContainerResource.getClassType(comp.type);
             var compObject = this.constructObject(ctor,inputValues);
             if(!object.addComponent(compObject)){
                unsatisfied |= EntityError.COMPONENT_REGISTER;
@@ -187,8 +187,7 @@ module pow2 {
          if(unsatisfied !== EntityError.NONE){
             return null;
          }
-         //console.log(JSON.stringify(this.data,null,2));
-         return <GameEntityObject>object;
+         return object;
       }
    }
 }

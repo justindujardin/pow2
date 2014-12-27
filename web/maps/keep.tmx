@@ -29,7 +29,7 @@
 </data>
  </layer>
  <objectgroup draworder="topdown" name="Features" width="23" height="23">
-  <object name="wilderness" type="transition" x="176" y="272" width="16" height="16">
+  <object name="wilderness" type="pow2.PortalFeatureComponent" x="176" y="272" width="16" height="16">
    <properties>
     <property name="icon" value="dungeonGate.png"/>
     <property name="target" value="wilderness"/>
@@ -37,7 +37,6 @@
     <property name="targetY" value="7"/>
     <property name="text" value="Will you exit Rogaard Keep and return to the Warvish Tundralands?"/>
     <property name="transitionType" value="outdoor"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
   <object type="block" x="176" y="288" width="16" height="16" visible="0">
@@ -66,7 +65,7 @@
     <property name="until" value="keepDone"/>
    </properties>
   </object>
-  <object name="Guard" type="sign" x="208" y="272" width="16" height="16">
+  <object name="Guard" type="pow2.DialogFeatureComponent" x="208" y="272" width="16" height="16">
    <properties>
     <property name="after" value="alertKeepSigil"/>
     <property name="icon" value="dwarfGuard.png"/>
@@ -87,7 +86,7 @@
     <property name="until" value="towerStart"/>
    </properties>
   </object>
-  <object name="Chieftain" type="sign" x="176" y="16" width="16" height="16">
+  <object name="Chieftain" type="pow2.DialogFeatureComponent" x="176" y="16" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="after" value="towerStart"/>
@@ -110,7 +109,7 @@
     <property name="until" value="vezuStart"/>
    </properties>
   </object>
-  <object name="Chieftain" type="sign" x="176" y="16" width="16" height="16">
+  <object name="Chieftain" type="pow2.DialogFeatureComponent" x="176" y="16" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="after" value="vezuStart"/>
@@ -121,7 +120,7 @@
     <property name="until" value="gameOver"/>
    </properties>
   </object>
-  <object name="Chieftain" type="sign" x="176" y="16" width="16" height="16">
+  <object name="Chieftain" type="pow2.DialogFeatureComponent" x="176" y="16" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="after" value="gameOver"/>
@@ -131,7 +130,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Dwarf Elder" type="sign" x="160" y="176" width="16" height="16">
+  <object name="Dwarf Elder" type="pow2.DialogFeatureComponent" x="160" y="176" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="dwarf2.png"/>
@@ -141,7 +140,7 @@
     <property name="until" value="towerStart"/>
    </properties>
   </object>
-  <object name="Dwarf Elder" type="sign" x="160" y="176" width="16" height="16">
+  <object name="Dwarf Elder" type="pow2.DialogFeatureComponent" x="160" y="176" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="after" value="towerStart"/>
@@ -151,7 +150,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="chest.png" type="encounter" x="176" y="32" width="16" height="16">
+  <object name="chest.png" type="pow2.CombatFeatureComponent" x="176" y="32" width="16" height="16">
    <properties>
     <property name="after" value="towerDone"/>
     <property name="creatures" value=""/>
@@ -160,10 +159,9 @@
     <property name="id" value="towerReward"/>
     <property name="items" value=""/>
     <property name="text" value="The Warvish citizenry have gathered together their wealth to support you in your great quest to defeat Vezu!"/>
-    <property name="type" value="encounter"/>
    </properties>
   </object>
-  <object name="Dwarven Armors" type="store" x="112" y="96" width="16" height="16">
+  <object name="Dwarven Armors" type="pow2.StoreFeatureComponent" x="112" y="96" width="16" height="16">
    <properties>
     <property name="buyRate" value="125"/>
     <property name="category" value="armor"/>
@@ -172,10 +170,9 @@
     <property name="level" value="3"/>
     <property name="name" value="Dwarven Armors"/>
     <property name="sellRate" value="28"/>
-    <property name="type" value="store"/>
    </properties>
   </object>
-  <object name="Dwarven Arms" type="store" x="240" y="96" width="16" height="16">
+  <object name="Dwarven Arms" type="pow2.StoreFeatureComponent" x="240" y="96" width="16" height="16">
    <properties>
     <property name="buyRate" value="125"/>
     <property name="category" value="weapons"/>
@@ -184,10 +181,9 @@
     <property name="level" value="3"/>
     <property name="name" value="Dwarven Arms"/>
     <property name="sellRate" value="28"/>
-    <property name="type" value="store"/>
    </properties>
   </object>
-  <object name="Warvian Antiquities" type="store" x="112" y="160" width="16" height="16">
+  <object name="Warvian Antiquities" type="pow2.StoreFeatureComponent" x="112" y="160" width="16" height="16">
    <properties>
     <property name="buyRate" value="125"/>
     <property name="category" value="misc"/>
@@ -196,10 +192,9 @@
     <property name="level" value="3"/>
     <property name="name" value="Warvian Antiquities"/>
     <property name="sellRate" value="25"/>
-    <property name="type" value="store"/>
    </properties>
   </object>
-  <object name="Potions and Elixirs" type="store" x="240" y="160" width="16" height="16">
+  <object name="Potions and Elixirs" type="pow2.StoreFeatureComponent" x="240" y="160" width="16" height="16">
    <properties>
     <property name="buyRate" value="115"/>
     <property name="category" value="misc"/>
@@ -208,7 +203,6 @@
     <property name="level" value="3"/>
     <property name="name" value="Potions and Elixirs"/>
     <property name="sellRate" value="22"/>
-    <property name="type" value="store"/>
     <property name="y" value="10"/>
    </properties>
   </object>

@@ -309,7 +309,7 @@
 </data>
  </layer>
  <objectgroup draworder="topdown" name="Features" width="96" height="72">
-  <object name="town" type="transition" x="256" y="816" width="16" height="16">
+  <object name="town" type="pow2.PortalFeatureComponent" x="256" y="816" width="16" height="16">
    <properties>
     <property name="icon" value="city.png"/>
     <property name="target" value="town"/>
@@ -317,10 +317,9 @@
     <property name="targetY" value="4"/>
     <property name="text" value="Enter the town of Bryarlake?"/>
     <property name="transitionType" value="town"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
-  <object name="ruins" type="transition" x="272" y="688" width="16" height="16">
+  <object name="ruins" type="pow2.PortalFeatureComponent" x="272" y="688" width="16" height="16">
    <properties>
     <property name="icon" value="city.png"/>
     <property name="target" value="ruins"/>
@@ -328,10 +327,9 @@
     <property name="targetY" value="21"/>
     <property name="text" value="The once-beautiful city gates of Kinstown Harbor are now tarnished and crumbling. Will you enter the ruins?"/>
     <property name="transitionType" value="town"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
-  <object name="village" type="transition" x="496" y="432" width="16" height="16">
+  <object name="village" type="pow2.PortalFeatureComponent" x="496" y="432" width="16" height="16">
    <properties>
     <property name="icon" value="city.png"/>
     <property name="target" value="village"/>
@@ -339,10 +337,9 @@
     <property name="targetY" value="10"/>
     <property name="text" value="Climb up to the cliffside village of Moorhaven?"/>
     <property name="transitionType" value="town"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
-  <object name="port" type="transition" x="160" y="384" width="16" height="16">
+  <object name="port" type="pow2.PortalFeatureComponent" x="160" y="384" width="16" height="16">
    <properties>
     <property name="icon" value="city.png"/>
     <property name="target" value="port"/>
@@ -350,10 +347,9 @@
     <property name="targetY" value="4"/>
     <property name="text" value="Will you enter the Elvish town of Port Artha?"/>
     <property name="transitionType" value="town"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
-  <object name="fortress1" type="transition" x="368" y="192" width="16" height="16">
+  <object name="fortress1" type="pow2.PortalFeatureComponent" x="368" y="192" width="16" height="16">
    <properties>
     <property name="icon" value="doorway.png"/>
     <property name="target" value="fortress1"/>
@@ -361,7 +357,6 @@
     <property name="targetY" value="15"/>
     <property name="text" value="You stand at the entrance of the Goblin's Mountain Fortress. Horrific sights and smells await within, dare you enter?"/>
     <property name="transitionType" value="dungeon"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
   <object name="palaceLeft.png" type="sign" x="1200" y="976" width="16" height="16">
@@ -370,7 +365,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="castle" type="transition" x="1216" y="976" width="16" height="16">
+  <object name="castle" type="pow2.PortalFeatureComponent" x="1216" y="976" width="16" height="16">
    <properties>
     <property name="icon" value="palaceCenter.png"/>
     <property name="target" value="castle"/>
@@ -378,7 +373,6 @@
     <property name="targetY" value="11"/>
     <property name="text" value="You stand before Castle Bashgar, the capital of the Suvian Kingdom. Will you enter?"/>
     <property name="transitionType" value="town"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
   <object name="palaceRight.png" type="sign" x="1232" y="976" width="16" height="16">
@@ -387,7 +381,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="crypt" type="transition" x="1168" y="912" width="16" height="16">
+  <object name="crypt" type="pow2.PortalFeatureComponent" x="1168" y="912" width="16" height="16">
    <properties>
     <property name="icon" value="dome.png"/>
     <property name="target" value="crypt"/>
@@ -395,10 +389,9 @@
     <property name="targetY" value="28"/>
     <property name="text" value="The sacred grounds of Ashvari have served as the burial grounds for the Suvian Kings for centuries. Dare you explore the Ashvari Crypts?"/>
     <property name="transitionType" value="dungeon"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
-  <object name="keep" type="transition" x="1216" y="112" width="16" height="16">
+  <object name="keep" type="pow2.PortalFeatureComponent" x="1216" y="112" width="16" height="16">
    <properties>
     <property name="icon" value="keep.png"/>
     <property name="target" value="keep"/>
@@ -406,10 +399,9 @@
     <property name="targetY" value="17"/>
     <property name="text" value="Through the swirling snow you perceive a large keep with tall, sheer walls coated in ice. Will you enter Rogaard Keep, last refuge of the Dwarves?"/>
     <property name="transitionType" value="town"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
-  <object name="tower1" type="transition" x="1408" y="256" width="16" height="16">
+  <object name="tower1" type="pow2.PortalFeatureComponent" x="1408" y="256" width="16" height="16">
    <properties>
     <property name="icon" value="tower.png"/>
     <property name="target" value="tower1"/>
@@ -417,10 +409,9 @@
     <property name="targetY" value="9"/>
     <property name="text" value="You stand before the mighty Vygurn Tower, a place of great mystery and intrigue. You are astonished to see that it is protected by no door, nor any guards. Step into Vygurn Tower?"/>
     <property name="transitionType" value="dungeon"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
-  <object name="isle" type="transition" x="1328" y="736" width="16" height="16">
+  <object name="isle" type="pow2.PortalFeatureComponent" x="1328" y="736" width="16" height="16">
    <properties>
     <property name="icon" value="city.png"/>
     <property name="target" value="isle"/>
@@ -428,7 +419,6 @@
     <property name="targetY" value="10"/>
     <property name="text" value="On this island you find a bustling village, mostly occupied by merchants, sailors and buccaneers. Will you warily enter and peruse their wares?"/>
     <property name="transitionType" value="town"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
   <object name="iceGateLeft.png" type="sign" x="816" y="176" width="16" height="16">
@@ -454,7 +444,7 @@
     <property name="until" value="towerDone"/>
    </properties>
   </object>
-  <object name="lair" type="transition" x="816" y="80" width="16" height="16">
+  <object name="lair" type="pow2.PortalFeatureComponent" x="816" y="80" width="16" height="16">
    <properties>
     <property name="icon" value="volcano.png"/>
     <property name="target" value="lair"/>
@@ -462,40 +452,35 @@
     <property name="targetY" value="46"/>
     <property name="text" value="At the base of Mount Vezu, you find an entrance to a cavern. A sulfurous odor wells up from within. Will you steel your nerves and enter?"/>
     <property name="transitionType" value="dungeon"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
-  <object name="temple.png" type="temple" x="960" y="128" width="16" height="16">
+  <object name="temple.png" type="pow2.TempleFeatureComponent" x="960" y="128" width="16" height="16">
    <properties>
     <property name="cost" value="5"/>
     <property name="icon" value="temple.png"/>
-    <property name="type" value="temple"/>
-   </properties>
+     </properties>
   </object>
-  <object name="temple.png" type="temple" x="1264" y="160" width="16" height="16">
+  <object name="temple.png" type="pow2.TempleFeatureComponent" x="1264" y="160" width="16" height="16">
    <properties>
     <property name="cost" value="50"/>
     <property name="icon" value="temple.png"/>
-    <property name="type" value="temple"/>
-   </properties>
+     </properties>
   </object>
-  <object name="ship.png" type="ship" x="112" y="368" width="16" height="16">
+  <object name="ship.png" type="pow2.ShipFeatureComponent" x="112" y="368" width="16" height="16">
    <properties>
     <property name="after" value="castleStart"/>
     <property name="icon" value="ship.png"/>
     <property name="id" value="portShip"/>
     <property name="passable" value="true"/>
-    <property name="type" value="ship"/>
    </properties>
   </object>
-  <object name="world-plains-snake" type="encounter" x="304" y="736" width="16" height="16">
+  <object name="world-plains-snake" type="pow2.CombatFeatureComponent" x="304" y="736" width="16" height="16">
    <properties>
     <property name="gold" value="4"/>
     <property name="icon" value="snake.png"/>
     <property name="id" value="world-plains-snakes"/>
     <property name="items" value=""/>
     <property name="text" value="You are set upon by vicious snakes!"/>
-    <property name="type" value="encounter"/>
    </properties>
   </object>
  </objectgroup>

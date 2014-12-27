@@ -22,6 +22,13 @@ module pow2 {
       gold:number;
       item:string;
       icon:string;
+      connectComponent():boolean {
+         if(typeof this.feature.id === 'undefined'){
+            console.error("Treasure must have a given id so it may be hidden");
+            return false;
+         }
+         return super.connectComponent();
+      }
       syncComponent():boolean{
          if(!super.syncComponent()){
             return false;

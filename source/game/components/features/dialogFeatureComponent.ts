@@ -31,11 +31,15 @@ module pow2 {
          return true;
       }
       enter(object:TileObject):boolean {
-         object.scene.trigger('dialog:entered',this);
+         if(this.title && this.text){
+            object.scene.trigger('dialog:entered',this);
+         }
          return true;
       }
       exit(object:TileObject):boolean {
-         object.scene.trigger('dialog:exited',this);
+         if(this.title && this.text){
+            object.scene.trigger('dialog:exited',this);
+         }
          return true;
       }
 

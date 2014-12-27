@@ -31,7 +31,7 @@
 </data>
  </layer>
  <objectgroup draworder="topdown" name="Features" width="27" height="22">
-  <object name="wilderness" type="transition" x="192" y="64" width="16" height="16">
+  <object name="wilderness" type="pow2.PortalFeatureComponent" x="192" y="64" width="16" height="16">
    <properties>
     <property name="icon" value="doorInWall.png"/>
     <property name="target" value="wilderness"/>
@@ -39,7 +39,6 @@
     <property name="targetY" value="51"/>
     <property name="text" value="Will you exit the safety of Bryarlake and explore the great Wildernesse?"/>
     <property name="transitionType" value="outdoor"/>
-    <property name="type" value="transition"/>
    </properties>
   </object>
   <object type="block" x="192" y="48" width="16" height="16" visible="0">
@@ -47,7 +46,7 @@
     <property name="type" value="block"/>
    </properties>
   </object>
-  <object name="Guard" type="sign" x="176" y="96" width="16" height="16">
+  <object name="Guard" type="pow2.DialogFeatureComponent" x="176" y="96" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="soldier.png"/>
@@ -56,7 +55,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Guard" type="sign" x="208" y="96" width="16" height="16">
+  <object name="Guard" type="pow2.DialogFeatureComponent" x="208" y="96" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="soldier.png"/>
@@ -65,7 +64,7 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="Citizen" type="sign" x="128" y="256" width="16" height="16">
+  <object name="Citizen" type="pow2.DialogFeatureComponent" x="128" y="256" width="16" height="16">
    <properties>
     <property name="action" value="TALK"/>
     <property name="icon" value="man.png"/>
@@ -74,14 +73,13 @@
     <property name="type" value="sign"/>
    </properties>
   </object>
-  <object name="temple.png" type="temple" x="256" y="208" width="16" height="16">
+  <object name="temple.png" type="pow2.TempleFeatureComponent" x="256" y="208" width="16" height="16">
    <properties>
     <property name="cost" value="15"/>
     <property name="icon" value="temple.png"/>
-    <property name="type" value="temple"/>
-   </properties>
+     </properties>
   </object>
-  <object name="Weapons" type="store" x="96" y="112" width="16" height="16">
+  <object name="Weapons" type="pow2.StoreFeatureComponent" x="96" y="112" width="16" height="16">
    <properties>
     <property name="category" value="weapons"/>
     <property name="groups" value="default"/>
@@ -89,10 +87,9 @@
     <property name="level" value="1"/>
     <property name="name" value="Weapons"/>
     <property name="sellRate" value="35"/>
-    <property name="type" value="store"/>
    </properties>
   </object>
-  <object name="Armors" type="store" x="96" y="176" width="16" height="16">
+  <object name="Armors" type="pow2.StoreFeatureComponent" x="96" y="176" width="16" height="16">
    <properties>
     <property name="buyRate" value="100"/>
     <property name="category" value="armor"/>
@@ -101,15 +98,13 @@
     <property name="level" value="1"/>
     <property name="name" value="Armors"/>
     <property name="sellRate" value="35"/>
-    <property name="type" value="store"/>
    </properties>
   </object>
-  <object name="chest.png" type="treasure" x="368" y="304" width="16" height="16">
+  <object name="chest.png" type="pow2.TreasureFeatureComponent" x="368" y="304" width="16" height="16">
    <properties>
     <property name="gold" value="5000"/>
     <property name="icon" value="chest.png"/>
     <property name="id" value="bryarlake-chest"/>
-    <property name="type" value="treasure"/>
    </properties>
   </object>
  </objectgroup>
