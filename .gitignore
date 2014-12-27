@@ -5,3 +5,6 @@ web/pow2*.*
 concepts
 lib
 web/bower
+.coverage
+data/textures/basictiles
+data/textures/environment-old

@@ -8,7 +8,7 @@ module.exports = function(grunt) {
        */
       notify: {
          options: {
-            title: 'E.B.U.R.P.'
+            title: 'Pow2'
          },
          sprites:{
             options: {
@@ -18,11 +18,6 @@ module.exports = function(grunt) {
          less:{
             options: {
                message: 'CSS styles built.'
-            }
-         },
-         maps:{
-            options: {
-               message: 'Maps compiled.'
             }
          },
          server:{
@@ -78,7 +73,8 @@ module.exports = function(grunt) {
                "source/core/api.ts",
                "source/core/*.ts",
                "source/core/scene/*.ts",
-               "source/core/scene/components/*.ts"
+               "source/core/scene/components/*.ts",
+               "source/interfaces/*.ts"
             ],
             dest: 'lib/<%= pkg.name %>.js'
          },
@@ -126,18 +122,6 @@ module.exports = function(grunt) {
             dest: 'lib/test/<%= pkg.name %>.tests.js'
          }
 
-      },
-
-      /**
-       * Copy typescript typedefs to build/ to satisfy compiler.
-       */
-      copy: {
-         core: {
-            expand: true,
-            cwd: '',
-            src: 'types/**/*.d.ts',
-            dest: 'build'
-         }
       },
 
       /**
@@ -253,12 +237,6 @@ module.exports = function(grunt) {
                '<%= typescript.ui.src %>'
             ],
             tasks: ['typescript:ui', 'notify:code']
-         },
-         typedefs: {
-            files: [
-               'types/**'
-            ],
-            tasks: ['copy']
          },
 
 
@@ -403,14 +381,14 @@ module.exports = function(grunt) {
    grunt.loadNpmTasks('grunt-notify');
    // Support system notifications in non-production environments
    if(process && process.env && process.env.NODE_ENV === 'production'){
-      grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
-      grunt.registerTask('heroku:production', ['typescript', 'copy','less','sprites','uglify']);
+      grunt.registerTask('default', ['typescript', 'less','sprites']);
+      grunt.registerTask('heroku:production', ['default','uglify']);
    }
    else {
       grunt.loadNpmTasks('grunt-express-server');
       grunt.loadNpmTasks('grunt-contrib-watch');
 
-      grunt.registerTask('default', ['typescript', 'copy','less','sprites']);
+      grunt.registerTask('default', ['typescript', 'less','sprites']);
       grunt.registerTask('develop', ['default', 'watch']);
    }
 

@@ -130,7 +130,7 @@ module pow2.ui {
                      var _done = state.machine.notifyWait();
                      var msg:string = data.player.model.get('name');
                      if(data.success){
-                         msg += ' successfully ran away!';
+                         msg += ' bravely ran away!';
                      }
                      else {
                         msg += ' failed to escape!';

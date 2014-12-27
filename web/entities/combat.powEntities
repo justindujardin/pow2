@@ -1,5 +1,23 @@
 [
   {
+    "name":"GameCombatMap",
+    "type":"pow2.GameTileMap",
+    "inputs":{
+      "resource":"pow2.TiledTMXResource"
+    },
+    "params":["resource"],
+    "components": [
+      {
+        "name":"encounters",
+        "type":"pow2.CombatEncounterComponent"
+      },
+      {
+        "name":"input",
+        "type":"pow2.GameFeatureInputComponent"
+      }
+    ]
+  },
+  {
     "name":"CombatPlayer",
     "type":"pow2.GameEntityObject",
     "inputs":{
