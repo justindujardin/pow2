@@ -223,7 +223,9 @@ module pow2 {
 
          machine.world.loader.load('/maps/combat.tmx',(map:pow2.TiledTMXResource)=>{
 
-            this.tileMap = new pow2.GameTileMap(map);
+            this.tileMap = this.factory.createObject('GameCombatMap',{
+               resource:map
+            });
 
             // Hide all layers that don't correspond to the current combat zone
             var zone:IZoneMatch = machine.encounterInfo;
@@ -232,7 +234,6 @@ module pow2 {
                l.visible = (l.name === visibleZone);
             });
             this.tileMap.dirtyLayers = true;
-            this.tileMap.addComponent(new pow2.CombatCameraComponent);
             combatScene.addObject(this.tileMap);
 
             // Position Party/Enemies

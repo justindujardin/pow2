@@ -12,6 +12,10 @@
         "type":"pow2.CombatEncounterComponent"
       },
       {
+        "name":"camera",
+        "type":"pow2.TileMapCameraComponent"
+      },
+      {
         "name":"input",
         "type":"pow2.GameFeatureInputComponent"
       }

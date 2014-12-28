@@ -8,12 +8,7 @@
     "params":["resource"],
     "components": [
       {
-        "name":"encounters",
-        "type":"pow2.CombatEncounterComponent"
-      },
-      {
-        "name":"input",
-        "type":"pow2.GameFeatureInputComponent"
+        "type":"pow2.CombatCameraComponent"
       }
     ]
   },
