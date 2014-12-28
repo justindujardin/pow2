@@ -17,7 +17,7 @@
 /// <reference path="../services/alertService.ts"/>
 module pow2.ui {
 
-   export class StoreViewController {
+   export class StoreViewController implements IProcessObject {
       static $inject:string[] = ['game','powAlert','$scope'];
       constructor(
          public game:PowGameService,
@@ -143,7 +143,7 @@ module pow2.ui {
                }));
             });
 
-            feature.inventory =  _.where(items,{level:feature.feature.level});
+            feature.inventory =  _.where(items,{level:feature.host.feature.level});
             this.$scope.$apply(() => {
                this.$scope.store = feature;
             });

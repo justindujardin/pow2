@@ -23,7 +23,7 @@ module pow2 {
       id:string;
       _uid:string = _.uniqueId('so');
       name:string;
-      scene: IScene;
+      scene: Scene;
       world: IWorld;
       enabled:boolean;
       // The object point
@@ -50,6 +50,9 @@ module pow2 {
          var values:any[] = this._components;
          var l:number = this._components.length;
          for(var i = 0; i < l; i++){
+            if(!values[i]){
+               throw new Error("Component deleted during tick, use _.defer to delay removal until the callstack unwinds");
+            }
             values[i].tick && values[i].tick(elapsed);
          }
       }
@@ -62,6 +65,9 @@ module pow2 {
          var values:any[] = this._components;
          var l:number = this._components.length;
          for(var i = 0; i < l; i++){
+            if(!values[i]){
+               throw new Error("Component deleted during interpolateTick, use _.defer to delay removal until the callstack unwinds");
+            }
             values[i].interpolateTick && values[i].interpolateTick(elapsed);
          }
       }
@@ -70,9 +76,14 @@ module pow2 {
          _.each(this._components,(o:ISceneComponent) => {
             o.disconnectComponent();
          });
+         this._components.length = 0;
          if (this.scene) {
             this.scene.removeObject(this,false);
          }
+      }
+
+      onAddToScene(scene:Scene){
+         this.syncComponents();
       }
 
       // ISceneComponentHost implementation

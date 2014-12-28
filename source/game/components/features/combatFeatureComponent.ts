@@ -28,6 +28,14 @@ module pow2 {
     */
    export class CombatFeatureComponent extends GameFeatureComponent {
       party:PlayerComponent;
+      connectComponent():boolean {
+         if(typeof this.host.id === 'undefined'){
+            console.error("Fixed encounters must have a given id so they may be hidden");
+            return false;
+         }
+         return super.connectComponent();
+      }
+
       enter(object:GameEntityObject):boolean {
          this.party = <PlayerComponent>object.findComponent(PlayerComponent);
          if(!this.party){

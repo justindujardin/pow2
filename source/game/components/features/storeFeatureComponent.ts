@@ -23,16 +23,16 @@ module pow2 {
          if(!super.syncComponent()){
             return false;
          }
-         this.name = this.feature.name;
+         this.name = this.host.feature.name;
          var weapons:boolean = _.indexOf(this.host.groups,"weapon") !== -1;
          if(weapons){
             this.inventory = _.filter(pow2.data.weapons,(item:any) => {
-               return item.level === this.feature.level;
+               return item.level === this.host.feature.level;
             });
          }
          else if(_.indexOf(this.host.groups,"armor") !== -1){
             this.inventory = _.filter(pow2.data.armor,(item:any) => {
-               return item.level === this.feature.level;
+               return item.level === this.host.feature.level;
             });
 
          }

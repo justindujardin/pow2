@@ -20,16 +20,13 @@
 
 module pow2 {
    export class TileComponent extends SceneComponent {
-      tileMap:TileMap;
       host:TileObject;
       isEntered:boolean;
 
       syncComponent():boolean{
-         this.tileMap = this.host.tileMap;
-         return !!this.tileMap && this.tileMap instanceof TileMap;
+         return !!this.host.tileMap && this.host.tileMap instanceof TileMap;
       }
       disconnectComponent():boolean{
-         this.tileMap = null;
          return true;
       }
 

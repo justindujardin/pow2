@@ -37,26 +37,22 @@ module pow2 {
       world:GameWorld;
       featureHash:any = {};
       graph:any;
+
+      constructor(map:pow2.TiledTMXResource) {
+         super(map.url);
+         this.setMap(map);
+      }
+
       loaded(){
          super.loaded();
          this.buildAStarGraph();
-         this.addComponent(new GameFeatureInputComponent());
-
          // If there are map properties, take them into account.
-         if(this.map.properties){
-            var props = this.map.properties;
-            // Does this map have random encounters?
-            if(props.combat === true){
-               this.addComponent(new CombatEncounterComponent());
-            }
-            // Does it have a music track?
-            if(typeof props.music === 'string'){
-               this.addComponent(new SoundComponent({
-                  url:<string>props.music,
-                  volume:0.1,
-                  loop:true
-               }));
-            }
+         if(this.map.properties && this.map.properties.music){
+            this.addComponent(new SoundComponent({
+               url:this.map.properties.music,
+               volume:0.1,
+               loop:true
+            }));
          }
 
          this.buildFeatures();
@@ -68,8 +64,6 @@ module pow2 {
       }
 
       unloaded(){
-         this.removeComponentByType(GameFeatureInputComponent);
-         this.removeComponentByType(CombatEncounterComponent);
          this.removeComponentByType(SoundComponent);
          this.removeFeaturesFromScene();
          super.unloaded();
@@ -101,7 +95,9 @@ module pow2 {
       addFeaturesToScene() {
          _.each(this.features.objects,(obj:any) => {
             obj._object = this.createFeatureObject(obj);
-            this.scene.addObject(obj._object);
+            if(obj._object){
+               this.scene.addObject(obj._object);
+            }
          });
       }
       removeFeaturesFromScene() {
@@ -129,48 +125,17 @@ module pow2 {
          return true;
       }
       createFeatureObject(tiledObject:tiled.ITiledObject):TileObject {
-         var feature = typeof tiledObject.properties !== 'undefined' ? tiledObject.properties : tiledObject;
-         var options = _.extend({}, feature, {
+         var options = _.extend({}, tiledObject.properties || {}, {
             tileMap: this,
+            type:tiledObject.type,
             x: Math.round(tiledObject.x / this.map.tilewidth),
             y: Math.round(tiledObject.y / this.map.tileheight)
          });
          var object = new GameFeatureObject(options);
          this.world.mark(object);
-         var componentType:any = null;
-         var type:string = (feature && feature.type) ? feature.type : tiledObject.type;
-         switch(type){
-            case 'transition':
-               componentType = PortalFeatureComponent;
-               break;
-            case 'treasure':
-               componentType = TreasureFeatureComponent;
-               if(typeof options.id === 'undefined'){
-                  console.error("Treasure must have a given id so it may be hidden");
-               }
-               break;
-            case 'ship':
-               componentType = ShipFeatureComponent;
-               break;
-            case 'store':
-               componentType = StoreFeatureComponent;
-               break;
-            case 'encounter':
-               componentType = CombatFeatureComponent;
-               if(typeof options.id === 'undefined'){
-                  console.error("Fixed encounters must have a given id so they may be hidden");
-               }
-               break;
-            case 'temple':
-               componentType = TempleFeatureComponent;
-               break;
-            default:
-               if(feature && feature.action === 'TALK'){
-                  componentType = DialogFeatureComponent;
-               }
-               break;
-         }
-         if(componentType !== null){
+
+         var componentType:any = EntityContainerResource.getClassType(tiledObject.type);
+         if(tiledObject.type && componentType){
             var component = <ISceneComponent>(new componentType());
             if(!object.addComponent(component)){
                throw new Error("Component " + component.name + " failed to connect to host " + this.name);
@@ -227,11 +192,11 @@ module pow2 {
             if(!obj){
                return;
             }
-            var collideTypes:string[] = ['temple','store','sign'];
+            var collideTypes:string[] = PlayerComponent.COLLIDE_TYPES;
             if(obj.passable === true || !obj.type){
                return;
             }
-            if(_.indexOf(collideTypes, obj.type.toLowerCase()) !== -1){
+            if(_.indexOf(collideTypes, obj.type) !== -1){
                var x:number = o.x / o.width | 0;
                var y:number = o.y / o.height | 0;
                if(!obj.passable && this.bounds.pointInRect(x,y)){

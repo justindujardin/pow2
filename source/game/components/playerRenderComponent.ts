@@ -43,15 +43,10 @@ module pow2 {
       private _animator:Animator = new Animator();
       heading:Headings = Headings.WEST;
       animating:boolean = false;
-      connectComponent():boolean{
-         if(!super.connectComponent()){
-            return false;
-         }
-         this._animator.setAnimationSource(this.host.icon);
-         return true;
-      }
-
       setHeading(direction:Headings,animating:boolean){
+         if(!this._animator.sourceAnims){
+            this._animator.setAnimationSource(this.host.icon);
+         }
          this.heading = direction;
          switch(this.heading){
             case Headings.SOUTH:

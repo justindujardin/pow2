@@ -1,0 +1,47 @@
+[
+  {
+    "name":"SceneObjectWithComponents",
+    "type":"pow2.SceneObject",
+    "components":[
+      {
+        "name":"one",
+        "type":"pow2.SceneComponent"
+      },
+      {
+        "name":"two",
+        "type":"pow2.SceneComponent"
+      }
+    ]
+  },
+  {
+    "name":"SceneObjectWithParams",
+    "type":"pow2.tests.BooleanConstructObject",
+    "params":["arg"],
+    "inputs":{
+      "arg":"boolean"
+    }
+  },
+  {
+    "name":"SceneObjectWithModelInput",
+    "type":"pow2.GameEntityObject",
+    "inputs":{
+      "model":"pow2.EntityModel"
+    }
+  },
+
+  {
+    "name":"ComponentWithParams",
+    "type":"pow2.SceneObject",
+    "inputs":{
+      "arg":"boolean"
+    },
+    "components":[
+      {
+        "name":"test",
+        "type":"pow2.tests.BooleanConstructComponent",
+        "params":["arg"]
+      }
+    ]
+  }
+
+]

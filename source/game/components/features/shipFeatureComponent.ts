@@ -24,6 +24,7 @@ module pow2 {
       party:PlayerComponent;
       partyObject:TileObject;
       partySprite:string;
+      private _tickInterval:number = -1;
 
       syncComponent():boolean {
          if(super.syncComponent()){
@@ -40,16 +41,14 @@ module pow2 {
       }
 
       enter(object:GameFeatureObject):boolean {
-         if(!this.tileMap){
-            return false;
-         }
          // Must have a party component to board a ship.  Don't want buildings
          // and NPCs boarding ships... or do we?  [maniacal laugh]
          this.party = <PlayerComponent>object.findComponent(PlayerComponent);
          if(!this.party){
             return false;
          }
-         this.party.passableKeys = ['shipPassable','passable'];
+         this.partySprite = object.icon;
+         this.party.passableKeys = ['shipPassable'];
          return true;
       }
       entered(object:GameFeatureObject):boolean {
@@ -65,28 +64,29 @@ module pow2 {
             return false;
          }
          this.partyObject = object;
-         this.partySprite = object.setSprite(this.host.icon);
+         object.setSprite(this.host.icon);
          this.host.visible = false;
          this.host.enabled = false;
-         // If we're moving from shipPassable to passable, disembark the ship.
-         this.party.setMoveFilter((from:Point,to:Point) => {
-            var fromTerrain = this.tileMap.getTerrain("Terrain",from.x,from.y);
-            var toTerrain = this.tileMap.getTerrain("Terrain",to.x,to.y);
-            if(!fromTerrain || !toTerrain){
-               return;
+
+         this._tickInterval = setInterval(()=>{
+            if(this.partyObject.point.equal(this.party.targetPoint) && !this.party.heading.isZero()){
+               var from:pow2.Point = this.partyObject.point;
+               var to:pow2.Point = from.clone().add(this.party.heading);
+               if(!this.party.collideWithMap(from,'shipPassable') && !this.party.collideWithMap(to,'passable')){
+                  this.disembark(from,to,this.party.heading.clone());
+               }
             }
-            if(fromTerrain.shipPassable && toTerrain.passable){
-               this.disembark(from);
-            }
-         });
+         },32);
          return true;
       }
 
-      disembark(at?:Point){
+      disembark(from:pow2.Point,to:pow2.Point,heading:pow2.Point){
+         clearInterval(this._tickInterval);
          this.partyObject.setSprite(this.partySprite);
-         this.party.clearMoveFilter();
+         this.party.targetPoint.set(to);
+         this.party.velocity.set(heading);
          this.party.passableKeys = ['passable'];
-         this.host.point.set(at || this.partyObject.point);
+         this.host.point.set(from);
          this.host.visible = true;
          this.host.enabled = true;
          this.partyObject = null;

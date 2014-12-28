@@ -26,7 +26,6 @@ module pow2 {
       workPoint: Point = new Point(0,0);
       host: SceneObject;
       collider:CollisionComponent;
-      moveFilter:(from:Point,to:Point)=>void;
 
       connectComponent():boolean{
          this.host.point.round();
@@ -52,28 +51,13 @@ module pow2 {
          return this.collider.collide(x,y,SceneObject,results);
       }
 
-      /**
-       * Support for simple movement filtering by other sources.  For example a sibling
-       * component may have a different set of actions that should be evaluated when a
-       * move happens.  It can use set/clearMoveFilter to accomplish this.
-       *
-       * TODO: Is there a better pattern I'm missing for component communication?
-       */
-      setMoveFilter(filter:(from:Point,to:Point)=>void){
-         this.moveFilter = filter;
-      }
-      clearMoveFilter(){
-         this.moveFilter = null;
-      }
-
-
       updateVelocity(){
-         if(!this.scene.world || !this.scene.world.input){
+         if(!this.host.scene || !this.host.scene.world || !this.host.scene.world.input){
             return;
          }
          // Touch movement
          var hasCreateTouch = (<any>document).createTouch;
-         var worldInput = <any>this.scene.world.input;
+         var worldInput = <any>this.host.scene.world.input;
          if (hasCreateTouch && worldInput.analogVector instanceof pow2.Point) {
             this.velocity.x = 0;
             if (worldInput.analogVector.x < -20) {
@@ -182,10 +166,7 @@ module pow2 {
             return;
          }
 
-         // Successful move, do something.
-         // BEGIN_MOVE
-         var moveFn:Function = this.moveFilter || this.beginMove;
-         moveFn.call(this,this.host.point,this.targetPoint);
+         this.beginMove(this.host.point,this.targetPoint);
       }
    }
 }

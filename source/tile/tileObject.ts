@@ -82,7 +82,8 @@ module pow2 {
       /**
        * When added to a scene, resolve a feature icon to a renderable sprite.
        */
-      onAddToScene() {
+      onAddToScene(scene:Scene) {
+         super.onAddToScene(scene);
          if(this.icon){
             this.setSprite(this.icon);
          }

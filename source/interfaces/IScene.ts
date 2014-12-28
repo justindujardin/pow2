@@ -75,6 +75,7 @@ module pow2 {
       enabled:boolean;
       point:Point;
       size:Point;
+      onAddToScene?(scene:IScene);
    }
 
    export interface IScene extends IEvents {

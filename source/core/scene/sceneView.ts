@@ -34,7 +34,7 @@ module pow2 {
       cameraScale: number;
       unitSize: number;
       _sheets: any;
-      scene: IScene = null;
+      scene: Scene = null;
       loader: ResourceLoader = null;
 
       constructor(canvas: HTMLCanvasElement, loader: any) {
@@ -64,7 +64,7 @@ module pow2 {
       onAddToWorld(world:IWorld){}
       onRemoveFromWorld(world:IWorld){}
 
-      setScene(scene:IScene){
+      setScene(scene:Scene){
          if(this.scene){
             this.scene.removeView(this);
          }

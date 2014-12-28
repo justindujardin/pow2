@@ -21,9 +21,6 @@
 module pow2 {
    export class PlayerCameraComponent extends CameraComponent {
       host:TileObject;
-      connectComponent():boolean {
-         return super.connectComponent() && !!this.host.findComponent(PlayerComponent);
-      }
       process(view:SceneView) {
          super.process(view);
          // Center on player object

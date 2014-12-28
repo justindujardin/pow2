@@ -18,29 +18,11 @@
 
 module pow2 {
 
-   // Combat States
-   //--------------------------------------------------------------------------
+   /**
+    * CombatState is set when the player transitions in to a combat
+    * encounter.  This can be any type of triggered encounter, from
+    * the map or a feature interaction, or anything else.
+    */
    export class CombatState extends State {
-      enter(machine:StateMachine){
-         super.enter(machine);
-         (<any>machine).keyListener = (e) => {
-            if(this.keyPress(machine,e.keyCode) === false){
-               e.preventDefault();
-               return false;
-            }
-            return true;
-         };
-         $(window).on('keypress',(<any>machine).keyListener);
-      }
-      exit(machine:StateMachine){
-         $(window).off('keypress',(<any>machine).keyListener);
-         (<any>machine).keyListener = null;
-         super.exit(machine);
-      }
-
-      // Return false to eat the event.
-      keyPress(machine:StateMachine,keyCode:KeyCode):boolean {
-         return true;
-      }
    }
 }

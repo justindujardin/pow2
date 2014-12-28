@@ -14,14 +14,10 @@
  limitations under the License.
  */
 
-/// <reference path="../../tile/tileObject.ts" />
-/// <reference path="../gameTileMap.ts" />
+/// <reference path="./gameObject.ts" />
 
 module pow2 {
-   export class GameFeatureObject extends pow2.TileObject {
-      id:string;
-      world:GameWorld;
-      tileMap:GameTileMap;
+   export class GameFeatureObject extends GameObject {
       feature:any; // TODO: Feature Interface
       type: string; // TODO: enum?
       passable:boolean;
@@ -29,14 +25,12 @@ module pow2 {
       category:any;
       frame:number;
       constructor(options:any) {
-         super(_.omit(options || {},["x","y","type"]));
+         super(_.omit(options || {},["x","y"]));
          this.feature = options;
          this.point.x = options.x;
          this.point.y = options.y;
-         this.type = options.type;
          this.frame = typeof options.frame !== 'undefined' ? options.frame : 0;
          this.groups = typeof options.groups === 'string' ? options.groups.split('|') : options.groups;
-         this.category = options.category;
       }
    }
 }

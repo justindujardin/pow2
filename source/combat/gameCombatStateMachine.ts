@@ -147,7 +147,6 @@ module pow2 {
          }).length === 0;
       }
 
-      keyListener:any = null;
       constructor(parent:GameStateMachine){
          super();
          this.parent = parent;
@@ -181,48 +180,53 @@ module pow2 {
       parent:GameStateMachine = null;
       tileMap:GameTileMap;
       finished:boolean = false; // Trigger state to exit when true.
+
+      factory:pow2.EntityContainerResource;
+      spreadsheet:pow2.GameDataResource;
+      constructor() {
+         super();
+         pow2.GameWorld.get().loader.load('entities/combat.powEntities',(factory:pow2.EntityContainerResource)=>{
+            this.factory = factory;
+         });
+         GameStateModel.getDataSource((spreadsheet:pow2.GameDataResource) => {
+            this.spreadsheet = spreadsheet;
+         });
+      }
+
       enter(machine:GameStateMachine){
          super.enter(machine);
          this.parent = machine;
          this.machine = new CombatStateMachine(machine);
          var combatScene = machine.world.combatScene = new Scene();
          machine.world.mark(combatScene);
+         if(!this.factory || !this.spreadsheet){
+            throw new Error("Invalid combat entity container or game data spreadsheet");
+         }
+
 
          // Build party
          _.each(machine.model.party,(hero:HeroModel,index:number) => {
-
-            var heroEntity:GameEntityObject = new GameEntityObject({
-               name:hero.attributes.name,
-               icon: hero.attributes.icon,
-               model:hero
+            var heroEntity:GameEntityObject = this.factory.createObject('CombatPlayer',{
+               model: hero,
+               combat: this
             });
-
-            // Instantiate a [Class]CombatRenderComponent implementation for the
-            // hero type, if available.
-            var playerType:string = hero.attributes.type[0].toUpperCase() + hero.attributes.type.substr(1);
-            var playerRender:any = pow2[playerType + 'CombatRenderComponent'];
-            if(typeof playerRender === 'undefined'){
-               playerRender = new pow2.PlayerCombatRenderComponent();
+            if(!heroEntity){
+               throw new Error("Entity failed to validate with given inputs");
             }
-            else {
-               playerRender = new playerRender();
+            if(!heroEntity.isDefeated()){
+               heroEntity.icon = hero.get('icon');
+               this.machine.party.push(heroEntity);
+               combatScene.addObject(heroEntity);
             }
-            heroEntity.addComponent(playerRender);
-            heroEntity.addComponent(new AnimatedComponent());
-
-            // Player Actions
-            heroEntity.addComponent(new pow2.CombatAttackComponent(this));
-            heroEntity.addComponent(new pow2.CombatRunComponent(this));
-            if(heroEntity.isDefeated()){
-               return;
-            }
-            heroEntity.icon = hero.get('icon');
-            this.machine.party.push(heroEntity);
-            combatScene.addObject(heroEntity);
          });
 
-         this.tileMap = new pow2.GameTileMap("combat");
-         this.tileMap.once('loaded',() => {
+
+         machine.world.loader.load('/maps/combat.tmx',(map:pow2.TiledTMXResource)=>{
+
+            this.tileMap = this.factory.createObject('GameCombatMap',{
+               resource:map
+            });
+
             // Hide all layers that don't correspond to the current combat zone
             var zone:IZoneMatch = machine.encounterInfo;
             var visibleZone:string = zone.target || zone.map;
@@ -230,55 +234,55 @@ module pow2 {
                l.visible = (l.name === visibleZone);
             });
             this.tileMap.dirtyLayers = true;
-            this.tileMap.addComponent(new pow2.CombatCameraComponent);
             combatScene.addObject(this.tileMap);
 
             // Position Party/Enemies
 
             // Get enemies data from spreadsheet
-            GameStateModel.getDataSource((enemiesSpreadsheet:pow2.GameDataResource) => {
-               var enemyList:any[] = enemiesSpreadsheet.getSheetData("enemies");
-               var enemiesLength:number = machine.encounter.enemies.length;
-               for(var i:number = 0; i < enemiesLength; i++){
-                  var tpl = _.where(enemyList,{id:machine.encounter.enemies[i]});
-                  if(tpl.length === 0){
-                     continue;
-                  }
-                  var nmeModel = new CreatureModel(tpl[0]);
-                  var nme = new pow2.GameEntityObject({
-                     model: nmeModel
-                  });
-                  combatScene.addObject(nme);
-                  nme.addComponent(new pow2.CombatAttackComponent(this));
-                  nme.addComponent(new pow2.SpriteComponent({
+            var enemyList:any[] = this.spreadsheet.getSheetData("enemies");
+            var enemiesLength:number = machine.encounter.enemies.length;
+            for(var i:number = 0; i < enemiesLength; i++){
+               var tpl = _.where(enemyList,{id:machine.encounter.enemies[i]});
+               if(tpl.length === 0){
+                  continue;
+               }
+               var nmeModel = new CreatureModel(tpl[0]);
+
+               var nme:GameEntityObject = this.factory.createObject('CombatEnemy',{
+                  model:nmeModel,
+                  combat:this,
+                  sprite: {
                      name:"enemy",
-                     icon:nme.model.get('icon')
-                  }));
-                  this.machine.enemies.push(nme);
+                     icon:nmeModel.get('icon')
+                  }
+               });
+               if(!nme){
+                  throw new Error("Entity failed to validate with given inputs");
                }
-               if(this.machine.enemies.length){
-                  _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
-                     var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
-                     heroEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
-                  });
+               combatScene.addObject(nme);
+               this.machine.enemies.push(nme);
+            }
+            if(this.machine.enemies.length){
+               _.each(this.machine.party,(heroEntity:GameEntityObject,index:number) => {
+                  var battleSpawn = this.tileMap.getFeature('p' + (index + 1));
+                  heroEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+               });
 
-                  _.each(this.machine.enemies,(enemyEntity:GameEntityObject,index:number) => {
-                     var battleSpawn = this.tileMap.getFeature('e' + (index + 1));
-                     if(battleSpawn){
-                        enemyEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
-                     }
-                  });
-                  machine.trigger('combat:begin',this);
-                  this.machine.update(this);
-               }
-               else {
-                  // TODO: This is an error, I think.  Player entered combat with no valid enemies.
-                  machine.trigger('combat:end',this);
-               }
+               _.each(this.machine.enemies,(enemyEntity:GameEntityObject,index:number) => {
+                  var battleSpawn = this.tileMap.getFeature('e' + (index + 1));
+                  if(battleSpawn){
+                     enemyEntity.setPoint(new Point(battleSpawn.x / 16, battleSpawn.y / 16));
+                  }
+               });
+               machine.trigger('combat:begin',this);
+               this.machine.update(this);
+            }
+            else {
+               // TODO: This is an error, I think.  Player entered combat with no valid enemies.
+               machine.trigger('combat:end',this);
+            }
 
-            });
          });
-         this.tileMap.load();
       }
       exit(machine:GameStateMachine){
          machine.trigger('combat:end',this);
@@ -288,7 +292,6 @@ module pow2 {
             world.combatScene = null;
          }
          this.tileMap.destroy();
-         machine.update(this);
          this.finished = false;
          this.machine = null;
          this.parent = null;

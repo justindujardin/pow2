@@ -23,7 +23,7 @@ module pow2 {
    export class PlayerComponent extends MovableComponent {
       host:TileObject;
       passableKeys:string[] = ['passable'];
-      collideTypes:string[] = ['temple','store','sign'];
+      static COLLIDE_TYPES:string[] = ['pow2.TempleFeatureComponent','pow2.StoreFeatureComponent','pow2.DialogFeatureComponent','sign'];
       private _lastFrame:number = 3;
       private _renderFrame:number = 3;
       heading:Point = new Point(0,-1);
@@ -118,7 +118,7 @@ module pow2 {
                if(o.passable === true || !o.type){
                   return false;
                }
-               if(_.indexOf(this.collideTypes, o.type.toLowerCase()) !== -1){
+               if(_.indexOf(PlayerComponent.COLLIDE_TYPES, o.type) !== -1){
                   return true;
                }
             }

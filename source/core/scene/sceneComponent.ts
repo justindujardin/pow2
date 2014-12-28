@@ -26,22 +26,18 @@ module pow2 {
     */
    export class SceneComponent extends Events implements ISceneComponent {
       id:string = _.uniqueId('sc');
-      scene: Scene;
-      host:ISceneObject;
+      host:SceneObject;
       constructor(public name:string = _.uniqueId('comp')){
          super();
       }
       connectComponent():boolean {
-         this.scene = <Scene>this.host.scene;
          return true;
       }
       disconnectComponent():boolean {
-         this.scene = null;
          return true;
       }
       syncComponent():boolean {
-         this.scene = <Scene>this.host.scene;
-         return !!this.scene;
+         return true;
       }
 
       toString():string {

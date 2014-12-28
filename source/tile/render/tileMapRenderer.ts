@@ -28,6 +28,8 @@ module pow2 {
       private _clipRect:Rect = new pow2.Rect();
       private _renderRect:Rect = new pow2.Rect();
 
+      // TODO: only render tiles that are in the clipRect.  This can be expensive at initial
+      // load for expansive maps like the Browser Quest tmx.
       render(object:TileMap, view:TileMapView) {
          var squareUnits = 8;
          var squareSize = squareUnits * view.unitSize;

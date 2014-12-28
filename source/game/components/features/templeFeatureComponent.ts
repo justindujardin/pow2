@@ -21,12 +21,12 @@ module pow2 {
       cost:string;
       icon:string;
       syncComponent():boolean{
-         if(!super.syncComponent()){
+         if(!super.syncComponent() || !this.host.feature){
             return false;
          }
          this.name = "Temple";
-         this.cost = this.feature.cost;
-         this.icon = this.feature.icon;
+         this.cost = this.host.feature.cost;
+         this.icon = this.host.feature.icon;
          return true;
       }
       enter(object:TileObject):boolean {

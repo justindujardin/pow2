@@ -25,6 +25,9 @@ module pow2 {
       state: IStateMachine;
       scene:IScene;
       constructor(services?:any){
+         services = _.defaults(services || {},{
+            loader: pow2.ResourceLoader.get()
+         });
          super(services);
          this.setService('input',new Input());
          this.setService('sprites',new SpriteRender());
