@@ -165,6 +165,12 @@ module pow2 {
       }
 
 
+      /**
+       * Instantiate an object and set of components from a given template.
+       * @param templateName The name of the template in the resource.
+       * @param inputs An object of input values to use when instantiating objects and components.
+       * @returns {*} The resulting object or null
+       */
       createObject(templateName:string, inputs?:any):any {
          // Valid template name.
          var tpl:any = this.getTemplate(templateName);
@@ -202,6 +208,7 @@ module pow2 {
             });
             var ctor:any = EntityContainerResource.getClassType(comp.type);
             var compObject = this.constructObject(ctor,inputValues);
+            compObject.name = comp.name;
             if(!object.addComponent(compObject)){
                unsatisfied |= EntityError.COMPONENT_REGISTER;
             }

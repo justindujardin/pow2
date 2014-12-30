@@ -113,6 +113,18 @@ module pow2 {
          return results;
       }
 
+      findComponentByName(name:string):ISceneComponent {
+         var values:any[] = this._components;
+         var l:number = this._components.length;
+         for(var i = 0; i < l; i++){
+            var o:ISceneComponent = values[i];
+            if(o.name === name){
+               return o;
+            }
+         }
+         return null;
+      }
+
       syncComponents(){
          var values:any[] = this._components;
          var l:number = this._components.length;

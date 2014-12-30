@@ -65,6 +65,8 @@ module pow2 {
 
       findComponent(type:Function):ISceneComponent;
       findComponents(type:Function):ISceneComponent[];
+
+      findComponentByName(name:string):ISceneComponent;
    }
 
    /**

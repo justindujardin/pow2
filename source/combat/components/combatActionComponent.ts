@@ -23,8 +23,8 @@ module pow2 {
       from:pow2.GameEntityObject = null;
       to:pow2.GameEntityObject = null;
 
-      constructor(public combat:pow2.GameCombatState,name?:string){
-         super(name);
+      constructor(public combat:pow2.GameCombatState){
+         super();
       }
       getActionName():string {
          return this.name;

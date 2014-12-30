@@ -27,9 +27,7 @@ module pow2 {
    export class SceneComponent extends Events implements ISceneComponent {
       id:string = _.uniqueId('sc');
       host:SceneObject;
-      constructor(public name:string = _.uniqueId('comp')){
-         super();
-      }
+      name:string;
       connectComponent():boolean {
          return true;
       }

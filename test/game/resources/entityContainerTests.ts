@@ -72,6 +72,13 @@ module pow2.tests {
             expect(entity.arg).toBe(false);
             entity.destroy();
          });
+         it('should instantiate components with correct names',()=>{
+            var entity:pow2.GameEntityObject = factory.createObject('SceneObjectWithComponents');
+            expect(entity._components.length).toBe(2);
+            expect(entity.findComponentByName('one')).not.toBeNull();
+            expect(entity.findComponentByName('two')).not.toBeNull();
+            entity.destroy();
+         });
          it('should instantiate components with constructor arguments',()=>{
             var entity:pow2.SceneObject = factory.createObject('ComponentWithParams',{
                arg:true
