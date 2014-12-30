@@ -159,19 +159,6 @@ module pow2 {
    /**
     * Construct a combat scene with appropriate GameEntityObjects for the players
     * and enemies.
-    *
-    * TODO: This should be loaded from a serializable composite object format for
-    * easier customization.   JSON with fully qualified type names as strings?
-    * e.g.
-    * "WarriorPlayer": {
-    *    "type":"pow2.GameEntityObject",
-    *    "properties":{},
-    *    "components":[
-    *       "pow2.PlayerComponent",
-    *       "pow2.PlayerCombatRenderComponent"
-    *    ]
-    * }
-    *
     */
    export class GameCombatState extends State {
       static NAME:string = "combat";
