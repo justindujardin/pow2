@@ -87,13 +87,6 @@ module pow2 {
          });
       }
 
-      getMapUrl(name:string):string {
-         if(name.indexOf('.tmx') === -1){
-            return '/maps/' + name + '.tmx';
-         }
-         return name;
-      }
-
       private _encounter(zoneInfo:IZoneMatch,encounter:IGameEncounter,then?:IGameEncounterCallback){
          this.scene.trigger('combat:encounter',this);
          this.state.encounter = encounter;

@@ -94,6 +94,16 @@ module pow2 {
    }
 
    /**
+    * Resolve a map name to a valid url in the expected location.
+    */
+   export function getMapUrl(name:string):string {
+      if(name.indexOf('.tmx') === -1){
+         return '/maps/' + name + '.tmx';
+      }
+      return name;
+   }
+
+   /**
     * Register a dictionary of sprite meta data.  This is for automatically
     * generated sprite sheets, and only defaults to setting information if
     * it has not already been set by a call to describeSprites.

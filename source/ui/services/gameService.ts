@@ -98,7 +98,7 @@ module pow2.ui {
             this.tileMap = null;
          }
 
-         this.world.loader.load(this.world.getMapUrl(mapName),(map:pow2.TiledTMXResource)=>{
+         this.world.loader.load(pow2.getMapUrl(mapName),(map:pow2.TiledTMXResource)=>{
             this.tileMap = this.entities.createObject('GameMapObject',{
                resource:map
             });
