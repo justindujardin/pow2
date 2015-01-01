@@ -25,24 +25,26 @@ module pow2 {
     * Describe a set of combat zones for a given point on a map.
     */
    export interface IZoneMatch {
-      // The zone name for the current map
+      /**
+       * The zone name for the current map
+       */
       map:string;
-      // The zone name for the target location on the map
+      /**
+       * The zone name for the target location on the map
+       */
       target:string;
-      // The point that target refers to.
+      /**
+       * The point that target refers to.
+       */
       targetPoint:pow2.Point;
    }
 
+   /**
+    * A tile map that supports game feature objects and components.
+    */
    export class GameTileMap extends TileMap {
       world:GameWorld;
-      featureHash:any = {};
       graph:any;
-
-      constructor(map:pow2.TiledTMXResource) {
-         super(map.url);
-         this.setMap(map);
-      }
-
       loaded(){
          super.loaded();
          this.buildAStarGraph();
@@ -68,29 +70,11 @@ module pow2 {
          this.removeFeaturesFromScene();
          super.unloaded();
       }
-      featureKey(x, y) {
-         return "" + x + "_" + y;
-      }
       getFeature(name:string){
          return _.find(<any>this.features.objects,(feature:any) => {
             return feature.name === name;
          });
       }
-      addFeature(feature:any){
-         feature._object = this.createFeatureObject(feature);
-         this.scene.addObject(feature._object);
-         this.indexFeature(feature._object);
-      }
-
-      indexFeature(obj:GameFeatureObject){
-         var key = this.featureKey(obj.point.x, obj.point.y);
-         var object = this.featureHash[key];
-         if (!object) {
-            object = this.featureHash[key] = {};
-         }
-         object[obj.type] = obj.feature.properties;
-      }
-
       // Construct
       addFeaturesToScene() {
          _.each(this.features.objects,(obj:any) => {
@@ -111,14 +95,6 @@ module pow2 {
       }
       buildFeatures():boolean {
          this.removeFeaturesFromScene();
-         _.each(this.features.objects,(obj:any) => {
-            var key = this.featureKey(obj.x, obj.y);
-            var object = this.featureHash[key];
-            if (!object) {
-               object = this.featureHash[key] = {};
-            }
-            object[obj.type] = obj.properties;
-         });
          if (this.scene) {
             this.addFeaturesToScene();
          }

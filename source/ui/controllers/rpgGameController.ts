@@ -105,7 +105,7 @@ module pow2.ui {
 
 
          game.currentScene.on("map:loaded",(map:GameTileMap) => {
-            game.world.model.setKeyData('playerMap',map.mapName);
+            game.world.model.setKeyData('playerMap',map.map.url);
          });
          // TODO: A better system for game event handling.
          game.machine.on('enter',(state) => {

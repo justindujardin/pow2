@@ -208,7 +208,8 @@ module pow2 {
          });
 
 
-         machine.world.loader.load('/maps/combat.tmx',(map:pow2.TiledTMXResource)=>{
+         var mapUrl:string = machine.world.getMapUrl('combat');
+         machine.world.loader.load(mapUrl,(map:pow2.TiledTMXResource)=>{
 
             this.tileMap = this.factory.createObject('GameCombatMap',{
                resource:map

@@ -41,7 +41,7 @@ module pow2 {
             this.buffer = null;
             this.bufferComplete = false;
          }
-         if(!this.bufferComplete || this.buffer === null || this.bufferMapName === null || this.bufferMapName !== object.mapName){
+         if(!this.bufferComplete || this.buffer === null || this.bufferMapName === null || this.bufferMapName !== object.map.url){
             var tileUnitSize = squareSize / view.unitSize;
             // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
             var columns = Math.ceil(object.bounds.extent.x / squareUnits);
@@ -97,7 +97,7 @@ module pow2 {
                   });
                }
             }
-            this.bufferMapName = object.mapName;
+            this.bufferMapName = object.map.url;
          }
          var squareScreen = view.fastWorldToScreenNumber(squareUnits);
 

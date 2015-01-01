@@ -1,5 +1,5 @@
-/**
- Copyright (C) 2013 by Justin DuJardin
+/*
+ Copyright (C) 2012-2014 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -12,18 +12,20 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License.
- */
+*/
 
 /// <reference path="../../tile/tileComponent.ts" />
-
 /// <reference path="../../game/objects/gameEntityObject.ts" />
 
 module pow2 {
 
    /**
-    * A component that defines the functionality of a map feature.
+    * A component that when added to a GameTileMap listens
+    * to the player moves and after a random number of them forces
+    * an encounter with a group of creatures from the current combat
+    * zone.
     */
-   export class CombatEncounterComponent extends SceneComponent {
+   export class CombatEncounterComponent extends pow2.SceneComponent {
       host:GameTileMap;
       battleCounter:number;
       combatFlag:boolean = false;

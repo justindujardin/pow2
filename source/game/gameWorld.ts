@@ -61,11 +61,13 @@ module pow2 {
 
       randomEncounter(zone:IZoneMatch,then?:IGameEncounterCallback){
          GameStateModel.getDataSource((gsr:GameDataResource)=>{
-            var encounters:IGameEncounter[] = _.filter(gsr.getSheetData("encounters"),(enc:any)=>{
+            var encountersData = gsr.getSheetData("encounters");
+            var encounters:IGameEncounter[] = _.filter(encountersData,(enc:any)=>{
                return _.indexOf(enc.zones,zone.map) !== -1 || _.indexOf(enc.zones,zone.target) !== -1;
             });
             if(encounters.length === 0){
-               throw new Error("No valid encounters for this zone");
+               then && then(true);
+               return;
             }
             var max = encounters.length - 1;
             var min = 0;
@@ -83,6 +85,13 @@ module pow2 {
             }
             this._encounter(zone,encounters[0],then);
          });
+      }
+
+      getMapUrl(name:string):string {
+         if(name.indexOf('.tmx') === -1){
+            return '/maps/' + name + '.tmx';
+         }
+         return name;
       }
 
       private _encounter(zoneInfo:IZoneMatch,encounter:IGameEncounter,then?:IGameEncounterCallback){

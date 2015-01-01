@@ -29,31 +29,14 @@ module pow2 {
       scene:Scene;
       features:any;
       zones:any;
-      mapName: string;
       bounds: pow2.Rect;
       dirtyLayers:boolean = false;
       private _loaded:boolean = false;
 
-      constructor(mapName: string) {
+      constructor(map:pow2.TiledTMXResource) {
          super();
          this.bounds = new pow2.Rect(0, 0, 10,10);
-         this.mapName = mapName;
-      }
-
-      //
-      // Scene Object Lifetime
-      //
-      onAddToScene(scene:Scene) {
-         super.onAddToScene(scene);
-         this.load();
-      }
-
-      load(mapName:string=this.mapName){
-         var loader:pow2.ResourceLoader = pow2.ResourceLoader.get();
-         loader.load("/maps/" + mapName + ".tmx", (mapResource:TiledTMXResource) => {
-            this.mapName = mapName;
-            this.setMap(mapResource);
-         });
+         this.setMap(map);
       }
 
       isLoaded():boolean {

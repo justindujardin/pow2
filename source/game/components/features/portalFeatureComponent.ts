@@ -37,13 +37,12 @@ module pow2 {
          // in each spot and then call createObject on it with the entity container.
          // Kind of a PITA if you ask me, and we keep duplicating the "/maps/{name}.tmx"
          // stuff all over the place.  Maybe a wrapper function that does that?
-         var oldMap:string = this.host.tileMap.mapName;
-         object.scene.once("map:loaded",(map:TileMap) => {
-            console.log("Transition from " + oldMap + " to " + this.map);
+         this.host.world.loader.load(this.host.world.getMapUrl(this.map),(map:pow2.TiledTMXResource)=>{
+            this.host.tileMap.setMap(map);
+            console.log("Transition to " + this.map);
             object.setPoint(this.target);
             this.host.tileMap.syncComponents();
          });
-         this.host.tileMap.load(this.map);
          return true;
       }
 
