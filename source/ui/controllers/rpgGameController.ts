@@ -104,7 +104,7 @@ module pow2.ui {
          });
 
 
-         game.currentScene.on("map:loaded",(map:GameTileMap) => {
+         game.currentScene.on(pow2.TileMap.Events.MAP_LOADED,(map:GameTileMap) => {
             game.world.model.setKeyData('playerMap',map.map.url);
          });
          // TODO: A better system for game event handling.

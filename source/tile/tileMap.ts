@@ -33,6 +33,13 @@ module pow2 {
       dirtyLayers:boolean = false;
       private _loaded:boolean = false;
 
+      static Events:any = {
+         LOADED:"loaded",
+         UNLOADED:"unloaded",
+         MAP_LOADED:"map:loaded",
+         MAP_UNLOADED:"map:unloaded"
+      };
+
       constructor(map:pow2.TiledTMXResource) {
          super();
          this.bounds = new pow2.Rect(0, 0, 10,10);
@@ -44,17 +51,17 @@ module pow2 {
       }
 
       loaded(){
-         this.trigger('loaded',this);
+         this.trigger(pow2.TileMap.Events.LOADED,this);
          if(this.scene){
-            this.scene.trigger("map:loaded",this);
+            this.scene.trigger(pow2.TileMap.Events.MAP_LOADED,this);
          }
          this._loaded = true;
       }
 
       unloaded(){
-         this.trigger('unloaded',this);
+         this.trigger(pow2.TileMap.Events.UNLOADED,this);
          if(this.scene){
-            this.scene.trigger("map:unloaded",this);
+            this.scene.trigger(pow2.TileMap.Events.MAP_UNLOADED,this);
          }
          this._loaded = false;
       }

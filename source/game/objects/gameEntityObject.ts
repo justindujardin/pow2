@@ -21,12 +21,10 @@
 module pow2 {
    export class GameEntityObject extends GameObject {
       model:EntityModel;
-      feature:any; // TODO: Feature Interface
       type: string; // TODO: enum?
       groups:any;
       constructor(options:any) {
          super(_.omit(options || {},["x","y","type"]));
-         this.feature = options;
          this.type = options.type || "player";
          this.groups = typeof options.groups === 'string' ? JSON.parse(options.groups) : options.groups;
          this.model = options.model || new EntityModel(options);

@@ -15,7 +15,7 @@
  */
 
 /// <reference path="../sceneObject.ts" />
-/// <reference path="../../scene/sceneComponent.ts" />
+/// <reference path="../sceneComponent.ts" />
 
 module pow2 {
    export class CollisionComponent extends SceneComponent {

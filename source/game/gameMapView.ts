@@ -33,12 +33,12 @@ module pow2{
          this.mouse = scene.world.input.mouseHook(<SceneView>this,"world");
          // TODO: Move this elsewhere.
          this.$el.on('click touchstart',this.mouseClick);
-         this.scene.on("map:loaded",this.syncComponents,this);
+         this.scene.on(pow2.TileMap.Events.MAP_LOADED,this.syncComponents,this);
       }
       onRemoveFromScene(scene:Scene) {
          scene.world.input.mouseUnhook("world");
          this.$el.off('click',this.mouseClick);
-         this.scene.off("map:loaded",this.syncComponents,this);
+         this.scene.off(pow2.TileMap.Events.MAP_LOADED,this.syncComponents,this);
       }
 
 
@@ -46,10 +46,11 @@ module pow2{
        * Mouse input
        */
       mouseClick(e:any) {
-         var party = <pow2.PlayerComponent>this.scene.componentByType(pow2.PlayerComponent);
-         if (party) {
+         var pathComponent = <pow2.components.GameMapPathComponent>this.scene.componentByType(pow2.components.GameMapPathComponent);
+         var playerComponent = <pow2.PlayerComponent>this.scene.componentByType(pow2.PlayerComponent);
+         if (pathComponent && playerComponent) {
             Input.mouseOnView(e.originalEvent,this.mouse.view,this.mouse);
-            party.path = this.tileMap.calculatePath(party.targetPoint,this.mouse.world);
+            playerComponent.path = pathComponent.calculatePath(playerComponent.targetPoint,this.mouse.world);
             e.preventDefault();
             return false;
          }

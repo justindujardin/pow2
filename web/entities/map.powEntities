@@ -25,7 +25,8 @@
     "name":"GameMapPlayer",
     "type":"pow2.GameEntityObject",
     "inputs":{
-      "model":"pow2.HeroModel"
+      "model":"pow2.HeroModel",
+      "map":"pow2.GameTileMap"
     },
     "components": [
       {
@@ -35,6 +36,11 @@
       {
         "name":"collision",
         "type":"pow2.CollisionComponent"
+      },
+      {
+        "name":"paths",
+        "type":"pow2.components.GameMapPathComponent",
+        "params":["map"]
       },
       {
         "name":"player",

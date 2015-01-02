@@ -81,7 +81,8 @@ module pow2.ui {
             this.sprite = null;
          }
          this.sprite = this.entities.createObject('GameMapPlayer',{
-            model:from
+            model:from,
+            map:this.tileMap
          });
          this.sprite.name = from.attributes.name;
          this.sprite.icon = from.attributes.icon;

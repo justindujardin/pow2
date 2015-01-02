@@ -89,24 +89,24 @@ module pow2 {
 
             if(tplInputs){
                if(typeof inputs === 'undefined'){
-                  console.error("missing inputs for template that requires: " + tplInputs.join(', '));
+                  console.error("EntityContainer: missing inputs for template that requires: " + tplInputs.join(', '));
                   return EntityError.INPUT_NAME;
                }
                _.each(templateData.inputs,(type:string,name:string)=>{
                   // Attempt to validate inputs with two type specifications:
                   var inputType:any = EntityContainerResource.getClassType(type);
                   if(typeof inputs[name] === 'undefined'){
-                     console.error("missing input with name: " + name);
+                     console.error("EntityContainer: missing input with name: " + name);
                      unsatisfied |= EntityError.INPUT_NAME;
                   }
                   // Match using instanceof if the inputType was found
                   else if(inputType && !(inputs[name] instanceof inputType)){
-                     console.error("bad input type for input: " + name);
+                     console.error("EntityContainer: bad input type for input: " + name);
                      unsatisfied |= EntityError.INPUT_TYPE;
                   }
                   // Match using typeof as a last resort
                   else if(!inputType && !this.typeofCompare(inputs[name],type)){
-                     console.error("bad input type for input (" + name + ") expected (" + type + ") but got (" + typeof inputs[name] + ")");
+                     console.error("EntityContainer: bad input type for input (" + name + ") expected (" + type + ") but got (" + typeof inputs[name] + ")");
                      unsatisfied |= EntityError.INPUT_TYPE;
                   }
                });
@@ -122,7 +122,7 @@ module pow2 {
             });
             var unique:boolean = _.uniq(keys).length === keys.length;
             if(!unique){
-               console.error("duplicate name in template components: " + keys.join(', '));
+               console.error("EntityContainer: duplicate name in template components: " + keys.join(', '));
                return EntityError.COMPONENT_NAME_DUPLICATE;
             }
          }
