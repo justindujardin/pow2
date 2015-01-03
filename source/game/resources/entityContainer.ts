@@ -132,11 +132,13 @@ module pow2 {
          _.each(templateData.components,(comp:any)=>{
             var compType:any = EntityContainerResource.getClassType(comp.type);
             if(!compType){
+               console.error("EntityContainer: unknown component type: " + comp.type);
                unsatisfied |= EntityError.COMPONENT_TYPE;
             }
             else if(comp.params){
                _.each(comp.params,(i:string)=>{
                   if(typeof inputs[i] === 'undefined'){
+                     console.error("EntityContainer: missing component param: " + i);
                      unsatisfied |= EntityError.COMPONENT_INPUT;
                   }
                });

@@ -62,24 +62,5 @@ module pow2 {
          }
          return 0;
       }
-
-
-      static fromName(name:string){
-         var creatures = pow2.getData('creatures');
-         var cData:CreatureModelOptions = <CreatureModelOptions>_.where(creatures,{name:name})[0];
-         return new CreatureModel(cData);
-
-      }
-      static fromLevel(level:number){
-         var creatures = pow2.getData('creatures');
-         if(!creatures){
-            throw new Error("Creature data set is missing.");
-         }
-         var templates:CreatureModelOptions[] = <CreatureModelOptions[]>_.where(creatures,{level:level});
-         var cData = templates[Math.floor(Math.random()*templates.length)];
-         return new CreatureModel(cData);
-
-      }
-
    }
 }

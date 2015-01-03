@@ -100,7 +100,7 @@ module pow2 {
 
       attack(defender:EntityModel):number{
          var halfStrength = this.attributes.strength / 2;
-         return defender.damage(halfStrength);;
+         return defender.damage(halfStrength);
       }
    }
 }
