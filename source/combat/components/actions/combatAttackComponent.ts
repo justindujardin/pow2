@@ -51,7 +51,8 @@ module pow2 {
             var damage:number = attacker.model.attack(defender.model);
             var didKill:boolean = defender.model.get('hp') <= 0;
             var hit:boolean = damage > 0;
-            var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? "hit" : "miss"));
+            var defending:boolean = (defender.model instanceof pow2.HeroModel) && (<pow2.HeroModel>defender.model).defenseBuff > 0;
+            var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? (defending? "miss": "hit") : "miss"));
             var defenderSprite:SpriteComponent = <any>defender.findComponent(SpriteComponent);
             var components = {
                animation: new pow2.AnimatedSpriteComponent({
@@ -60,7 +61,7 @@ module pow2 {
                }),
                sprite: new pow2.SpriteComponent({
                   name:"attack",
-                  icon: hit ? "animHit.png" : "animMiss.png"
+                  icon: hit ? (defending ? "animSmoke.png" : "animHit.png") : "animMiss.png"
                }),
                damage: new pow2.DamageComponent(),
                sound: new pow2.SoundComponent({
