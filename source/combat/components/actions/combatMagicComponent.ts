@@ -19,18 +19,18 @@
 module pow2 {
 
    /**
-    * Attack another entity in combat.
+    * Use magic in combat.
     */
-   export class CombatAttackComponent extends CombatActionComponent {
-      name:string = "attack";
+   export class CombatMagicComponent extends CombatActionComponent {
+      name:string = "magic";
 
       canBeUsedBy(entity:GameEntityObject){
-         // Exclude magic casters from physical attacks
-         var excludedTypes = [
+         // Include only magic casters
+         var supportedTypes = [
             pow2.HeroTypes.LifeMage,
             pow2.HeroTypes.Necromancer
          ];
-         return super.canBeUsedBy(entity) && _.indexOf(excludedTypes,entity.model.get('type')) === -1;
+         return super.canBeUsedBy(entity) && _.indexOf(supportedTypes,entity.model.get('type')) !== -1;
       }
 
 
@@ -42,25 +42,25 @@ module pow2 {
             then && then(this,error);
             this.combat.machine.setCurrentState(CombatEndTurnState.NAME);
          };
-
          //
          var attacker:GameEntityObject = this.from;
          var defender:GameEntityObject = this.to;
+
          var attackerPlayer:pow2.PlayerCombatRenderComponent = <any>attacker.findComponent(pow2.PlayerCombatRenderComponent);
          var attack = () => {
             var damage:number = attacker.model.attack(defender.model);
             var didKill:boolean = defender.model.get('hp') <= 0;
             var hit:boolean = damage > 0;
-            var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? "hit" : "miss"));
+            var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? "spell" : "miss"));
             var defenderSprite:SpriteComponent = <any>defender.findComponent(SpriteComponent);
             var components = {
                animation: new pow2.AnimatedSpriteComponent({
                   spriteName:"attack",
-                  lengthMS:350
+                  lengthMS:550
                }),
                sprite: new pow2.SpriteComponent({
                   name:"attack",
-                  icon: hit ? "animHit.png" : "animMiss.png"
+                  icon: hit ? "animHitSpell.png" : "animMiss.png"
                }),
                damage: new pow2.DamageComponent(),
                sound: new pow2.SoundComponent({
@@ -100,7 +100,7 @@ module pow2 {
 
          // TODO: Shouldn't be here.  This mess is currently to delay NPC attacks.
          if(!!attackerPlayer){
-            attackerPlayer.attack(attack);
+            attackerPlayer.magic(attack);
          }
          else {
             _.delay(() => {

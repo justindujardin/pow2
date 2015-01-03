@@ -40,6 +40,17 @@ module pow2 {
       }
 
       /**
+       * Method used to determine if this action is usable by a given
+       * [GameEntityObject].  This may be subclassed in an action to
+       * select the types of entities that may use the action.
+       * @param entity The object that would use the action.
+       * @returns {boolean} True if the entity may use this action.
+       */
+      canBeUsedBy(entity:GameEntityObject){
+         return entity.model && entity.model instanceof pow2.EntityModel;
+      }
+
+      /**
        * Base class invokes the then callback and returns true.
        * @returns {boolean} Whether the act was successful or not.
        */

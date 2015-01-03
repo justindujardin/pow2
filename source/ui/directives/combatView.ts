@@ -113,7 +113,7 @@ module pow2.ui {
          var clickSelect = (mouse,hits) => {
             machine.scene.off('click',clickSelect);
             machine.target = hits[0];
-            selectAction(<pow2.CombatAttackComponent>machine.current.findComponent(pow2.CombatAttackComponent));
+            selectAction(machine.controller.getActions()[0]);
          };
          machine.player.moveForward(() => {
             machine.controller.setPointerTarget(p,"right",pointerOffset);
@@ -138,7 +138,7 @@ module pow2.ui {
          if(!machine.controller || !machine.controller.pointer){
             throw new Error("Requires UIAttachment");
          }
-         var enemies:GameEntityObject[] = machine.data.enemies;
+         var enemies = <GameEntityObject[]>machine.data.enemies;
 
          var p:GameEntityObject = machine.target || enemies[0];
          var el:JQuery = $(machine.controller.pointer.element);
@@ -279,7 +279,10 @@ module pow2.ui {
          if(!this.choosing){
             throw new Error("cannot get actions for non-existent game entity");
          }
-         return <pow2.CombatActionComponent[]>this.choosing.findComponents(pow2.CombatActionComponent);
+         var results = _.filter(this.choosing.findComponents(pow2.CombatActionComponent),(c:pow2.CombatActionComponent)=>{
+            return c.canBeUsedBy(this.choosing);
+         });
+         return results;
       }
 
       getEnemyTargets():pow2.GameEntityObject[] {

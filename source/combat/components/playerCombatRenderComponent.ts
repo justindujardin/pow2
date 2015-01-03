@@ -72,7 +72,10 @@ module pow2 {
 
 
       attack(attackCb:() => any, cb?:() => void) {
-         this._attack(attackCb,cb);
+         this._attack(cb,this.getAttackAnimation(attackCb));
+      }
+      magic(attackCb:() => any, cb?:() => void) {
+         this._attack(cb,this.getMagicAnimation(attackCb));
       }
 
 
@@ -175,11 +178,10 @@ module pow2 {
          });
       }
 
-      _attack(attackCb:() => any, cb?:() => void) {
+      _attack(cb:() => void,attackAnimation:any) {
          if(!this.animator || this.animating){
             return;
          }
-         var attackAnimation = this.getAttackAnimation(attackCb);
          var animations:IAnimationConfig[] = _.map(attackAnimation,(anim:IAnimationConfig) => {
             var result = _.extend({},anim);
             if(typeof result.move !== 'undefined'){
