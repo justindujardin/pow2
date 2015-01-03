@@ -39,6 +39,11 @@ module pow2 {
 
       static DEBUG_STATES:boolean = false;
 
+      static Events:any = {
+         ENTER:"enter",
+         EXIT:"exit"
+      };
+
       defaultState:string = null;
       states:IState[] = [];
       private _currentState:IState = null;
@@ -125,11 +130,11 @@ module pow2 {
             console.log("STATE: " + (oldState ? oldState.name : "NULL") + " -> " + this._currentState.name);
          }
          if(oldState){
-            this.trigger("exit",oldState,state);
+            this.trigger(pow2.StateMachine.Events.EXIT,oldState,state);
             oldState.exit(this);
          }
          state.enter(this);
-         this.trigger("enter",state,oldState);
+         this.trigger(pow2.StateMachine.Events.ENTER,state,oldState);
          return true;
       }
       getPreviousState():IState{
