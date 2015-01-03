@@ -40,13 +40,18 @@ module pow2 {
       }
 
       /**
-       * Only initial action constraint is that the `from` actor must be the
-       * current player in Combat.
+       * Base class invokes the then callback and returns true.
        * @returns {boolean} Whether the act was successful or not.
        */
       act(then?:IPlayerActionCallback):boolean {
          then && then(this,null);
          return true;
+      }
+
+      /**
+       * The action has been selected for the current turn.
+       */
+      select() {
       }
    }
 }

@@ -202,6 +202,7 @@ module pow2.ui {
             }
             machine.action.from = machine.current;
             machine.action.to = machine.target;
+            machine.action.select();
             machine.controller.removePointerClass(machine.action.getActionName());
             this.submit(machine.action);
          });

@@ -37,6 +37,11 @@
         "name":"run",
         "type":"pow2.CombatRunComponent",
         "params":["combat"]
+      },
+      {
+        "name":"guard",
+        "type":"pow2.CombatGuardComponent",
+        "params":["combat"]
       }
     ]
   },

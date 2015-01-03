@@ -75,6 +75,17 @@ module pow2 {
       feet:ArmorModel;
       accessory:ArmorModel;
       game:GameStateModel;
+
+      /**
+       * A constant buffer to add to defense of a player.
+       *
+       * TODO: This is probably a terrible way of buffing a character.
+       *
+       * Instead use a chain of modifiers?  e.g. PosionModifier, GuardingModifier,
+       * ParalyzedModifier, etc.
+       */
+      defenseBuff:number = 0;
+
       static DEFAULTS:HeroModelOptions = {
          name: "Hero",
          icon: "",
@@ -154,14 +165,15 @@ module pow2 {
       }
 
 
-      getDefense():number {
-         return _.reduce(HeroModel.ARMOR_TYPES,(val:number,type) => {
+      getDefense(base:boolean=false):number {
+         var baseDefense:number = _.reduce(HeroModel.ARMOR_TYPES,(val:number,type) => {
             var item:ArmorModel = this[type];
             if(!item){
                return val;
             }
             return val + item.attributes.defense;
          },0);
+         return baseDefense + (base ? 0 : this.defenseBuff);
       }
 
       getDamage():number {
