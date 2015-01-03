@@ -33,7 +33,6 @@ module pow2 {
          return super.canBeUsedBy(entity) && _.indexOf(supportedTypes,entity.model.get('type')) !== -1;
       }
 
-
       act(then?:pow2.IPlayerActionCallback):boolean {
          if(!this.isCurrentTurn()){
             return false;
@@ -42,17 +41,74 @@ module pow2 {
             then && then(this,error);
             this.combat.machine.setCurrentState(CombatEndTurnState.NAME);
          };
+         if(!this.spell){
+            console.error("null spell to cast");
+            return false;
+         }
+         switch(this.spell.id){
+            case "heal":
+               return this.healSpell(done);
+               break;
+            case "push":
+               return this.hurtSpell(done);
+               break;
+         }
+         return true;
+      }
+
+      healSpell(done?:(error?:any)=>any){
+         //
+         var caster:GameEntityObject = this.from;
+         var target:GameEntityObject = this.to;
+         var attackerPlayer:pow2.PlayerCombatRenderComponent = <any>caster.findComponent(pow2.PlayerCombatRenderComponent);
+
+         attackerPlayer.magic(()=>{
+            var level:number = target.model.get('level');
+            var healAmount:number = -this.spell.value;
+            target.model.damage(healAmount);
+
+
+            var hitSound:string = "/data/sounds/heal";
+            var components = {
+               animation: new pow2.AnimatedSpriteComponent({
+                  spriteName:"heal",
+                  lengthMS:550
+               }),
+               sprite: new pow2.SpriteComponent({
+                  name:"heal",
+                  icon: "animSpellCast.png"
+               }),
+               sound: new pow2.SoundComponent({
+                  url: hitSound,
+                  volume:0.3
+               })
+            };
+            target.addComponentDictionary(components);
+            components.animation.once('animation:done',() => {
+               target.removeComponentDictionary(components);
+               var data:CombatAttackSummary = {
+                  damage:healAmount,
+                  attacker:caster,
+                  defender:target
+               };
+               this.combat.machine.notify("combat:attack",data,done);
+            });
+         });
+
+         return true;
+
+      }
+      hurtSpell(done?:(error?:any)=>any){
          //
          var attacker:GameEntityObject = this.from;
          var defender:GameEntityObject = this.to;
 
          var attackerPlayer:pow2.PlayerCombatRenderComponent = <any>attacker.findComponent(pow2.PlayerCombatRenderComponent);
-         var attack = () => {
-            var damage:number = attacker.model.attack(defender.model);
+         attackerPlayer.magic(() => {
+            var damage:number = defender.model.damage(this.spell.value);
             var didKill:boolean = defender.model.get('hp') <= 0;
             var hit:boolean = damage > 0;
             var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? "spell" : "miss"));
-            var defenderSprite:SpriteComponent = <any>defender.findComponent(SpriteComponent);
             var components = {
                animation: new pow2.AnimatedSpriteComponent({
                   spriteName:"attack",
@@ -68,25 +124,12 @@ module pow2 {
                   volume:0.3
                })
             };
-            var animDamage:boolean = this.combat.machine.isFriendlyTurn() && !!defenderSprite;
-            if(animDamage) { defenderSprite.frame = 1; }
-            if(!!attackerPlayer){
-               attackerPlayer.setState("Moving");
-            }
             defender.addComponentDictionary(components);
             components.damage.once('damage:done',() => {
-               if(!!attackerPlayer){
-                  attackerPlayer.setState();
-               }
                if(didKill && defender.model instanceof CreatureModel){
                   _.defer(() => {
                      defender.destroy();
                   });
-               }
-               if(animDamage) {
-                  _.delay(function(){
-                     defenderSprite.frame = 0;
-                  },500);
                }
                defender.removeComponentDictionary(components);
             });
@@ -96,18 +139,9 @@ module pow2 {
                defender:defender
             };
             this.combat.machine.notify("combat:attack",data,done);
-         };
-
-         // TODO: Shouldn't be here.  This mess is currently to delay NPC attacks.
-         if(!!attackerPlayer){
-            attackerPlayer.magic(attack);
-         }
-         else {
-            _.delay(() => {
-               attack();
-            },1000);
-         }
+         });
          return true;
+
       }
    }
 }

@@ -22,6 +22,7 @@ module pow2 {
       name:string = "default";
       from:pow2.GameEntityObject = null;
       to:pow2.GameEntityObject = null;
+      spell:any = null;//TODO: spell type
 
       constructor(public combat:pow2.GameCombatState){
          super();

@@ -76,6 +76,19 @@ module pow2 {
                   if(value.match(pow2.GameDataResource.NUMBER_MATCHER)){
                      entry[key] = parseInt(value);
                   }
+                  // boolean values
+                  else if(key === 'benefit'){
+                     switch(value.toLowerCase()){
+                        case "true": case "yes": case "1":
+                           entry[key] = true;
+                           break;
+                        case "false": case "no": case "0": case null:
+                           entry[key] = false;
+                           break;
+                        default:
+                           entry[key] = Boolean(value);
+                     }
+                  }
                   // pipe delimited array values
                   else if(key === 'usedby' || key === 'groups' || key === 'zones' || key === 'enemies'){
                      if(/^\s*$/.test(value)){
@@ -95,6 +108,7 @@ module pow2 {
          if(!this.isReady()){
             throw new Error("Cannot query spreadsheet before it's loaded");
          }
+         name = ('' + name).toLocaleLowerCase();
          if(!this.data[name]){
             return [];
          }

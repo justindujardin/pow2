@@ -79,12 +79,9 @@ module pow2 {
       }
 
       damage(amount:number):number{
-         if(amount < 0){
-            return 0;
-         }
          amount = Math.ceil(amount);
-         this.set({hp: Math.max(0,this.attributes.hp - amount)});
-         if(this.attributes.hp < 0){
+         this.set({hp: Math.min(this.attributes.maxHP,Math.max(0,this.attributes.hp - amount))});
+         if(this.attributes.hp <= 0){
             this.set({dead:true});
          }
          return amount;

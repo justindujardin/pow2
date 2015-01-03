@@ -44,7 +44,14 @@ module pow2.ui {
                   targetPos.y -= (tileView.camera.point.y + 1.25);
                   targetPos.x -= tileView.camera.point.x;
                   var screenPos:pow2.Point = tileView.worldToScreen(targetPos,tileView.cameraScale);
-                  var damageValue = $compile('<span class="damage-value' + (data.damage === 0 ? ' miss' : '') + '" style="position:absolute;left:' + screenPos.x + 'px;top:' + screenPos.y + 'px;">' + data.damage + '</span>')($scope);
+                  var damageValue = $compile([
+                     '<span class="damage-value',
+                     (data.damage === 0 ? ' miss' : ''),
+                     (data.damage < 0 ? ' heal' : ''),
+                     '" style="position:absolute;left:' + screenPos.x + 'px;top:' + screenPos.y + 'px;">',
+                     Math.abs(data.damage),
+                     '</span>'
+                  ].join(''))($scope);
                   $scope.$apply(() => {
                      $animate.enter(damageValue, element.parent(),null,() => {
                         damageValue.remove();

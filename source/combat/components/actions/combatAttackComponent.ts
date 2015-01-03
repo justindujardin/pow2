@@ -53,7 +53,6 @@ module pow2 {
             var hit:boolean = damage > 0;
             var defending:boolean = (defender.model instanceof pow2.HeroModel) && (<pow2.HeroModel>defender.model).defenseBuff > 0;
             var hitSound:string = "/data/sounds/" + (didKill ? "killed" : (hit ? (defending? "miss": "hit") : "miss"));
-            var defenderSprite:SpriteComponent = <any>defender.findComponent(SpriteComponent);
             var components = {
                animation: new pow2.AnimatedSpriteComponent({
                   spriteName:"attack",
@@ -69,8 +68,6 @@ module pow2 {
                   volume:0.3
                })
             };
-            var animDamage:boolean = this.combat.machine.isFriendlyTurn() && !!defenderSprite;
-            if(animDamage) { defenderSprite.frame = 1; }
             if(!!attackerPlayer){
                attackerPlayer.setState("Moving");
             }
@@ -83,11 +80,6 @@ module pow2 {
                   _.defer(() => {
                      defender.destroy();
                   });
-               }
-               if(animDamage) {
-                  _.delay(function(){
-                     defenderSprite.frame = 0;
-                  },500);
                }
                defender.removeComponentDictionary(components);
             });

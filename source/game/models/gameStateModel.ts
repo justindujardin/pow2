@@ -33,14 +33,14 @@ module pow2 {
 
       constructor(options?:any) {
          super();
-         _.extend(this,{
+         _.defaults(this,options||{},{
             gold: 200,
             playerPosition: new pow2.Point(),
             playerMap:"",
             combatZone:"world-plains",
             party:[],
             inventory:[]
-         },options||{});
+         });
       }
       initData(then?:(data:GameDataResource)=>any){
          GameStateModel.getDataSource(then);
@@ -49,12 +49,13 @@ module pow2 {
        * Get the game data sheets from google and callback when they're loaded.
        * @param then The function to call when spreadsheet data has been fetched
        */
-      static getDataSource(then?:(data:GameDataResource)=>any) {
+      static getDataSource(then?:(data:GameDataResource)=>any):pow2.GameDataResource {
          if(_gameData){
             then && then(_gameData);
+            return _gameData;
          }
          else {
-            pow2.ResourceLoader.get().loadAsType(pow2.SPREADSHEET_ID,pow2.GameDataResource,(resource:pow2.GameDataResource) => {
+            return <pow2.GameDataResource>pow2.ResourceLoader.get().loadAsType(pow2.SPREADSHEET_ID,pow2.GameDataResource,(resource:pow2.GameDataResource) => {
                _gameData = resource;
                then && then(resource);
             });

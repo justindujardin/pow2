@@ -1,5 +1,5 @@
-/**
- Copyright (C) 2013 by Justin DuJardin
+/*
+ Copyright (C) 2013-2014 by Justin DuJardin
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -35,12 +35,21 @@ module pow2 {
 
       scene:Scene;
 
+      /**
+       * Access to the game's Google Doc spreadsheet configuration.  For more
+       * information, see [GameDataResource].
+       */
+      spreadsheet:GameDataResource = null;
+
       constructor(services?:any){
          super(services);
          if(!this.scene){
             this.setService('scene',new Scene());
          }
          this.loader.registerType('powEntities',pow2.EntityContainerResource);
+         GameStateModel.getDataSource((gsr:GameDataResource)=>{
+            this.spreadsheet = gsr;
+         });
       }
 
       static get():pow2.GameWorld {
