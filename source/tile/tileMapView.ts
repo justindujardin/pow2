@@ -70,6 +70,20 @@ module pow2{
       }
 
       /*
+       * Update the camera for this frame.
+       */
+      processCamera() {
+         this.cameraComponent = <CameraComponent>this.findComponent(CameraComponent);
+         if(!this.cameraComponent && this.tileMap){
+            this.cameraComponent = <CameraComponent>this.tileMap.findComponent(CameraComponent);
+         }
+         if(!this.cameraComponent){
+            this.cameraComponent = <CameraComponent>this.scene.componentByType(CameraComponent);
+         }
+         super.processCamera();
+      }
+
+      /*
        * Set the pre-render canvas state.
        */
       setRenderState() {

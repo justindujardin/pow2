@@ -56,19 +56,6 @@ module pow2{
          }
 
       }
-      /*
-       * Update the camera for this frame.
-       */
-      processCamera() {
-         this.cameraComponent = <CameraComponent>this.findComponent(CameraComponent);
-         if(!this.cameraComponent && this.tileMap){
-            this.cameraComponent = <CameraComponent>this.tileMap.findComponent(CameraComponent);
-         }
-         if(!this.cameraComponent){
-            this.cameraComponent = <CameraComponent>this.scene.componentByType(PlayerCameraComponent);
-         }
-         super.processCamera();
-      }
 
       private _features:pow2.GameFeatureObject[] = null;
       private _players:pow2.SceneObject[] = null;
@@ -145,44 +132,7 @@ module pow2{
                this.context.restore();
             }
          }
-
-
          return this;
-      }
-
-      debugRender(debugStrings: string[] = []) {
-         var party = this.scene.objectByComponent(pow2.game.components.PlayerComponent);
-         if (party) {
-            debugStrings.push("Party: (" + party.point.x + "," + party.point.y + ")");
-         }
-         if(this.mouse){
-            var worldMouse:Point = this.screenToWorld(this.mouse.point,this.cameraScale).add(this.camera.point).round();
-            debugStrings.push("Mouse: " + this.mouse.point + ", World: " + worldMouse);
-
-            var tileRect:Rect = new Rect(worldMouse,new Point(1,1));
-            var half = tileRect.getHalfSize();
-            tileRect.point.x -= half.x;
-            tileRect.point.y -= half.y;
-            var screenTile:pow2.Rect = this.worldToScreen(tileRect,1);
-
-
-            var results:TileObject[] = [];
-            var hit = this.scene.db.queryRect(tileRect,SceneObject,results);
-            if(hit){
-               _.each(results,(obj:any) => {
-                  debugStrings.push("Hit: " + obj);
-               });
-               this.context.fillStyle = "rgba(10,255,10,0.3)";
-               this.context.fillRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
-
-            }
-
-            this.context.strokeStyle = hit ? "rgba(10,255,10,0.9)" : "rgba(255,255,255,0.9)";
-            this.context.lineWidth = 1.5;
-            this.context.strokeRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
-
-         }
-         //super.debugRender(debugStrings);
       }
    }
 }
