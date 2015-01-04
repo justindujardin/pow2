@@ -55,40 +55,22 @@ module pow2 {
          if(!this.host.scene || !this.host.scene.world || !this.host.scene.world.input){
             return;
          }
-         // Touch movement
-         var hasCreateTouch = (<any>document).createTouch;
          var worldInput = <any>this.host.scene.world.input;
-         if (hasCreateTouch && worldInput.analogVector instanceof pow2.Point) {
-            this.velocity.x = 0;
-            if (worldInput.analogVector.x < -20) {
-               this.velocity.x -= 1;
-            } else if (worldInput.analogVector.x > 20) {
-               this.velocity.x += 1;
-            }
-            this.velocity.y = 0;
-            if (worldInput.analogVector.y < -20) {
-               this.velocity.y -= 1;
-            } else if (worldInput.analogVector.y > 20) {
-               this.velocity.y += 1;
-            }
-         } else {
-            // Keyboard input
-            this.velocity.x = 0;
-            if (worldInput.keyDown(pow2.KeyCode.LEFT)) {
-               this.velocity.x -= 1;
-            }
-            if (worldInput.keyDown(pow2.KeyCode.RIGHT)) {
-               this.velocity.x += 1;
-            }
-            this.velocity.y = 0;
-            if (worldInput.keyDown(pow2.KeyCode.UP)) {
-               this.velocity.y -= 1;
-            }
-            if (worldInput.keyDown(pow2.KeyCode.DOWN)) {
-               this.velocity.y += 1;
-            }
+         // Keyboard input
+         this.velocity.x = 0;
+         if (worldInput.keyDown(pow2.KeyCode.LEFT)) {
+            this.velocity.x -= 1;
          }
-
+         if (worldInput.keyDown(pow2.KeyCode.RIGHT)) {
+            this.velocity.x += 1;
+         }
+         this.velocity.y = 0;
+         if (worldInput.keyDown(pow2.KeyCode.UP)) {
+            this.velocity.y -= 1;
+         }
+         if (worldInput.keyDown(pow2.KeyCode.DOWN)) {
+            this.velocity.y += 1;
+         }
       }
 
       interpolateTick(elapsed:number) {
