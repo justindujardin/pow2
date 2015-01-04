@@ -24,6 +24,19 @@ module pow2{
       mouse:NamedMouseElement = null;
       scene:Scene;
 
+      /**
+       * The fill color to use when rendering a path target.
+       */
+      targetFill:string = "rgba(10,255,10,0.3)";
+      /**
+       * The stroke to use when outlining path target.
+       */
+      targetStroke:string = "rgba(10,255,10,0.3)";
+      /**
+       * Line width for the path target stroke.
+       */
+      targetStrokeWidth:number = 1.5;
+
       constructor(canvas: HTMLCanvasElement, loader: any) {
          super(canvas,loader);
          this.mouseClick = _.bind(this.mouseClick,this);
@@ -123,10 +136,10 @@ module pow2{
                destination.y -= 0.5;
 
                var screenTile:pow2.Rect = this.worldToScreen(new Rect(destination, new Point(1,1)));
-               this.context.fillStyle = "rgba(10,255,10,0.3)";
+               this.context.fillStyle = this.targetFill;
                this.context.fillRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
-               this.context.strokeStyle = "rgba(10,255,10,0.9)";
-               this.context.lineWidth = 1.5;
+               this.context.strokeStyle = this.targetStroke;
+               this.context.lineWidth = this.targetStrokeWidth;
                this.context.strokeRect(screenTile.point.x,screenTile.point.y,screenTile.extent.x,screenTile.extent.y);
 
                this.context.restore();

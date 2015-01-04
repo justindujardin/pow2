@@ -20,6 +20,11 @@ module dorkapon {
 
 
    export class DorkaponMapView extends pow2.GameMapView {
+
+      targetFill:string = "transparent";
+      targetStroke:string = "white";
+      targetStrokeWidth:number = 2;
+
       mouseClick(e:any) {
          var pathComponent = <dorkapon.components.PlayerPathComponent>this.scene.componentByType(dorkapon.components.PlayerPathComponent);
          var playerComponent = <pow2.game.components.PlayerComponent>this.scene.componentByType(pow2.game.components.PlayerComponent);
