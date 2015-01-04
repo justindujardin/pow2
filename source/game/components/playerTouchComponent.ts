@@ -27,12 +27,12 @@ module pow2 {
    export class PlayerTouchComponent extends TickedComponent {
       host:TileObject;
       collider:CollisionComponent = null;
-      player:PlayerComponent = null;
+      player:game.components.PlayerComponent = null;
       touch:GameFeatureObject = null;
       touchedComponent:GameFeatureComponent = null;
       syncComponent():boolean{
          super.syncComponent();
-         this.player = <PlayerComponent>this.host.findComponent(PlayerComponent);
+         this.player = <game.components.PlayerComponent>this.host.findComponent(game.components.PlayerComponent);
          this.collider = <CollisionComponent>this.host.findComponent(CollisionComponent);
          return !!(this.player && this.collider);
       }

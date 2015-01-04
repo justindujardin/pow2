@@ -27,7 +27,7 @@ module pow2 {
     * the tile may be passed.
     */
    export class CombatFeatureComponent extends GameFeatureComponent {
-      party:PlayerComponent;
+      party:pow2.game.components.PlayerComponent;
       connectComponent():boolean {
          if(typeof this.host.id === 'undefined'){
             console.error("Fixed encounters must have a given id so they may be hidden");
@@ -37,7 +37,7 @@ module pow2 {
       }
 
       enter(object:GameEntityObject):boolean {
-         this.party = <PlayerComponent>object.findComponent(PlayerComponent);
+         this.party = <pow2.game.components.PlayerComponent>object.findComponent(pow2.game.components.PlayerComponent);
          if(!this.party){
             return false;
          }

@@ -43,7 +43,7 @@ module pow2 {
       setCurrentState(newState:any):boolean {
          if(this.world && this.world.scene){
             var scene:Scene = this.world.scene;
-            this.player = <TileObject>scene.objectByComponent(PlayerComponent);
+            this.player = <TileObject>scene.objectByComponent(pow2.game.components.PlayerComponent);
          }
          return super.setCurrentState(newState);
       }

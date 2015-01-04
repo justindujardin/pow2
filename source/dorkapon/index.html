@@ -1,8 +1,8 @@
 <!-- Pow2 -->
 <!doctype html>
-<html ng-app="pow2">
+<html ng-app="dorkapon">
 <head>
-    <title>Pow2 - Develop</title>
+    <title>Pow2 - Dorkapon</title>
 
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="Content-Style-Type" content="text/css" />
@@ -11,10 +11,10 @@
     <style type="text/css">
         .ng-hide { display: none !important; }
     </style>
-    <link rel="stylesheet" type="text/css" href="/css/index.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/css/dorkapon.css" media="all" />
     <link rel="stylesheet" type="text/css" href="/fonts/pow2.css" media="all" />
 </head>
-<body ng-controller="RPGGameController">
+<body ng-controller="DorkaponGameController">
 
 <div class="landscape-notice loading ng-hide">
     <div class="loading-wrapper">
@@ -45,7 +45,7 @@
 
 
 <div class="game-container fade" ng-if="loaded" id="alertContainer">
-    <canvas class="game-view map fade" width="960" height="640" game-canvas ng-hide="inCombat">
+    <canvas class="game-view map fade" width="960" height="640" dorkapon-map-canvas ng-hide="inCombat">
         Your browser doesn't support this.
     </canvas>
     <canvas class="game-view combat fade" width="960" height="640" combat-canvas ng-hide="!inCombat">
@@ -76,7 +76,7 @@
 <script type="text/javascript" src="/lib/pow2.js"></script>
 <script type="text/javascript" src="/lib/pow2.game.js"></script>
 <script type="text/javascript" src="/lib/pow2.sprites.js"></script>
-<script type="text/javascript" src="/lib/pow2.ui.js"></script>
+<script type="text/javascript" src="/lib/pow2.dorkapon.js"></script>
 
 </body>
 </html>

@@ -104,6 +104,13 @@ module.exports = function(grunt) {
             ],
             dest: 'lib/<%= pkg.name %>.game.js'
          },
+         dorkapon: {
+            src: [
+               "source/dorkapon/*.ts",
+               "source/dorkapon/**/*.ts"
+            ],
+            dest: 'lib/<%= pkg.name %>.dorkapon.js'
+         },
          ui: {
             src: [
                "source/ui/index.ts",
@@ -138,6 +145,7 @@ module.exports = function(grunt) {
             files: {
                'lib/<%= pkg.name %>.min.js'    : ['lib/<%= pkg.name %>.js'],
                'lib/<%= pkg.name %>.min.game.js'    : ['lib/<%= pkg.name %>.game.js'],
+               'lib/<%= pkg.name %>.min.dorkapon.js'    : ['lib/<%= pkg.name %>.dorkapon.js'],
                'lib/<%= pkg.name %>.min.ui.js'    : ['lib/<%= pkg.name %>.ui.js'],
                'lib/<%= pkg.name %>.min.sprites.js' : ['lib/<%= pkg.name %>.sprites.js']
             }
@@ -191,15 +199,16 @@ module.exports = function(grunt) {
        * Compile game LESS styles to CSS
        */
       less: {
+         options: {
+            paths: [
+               "source/ui/",
+               "web/bower/bootstrap/less/"
+            ]
+         },
          game: {
-            options: {
-               paths: [
-                  "source/ui/",
-                  "web/bower/bootstrap/less/"
-               ]
-            },
             files: {
-               'web/css/index.css':'source/ui/index.less'
+               'web/css/index.css':'source/ui/index.less',
+               'web/css/dorkapon.css':'source/dorkapon/index.less'
             }
          }
       },
@@ -232,6 +241,12 @@ module.exports = function(grunt) {
             ],
             tasks: ['typescript:game', 'notify:code']
          },
+         dorkapon: {
+            files: [
+               '<%= typescript.dorkapon.src %>'
+            ],
+            tasks: ['typescript:dorkapon', 'notify:code']
+         },
          ui: {
             files: [
                '<%= typescript.ui.src %>'
@@ -252,7 +267,9 @@ module.exports = function(grunt) {
          styles: {
             files: [
                'source/ui/*.less',
-               'source/ui/**/*.less'
+               'source/ui/**/*.less',
+               'source/dorkapon/*.less',
+               'source/dorkapon/**/*.less'
             ],
             tasks: ['less', 'notify:less']
          },

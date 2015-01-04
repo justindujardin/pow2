@@ -21,7 +21,7 @@
 
 module pow2 {
    export class ShipFeatureComponent extends GameFeatureComponent {
-      party:PlayerComponent;
+      party:pow2.game.components.PlayerComponent;
       partyObject:TileObject;
       partySprite:string;
       private _tickInterval:number = -1;
@@ -43,7 +43,7 @@ module pow2 {
       enter(object:GameFeatureObject):boolean {
          // Must have a party component to board a ship.  Don't want buildings
          // and NPCs boarding ships... or do we?  [maniacal laugh]
-         this.party = <PlayerComponent>object.findComponent(PlayerComponent);
+         this.party = <pow2.game.components.PlayerComponent>object.findComponent(pow2.game.components.PlayerComponent);
          if(!this.party){
             return false;
          }

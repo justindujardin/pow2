@@ -48,6 +48,12 @@ server.get('/', function(req,res){
    });
 });
 
+server.get('/dorkapon', function(req,res){
+   res.render('../source/dorkapon/index.html',{
+      scripts:getPageScripts()
+   });
+});
+
 server.use(express.static(path.resolve(__dirname + "/../web")));
 server.use('/lib',express.static(path.resolve(__dirname + "/../lib")));
 server.use('/data', express.static(path.resolve(__dirname + "/../data")));

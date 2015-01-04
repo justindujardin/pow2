@@ -37,7 +37,7 @@ module pow2.ui {
             return game.getSaveData();
          };
          $scope.saveGame = function(){
-            var party = <pow2.PlayerComponent>game.currentScene.componentByType(pow2.PlayerComponent);
+            var party = <pow2.game.components.PlayerComponent>game.currentScene.componentByType(pow2.game.components.PlayerComponent);
             if (party) {
                game.world.model.setKeyData('playerPosition',party.host.point);
             }

@@ -46,8 +46,8 @@ module pow2{
        * Mouse input
        */
       mouseClick(e:any) {
-         var pathComponent = <pow2.components.GameMapPathComponent>this.scene.componentByType(pow2.components.GameMapPathComponent);
-         var playerComponent = <pow2.PlayerComponent>this.scene.componentByType(pow2.PlayerComponent);
+         var pathComponent = <pow2.tile.components.PathComponent>this.scene.componentByType(pow2.tile.components.PathComponent);
+         var playerComponent = <pow2.game.components.PlayerComponent>this.scene.componentByType(pow2.game.components.PlayerComponent);
          if (pathComponent && playerComponent) {
             Input.mouseOnView(e.originalEvent,this.mouse.view,this.mouse);
             playerComponent.path = pathComponent.calculatePath(playerComponent.targetPoint,this.mouse.world);
@@ -61,6 +61,9 @@ module pow2{
        */
       processCamera() {
          this.cameraComponent = <CameraComponent>this.findComponent(CameraComponent);
+         if(!this.cameraComponent && this.tileMap){
+            this.cameraComponent = <CameraComponent>this.tileMap.findComponent(CameraComponent);
+         }
          if(!this.cameraComponent){
             this.cameraComponent = <CameraComponent>this.scene.componentByType(PlayerCameraComponent);
          }
@@ -102,7 +105,7 @@ module pow2{
             this.objectRenderer.render(renderObj,renderObj,this);
          }
          if(!this._players){
-            this._players = <pow2.SceneObject[]>this.scene.objectsByComponent(pow2.PlayerComponent);
+            this._players = <pow2.SceneObject[]>this.scene.objectsByComponent(pow2.game.components.PlayerComponent);
          }
          l = this._players.length;
          for(var i = 0; i < l; i++){
@@ -148,7 +151,7 @@ module pow2{
       }
 
       debugRender(debugStrings: string[] = []) {
-         var party = this.scene.objectByComponent(pow2.PlayerComponent);
+         var party = this.scene.objectByComponent(pow2.game.components.PlayerComponent);
          if (party) {
             debugStrings.push("Party: (" + party.point.x + "," + party.point.y + ")");
          }

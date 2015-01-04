@@ -18,7 +18,7 @@
 /// <reference path="./playerRenderComponent.ts" />
 /// <reference path="../objects/gameFeatureObject.ts" />
 
-module pow2 {
+module pow2.game.components {
 
    export class PlayerComponent extends MovableComponent {
       host:TileObject;
@@ -111,7 +111,7 @@ module pow2 {
       }
 
       collideMove(x:number,y:number,results:GameFeatureObject[]=[]){
-         var collision:boolean = this.collider.collide(x,y,GameFeatureObject,results);
+         var collision:boolean = this.collider && this.collider.collide(x,y,GameFeatureObject,results);
          if(collision){
             for (var i = 0; i < results.length; i++) {
                var o = <GameFeatureObject>results[i];
@@ -148,7 +148,7 @@ module pow2 {
          this.host.trigger('move:begin',this,from,to);
 
          var results = [];
-         var collision:boolean = this.collider.collide(to.x,to.y,GameFeatureObject,results);
+         var collision:boolean = this.collider && this.collider.collide(to.x,to.y,GameFeatureObject,results);
          if(collision){
             for (var i = 0; i < results.length; i++) {
                var o:GameFeatureObject = results[i];
@@ -164,11 +164,10 @@ module pow2 {
          }
       }
       endMove(from:Point,to:Point) {
+         this.host.trigger('move:end',this,from,to);
          if(!this.collider){
             return;
          }
-
-         this.host.trigger('move:end',this,from,to);
 
          // Successful move, collide against target point and check any new tile actions.
          var fromFeature:GameFeatureObject = <GameFeatureObject>this.collider.collideFirst(from.x,from.y,GameFeatureObject);

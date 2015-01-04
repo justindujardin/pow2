@@ -62,7 +62,7 @@ module pow2 {
             this.player = null;
          }
          if(this.host.scene){
-            this.player = <GameEntityObject>this.host.scene.objectByComponent(PlayerComponent);
+            this.player = <GameEntityObject>this.host.scene.objectByComponent(pow2.game.components.PlayerComponent);
          }
          this.listenMoves();
          return !!this.player;
@@ -80,7 +80,7 @@ module pow2 {
          }
       }
 
-      moveProcess(player:PlayerComponent,from:Point,to:Point) {
+      moveProcess(player:pow2.game.components.PlayerComponent,from:Point,to:Point) {
          var terrain = this.host.getTerrain("Terrain",to.x,to.y);
          this.isDangerous = terrain && terrain.isDangerous;
          var dangerValue = this.isDangerous ? 10 : 6;

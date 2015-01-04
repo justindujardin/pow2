@@ -1,0 +1,38 @@
+[
+  {
+    "name":"DorkaponMapObject",
+    "type":"pow2.TileMap",
+    "inputs":{
+      "resource":"pow2.TiledTMXResource"
+    },
+    "params":["resource"],
+    "components": []
+  },
+  {
+    "name":"DorkaponMapPlayer",
+    "type":"pow2.GameEntityObject",
+    "inputs":{
+      "model":"pow2.HeroModel",
+      "map":"pow2.TileMap"
+    },
+    "components": [
+      {
+        "name":"player",
+        "type":"dorkapon.components.PlayerComponent"
+      },
+      {
+        "name":"movement",
+        "type":"dorkapon.components.PlayerPathComponent",
+        "params":["map"]
+      },
+      {
+        "name":"render",
+        "type":"pow2.PlayerRenderComponent"
+      },
+      {
+        "name":"camera",
+        "type":"pow2.PlayerCameraComponent"
+      }
+    ]
+  }
+]

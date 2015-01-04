@@ -15,7 +15,7 @@ module pow2.tests {
          //this.world.scene.addObject(this.sprite);
          sprite.addComponent(new PlayerRenderComponent());
          sprite.addComponent(new CollisionComponent());
-         sprite.addComponent(new PlayerComponent());
+         sprite.addComponent(new pow2.game.components.PlayerComponent());
          sprite.addComponent(new PlayerCameraComponent());
          sprite.addComponent(new PlayerTouchComponent());
          expect(sprite._components.length).toBe(5);
