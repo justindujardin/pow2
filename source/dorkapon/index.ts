@@ -17,6 +17,8 @@
 /// <reference path="../../types/backbone/backbone.d.ts"/>
 /// <reference path="../../types/angularjs/angular.d.ts"/>
 /// <reference path="../../web/bower/pow-core/lib/pow-core.d.ts"/>
+/// <reference path="../../lib/pow2.d.ts"/>
+/// <reference path="../../lib/pow2.game.d.ts"/>
 
 module dorkapon {
    export var app = angular.module('dorkapon', [

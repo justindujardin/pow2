@@ -31,7 +31,7 @@
       },
       {
         "name":"camera",
-        "type":"pow2.PlayerCameraComponent"
+        "type":"dorkapon.components.PlayerCamera"
       }
     ]
   }

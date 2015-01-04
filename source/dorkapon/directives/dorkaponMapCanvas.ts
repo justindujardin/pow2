@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../services/dorkaponService.ts"/>
+/// <reference path="../dorkaponMapView.ts"/>
 
 module dorkapon.directives {
    app.directive('dorkaponMapCanvas', [
@@ -36,7 +36,7 @@ module dorkapon.directives {
                   context.webkitImageSmoothingEnabled = false;
                   context.mozImageSmoothingEnabled = false;
                }
-               var tileView:pow2.GameMapView = new pow2.GameMapView(element[0], dorkapon.loader);
+               var tileView = new DorkaponMapView(element[0], dorkapon.loader);
                tileView.camera.extent.set(10, 10);
                tileView.setTileMap(dorkapon.tileMap);
                dorkapon.world.scene.addView(tileView);

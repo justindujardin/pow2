@@ -34,7 +34,7 @@ module dorkapon.controllers {
             $scope.$apply(()=>{
                $scope.loadingMessage = "Loading the things...";
             });
-            dorkapon.loadGame(null,()=>{
+            dorkapon.newGame(()=>{
                $scope.$apply(()=>{
                   $scope.loading = false;
                   $scope.loaded = true;
