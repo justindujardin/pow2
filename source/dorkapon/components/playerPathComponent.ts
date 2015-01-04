@@ -53,7 +53,7 @@ module dorkapon.components {
     * Enumerated path weights for use in input grid creation.
     */
    export enum PathWeights {
-      CAN_REST = 1,
+      CAN_REST = 10,
       CAN_WALK = 5,
       BLOCKED = 1000
    }
