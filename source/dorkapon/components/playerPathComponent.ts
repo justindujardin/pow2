@@ -49,6 +49,14 @@ module dorkapon.components {
       GREEN = 71
    }
 
+   /**
+    * Enumerated path weights for use in input grid creation.
+    */
+   export enum PathWeights {
+      CAN_REST = 1,
+      CAN_WALK = 5,
+      BLOCKED = 1000
+   }
 
    /**
     * Describe where in the map a node tile exists, and what type it is.
@@ -163,16 +171,20 @@ module dorkapon.components {
          // Initialize a two dimensional array the size of the tileMap
          var grid = new Array(this.tileMap.bounds.extent.x);
          for(var x:number = 0; x < this.tileMap.bounds.extent.x; x++){
-            var arr = Array.apply(null, Array(this.tileMap.bounds.extent.y));
+            var arr = (<any>Array).apply(null, Array(this.tileMap.bounds.extent.y));
 
-            // This will be the default weight of a tile, and lesser values
-            // represent more desirable paths.
+            // All tiles are blocked to begin with.
             grid[x] = arr.map(()=>{
-               return 1000;
+               return PathWeights.BLOCKED;
             });
          }
-         _.each([].concat(horizPaths,vertPaths,nodes),(p:IPathTile)=>{
-            grid[p.x][p.y] = 5;
+         // Mark all the paths are walkable.
+         _.each([].concat(horizPaths,vertPaths),(p:IPathTile)=>{
+            grid[p.x][p.y] = PathWeights.CAN_WALK;
+         });
+         // Mark that the path can end at nodes.
+         _.each(nodes,(p:IPathTile)=>{
+            grid[p.x][p.y] = PathWeights.CAN_REST;
          });
          this._graph = new Graph(grid);
       }
