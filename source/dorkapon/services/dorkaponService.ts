@@ -15,73 +15,84 @@
  */
 
 /// <reference path="../index.ts"/>
+/// <reference path="../dorkaponStateMachine.ts"/>
+/// <reference path="../dorkaponGameWorld.ts"/>
 
 module dorkapon.services {
    export class DorkaponGameService {
       loader:pow2.ResourceLoader;
-      world:pow2.GameWorld;
+      world:DorkaponGameWorld;
       tileMap:pow2.GameTileMap;
-      sprite:pow2.GameEntityObject;
-      machine:pow2.GameStateMachine;
-      currentScene:pow2.Scene;
+      machine:DorkaponStateMachine;
       entities:pow2.EntityContainerResource;
       constructor(
          public compile:ng.ICompileService,
          public scope:ng.IRootScopeService){
-         this.loader = new pow2.ResourceLoader();
-         this.currentScene = new pow2.Scene({
-            autoStart: true,
-            debugRender:false
+         this.loader = pow2.ResourceLoader.get();
+         this.world = new DorkaponGameWorld({
+            scene:new pow2.Scene({
+               autoStart: true,
+               debugRender:false
+            }),
+            model:new pow2.GameStateModel()
          });
-         this.world = new pow2.GameWorld({
-            scene:this.currentScene,
-            model:new pow2.GameStateModel(),
-            state:new pow2.GameStateMachine()
-         });
-         this.machine = this.world.state;
-         pow2.registerWorld('dorkapon',this.world);
+         pow2.registerWorld(dorkapon.NAME,this.world);
+
          // Tell the world time manager to start ticking.
          this.world.time.start();
          this.entities = <pow2.EntityContainerResource>this.world.loader.load('entities/dorkapon.powEntities');
       }
 
-      createPlayer(from:pow2.HeroModel,at?:pow2.Point){
+      createPlayer(from:pow2.HeroModel,at?:pow2.Point):pow2.GameEntityObject{
          if(!from){
             throw new Error("Cannot create player without valid model");
          }
          if(!this.entities.isReady()){
             throw new Error("Cannot create player before entities container is loaded");
          }
-         if(this.sprite){
-            this.sprite.destroy();
-            this.sprite = null;
-         }
-         this.sprite = this.entities.createObject('DorkaponMapPlayer',{
+         var sprite = <pow2.GameEntityObject>this.entities.createObject('DorkaponMapPlayer',{
             model:from,
             map:this.tileMap
          });
-         this.sprite.name = from.attributes.name;
-         this.sprite.icon = from.attributes.icon;
-         this.world.scene.addObject(this.sprite);
-         if(typeof at === 'undefined' && this.tileMap instanceof pow2.TileMap) {
-            at = this.tileMap.bounds.getCenter();
-         }
-         this.sprite.setPoint(at || new pow2.Point());
+         sprite.name = from.attributes.name;
+         sprite.icon = from.attributes.icon;
+         this.world.scene.addObject(sprite);
+         sprite.setPoint(at);
+         return sprite;
       }
 
+      /**
+       * Start a new game.
+       * @param then
+       */
       newGame(then?:()=>any){
          if(this.tileMap){
             this.tileMap.destroy();
             this.tileMap = null;
          }
 
+         // Create the game state machine
+         this.machine = new DorkaponStateMachine();
+         this.machine.update();
+         this.world.setService('state',this.machine);
+
          this.world.loader.load(pow2.getMapUrl('dorkapon'),(map:pow2.TiledTMXResource)=>{
+            // Create a map
             this.tileMap = this.entities.createObject('DorkaponMapObject',{
                resource:map
             });
+
+            // Ranger player
             var model:pow2.HeroModel = pow2.HeroModel.create(pow2.HeroTypes.Ranger,"Ranger");
             this.createPlayer(model,new pow2.Point(3,18));
             this.world.scene.addObject(this.tileMap);
+
+            // Mage player
+            var model:pow2.HeroModel = pow2.HeroModel.create(pow2.HeroTypes.LifeMage,"Mage");
+            this.createPlayer(model,new pow2.Point(12,11));
+            this.world.scene.addObject(this.tileMap);
+
+            // Loaded!
             this.tileMap.loaded();
             then && then();
          });

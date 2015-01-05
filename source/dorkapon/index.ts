@@ -21,6 +21,13 @@
 /// <reference path="../../lib/pow2.game.d.ts"/>
 
 module dorkapon {
+
+   /**
+    * The name of this app.  You can fetch the game world at any time using pow2.getWorld and this name.
+    * @type {string}
+    */
+   export var NAME:string = "dorkapon";
+
    export var app = angular.module('dorkapon', [
       'ngAnimate',
       'ngSanitize',
