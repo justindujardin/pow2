@@ -1,0 +1,23 @@
+@hudHeight:80px;
+.dorkapon-hud {
+  height: @hudHeight;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #bbb;
+  pointer-events:all;
+  padding:0 20px;
+  margin:0;
+  li {
+    display: inline-block;
+    list-style-type: none;
+    padding:0 5px;
+  }
+  h1 {
+    line-height: @hudHeight;
+    margin:0;
+    display: inline-block;
+  }
+}
