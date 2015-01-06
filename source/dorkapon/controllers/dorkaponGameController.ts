@@ -23,7 +23,7 @@ module dorkapon.controllers {
       '$timeout',
       '$dorkapon',
       'powAlert',
-      function($scope,$timeout,dorkapon:services.DorkaponGameService,powAlert:pow2.ui.PowAlertService){
+      function($scope,$timeout,$dorkapon:services.DorkaponService,powAlert:pow2.ui.PowAlertService){
          $scope.loadingTitle = "Dorkapon!";
          $scope.loadingMessage = "Asking Google for data...";
          $scope.loading = true;
@@ -34,7 +34,7 @@ module dorkapon.controllers {
             $scope.$apply(()=>{
                $scope.loadingMessage = "Loading the things...";
             });
-            dorkapon.newGame(()=>{
+            $dorkapon.newGame(()=>{
                $scope.$apply(()=>{
                   $scope.loading = false;
                   $scope.loaded = true;

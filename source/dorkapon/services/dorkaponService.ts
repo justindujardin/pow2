@@ -19,7 +19,7 @@
 /// <reference path="../dorkaponGameWorld.ts"/>
 
 module dorkapon.services {
-   export class DorkaponGameService {
+   export class DorkaponService {
       loader:pow2.ResourceLoader;
       world:DorkaponGameWorld;
       tileMap:pow2.GameTileMap;
@@ -73,7 +73,6 @@ module dorkapon.services {
 
          // Create the game state machine
          this.machine = new DorkaponStateMachine();
-         this.machine.update();
          this.world.setService('state',this.machine);
 
          this.world.loader.load(pow2.getMapUrl('dorkapon'),(map:pow2.TiledTMXResource)=>{
@@ -82,15 +81,22 @@ module dorkapon.services {
                resource:map
             });
 
+            var players:pow2.GameEntityObject[] = [];
+
             // Ranger player
             var model:pow2.HeroModel = pow2.HeroModel.create(pow2.HeroTypes.Ranger,"Ranger");
-            this.createPlayer(model,new pow2.Point(3,18));
+            players.push(this.createPlayer(model,new pow2.Point(3,18)));
             this.world.scene.addObject(this.tileMap);
 
             // Mage player
             var model:pow2.HeroModel = pow2.HeroModel.create(pow2.HeroTypes.LifeMage,"Mage");
-            this.createPlayer(model,new pow2.Point(12,11));
+            players.push(this.createPlayer(model,new pow2.Point(12,11)));
             this.world.scene.addObject(this.tileMap);
+
+            // Give the state machine our players.
+            this.machine.playerPool = players.slice();
+
+            this.machine.setCurrentState(DorkaponInitGame.NAME);
 
             // Loaded!
             this.tileMap.loaded();
@@ -102,7 +108,7 @@ module dorkapon.services {
       '$compile',
       '$rootScope',
       ($compile:ng.ICompileService,$rootScope:ng.IRootScopeService) => {
-         return new DorkaponGameService($compile,$rootScope);
+         return new DorkaponService($compile,$rootScope);
       }
    ]);
 }

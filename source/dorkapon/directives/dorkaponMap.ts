@@ -17,10 +17,10 @@
 /// <reference path="../dorkaponMapView.ts"/>
 
 module dorkapon.directives {
-   app.directive('dorkaponMapCanvas', [
+   app.directive('dorkaponMap', [
       '$compile',
       '$dorkapon',
-      function ($compile, dorkapon:dorkapon.services.DorkaponGameService) {
+      function ($compile, $dorkapon:dorkapon.services.DorkaponService) {
          return {
             restrict: 'A',
             link: function ($scope, element, attrs) {
@@ -36,10 +36,11 @@ module dorkapon.directives {
                   context.webkitImageSmoothingEnabled = false;
                   context.mozImageSmoothingEnabled = false;
                }
-               var tileView = new DorkaponMapView(element[0], dorkapon.loader);
+               var tileView = new DorkaponMapView(element[0], $dorkapon.loader);
+               tileView.stateMachine = $dorkapon.world.state;
                tileView.camera.extent.set(10, 10);
-               tileView.setTileMap(dorkapon.tileMap);
-               dorkapon.world.scene.addView(tileView);
+               tileView.setTileMap($dorkapon.tileMap);
+               $dorkapon.world.scene.addView(tileView);
                onResize();
             }
          };
