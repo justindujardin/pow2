@@ -148,15 +148,14 @@ module pow2.game.components {
          this.host.trigger('move:begin',this,from,to);
 
          var results = [];
-         var collision:boolean = this.collider && this.collider.collide(to.x,to.y,GameFeatureObject,results);
+         var collision:boolean = this.collider && this.collider.collide(to.x,to.y,GameObject,results);
          if(collision){
             for (var i = 0; i < results.length; i++) {
-               var o:GameFeatureObject = results[i];
+               var o:GameObject = results[i];
                var comp:TileComponent = <TileComponent>o.findComponent(TileComponent);
                if(!comp || !comp.enter){
                   continue;
                }
-               console.log("Collide -> " + o.type);
                if(comp.enter(this.host) === false){
                   return;
                }
@@ -170,7 +169,7 @@ module pow2.game.components {
          }
 
          // Successful move, collide against target point and check any new tile actions.
-         var fromFeature:GameFeatureObject = <GameFeatureObject>this.collider.collideFirst(from.x,from.y,GameFeatureObject);
+         var fromFeature:GameObject = <GameObject>this.collider.collideFirst(from.x,from.y,GameObject);
          if (fromFeature) {
             var comp = <TileComponent>fromFeature.findComponent(TileComponent);
             if(comp){
@@ -179,7 +178,7 @@ module pow2.game.components {
          }
 
          // Successful move, collide against target point and check any new tile actions.
-         var toFeature:GameFeatureObject = <GameFeatureObject>this.collider.collideFirst(to.x,to.y,GameFeatureObject);
+         var toFeature:GameObject = <GameObject>this.collider.collideFirst(to.x,to.y,GameObject);
          if (toFeature) {
             var comp = <TileComponent>toFeature.findComponent(TileComponent);
             if(comp){

@@ -18,7 +18,7 @@
 /// <reference path="./gameTileMap.ts" />
 module pow2 {
    export class GameComponent extends TileComponent {
-      host:GameFeatureObject = null;
+      host:GameObject = null;
       syncComponent():boolean{
          return super.syncComponent() && this.host.tileMap instanceof GameTileMap;
       }
