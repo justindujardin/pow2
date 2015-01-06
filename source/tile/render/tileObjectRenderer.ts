@@ -45,9 +45,6 @@ module pow2 {
             var cx = c.x;
             var cy = c.y;
             if(data.meta.frames > 1){
-               if(data.frame > 4){
-                  var bar = "baz";
-               }
                var cwidth = c.width / sourceWidth;
                var fx = (data.frame % (cwidth));
                var fy = Math.floor((data.frame - fx) / cwidth);

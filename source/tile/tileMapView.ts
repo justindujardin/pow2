@@ -116,51 +116,6 @@ module pow2{
       /*
        * Draw any post-rendering effects.
        */
-      renderPost() {
-         if (!this.camera || !this.context || !this.tileMap) {
-            return;
-         }
-         this.renderAnalog();
-      }
-
-      /*
-       * Render the analog joystick for touch inputs.
-       */
-      renderAnalog() {
-         var screenCamera, touch, touchCurrent, touchStart, _i, _len, _ref;
-         if (!this.world || !this.world.input) {
-            return;
-         }
-         var inputAny:any = this.world.input;
-         if (typeof inputAny.touches !== 'undefined') {
-            screenCamera = this.worldToScreen(this.camera.point);
-            touchStart = inputAny.touchStart.clone().add(screenCamera);
-            touchCurrent = inputAny.touchCurrent.clone().add(screenCamera);
-            this.context.save();
-            _ref = inputAny.touches;
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-               touch = _ref[_i];
-               if (touch.identifier === inputAny.touchId) {
-                  this.context.beginPath();
-                  this.context.strokeStyle = "cyan";
-                  this.context.lineWidth = 6;
-                  this.context.arc(touchStart.x, touchStart.y, 40, 0, Math.PI * 2, true);
-                  this.context.stroke();
-                  this.context.beginPath();
-                  this.context.strokeStyle = "cyan";
-                  this.context.lineWidth = 2;
-                  this.context.arc(touchStart.x, touchStart.y, 60, 0, Math.PI * 2, true);
-                  this.context.stroke();
-                  this.context.beginPath();
-                  this.context.strokeStyle = "cyan";
-                  this.context.arc(touchCurrent.x, touchCurrent.y, 40, 0, Math.PI * 2, true);
-                  this.context.stroke();
-                  this.context.fillStyle = "white";
-               }
-            }
-            this.context.restore();
-         }
-         return this;
-      }
+      renderPost() {}
    }
 }
