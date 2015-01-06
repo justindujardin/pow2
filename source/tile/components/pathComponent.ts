@@ -27,7 +27,7 @@ module pow2.tile.components {
 
       _graph:any = null; // Astar graph object
 
-      constructor(public tileMap:pow2.GameTileMap) {
+      constructor(public tileMap:pow2.TileMap) {
          super();
       }
 

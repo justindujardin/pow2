@@ -1,7 +1,7 @@
 [
   {
     "name":"DorkaponMapObject",
-    "type":"pow2.TileMap",
+    "type":"dorkapon.DorkaponTileMap",
     "inputs":{
       "resource":"pow2.TiledTMXResource"
     },

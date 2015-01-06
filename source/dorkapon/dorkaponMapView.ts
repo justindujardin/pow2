@@ -42,7 +42,7 @@ module dorkapon {
             var playerComponent = <pow2.game.components.PlayerComponent>this.stateMachine.currentPlayer.findComponent(pow2.game.components.PlayerComponent);
             if (pathComponent && playerComponent) {
                pow2.Input.mouseOnView(e.originalEvent,this.mouse.view,this.mouse);
-               var nodes:components.INodeTile[] = pathComponent.getNodes();
+               var nodes:INodeTile[] = pathComponent.tileMap.getNodes();
                var hitNode = _.where(nodes,{
                   x:this.mouse.world.x,
                   y:this.mouse.world.y
