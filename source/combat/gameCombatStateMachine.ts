@@ -18,10 +18,6 @@
 
 module pow2 {
 
-   export interface IResumeCallback {
-      ():void;
-   }
-
    /**
     * Completion callback for a player action.
     */
@@ -63,38 +59,6 @@ module pow2 {
       focus:GameEntityObject;
       current:GameEntityObject;
       currentDone:boolean = false;
-
-      /**
-       * Notify the game UI of a combat event, and wait for it to handled
-       * if there is a specified handler.
-       */
-      notify(msg:string,data:any,callback?:()=>any){
-         if(this._asyncProcessing){
-            throw new Error("TODO: CombatStateMachine cannot handle multiple async UI waits");
-         }
-         this._asyncProcessing = false;
-         this._asyncCurrentCallback = () => {
-            if(msg === 'combat:victory'){
-               var foo = "bar";
-            }
-            console.log("Done ASYNC " + msg);
-            this._asyncProcessing = false;
-            callback && callback();
-         };
-         this.trigger(msg,data);
-         if(!this._asyncProcessing){
-            callback && callback();
-         }
-      }
-      private _asyncProcessing:boolean = false;
-      private _asyncCurrentCallback:IResumeCallback = null;
-      notifyWait():IResumeCallback {
-         if(!this._asyncCurrentCallback){
-            throw new Error("No valid async callback set!  Perhaps you called this outside of a notify event handler?");
-         }
-         this._asyncProcessing = true;
-         return this._asyncCurrentCallback;
-      }
 
       isFriendlyTurn():boolean {
          return this.current && !!_.find(this.party,(h:GameEntityObject) => {

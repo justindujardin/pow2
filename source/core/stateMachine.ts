@@ -33,6 +33,10 @@ module pow2 {
       getState(name:string):IState;
    }
 
+   export interface IResumeCallback {
+      ():void;
+   }
+
    // Implementation
    // -------------------------------------------------------------------------
    export class StateMachine extends Events implements IStateMachine, IWorldObject{
@@ -145,6 +149,35 @@ module pow2 {
             return s.name === name;
          });
          return state;
+      }
+
+      private _asyncProcessing:boolean = false;
+      private _asyncCurrentCallback:IResumeCallback = null;
+      /**
+       * Notify the game UI of an event, and wait for it to be handled,
+       * if there is a handler.
+       */
+      notify(msg:string,data:any,callback?:()=>any){
+         if(this._asyncProcessing){
+            throw new Error("TODO: StateMachine cannot handle multiple async UI waits");
+         }
+         this._asyncProcessing = false;
+         this._asyncCurrentCallback = () => {
+            console.log("Done ASYNC " + msg);
+            this._asyncProcessing = false;
+            callback && callback();
+         };
+         this.trigger(msg,data);
+         if(!this._asyncProcessing){
+            callback && callback();
+         }
+      }
+      notifyWait():IResumeCallback {
+         if(!this._asyncCurrentCallback){
+            throw new Error("No valid async callback set!  Perhaps you called this outside of a notify event handler?");
+         }
+         this._asyncProcessing = true;
+         return this._asyncCurrentCallback;
       }
    }
 
