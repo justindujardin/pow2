@@ -123,12 +123,11 @@ module dorkapon {
          return true;
       }
       createFeatureObject(node:INodeTile):pow2.GameEntityObject {
-         var options = _.extend({}, {
+         var options = {
             tileMap: this,
             type:node.type,
-            x: Math.round(node.x / this.map.tilewidth),
-            y: Math.round(node.y / this.map.tileheight)
-         });
+            point: new pow2.Point(node.x,node.y)
+         };
          var object = new pow2.GameEntityObject(options);
          this.world.mark(object);
 

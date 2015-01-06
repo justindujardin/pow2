@@ -26,6 +26,10 @@
         "params":["map"]
       },
       {
+        "name":"collider",
+        "type":"pow2.CollisionComponent"
+      },
+      {
         "name":"render",
         "type":"pow2.PlayerRenderComponent"
       },
