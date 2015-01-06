@@ -18,46 +18,78 @@
 
 module dorkapon {
 
+   export class DorkaponInitGame extends pow2.State {
+      static NAME:string = "init-game";
+      name:string = DorkaponInitGame.NAME;
+      enter(machine:DorkaponStateMachine){
+         super.enter(machine);
+         machine.setCurrentState(DorkaponBeginTurns.NAME);
+      }
+   }
    export class DorkaponBeginTurns extends pow2.State {
-      static NAME:string = "initialize-turns";
+      static NAME:string = "begin-turns";
       name:string = DorkaponBeginTurns.NAME;
 
       enter(machine:DorkaponStateMachine){
          super.enter(machine);
-
+         machine.playerQueue = machine.playerPool.slice();
+         machine.currentPlayer = machine.playerQueue.shift();
+         machine.setCurrentState(DorkaponPlayerTurn.NAME);
       }
+   }
+
+   export interface IPlayerTurnEvent {
+      player:pow2.GameEntityObject;
+      moves:number;
    }
    export class DorkaponPlayerTurn extends pow2.State {
       static NAME:string = "player-turn";
+      static EVENT:string = "player:turn";
       name:string = DorkaponPlayerTurn.NAME;
       parent:DorkaponStateMachine = null;
       tileMap:pow2.GameTileMap;
-      constructor() {
-         super();
-      }
       enter(machine:DorkaponStateMachine){
          super.enter(machine);
-         this.parent = machine;
-         var mapUrl:string = pow2.getMapUrl('dorkapon');
-         machine.world.loader.load(mapUrl,(map:pow2.TiledTMXResource)=>{
-            this.tileMap = machine.factory.createObject('DorkaponMapObject',{
-               resource:map
-            });
+         var data:IPlayerTurnEvent = {
+            player:machine.currentPlayer,
+            moves:Math.floor(Math.random() * 6) + 1
+         };
+         machine.notify(DorkaponPlayerTurn.EVENT,data,()=>{
+            _.delay(()=>{
+               machine.setCurrentState(DorkaponPlayerTurnEnd.NAME);
+            },100);
          });
       }
-      exit(machine:DorkaponStateMachine){
+   }
+   export class DorkaponPlayerTurnEnd extends pow2.State {
+      static NAME:string = "player-turn-end";
+      name:string = DorkaponPlayerTurnEnd.NAME;
+      enter(machine:DorkaponStateMachine){
+         super.enter(machine);
+         if(machine.playerQueue.length > 0){
+            machine.currentPlayer = machine.playerQueue.shift();
+            console.log("Next turn is: " + machine.currentPlayer.toString());
+            machine.setCurrentState(DorkaponPlayerTurn.NAME);
+         }
+         else {
+            machine.setCurrentState(DorkaponBeginTurns.NAME);
+         }
       }
    }
 
    export class DorkaponStateMachine extends pow2.StateMachine {
       world:DorkaponGameWorld;
       model:pow2.GameStateModel = new pow2.GameStateModel();
-      defaultState:string = DorkaponBeginTurns.NAME;
+      defaultState:string = DorkaponInitGame.NAME;
       factory:pow2.EntityContainerResource;
-      players:pow2.GameEntityObject[] = [];
+      currentPlayer:pow2.GameEntityObject = null;
+      playerPool:pow2.GameEntityObject[] = [];
+      playerQueue:pow2.GameEntityObject[] = [];
       states:pow2.IState[] = [
+         new DorkaponInitGame(),
          new DorkaponBeginTurns(),
-         new DorkaponPlayerTurn()
+         new DorkaponPlayerTurn(),
+         new DorkaponPlayerTurnEnd()
       ];
       constructor(){
          super();

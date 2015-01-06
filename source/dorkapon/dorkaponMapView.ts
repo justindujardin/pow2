@@ -25,21 +25,34 @@ module dorkapon {
       targetStroke:string = "white";
       targetStrokeWidth:number = 2;
 
-      mouseClick(e:any) {
-         var pathComponent = <dorkapon.components.PlayerPathComponent>this.scene.componentByType(dorkapon.components.PlayerPathComponent);
-         var playerComponent = <pow2.game.components.PlayerComponent>this.scene.componentByType(pow2.game.components.PlayerComponent);
-         if (pathComponent && playerComponent) {
-            pow2.Input.mouseOnView(e.originalEvent,this.mouse.view,this.mouse);
-            var nodes:components.INodeTile[] = pathComponent.getNodes();
-            var hitNode = _.where(nodes,{
-               x:this.mouse.world.x,
-               y:this.mouse.world.y
-            });
-            if(hitNode.length){
-               playerComponent.path = pathComponent.calculatePath(playerComponent.targetPoint,this.mouse.world);
+      stateMachine:DorkaponStateMachine = null;
+
+      processCamera() {
+         if(this.stateMachine && this.stateMachine.currentPlayer) {
+            var camera = <pow2.CameraComponent>this.stateMachine.currentPlayer.findComponent(pow2.CameraComponent);
+            if(camera){
+               camera.process(this);
             }
-            e.preventDefault();
-            return false;
+         }
+      }
+
+      mouseClick(e:any) {
+         if(this.stateMachine && this.stateMachine.currentPlayer){
+            var pathComponent = <dorkapon.components.PlayerPathComponent>this.stateMachine.currentPlayer.findComponent(dorkapon.components.PlayerPathComponent);
+            var playerComponent = <pow2.game.components.PlayerComponent>this.stateMachine.currentPlayer.findComponent(pow2.game.components.PlayerComponent);
+            if (pathComponent && playerComponent) {
+               pow2.Input.mouseOnView(e.originalEvent,this.mouse.view,this.mouse);
+               var nodes:components.INodeTile[] = pathComponent.getNodes();
+               var hitNode = _.where(nodes,{
+                  x:this.mouse.world.x,
+                  y:this.mouse.world.y
+               });
+               if(hitNode.length){
+                  playerComponent.path = pathComponent.calculatePath(playerComponent.targetPoint,this.mouse.world);
+               }
+               e.preventDefault();
+               return false;
+            }
          }
 
       }

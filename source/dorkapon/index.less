@@ -10,6 +10,7 @@
 @import "scaffolding";
 @import "type";
 @import "code";
+@import "buttons";
 @import "progress-bars";
 @import "glyphicons";
 
@@ -17,11 +18,11 @@
 @import "utilities";
 
 // Other
+@import "./directives/dorkaponHud";
 @import "../ui/style/eightBitPanel";
 @import "../ui/style/pageTransitions";
 @import "../ui/style/animation";
 @import "../ui/style/animations/damageValue";
-@import "../ui/style/buttons";
 
 @zCanvas: 10;
 @zCanvasGui: 20;
@@ -245,39 +246,6 @@ canvas {
   bottom:0;
   overflow-y:auto;
   pointer-events:none;
-  .ebp {
-    pointer-events:auto;
-  }
-  > * {
-    display: block;
-    height:100%;
-    overflow-y:auto;
-  }
-  .dialog {
-    max-width: 800px;
-    min-width: 300px;
-    margin-top:15px;
-    padding:10px 10px;
-    position: relative;
-    .btn-close {
-      position: absolute;
-      font-size: 1em;
-      padding: 5px 15px;
-      padding-top: 10px;
-      right: 0;
-      top: 0;
-      &:hover {
-        top: 0;
-        padding-top: 12px;
-      }
-      &:active {
-        top: 0;
-        padding-top: 16px;
-      }
-    }
-
-  }
-
 }
 
 /* Small devices (tablets, 768px and up) */
