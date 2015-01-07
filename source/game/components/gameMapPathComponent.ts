@@ -18,12 +18,11 @@
 /// <reference path="../../tile/components/pathComponent.ts" />
 
 module pow2.components {
-   declare var Graph:any;
    /**
     * Build Astar paths with GameFeatureObject tilemaps.
     */
    export class GameMapPathComponent extends pow2.tile.components.PathComponent {
-      generateAStarGraph() {
+      buildWeightedGraph():number[][] {
          var layers:tiled.ITiledLayer[] = this.tileMap.getLayers();
          var l:number = layers.length;
 
@@ -82,7 +81,7 @@ module pow2.components {
                }
             }
          });
-         this._graph = new Graph(grid);
+         return grid;
       }
    }
 }

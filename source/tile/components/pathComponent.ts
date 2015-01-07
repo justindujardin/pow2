@@ -36,24 +36,42 @@ module pow2.tile.components {
       }
 
       syncComponent():boolean {
-         this.tileMap.off(pow2.TileMap.Events.LOADED,this.generateAStarGraph,this);
-         this.tileMap.on(pow2.TileMap.Events.LOADED,this.generateAStarGraph,this);
+         this.tileMap.off(pow2.TileMap.Events.LOADED,this._updateGraph,this);
+         this.tileMap.on(pow2.TileMap.Events.LOADED,this._updateGraph,this);
          return super.syncComponent();
       }
       disconnectComponent():boolean {
-            this.tileMap.off(pow2.TileMap.Events.UNLOADED,this.generateAStarGraph,this);
-            this.tileMap.off(pow2.TileMap.Events.LOADED,this.generateAStarGraph,this);
+         this.tileMap.off(pow2.TileMap.Events.LOADED,this._updateGraph,this);
+         this._graph = null;
          return super.disconnectComponent();
+      }
+      private _updateGraph(){
+         this._graph = new Graph(this.buildWeightedGraph());
       }
 
       /**
-       * Do the meaty part of populating the _graph
+       * Build a two-dimensional graph of numbers that represent the map
+       * to find paths on.  The higher the value at an index, the more
+       * difficult it is to traverse.
+       *
+       * A grid might look like this:
+       *
+       *     [5,5,1,5]
+       *     [1,1,1,5]
+       *     [5,5,5,5]
+       *
        */
-      generateAStarGraph() {}
+      buildWeightedGraph():number[][] {
+         return [[]];
+      }
 
+      /**
+       * Calculate the best path from one point to another in the current
+       * A* graph.
+       */
       calculatePath(from:Point,to:Point):Point[]{
          if(!this._graph){
-            this.generateAStarGraph();
+            this._updateGraph();
          }
          if(!this._graph || !this._graph.nodes){
             throw new Error("Invalid AStar graph");

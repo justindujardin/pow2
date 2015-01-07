@@ -18,15 +18,13 @@
 
 module dorkapon.components {
 
-   declare var Graph:any;
-
    /**
     * Generate an A* path given a dorkapon tile map.
     */
    export class PlayerPathComponent extends pow2.tile.components.PathComponent {
 
       tileMap:DorkaponTileMap;
-      generateAStarGraph() {
+      buildWeightedGraph():number[][] {
 
          var horizPaths = this.tileMap.getHorizPaths();
          var vertPaths = this.tileMap.getVertPaths();
@@ -49,7 +47,7 @@ module dorkapon.components {
          _.each(nodes,(p:IPathTile)=>{
             grid[p.x][p.y] = PathWeights.CAN_REST;
          });
-         this._graph = new Graph(grid);
+         return grid;
       }
    }
 }
