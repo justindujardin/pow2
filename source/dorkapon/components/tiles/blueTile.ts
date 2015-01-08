@@ -14,14 +14,14 @@
  limitations under the License.
  */
 
-/// <reference path="../../index.ts" />
+/// <reference path="../mapNodeComponent.ts" />
 
 module dorkapon.components.tiles {
-   export class BlueTile extends pow2.GameComponent {
-      enter(object:pow2.GameEntityObject):boolean {
+   export class BlueTile extends MapNodeComponent {
+      enter(object:objects.DorkaponEntity):boolean {
+         super.enter(object);
          console.log("BLUE NODE");
          return true;
       }
-
    }
 }

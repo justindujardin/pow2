@@ -25,7 +25,7 @@ module dorkapon.components {
     * edge of the map.
     */
    export class PlayerCamera extends pow2.CameraComponent {
-      host:pow2.TileObject;
+      host:objects.DorkaponEntity;
       // Pre allocate spatial objects for this component because cameras are
       // updated every frame.
       private _worker:pow2.Point = new pow2.Point();

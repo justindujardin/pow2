@@ -14,15 +14,10 @@
  limitations under the License.
  */
 
-/// <reference path="../mapNodeComponent.ts" />
+/// <reference path="./../index.ts" />
 
-module dorkapon.components.tiles {
-   export class RedTile extends MapNodeComponent {
-      enter(object:objects.DorkaponEntity):boolean {
-         super.enter(object);
-         console.log("RED NODE");
-         return true;
-      }
-
+module dorkapon.objects {
+   export class DorkaponEntity extends pow2.GameObject {
+      model:models.DorkaponEntity;
    }
 }

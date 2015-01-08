@@ -10,9 +10,9 @@
   },
   {
     "name":"DorkaponMapPlayer",
-    "type":"pow2.GameEntityObject",
+    "type":"dorkapon.objects.DorkaponEntity",
     "inputs":{
-      "model":"pow2.HeroModel",
+      "model":"dorkapon.models.DorkaponEntity",
       "map":"pow2.TileMap"
     },
     "components": [

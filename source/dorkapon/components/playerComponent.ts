@@ -23,6 +23,7 @@ module dorkapon.components {
     * using the paths defined within.
     */
    export class PlayerComponent extends pow2.game.components.PlayerComponent {
+      host:objects.DorkaponEntity;
       heading:pow2.Point = new pow2.Point(0,1);
       paths:PlayerPathComponent = null;
       map:pow2.TileMap = null;

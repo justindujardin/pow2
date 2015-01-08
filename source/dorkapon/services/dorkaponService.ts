@@ -43,14 +43,14 @@ module dorkapon.services {
          this.entities = <pow2.EntityContainerResource>this.world.loader.load('entities/dorkapon.powEntities');
       }
 
-      createPlayer(from:pow2.HeroModel,at?:pow2.Point):pow2.GameEntityObject{
+      createPlayer(from:models.DorkaponEntity,at?:pow2.Point):objects.DorkaponEntity{
          if(!from){
             throw new Error("Cannot create player without valid model");
          }
          if(!this.entities.isReady()){
             throw new Error("Cannot create player before entities container is loaded");
          }
-         var sprite = <pow2.GameEntityObject>this.entities.createObject('DorkaponMapPlayer',{
+         var sprite = <objects.DorkaponEntity>this.entities.createObject('DorkaponMapPlayer',{
             model:from,
             map:this.tileMap
          });
@@ -81,15 +81,15 @@ module dorkapon.services {
                resource:map
             });
 
-            var players:pow2.GameEntityObject[] = [];
+            var players:objects.DorkaponEntity[] = [];
 
             // Ranger player
-            var model:pow2.HeroModel = pow2.HeroModel.create(pow2.HeroTypes.Ranger,"Ranger");
+            var model:models.DorkaponEntity = new models.DorkaponEntity({name:"Ranger"});
             players.push(this.createPlayer(model,new pow2.Point(3,18)));
             this.world.scene.addObject(this.tileMap);
 
             // Mage player
-            var model:pow2.HeroModel = pow2.HeroModel.create(pow2.HeroTypes.LifeMage,"Mage");
+            var model:models.DorkaponEntity = new models.DorkaponEntity({name:"Mage"});
             players.push(this.createPlayer(model,new pow2.Point(12,11)));
             this.world.scene.addObject(this.tileMap);
 

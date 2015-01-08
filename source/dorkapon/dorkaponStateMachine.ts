@@ -39,7 +39,7 @@ module dorkapon {
    }
 
    export interface IPlayerTurnEvent {
-      player:pow2.GameEntityObject;
+      player:objects.DorkaponEntity;
       moves:number;
    }
    export class DorkaponPlayerTurn extends pow2.State {
@@ -82,9 +82,9 @@ module dorkapon {
       model:pow2.GameStateModel = new pow2.GameStateModel();
       defaultState:string = DorkaponInitGame.NAME;
       factory:pow2.EntityContainerResource;
-      currentPlayer:pow2.GameEntityObject = null;
-      playerPool:pow2.GameEntityObject[] = [];
-      playerQueue:pow2.GameEntityObject[] = [];
+      currentPlayer:objects.DorkaponEntity = null;
+      playerPool:objects.DorkaponEntity[] = [];
+      playerQueue:objects.DorkaponEntity[] = [];
       states:pow2.IState[] = [
          new DorkaponInitGame(),
          new DorkaponBeginTurns(),
