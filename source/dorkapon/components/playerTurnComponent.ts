@@ -74,9 +74,9 @@ module dorkapon.components {
             var playerComp = <PlayerComponent>this.host.findComponent(dorkapon.components.PlayerComponent);
             if(playerComp){
                playerComp.path.length = 0;
-               var cb:any = this.turnDone;
-               _.delay(cb,500);
             }
+            var cb:any = this.turnDone;
+            _.delay(cb,500);
             this.turnDone = null;
          }
       }

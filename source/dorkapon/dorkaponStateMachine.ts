@@ -78,7 +78,11 @@ module dorkapon {
                machine.setCurrentState(DorkaponPlayerTurn.NAME);
             }
             else {
-               machine.setCurrentState(DorkaponBeginTurns.NAME);
+               // TODO: Defensive aesthetic delay, remove.
+               _.delay(()=>{
+                  // TODO: This should probably do something more intelligent
+                  machine.setCurrentState(DorkaponBeginTurns.NAME);
+               },500);
             }
          });
       }
