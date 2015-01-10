@@ -20,11 +20,48 @@ module dorkapon.components {
    export class MapNodeComponent extends pow2.GameComponent {
       public world:DorkaponGameWorld = <DorkaponGameWorld>pow2.getWorld(dorkapon.NAME);
 
+      eventText(action:string){
+         console.log(action + " node " + this.host._uid);
+      }
+
+      entered(object:objects.DorkaponEntity):boolean {
+
+
+
+
+         // ---
+         // TODO: This is a hack.  Node implementations should be doing this.
+         var turn = <PlayerTurnComponent>object.findComponent(PlayerTurnComponent);
+         if(turn && turn.isCurrentTurn()){
+            turn.decrementMove();
+         }
+         // ---
+
+
+
+
+         if(this.world && this.world.state && this.world.state.currentPlayer){
+            this.eventText("entered");
+         }
+         return super.entered(object);
+      }
+      exited(object:objects.DorkaponEntity):boolean {
+         if(this.world && this.world.state && this.world.state.currentPlayer){
+            this.eventText("exited");
+         }
+         return super.exited(object);
+      }
       enter(object:objects.DorkaponEntity):boolean {
          if(this.world && this.world.state && this.world.state.currentPlayer){
-            console.log(object.model.get('name') + " entered a ");
+            this.eventText("enter");
          }
          return super.enter(object);
+      }
+      exit(object:objects.DorkaponEntity):boolean {
+         if(this.world && this.world.state && this.world.state.currentPlayer){
+            this.eventText("exit");
+         }
+         return super.exit(object);
       }
 
    }

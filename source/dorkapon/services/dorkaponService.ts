@@ -52,6 +52,7 @@ module dorkapon.services {
          }
          var sprite = <objects.DorkaponEntity>this.entities.createObject('DorkaponMapPlayer',{
             model:from,
+            machine:this.world.state,
             map:this.tileMap
          });
          sprite.name = from.attributes.name;
@@ -84,12 +85,12 @@ module dorkapon.services {
             var players:objects.DorkaponEntity[] = [];
 
             // Ranger player
-            var model:models.DorkaponEntity = new models.DorkaponEntity({name:"Ranger"});
+            var model:models.DorkaponEntity = new models.DorkaponEntity({name:"Ranger",icon:"ranger-female.png"});
             players.push(this.createPlayer(model,new pow2.Point(3,18)));
             this.world.scene.addObject(this.tileMap);
 
             // Mage player
-            var model:models.DorkaponEntity = new models.DorkaponEntity({name:"Mage"});
+            var model:models.DorkaponEntity = new models.DorkaponEntity({name:"Mage",icon:"magician-female.png"});
             players.push(this.createPlayer(model,new pow2.Point(12,11)));
             this.world.scene.addObject(this.tileMap);
 

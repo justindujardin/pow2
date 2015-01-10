@@ -24,14 +24,7 @@ module dorkapon.models {
    export interface IDorkaponEntityAttributes {
       name:string;
       icon:string;
-      level?:number;
-      hp?:number;
-      maxHP?:number;
-      exp?:number;
-      strength?:number;
-      vitality?:number;
-      intelligence?:number;
-      agility?:number;
+      moves:number;
    }
 
    export class DorkaponEntity extends Backbone.Model {
@@ -39,13 +32,7 @@ module dorkapon.models {
       static DEFAULTS:IDorkaponEntityAttributes = {
          name:"Nothing",
          icon:"",
-         level:1,
-         hp:0,
-         maxHP: 0,
-         strength: 5,
-         vitality: 4,
-         intelligence: 1,
-         agility: 1
+         moves:0
       };
       defaults():any {
          return _.extend({},DorkaponEntity.DEFAULTS);

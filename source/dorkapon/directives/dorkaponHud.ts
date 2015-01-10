@@ -62,17 +62,28 @@ module dorkapon.directives {
             controllerAs:"hud",
             link:(scope, element, attrs,controller:DorkaponHudController) => {
 
+               var changeHandler:any = () => {
+                  scope.$$phase || scope.$digest();
+               };
                $dorkapon.machine.on(DorkaponPlayerTurn.EVENT,(e:IPlayerTurnEvent)=>{
-                  console.log(e);
-                  var done = $dorkapon.machine.notifyWait();
                   scope.$apply(()=>{
-                     controller.doneCallback = done;
                      controller.turn = e;
+                  });
+                  e.player.model.on('change',changeHandler);
+               });
+
+               $dorkapon.machine.on(DorkaponPlayerTurnEnd.EVENT,(e:IPlayerTurnEvent)=>{
+                  e.player.model.off('change',changeHandler);
+                  scope.$apply(()=>{
+                     controller.turn = null;
                   });
                });
 
                scope.$on('$destroy',()=>{
-                  $dorkapon.machine && $dorkapon.machine.off(DorkaponPlayerTurn.EVENT,null,this);
+                  if($dorkapon.machine){
+                     $dorkapon.machine.off(DorkaponPlayerTurn.EVENT,null,this);
+                     $dorkapon.machine.off(DorkaponPlayerTurnEnd.EVENT,null,this);
+                  }
                });
             }
          };

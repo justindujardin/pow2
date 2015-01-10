@@ -1,42 +1,28 @@
 [
   {
-    "name":"DorkaponMapObject",
-    "type":"dorkapon.DorkaponTileMap",
-    "inputs":{
-      "resource":"pow2.TiledTMXResource"
+    "name": "DorkaponMapObject",
+    "type": "dorkapon.DorkaponTileMap",
+    "inputs": {
+      "resource": "pow2.TiledTMXResource"
     },
-    "params":["resource"],
+    "params": ["resource"],
     "components": []
   },
   {
-    "name":"DorkaponMapPlayer",
-    "type":"dorkapon.objects.DorkaponEntity",
-    "inputs":{
-      "model":"dorkapon.models.DorkaponEntity",
-      "map":"pow2.TileMap"
+    "name": "DorkaponMapPlayer",
+    "type": "dorkapon.objects.DorkaponEntity",
+    "inputs": {
+      "model": "dorkapon.models.DorkaponEntity",
+      "map": "dorkapon.DorkaponTileMap",
+      "machine": "dorkapon.DorkaponStateMachine"
     },
     "components": [
-      {
-        "name":"player",
-        "type":"dorkapon.components.PlayerComponent"
-      },
-      {
-        "name":"movement",
-        "type":"dorkapon.components.PlayerPathComponent",
-        "params":["map"]
-      },
-      {
-        "name":"collider",
-        "type":"pow2.CollisionComponent"
-      },
-      {
-        "name":"render",
-        "type":"pow2.PlayerRenderComponent"
-      },
-      {
-        "name":"camera",
-        "type":"dorkapon.components.PlayerCamera"
-      }
+      { "name": "player",   "type": "dorkapon.components.PlayerComponent" },
+      { "name": "movement", "type": "dorkapon.components.PlayerPathComponent", "params": ["map"] },
+      { "name": "turn",     "type": "dorkapon.components.PlayerTurnComponent", "params": ["machine"] },
+      { "name": "collider", "type": "pow2.CollisionComponent" },
+      { "name": "render",   "type": "pow2.PlayerRenderComponent" },
+      { "name": "camera",   "type": "dorkapon.components.PlayerCamera" }
     ]
   }
 ]

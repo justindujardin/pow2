@@ -40,40 +40,47 @@ module dorkapon {
 
    export interface IPlayerTurnEvent {
       player:objects.DorkaponEntity;
-      moves:number;
    }
    export class DorkaponPlayerTurn extends pow2.State {
       static NAME:string = "player-turn";
       static EVENT:string = "player:turn";
       name:string = DorkaponPlayerTurn.NAME;
-      parent:DorkaponStateMachine = null;
       tileMap:pow2.GameTileMap;
       enter(machine:DorkaponStateMachine){
          super.enter(machine);
+
+         var player = <components.PlayerComponent>machine.currentPlayer.findComponent(components.PlayerComponent);
          var data:IPlayerTurnEvent = {
-            player:machine.currentPlayer,
-            moves:Math.floor(Math.random() * 6) + 1
+            player:machine.currentPlayer
          };
+         data.player.model.set({
+            moves: Math.floor(Math.random() * 6) + 1
+         });
          machine.notify(DorkaponPlayerTurn.EVENT,data,()=>{
-            _.delay(()=>{
-               machine.setCurrentState(DorkaponPlayerTurnEnd.NAME);
-            },100);
+            machine.setCurrentState(DorkaponPlayerTurnEnd.NAME);
          });
       }
+
    }
    export class DorkaponPlayerTurnEnd extends pow2.State {
       static NAME:string = "player-turn-end";
+      static EVENT:string = "player:turn-end";
       name:string = DorkaponPlayerTurnEnd.NAME;
       enter(machine:DorkaponStateMachine){
          super.enter(machine);
-         if(machine.playerQueue.length > 0){
-            machine.currentPlayer = machine.playerQueue.shift();
-            console.log("Next turn is: " + machine.currentPlayer.toString());
-            machine.setCurrentState(DorkaponPlayerTurn.NAME);
-         }
-         else {
-            machine.setCurrentState(DorkaponBeginTurns.NAME);
-         }
+         var data:IPlayerTurnEvent = {
+            player:machine.currentPlayer
+         };
+         machine.notify(DorkaponPlayerTurnEnd.EVENT,data,()=>{
+            if(machine.playerQueue.length > 0){
+               machine.currentPlayer = machine.playerQueue.shift();
+               console.log("Next turn is: " + machine.currentPlayer.toString());
+               machine.setCurrentState(DorkaponPlayerTurn.NAME);
+            }
+            else {
+               machine.setCurrentState(DorkaponBeginTurns.NAME);
+            }
+         });
       }
    }
 
@@ -97,5 +104,5 @@ module dorkapon {
             this.factory = factory;
          });
       }
-  }
+   }
 }
