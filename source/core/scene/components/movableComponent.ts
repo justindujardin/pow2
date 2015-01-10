@@ -17,6 +17,15 @@
 /// <reference path="./collisionComponent.ts" />
 
 module pow2 {
+
+   /**
+    * Describe a move from one point to another.
+    */
+   export interface IMoveDescription {
+      from:Point;
+      to:Point;
+   }
+
    export class MovableComponent extends TickedComponent {
       _elapsed: number = 0;
       targetPoint: pow2.Point;
@@ -26,6 +35,7 @@ module pow2 {
       workPoint: Point = new Point(0,0);
       host: SceneObject;
       collider:CollisionComponent;
+      currentMove:IMoveDescription = null;
 
       connectComponent():boolean{
          this.host.point.round();
@@ -39,10 +49,16 @@ module pow2 {
       }
 
       /**
-       * Move from one point to another.  Do any custom processing of moves here.
+       * Called when a new tick of movement begins.
+       * @param move The move that is beginning
        */
-      beginMove(from:Point,to:Point){ }
-      endMove(from:Point,to:Point){ }
+      beginMove(move:IMoveDescription){ }
+
+      /**
+       * Called when a complete tick of movement occurs.
+       * @param move The move that is now completed.
+       */
+      completeMove(move:IMoveDescription){ }
 
       collideMove(x:number,y:number,results:SceneObject[]=[]){
          if(!this.collider){
@@ -84,9 +100,6 @@ module pow2 {
          this.host.renderPoint.interpolate(this.host.point, this.targetPoint, factor);
          this.host.renderPoint.x = parseFloat(this.host.renderPoint.x.toFixed(2));
          this.host.renderPoint.y = parseFloat(this.host.renderPoint.y.toFixed(2));
-         // console.log("INTERP Vel(#{@velocity.x},#{@velocity.y}) factor(#{factor})")
-         // console.log("INTERP From(#{@point.x},#{@point.y}) to (#{@renderPoint.x},#{@renderPoint.y})")
-
       }
 
       tick(elapsed:number) {
@@ -104,9 +117,13 @@ module pow2 {
          // Check that targetPoint != point first, because or else
          // the collision check will see be against the current position.
          if (!this.targetPoint.equal(this.host.point) && !this.collideMove(this.targetPoint.x, this.targetPoint.y)) {
+
+            // Target point is not the current point and there is no collision.
             this.workPoint.set(this.host.point);
             this.host.point.set(this.targetPoint);
-            this.endMove(this.workPoint,this.targetPoint);
+
+            //
+            this.completeMove(this.currentMove);
          }
 
          // Update Velocity Inputs
@@ -148,7 +165,11 @@ module pow2 {
             return;
          }
 
-         this.beginMove(this.host.point,this.targetPoint);
+         this.currentMove = {
+            from:this.host.point.clone(),
+            to:this.targetPoint.clone()
+         };
+         this.beginMove(this.currentMove);
       }
    }
 }

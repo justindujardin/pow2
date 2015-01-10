@@ -71,7 +71,7 @@ module pow2 {
       listenMoves() {
          this.stopListening();
          if(this.player && this.enabled){
-            this.player.on('move:begin',this.moveProcess,this);
+            this.player.on(pow2.game.components.PlayerComponent.Events.MOVE_BEGIN,this.moveProcess,this);
          }
       }
       stopListening() {

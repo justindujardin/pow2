@@ -23,61 +23,69 @@ module pow2.game.components {
    export class PlayerComponent extends MovableComponent {
       host:TileObject;
       passableKeys:string[] = ['passable'];
-      static COLLIDE_TYPES:string[] = ['pow2.TempleFeatureComponent','pow2.StoreFeatureComponent','pow2.DialogFeatureComponent','sign'];
+      static COLLIDE_TYPES:string[] = ['pow2.TempleFeatureComponent', 'pow2.StoreFeatureComponent', 'pow2.DialogFeatureComponent', 'sign'];
       private _lastFrame:number = 3;
       private _renderFrame:number = 3;
-      heading:Point = new Point(0,-1);
+      heading:Point = new Point(0, -1);
       sprite:PlayerRenderComponent = null;
+      collideComponentType:any = GameComponent;
+
+      static Events:any = {
+         MOVE_BEGIN: 'move:begin',
+         MOVE_END: 'move:end'
+      };
 
       syncComponent():boolean {
          this.sprite = <PlayerRenderComponent>this.host.findComponent(PlayerRenderComponent);
          return super.syncComponent();
       }
-      tick(elapsed:number){
+
+      tick(elapsed:number) {
          // There are four states and two rows.  The second row is all alt states, so mod it out
          // when a move ends.
          this._lastFrame = this._renderFrame > 3 ? this._renderFrame - 4 : this._renderFrame;
          super.tick(elapsed);
       }
+
       interpolateTick(elapsed:number) {
          super.interpolateTick(elapsed);
-         if(!this.sprite){
+         if (!this.sprite) {
             return;
          }
          var xMove = this.targetPoint.x !== this.host.renderPoint.x;
          var yMove = this.targetPoint.y !== this.host.renderPoint.y;
-         if(this.velocity.y > 0 && yMove){
-            this.sprite.setHeading(Headings.SOUTH,yMove);
-            this.heading.set(0,1);
+         if (this.velocity.y > 0 && yMove) {
+            this.sprite.setHeading(Headings.SOUTH, yMove);
+            this.heading.set(0, 1);
          }
-         else if(this.velocity.y < 0 && yMove){
-            this.sprite.setHeading(Headings.NORTH,yMove);
-            this.heading.set(0,-1);
+         else if (this.velocity.y < 0 && yMove) {
+            this.sprite.setHeading(Headings.NORTH, yMove);
+            this.heading.set(0, -1);
          }
-         else if(this.velocity.x < 0 && xMove){
-            this.sprite.setHeading(Headings.WEST,xMove);
-            this.heading.set(-1,0);
+         else if (this.velocity.x < 0 && xMove) {
+            this.sprite.setHeading(Headings.WEST, xMove);
+            this.heading.set(-1, 0);
          }
-         else if(this.velocity.x > 0 && xMove){
-            this.sprite.setHeading(Headings.EAST,xMove);
-            this.heading.set(1,0);
+         else if (this.velocity.x > 0 && xMove) {
+            this.sprite.setHeading(Headings.EAST, xMove);
+            this.heading.set(1, 0);
          }
          else {
-            if(this.velocity.y > 0){
-               this.sprite.setHeading(Headings.SOUTH,false);
-               this.heading.set(0,1);
+            if (this.velocity.y > 0) {
+               this.sprite.setHeading(Headings.SOUTH, false);
+               this.heading.set(0, 1);
             }
-            else if(this.velocity.y < 0){
-               this.sprite.setHeading(Headings.NORTH,false);
-               this.heading.set(0,-1);
+            else if (this.velocity.y < 0) {
+               this.sprite.setHeading(Headings.NORTH, false);
+               this.heading.set(0, -1);
             }
-            else if(this.velocity.x < 0){
-               this.sprite.setHeading(Headings.WEST,false);
-               this.heading.set(-1,0);
+            else if (this.velocity.x < 0) {
+               this.sprite.setHeading(Headings.WEST, false);
+               this.heading.set(-1, 0);
             }
-            else if(this.velocity.x > 0){
-               this.sprite.setHeading(Headings.EAST,false);
-               this.heading.set(1,0);
+            else if (this.velocity.x > 0) {
+               this.sprite.setHeading(Headings.EAST, false);
+               this.heading.set(1, 0);
             }
             else {
                this.sprite.setMoving(false);
@@ -93,16 +101,16 @@ module pow2.game.components {
        * @param passableAttribute {string} The attribute to check.
        * @returns {boolean} True if the passable attribute was found and set to false.
        */
-      collideWithMap(at:pow2.Point,passableAttribute:string):boolean{
+      collideWithMap(at:pow2.Point, passableAttribute:string):boolean {
          var map:TileMap = <TileMap>this.host.scene.objectByType(TileMap);
          if (map) {
             var layers:tiled.ITiledLayer[] = map.getLayers();
-            for(var i = 0; i < layers.length; i++) {
-               var terrain = map.getTileData(layers[i],at.x,at.y);
+            for (var i = 0; i < layers.length; i++) {
+               var terrain = map.getTileData(layers[i], at.x, at.y);
                if (!terrain) {
                   continue;
                }
-               if(terrain[passableAttribute] === false){
+               if (terrain[passableAttribute] === false) {
                   return true;
                }
             }
@@ -110,15 +118,15 @@ module pow2.game.components {
          return false;
       }
 
-      collideMove(x:number,y:number,results:GameFeatureObject[]=[]){
-         var collision:boolean = this.collider && this.collider.collide(x,y,GameFeatureObject,results);
-         if(collision){
+      collideMove(x:number, y:number, results:GameFeatureObject[] = []) {
+         var collision:boolean = this.collider && this.collider.collide(x, y, GameFeatureObject, results);
+         if (collision) {
             for (var i = 0; i < results.length; i++) {
                var o = <GameFeatureObject>results[i];
-               if(o.passable === true || !o.type){
+               if (o.passable === true || !o.type) {
                   return false;
                }
-               if(_.indexOf(PlayerComponent.COLLIDE_TYPES, o.type) !== -1){
+               if (_.indexOf(PlayerComponent.COLLIDE_TYPES, o.type) !== -1) {
                   return true;
                }
             }
@@ -130,13 +138,13 @@ module pow2.game.components {
          var map:TileMap = <TileMap>this.host.scene.objectByType(TileMap);
          if (map) {
             var layers:tiled.ITiledLayer[] = map.getLayers();
-            for(var i = 0; i < layers.length; i++) {
-               var terrain = map.getTileData(layers[i],x,y);
+            for (var i = 0; i < layers.length; i++) {
+               var terrain = map.getTileData(layers[i], x, y);
                if (!terrain) {
                   continue;
                }
-               for(var j = 0; j < this.passableKeys.length; j++){
-                  if(terrain[this.passableKeys[j]] === false){
+               for (var j = 0; j < this.passableKeys.length; j++) {
+                  if (terrain[this.passableKeys[j]] === false) {
                      return true;
                   }
                }
@@ -144,44 +152,67 @@ module pow2.game.components {
          }
          return false;
       }
-      beginMove(from:Point,to:Point) {
-         this.host.trigger('move:begin',this,from,to);
 
-         var results = [];
-         var collision:boolean = this.collider && this.collider.collide(to.x,to.y,GameObject,results);
-         if(collision){
-            for (var i = 0; i < results.length; i++) {
-               var o:GameObject = results[i];
-               var comp:TileComponent = <TileComponent>o.findComponent(TileComponent);
-               if(!comp || !comp.enter){
-                  continue;
-               }
-               if(comp.enter(this.host) === false){
-                  return;
-               }
-            }
-         }
-      }
-      endMove(from:Point,to:Point) {
-         this.host.trigger('move:end',this,from,to);
+      beginMove(move:pow2.IMoveDescription) {
+         this.host.trigger(PlayerComponent.Events.MOVE_BEGIN, this, move.from, move.to);
          if(!this.collider){
             return;
          }
 
-         // Successful move, collide against target point and check any new tile actions.
-         var fromFeature:GameObject = <GameObject>this.collider.collideFirst(from.x,from.y,GameObject);
+         var results = [];
+         this.collider.collide(move.from.x, move.from.y, GameObject, results);
+         for (var i = 0; i < results.length; i++) {
+            var o:GameObject = results[i];
+            var comp:TileComponent = <TileComponent>o.findComponent(this.collideComponentType);
+            if (!comp || !comp.enter) {
+               continue;
+            }
+            if (comp.exit(this.host) === false) {
+               return;
+            }
+         }
+         results.length = 0;
+         this.collider.collide(move.to.x, move.to.y, GameObject, results);
+         for (var i = 0; i < results.length; i++) {
+            var o:GameObject = results[i];
+            var comp:TileComponent = <TileComponent>o.findComponent(this.collideComponentType);
+            if (!comp || !comp.enter) {
+               continue;
+            }
+            if (comp.enter(this.host) === false) {
+               return;
+            }
+         }
+      }
+
+      completeMove(move:pow2.IMoveDescription) {
+         this.host.trigger(PlayerComponent.Events.MOVE_END, this, move.from, move.to);
+         if (!this.collider) {
+            return;
+         }
+
+         // Trigger exit on previous components
+         var hits:GameObject[] = [];
+         this.collider.collide(move.from.x, move.from.y, GameObject, hits);
+         var fromFeature:GameObject = _.find(hits, (o:GameObject)=> {
+            return o._uid !== this.host._uid;
+         });
          if (fromFeature) {
-            var comp = <TileComponent>fromFeature.findComponent(TileComponent);
-            if(comp){
+            var comp = <TileComponent>fromFeature.findComponent(this.collideComponentType);
+            if (comp && comp.host._uid !== this.host._uid) {
                comp.exited(this.host);
             }
          }
 
-         // Successful move, collide against target point and check any new tile actions.
-         var toFeature:GameObject = <GameObject>this.collider.collideFirst(to.x,to.y,GameObject);
+         // Trigger enter on new components
+         hits.length = 0;
+         this.collider.collide(move.to.x, move.to.y, GameObject, hits);
+         var toFeature:GameObject = _.find(hits, (o:GameObject)=> {
+            return o._uid !== this.host._uid;
+         });
          if (toFeature) {
-            var comp = <TileComponent>toFeature.findComponent(TileComponent);
-            if(comp){
+            var comp = <TileComponent>toFeature.findComponent(this.collideComponentType);
+            if (comp && comp.host._uid !== this.host._uid) {
                comp.entered(this.host);
             }
          }

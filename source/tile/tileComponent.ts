@@ -23,6 +23,15 @@ module pow2 {
       host:TileObject;
       isEntered:boolean;
 
+      /**
+       * Events triggered on host object for enter/exit of
+       * tiles.
+       */
+      static Events:any = {
+         ENTERED:"tile:entered",
+         EXITED:"tile:exited"
+      };
+
       syncComponent():boolean{
          return !!this.host.tileMap && this.host.tileMap instanceof TileMap;
       }
@@ -34,6 +43,7 @@ module pow2 {
          return true;
       }
       entered(object:TileObject) {
+         this.host.trigger(TileComponent.Events.ENTERED,this);
          this.isEntered = true;
          return true;
       }
@@ -41,6 +51,7 @@ module pow2 {
          return true;
       }
       exited(object:TileObject) {
+         this.host.trigger(TileComponent.Events.EXITED,this);
          this.isEntered = false;
          return true;
       }
