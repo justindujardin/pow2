@@ -21,7 +21,7 @@ module dorkapon {
    export class DorkaponInitGame extends pow2.State {
       static NAME:string = "init-game";
       name:string = DorkaponInitGame.NAME;
-      enter(machine:DorkaponStateMachine){
+      enter(machine:DorkaponMapStateMachine){
          super.enter(machine);
          machine.setCurrentState(DorkaponBeginTurns.NAME);
       }
@@ -30,7 +30,7 @@ module dorkapon {
       static NAME:string = "begin-turns";
       name:string = DorkaponBeginTurns.NAME;
 
-      enter(machine:DorkaponStateMachine){
+      enter(machine:DorkaponMapStateMachine){
          super.enter(machine);
          machine.playerQueue = machine.playerPool.slice();
          machine.currentPlayer = machine.playerQueue.shift();
@@ -46,7 +46,7 @@ module dorkapon {
       static EVENT:string = "player:turn";
       name:string = DorkaponPlayerTurn.NAME;
       tileMap:pow2.GameTileMap;
-      enter(machine:DorkaponStateMachine){
+      enter(machine:DorkaponMapStateMachine){
          super.enter(machine);
 
          var player = <components.PlayerComponent>machine.currentPlayer.findComponent(components.PlayerComponent);
@@ -66,7 +66,7 @@ module dorkapon {
       static NAME:string = "player-turn-end";
       static EVENT:string = "player:turn-end";
       name:string = DorkaponPlayerTurnEnd.NAME;
-      enter(machine:DorkaponStateMachine){
+      enter(machine:DorkaponMapStateMachine){
          super.enter(machine);
          var data:IPlayerTurnEvent = {
             player:machine.currentPlayer
@@ -88,14 +88,25 @@ module dorkapon {
       }
    }
 
-   export class DorkaponStateMachine extends pow2.StateMachine {
+   export class DorkaponMapStateMachine extends pow2.StateMachine {
       world:DorkaponGameWorld;
       model:pow2.GameStateModel = new pow2.GameStateModel();
-      defaultState:string = DorkaponInitGame.NAME;
+
       factory:pow2.EntityContainerResource;
-      currentPlayer:objects.DorkaponEntity = null;
+
       playerPool:objects.DorkaponEntity[] = [];
       playerQueue:objects.DorkaponEntity[] = [];
+
+      /**
+       * The active player [DorkaponEntity] object.
+       */
+      currentPlayer:objects.DorkaponEntity = null;
+      /**
+       * The active player last contacted node.
+       */
+      currentNode:components.MapNodeComponent = null;
+
+
       states:pow2.IState[] = [
          new DorkaponInitGame(),
          new DorkaponBeginTurns(),

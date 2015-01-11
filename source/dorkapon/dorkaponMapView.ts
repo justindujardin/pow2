@@ -25,7 +25,7 @@ module dorkapon {
       targetStroke:string = "white";
       targetStrokeWidth:number = 2;
 
-      stateMachine:DorkaponStateMachine = null;
+      stateMachine:DorkaponMapStateMachine = null;
 
       processCamera() {
          if(this.stateMachine && this.stateMachine.currentPlayer) {

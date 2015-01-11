@@ -39,7 +39,7 @@ module dorkapon.components {
        * Constructs with a given state machine.
        */
       constructor(
-         public machine:DorkaponStateMachine){
+         public machine:DorkaponMapStateMachine){
          super();
          if(!machine){
             throw new Error(pow2.errors.INVALID_ARGUMENTS);
@@ -76,8 +76,13 @@ module dorkapon.components {
                playerComp.path.length = 0;
             }
             var cb:any = this.turnDone;
-            _.delay(cb,500);
             this.turnDone = null;
+            if(this.machine.currentNode){
+               this.machine.currentNode.doAction(this.machine.currentPlayer,cb);
+            }
+            else {
+               _.delay(cb,500);
+            }
          }
       }
 

@@ -28,6 +28,14 @@ module dorkapon {
     */
    export var NAME:string = "dorkapon";
 
+   /**
+    * The Google Spreadsheet ID to load game data from.  This must be a published
+    * google spreadsheet key.
+    * @type {string} The google spreadsheet ID
+    */
+   export var SPREADSHEET_ID:string = "1KUkfnr0ndj_hL5ZvWhmOz6pqgE2VyMCcRyZjJKhO0a0";
+
+
    export var app = angular.module('dorkapon', [
       'ngAnimate',
       'ngSanitize',

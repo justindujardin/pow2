@@ -14,7 +14,7 @@
     "inputs": {
       "model": "dorkapon.models.DorkaponEntity",
       "map": "dorkapon.DorkaponTileMap",
-      "machine": "dorkapon.DorkaponStateMachine"
+      "machine": "dorkapon.DorkaponMapStateMachine"
     },
     "components": [
       { "name": "player",   "type": "dorkapon.components.PlayerComponent" },

@@ -20,48 +20,26 @@ module dorkapon.components {
    export class MapNodeComponent extends pow2.GameComponent {
       public world:DorkaponGameWorld = <DorkaponGameWorld>pow2.getWorld(dorkapon.NAME);
 
-      eventText(action:string){
-         console.log(action + " node " + this.host._uid);
+      /**
+       * Perform any action associated with landing on this component.
+       * @param object The entity that landed on the node.
+       * @param then A callback to be invoked when the action is done.
+       */
+      doAction(object:objects.DorkaponEntity,then:()=>any){
+         console.warn("Subclass should entirely implement this functionality.");
+         console.warn(" - Invoking completion callback next frame.");
+         _.defer(then);
       }
 
       entered(object:objects.DorkaponEntity):boolean {
-
-
-
-
-         // ---
-         // TODO: This is a hack.  Node implementations should be doing this.
          var turn = <PlayerTurnComponent>object.findComponent(PlayerTurnComponent);
          if(turn && turn.isCurrentTurn()){
+            if(turn.machine){
+               turn.machine.currentNode = this;
+            }
             turn.decrementMove();
          }
-         // ---
-
-
-
-
-         if(this.world && this.world.state && this.world.state.currentPlayer){
-            this.eventText("entered");
-         }
          return super.entered(object);
-      }
-      exited(object:objects.DorkaponEntity):boolean {
-         if(this.world && this.world.state && this.world.state.currentPlayer){
-            this.eventText("exited");
-         }
-         return super.exited(object);
-      }
-      enter(object:objects.DorkaponEntity):boolean {
-         if(this.world && this.world.state && this.world.state.currentPlayer){
-            this.eventText("enter");
-         }
-         return super.enter(object);
-      }
-      exit(object:objects.DorkaponEntity):boolean {
-         if(this.world && this.world.state && this.world.state.currentPlayer){
-            this.eventText("exit");
-         }
-         return super.exit(object);
       }
 
    }

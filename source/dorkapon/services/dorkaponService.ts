@@ -15,7 +15,7 @@
  */
 
 /// <reference path="../index.ts"/>
-/// <reference path="../dorkaponStateMachine.ts"/>
+/// <reference path="../dorkaponMapStateMachine.ts"/>
 /// <reference path="../dorkaponGameWorld.ts"/>
 
 module dorkapon.services {
@@ -23,7 +23,7 @@ module dorkapon.services {
       loader:pow2.ResourceLoader;
       world:DorkaponGameWorld;
       tileMap:pow2.GameTileMap;
-      machine:DorkaponStateMachine;
+      machine:DorkaponMapStateMachine;
       entities:pow2.EntityContainerResource;
       constructor(
          public compile:ng.ICompileService,
@@ -52,7 +52,7 @@ module dorkapon.services {
          }
          var sprite = <objects.DorkaponEntity>this.entities.createObject('DorkaponMapPlayer',{
             model:from,
-            machine:this.world.state,
+            machine:this.world.mapState,
             map:this.tileMap
          });
          sprite.name = from.attributes.name;
@@ -73,8 +73,8 @@ module dorkapon.services {
          }
 
          // Create the game state machine
-         this.machine = new DorkaponStateMachine();
-         this.world.setService('state',this.machine);
+         this.machine = new DorkaponMapStateMachine();
+         this.world.setService('mapState',this.machine);
 
          this.world.loader.load(pow2.getMapUrl('dorkapon'),(map:pow2.TiledTMXResource)=>{
             // Create a map
@@ -82,26 +82,39 @@ module dorkapon.services {
                resource:map
             });
 
-            var players:objects.DorkaponEntity[] = [];
+            DorkaponGameWorld.getDataSource((res:pow2.GameDataResource)=>{
 
-            // Ranger player
-            var model:models.DorkaponEntity = new models.DorkaponEntity({name:"Ranger",icon:"ranger-female.png"});
-            players.push(this.createPlayer(model,new pow2.Point(3,18)));
-            this.world.scene.addObject(this.tileMap);
+               var classes:any = res.getSheetData('classes');
 
-            // Mage player
-            var model:models.DorkaponEntity = new models.DorkaponEntity({name:"Mage",icon:"magician-female.png"});
-            players.push(this.createPlayer(model,new pow2.Point(12,11)));
-            this.world.scene.addObject(this.tileMap);
+               var players:objects.DorkaponEntity[] = [];
 
-            // Give the state machine our players.
-            this.machine.playerPool = players.slice();
+               // Ranger player
+               var tpl:any = _.where(classes,{id:"warrior"})[0];
+               tpl.icon = tpl.icon.replace("[gender]","male");
 
-            this.machine.setCurrentState(DorkaponInitGame.NAME);
+               var model:models.DorkaponEntity = new models.DorkaponEntity(tpl);
+               players.push(this.createPlayer(model,new pow2.Point(3,18)));
 
-            // Loaded!
-            this.tileMap.loaded();
-            then && then();
+               // Mage player
+               tpl = _.where(classes,{id:"mage"})[0];
+               tpl.icon = tpl.icon.replace("[gender]","female");
+               model = new models.DorkaponEntity(tpl);
+               players.push(this.createPlayer(model,new pow2.Point(12,11)));
+
+               this.world.scene.addObject(this.tileMap);
+
+               // Give the state machine our players.
+               this.machine.playerPool = players.slice();
+
+               this.machine.setCurrentState(DorkaponInitGame.NAME);
+
+               // Loaded!
+               this.tileMap.loaded();
+               then && then();
+
+
+            });
+
          });
       }
    }

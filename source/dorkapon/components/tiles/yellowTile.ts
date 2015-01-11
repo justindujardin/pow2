@@ -15,9 +15,31 @@
  */
 
 /// <reference path="../mapNodeComponent.ts" />
+/// <reference path="../../dorkaponCombatStateMachine.ts" />
 
 module dorkapon.components.tiles {
    export class YellowTile extends MapNodeComponent {
+
+      machine: dorkapon.states.DorkaponCombatStateMachine = null;
+
+      /**
+       * Roll and present a random encounter with a bad guy.
+       */
+      doAction(object:objects.DorkaponEntity,then:()=>any){
+
+         //object.scene.paused = true;
+         this.world.combatState = new dorkapon.states.DorkaponCombatStateMachine(object,object);
+         this.world.combatState.setCurrentState(dorkapon.states.DorkaponCombatInit.NAME);
+
+         this.world.combatState.on(dorkapon.states.DorkaponCombatStateMachine.Events.FINISHED,()=>{
+            _.defer(then);
+         });
+         // Build a combat map and go.
+
+         console.log("RANDOM ENCOUNTER LIKE WHOA");
+         _.defer(then);
+      }
+
       enter(object:objects.DorkaponEntity):boolean {
          super.enter(object);
          console.log("YELLOW NODE");
