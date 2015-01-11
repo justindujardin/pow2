@@ -28,7 +28,7 @@ module pow2 {
          // Attempt to load db from save game cache to avoid hitting
          // google spreadsheets API on ever page load.
          try{
-            this.data = JSON.parse(this.getCache());
+            this.data = JSON.parse(this.getCache(this.url));
             if(this.data){
                _.defer(()=>{ this.ready(); });
             }
@@ -40,20 +40,20 @@ module pow2 {
             key: this.url,
             callback: (data, tabletop) => {
                data = this.data = this.transformTypes(data);
-               this.setCache(JSON.stringify(data));
+               this.setCache(this.url,JSON.stringify(data));
                this.ready();
             }
          });
       }
 
-      getCache():any {
-         return localStorage.getItem(GameDataResource.DATA_KEY);
+      getCache(key:string):any {
+         return localStorage.getItem(GameDataResource.DATA_KEY + key);
       }
-      static clearCache(){
-         localStorage.removeItem(GameDataResource.DATA_KEY);
+      static clearCache(key:string){
+         localStorage.removeItem(GameDataResource.DATA_KEY + key);
       }
-      setCache(data:any){
-         localStorage.setItem(GameDataResource.DATA_KEY,data);
+      setCache(key:string,data:any){
+         localStorage.setItem(GameDataResource.DATA_KEY + key,data);
       }
 
       // TODO: Do we need to match - and floating point?

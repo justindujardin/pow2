@@ -35,7 +35,7 @@ module pow2.ui {
 
          if(this.qs().hasOwnProperty('dev')){
             console.log("Clearing gameData cache and loading live from Google Spreadsheets");
-            GameDataResource.clearCache();
+            GameDataResource.clearCache(GameDataResource.DATA_KEY);
          }
 
          this._renderCanvas = <HTMLCanvasElement>compile('<canvas style="position:absolute;left:-9000px;top:-9000px;" width="64" height="64"></canvas>')(scope)[0];
