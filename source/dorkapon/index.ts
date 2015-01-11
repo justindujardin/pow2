@@ -35,6 +35,12 @@ module dorkapon {
     */
    export var SPREADSHEET_ID:string = "1KUkfnr0ndj_hL5ZvWhmOz6pqgE2VyMCcRyZjJKhO0a0";
 
+   /**
+    * The location of the entities container for dorkapon.
+    *
+    * This file contains template descriptions for the various complex game objects.
+    */
+   export var ENTITIES_CONTAINER:string = "entities/dorkapon.powEntities";
 
    export var app = angular.module('dorkapon', [
       'ngAnimate',

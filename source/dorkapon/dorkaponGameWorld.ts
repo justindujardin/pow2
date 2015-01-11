@@ -15,14 +15,16 @@
  */
 
 /// <reference path="../../lib/pow2.d.ts" />
-/// <reference path="./dorkaponMapStateMachine.ts" />
+/// <reference path="./states/dorkaponMapState.ts" />
 
 module dorkapon {
    export class DorkaponGameWorld extends pow2.SceneWorld {
+
       /**
-       * The current map state machine.
+       * The main application state, e.g. Map, Combat, Menu.
        */
-      mapState:DorkaponMapStateMachine;
+      state:DorkaponAppStateMachine;
+
       /**
        * The current combat state (if any).  The presence of this
        * state machine being valid may trigger the game UI to transition
@@ -30,18 +32,30 @@ module dorkapon {
        *
        * This variable should be set to null when no combat is taking place.
        */
-      combatState:states.DorkaponCombatStateMachine = null;
+      combatState:DorkaponCombatStateMachine = null;
 
-      model:pow2.GameStateModel;
-      scene:pow2.Scene;
 
+      /**
+       * Dorkapon specific Google Spreadsheet data.
+       */
       tables:pow2.GameDataResource;
+
+      /**
+       * Factory for creating entity objects from templates.
+       */
+      factory:pow2.EntityContainerResource;
+
+      /**
+       * The view used for rendering the game map.
+       */
+      mapView:DorkaponMapView;
 
       constructor(services?:any){
          super(services);
          //pow2.GameDataResource.clearCache();
          this.loader.registerType('powEntities',pow2.EntityContainerResource);
          this.tables = <pow2.GameDataResource>this.loader.loadAsType(dorkapon.SPREADSHEET_ID,pow2.GameDataResource);
+         this.factory = <pow2.EntityContainerResource>this.loader.load(dorkapon.ENTITIES_CONTAINER);
       }
 
 

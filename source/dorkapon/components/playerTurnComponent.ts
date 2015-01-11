@@ -47,11 +47,11 @@ module dorkapon.components {
       }
 
       connectComponent():boolean {
-         this.machine.on(DorkaponPlayerTurn.EVENT,this._machineCapture,this);
+         this.machine.on(states.DorkaponPlayerTurn.EVENT,this._machineCapture,this);
          return super.connectComponent();
       }
       disconnectComponent():boolean {
-         this.machine.off(DorkaponPlayerTurn.EVENT,this._machineCapture,this);
+         this.machine.off(states.DorkaponPlayerTurn.EVENT,this._machineCapture,this);
          return super.disconnectComponent();
       }
 
@@ -86,7 +86,7 @@ module dorkapon.components {
          }
       }
 
-      private _machineCapture(data:IPlayerTurnEvent) {
+      private _machineCapture(data:states.IPlayerTurnEvent) {
          if(data.player._uid === this.host._uid){
             this.turnDone = this.machine.notifyWait();
          }

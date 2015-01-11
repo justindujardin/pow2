@@ -15,12 +15,12 @@
  */
 
 /// <reference path="../mapNodeComponent.ts" />
-/// <reference path="../../dorkaponCombatStateMachine.ts" />
+/// <reference path="../../states/dorkaponCombatState.ts" />
 
 module dorkapon.components.tiles {
    export class YellowTile extends MapNodeComponent {
 
-      machine: dorkapon.states.DorkaponCombatStateMachine = null;
+      machine: dorkapon.DorkaponCombatStateMachine = null;
 
       /**
        * Roll and present a random encounter with a bad guy.
@@ -28,16 +28,14 @@ module dorkapon.components.tiles {
       doAction(object:objects.DorkaponEntity,then:()=>any){
 
          //object.scene.paused = true;
-         this.world.combatState = new dorkapon.states.DorkaponCombatStateMachine(object,object);
-         this.world.combatState.setCurrentState(dorkapon.states.DorkaponCombatInit.NAME);
-
-         this.world.combatState.on(dorkapon.states.DorkaponCombatStateMachine.Events.FINISHED,()=>{
-            _.defer(then);
+         this.world.combatState = new dorkapon.DorkaponCombatStateMachine(object,object);
+         this.world.combatState.on(pow2.StateMachine.Events.ENTER,(newState:pow2.IState)=>{
+            if(newState.name === states.DorkaponCombatEnded.NAME){
+               _.defer(then);
+            }
          });
-         // Build a combat map and go.
-
+         this.world.combatState.setCurrentState(dorkapon.states.DorkaponCombatInit.NAME);
          console.log("RANDOM ENCOUNTER LIKE WHOA");
-         _.defer(then);
       }
 
       enter(object:objects.DorkaponEntity):boolean {

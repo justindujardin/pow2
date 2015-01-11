@@ -15,16 +15,14 @@
  */
 
 /// <reference path="../index.ts"/>
-/// <reference path="../dorkaponMapStateMachine.ts"/>
+/// <reference path="../states/dorkaponMapState.ts"/>
 /// <reference path="../dorkaponGameWorld.ts"/>
 
 module dorkapon.services {
    export class DorkaponService {
       loader:pow2.ResourceLoader;
       world:DorkaponGameWorld;
-      tileMap:pow2.GameTileMap;
-      machine:DorkaponMapStateMachine;
-      entities:pow2.EntityContainerResource;
+      machine:DorkaponAppStateMachine;
       constructor(
          public compile:ng.ICompileService,
          public scope:ng.IRootScopeService){
@@ -38,28 +36,10 @@ module dorkapon.services {
          });
          pow2.registerWorld(dorkapon.NAME,this.world);
 
+         this.machine = new DorkaponAppStateMachine();
+
          // Tell the world time manager to start ticking.
          this.world.time.start();
-         this.entities = <pow2.EntityContainerResource>this.world.loader.load('entities/dorkapon.powEntities');
-      }
-
-      createPlayer(from:models.DorkaponEntity,at?:pow2.Point):objects.DorkaponEntity{
-         if(!from){
-            throw new Error("Cannot create player without valid model");
-         }
-         if(!this.entities.isReady()){
-            throw new Error("Cannot create player before entities container is loaded");
-         }
-         var sprite = <objects.DorkaponEntity>this.entities.createObject('DorkaponMapPlayer',{
-            model:from,
-            machine:this.world.mapState,
-            map:this.tileMap
-         });
-         sprite.name = from.attributes.name;
-         sprite.icon = from.attributes.icon;
-         this.world.scene.addObject(sprite);
-         sprite.setPoint(at);
-         return sprite;
       }
 
       /**
@@ -67,55 +47,8 @@ module dorkapon.services {
        * @param then
        */
       newGame(then?:()=>any){
-         if(this.tileMap){
-            this.tileMap.destroy();
-            this.tileMap = null;
-         }
-
-         // Create the game state machine
-         this.machine = new DorkaponMapStateMachine();
-         this.world.setService('mapState',this.machine);
-
-         this.world.loader.load(pow2.getMapUrl('dorkapon'),(map:pow2.TiledTMXResource)=>{
-            // Create a map
-            this.tileMap = this.entities.createObject('DorkaponMapObject',{
-               resource:map
-            });
-
-            DorkaponGameWorld.getDataSource((res:pow2.GameDataResource)=>{
-
-               var classes:any = res.getSheetData('classes');
-
-               var players:objects.DorkaponEntity[] = [];
-
-               // Ranger player
-               var tpl:any = _.where(classes,{id:"warrior"})[0];
-               tpl.icon = tpl.icon.replace("[gender]","male");
-
-               var model:models.DorkaponEntity = new models.DorkaponEntity(tpl);
-               players.push(this.createPlayer(model,new pow2.Point(3,18)));
-
-               // Mage player
-               tpl = _.where(classes,{id:"mage"})[0];
-               tpl.icon = tpl.icon.replace("[gender]","female");
-               model = new models.DorkaponEntity(tpl);
-               players.push(this.createPlayer(model,new pow2.Point(12,11)));
-
-               this.world.scene.addObject(this.tileMap);
-
-               // Give the state machine our players.
-               this.machine.playerPool = players.slice();
-
-               this.machine.setCurrentState(DorkaponInitGame.NAME);
-
-               // Loaded!
-               this.tileMap.loaded();
-               then && then();
-
-
-            });
-
-         });
+         this.machine.setCurrentState(dorkapon.states.AppMapState.NAME);
+         then && then();
       }
    }
    app.factory('$dorkapon', [

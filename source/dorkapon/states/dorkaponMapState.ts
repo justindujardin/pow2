@@ -14,9 +14,46 @@
  limitations under the License.
  */
 
-/// <reference path="../../lib/pow2.d.ts" />
+/// <reference path="../../../lib/pow2.d.ts" />
 
 module dorkapon {
+
+   export class DorkaponMapStateMachine extends pow2.StateMachine {
+      world:DorkaponGameWorld;
+      model:pow2.GameStateModel = new pow2.GameStateModel();
+
+      factory:pow2.EntityContainerResource;
+
+      playerPool:objects.DorkaponEntity[] = [];
+      playerQueue:objects.DorkaponEntity[] = [];
+
+      /**
+       * The active player [DorkaponEntity] object.
+       */
+      currentPlayer:objects.DorkaponEntity = null;
+      /**
+       * The active player last contacted node.
+       */
+      currentNode:components.MapNodeComponent = null;
+
+
+      states:pow2.IState[] = [
+         new states.DorkaponInitGame(),
+         new states.DorkaponBeginTurns(),
+         new states.DorkaponPlayerTurn(),
+         new states.DorkaponPlayerTurnEnd()
+      ];
+      constructor(){
+         super();
+         pow2.ResourceLoader.get().load('entities/dorkapon.powEntities',(factory:pow2.EntityContainerResource)=>{
+            this.factory = factory;
+         });
+      }
+   }
+
+}
+
+module dorkapon.states {
 
    export class DorkaponInitGame extends pow2.State {
       static NAME:string = "init-game";
@@ -48,8 +85,6 @@ module dorkapon {
       tileMap:pow2.GameTileMap;
       enter(machine:DorkaponMapStateMachine){
          super.enter(machine);
-
-         var player = <components.PlayerComponent>machine.currentPlayer.findComponent(components.PlayerComponent);
          var data:IPlayerTurnEvent = {
             player:machine.currentPlayer
          };
@@ -84,39 +119,6 @@ module dorkapon {
                   machine.setCurrentState(DorkaponBeginTurns.NAME);
                },500);
             }
-         });
-      }
-   }
-
-   export class DorkaponMapStateMachine extends pow2.StateMachine {
-      world:DorkaponGameWorld;
-      model:pow2.GameStateModel = new pow2.GameStateModel();
-
-      factory:pow2.EntityContainerResource;
-
-      playerPool:objects.DorkaponEntity[] = [];
-      playerQueue:objects.DorkaponEntity[] = [];
-
-      /**
-       * The active player [DorkaponEntity] object.
-       */
-      currentPlayer:objects.DorkaponEntity = null;
-      /**
-       * The active player last contacted node.
-       */
-      currentNode:components.MapNodeComponent = null;
-
-
-      states:pow2.IState[] = [
-         new DorkaponInitGame(),
-         new DorkaponBeginTurns(),
-         new DorkaponPlayerTurn(),
-         new DorkaponPlayerTurnEnd()
-      ];
-      constructor(){
-         super();
-         pow2.ResourceLoader.get().load('entities/dorkapon.powEntities',(factory:pow2.EntityContainerResource)=>{
-            this.factory = factory;
          });
       }
    }

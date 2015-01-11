@@ -36,13 +36,13 @@ module dorkapon.directives {
                   context.webkitImageSmoothingEnabled = false;
                   context.mozImageSmoothingEnabled = false;
                }
-               var tileView = new DorkaponMapView(element[0], $dorkapon.loader);
-               tileView.stateMachine = $dorkapon.world.mapState;
-               tileView.camera.extent.set(10, 10);
-               tileView.setTileMap($dorkapon.tileMap);
-               $dorkapon.world.scene.addView(tileView);
+               var gameView = new DorkaponMapView(element[0], $dorkapon.loader);
+               $dorkapon.world.setService('mapView',gameView);
+               gameView.camera.extent.set(10, 10);
+               $dorkapon.world.scene.addView(gameView);
                onResize();
             }
          };
-      }]);
+      }
+   ]);
 }
