@@ -22,7 +22,6 @@ module pow2 {
    export class SceneWorld extends World {
       input:Input;
       sprites:SpriteRender;
-      state: IStateMachine;
       scene:IScene;
       constructor(services?:any){
          services = _.defaults(services || {},{
