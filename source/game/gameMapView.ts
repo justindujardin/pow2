@@ -42,6 +42,7 @@ module pow2{
          this.mouseClick = _.bind(this.mouseClick,this);
       }
       onAddToScene(scene:Scene) {
+         this.clearCache();
          super.onAddToScene(scene);
          this.mouse = scene.world.input.mouseHook(<SceneView>this,"world");
          // TODO: Move this elsewhere.
@@ -49,6 +50,7 @@ module pow2{
          this.scene.on(pow2.TileMap.Events.MAP_LOADED,this.syncComponents,this);
       }
       onRemoveFromScene(scene:Scene) {
+         this.clearCache();
          scene.world.input.mouseUnhook("world");
          this.$el.off('click',this.mouseClick);
          this.scene.off(pow2.TileMap.Events.MAP_LOADED,this.syncComponents,this);
@@ -77,6 +79,10 @@ module pow2{
       private _movers:pow2.MovableComponent[] = null;
       syncComponents() {
          super.syncComponents();
+         this.clearCache();
+      }
+
+      private clearCache() {
          this._features = null;
          this._players = null;
          this._playerRenders = null;
