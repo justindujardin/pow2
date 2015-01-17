@@ -27,14 +27,13 @@ module dorkapon.components.tiles {
        */
       doAction(object:objects.DorkaponEntity,then:()=>any){
 
+         var enemies:any[] = this.world.tables.getSheetData("enemies");
          var combatState = <states.AppCombatState>this.world.state.getState(states.AppCombatState.NAME);
-         combatState.attacker = object;
-         combatState.defender = object;
+         combatState.attacker = object.model;
+         combatState.defender = new models.DorkaponEntity(enemies[_.random(0,enemies.length-1)]);
          this.world.state.setCurrentState(combatState);
-         object.scene.paused = true;
-         this.world.state.on(pow2.StateMachine.Events.EXIT,(newState:pow2.IState)=>{
-            if(newState.name === states.AppCombatState.NAME){
-               object.scene.paused = false;
+         this.world.state.on(pow2.StateMachine.Events.EXIT,(state:pow2.IState)=>{
+            if(state.name === combatState.name){
                _.defer(then);
             }
          });

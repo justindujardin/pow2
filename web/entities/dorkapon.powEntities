@@ -24,5 +24,23 @@
       { "name": "render",   "type": "pow2.PlayerRenderComponent" },
       { "name": "camera",   "type": "dorkapon.components.PlayerCamera" }
     ]
+  },
+  {
+    "name": "DorkaponCombatPlayer",
+    "type": "dorkapon.objects.DorkaponEntity",
+    "inputs": {
+      "model": "dorkapon.models.DorkaponEntity",
+      "machine": "dorkapon.DorkaponCombatStateMachine"
+    },
+    "components": [
+      {
+        "name":"render",
+        "type":"pow2.PlayerCombatRenderComponent"
+      },
+      {
+        "name":"animation",
+        "type":"pow2.AnimatedComponent"
+      }
+    ]
   }
 ]

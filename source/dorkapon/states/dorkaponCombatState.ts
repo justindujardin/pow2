@@ -23,21 +23,20 @@ module dorkapon {
          FINISHED: "combat:finished"
       };
 
+      /**
+       * The [DorkaponGameWorld]
+       */
       world:DorkaponGameWorld;
 
       /**
-       * Factory for creating game entities from powEntities templates.
-       */
-      factory:pow2.EntityContainerResource;
-      /**
        * The currently attacking [DorkaponEntity] object.
        */
-      attacker:objects.DorkaponEntity = null;
+      attacker:objects.DorkaponEntity;
 
       /**
        * The currently defending [DorkaponEntity] in combat.
        */
-      defender:objects.DorkaponEntity = null;
+      defender:objects.DorkaponEntity;
 
       states:pow2.IState[] = [
          new states.DorkaponCombatInit(this),
@@ -46,14 +45,27 @@ module dorkapon {
          new states.DorkaponCombatExecuteMoves(this)
       ];
 
-      constructor(attacker:objects.DorkaponEntity, defender:objects.DorkaponEntity, public parent:DorkaponAppStateMachine) {
+      constructor(attacker:models.DorkaponEntity,
+                  defender:models.DorkaponEntity,
+                  public scene:pow2.Scene,
+                  public parent:DorkaponAppStateMachine) {
          super();
-         this.attacker = attacker;
-         this.defender = defender;
-         pow2.ResourceLoader.get().load('entities/dorkapon.powEntities', (factory:pow2.EntityContainerResource)=> {
-            this.factory = factory;
-         });
          this.world = pow2.getWorld<DorkaponGameWorld>(dorkapon.NAME);
+         this.attacker = this.createPlayer(attacker,new pow2.Point(3,10));
+         this.defender = this.createPlayer(defender,new pow2.Point(10,10));
+      }
+
+
+      createPlayer(from:models.DorkaponEntity, at?:pow2.Point):objects.DorkaponEntity {
+         var sprite = <objects.DorkaponEntity>this.world.factory.createObject('DorkaponCombatPlayer', {
+            model: from,
+            machine: this
+         });
+         sprite.name = from.attributes.name;
+         sprite.icon = from.attributes.icon;
+         this.scene.addObject(sprite);
+         sprite.setPoint(at);
+         return sprite;
       }
    }
 }
@@ -123,6 +135,9 @@ module dorkapon.states {
             winner: machine.attacker,
             loser: machine.defender
          };
+
+         machine.attacker.destroy();
+         machine.defender.destroy();
          machine.notify(DorkaponCombatEnded.EVENT, data, ()=> {
             console.log("Combat is done.");
             machine.parent.setCurrentState(states.AppMapState.NAME);
@@ -155,7 +170,7 @@ module dorkapon.states {
 
             var done:boolean = (Math.floor(Math.random() * 10) % 2) !== 0;
             machine.setCurrentState(done ? DorkaponCombatEnded.NAME : DorkaponCombatChooseMoves.NAME);
-         }, 500);
+         }, 1500);
       }
    }
 }

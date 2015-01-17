@@ -22,8 +22,6 @@ module dorkapon {
       world:DorkaponGameWorld;
       model:pow2.GameStateModel = new pow2.GameStateModel();
 
-      factory:pow2.EntityContainerResource;
-
       playerPool:objects.DorkaponEntity[] = [];
       playerQueue:objects.DorkaponEntity[] = [];
 
@@ -43,12 +41,7 @@ module dorkapon {
          new states.DorkaponPlayerTurn(),
          new states.DorkaponPlayerTurnEnd()
       ];
-      constructor(){
-         super();
-         pow2.ResourceLoader.get().load('entities/dorkapon.powEntities',(factory:pow2.EntityContainerResource)=>{
-            this.factory = factory;
-         });
-      }
+
    }
 
 }

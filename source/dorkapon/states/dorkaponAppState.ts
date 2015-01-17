@@ -46,15 +46,14 @@ module dorkapon.states {
    export class AppCombatState extends AppStateBase {
       static NAME:string = "app.states.combat";
       name:string = AppCombatState.NAME;
-      attacker:objects.DorkaponEntity = null;
-      defender:objects.DorkaponEntity = null;
+      attacker:models.DorkaponEntity = null;
+      defender:models.DorkaponEntity = null;
 
       map:DorkaponTileMap = null;
 
       machine:DorkaponCombatStateMachine;
 
       scene:pow2.Scene = new pow2.Scene();
-
       exit(machine:DorkaponAppStateMachine) {
          if(this.world.mapView){
             this.scene.removeView(this.world.mapView);
@@ -71,8 +70,9 @@ module dorkapon.states {
          this.world.mark(this.scene);
          this.scene.addView(this.world.mapView);
          this.world.mapView.setTileMap(this.map);
+         this.world.mapView.camera.set(0,0,10,10);
 
-         this.world.combatState = this.machine = new DorkaponCombatStateMachine(this.attacker,this.defender,machine);
+         this.world.combatState = this.machine = new DorkaponCombatStateMachine(this.attacker,this.defender,this.scene,machine);
          this.world.loader.load(pow2.getMapUrl('combat'),(map:pow2.TiledTMXResource)=>{
             this.map = this.world.factory.createObject('DorkaponMapObject',{
                resource:map
