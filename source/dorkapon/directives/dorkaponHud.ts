@@ -35,6 +35,8 @@ module dorkapon.directives {
        */
       turn:dorkapon.states.IPlayerTurnEvent = null;
 
+      combat:dorkapon.DorkaponCombatStateMachine = null;
+
       /*
        * Dumb hack to simulate turn ending and such.
        * Called from the template with a button ng-click.
@@ -68,26 +70,45 @@ module dorkapon.directives {
 
                $dorkapon.machine.on(pow2.StateMachine.Events.ENTER,(newState:pow2.IState)=>{
                   if(newState.name === states.AppMapState.NAME){
-                     var state:states.AppMapState = <states.AppMapState>newState;
-                     state.machine.on(states.DorkaponPlayerTurn.EVENT,(e:states.IPlayerTurnEvent)=>{
+                     var mapState:states.AppMapState = <states.AppMapState>newState;
+                     mapState.machine.on(states.DorkaponPlayerTurn.EVENT,(e:states.IPlayerTurnEvent)=>{
                         scope.$apply(()=>{
                            controller.turn = e;
                         });
                         e.player.model.on('change',changeHandler);
                      },this);
-                     state.machine.on(states.DorkaponPlayerTurnEnd.EVENT,(e:states.IPlayerTurnEvent)=>{
+                     mapState.machine.on(states.DorkaponPlayerTurnEnd.EVENT,(e:states.IPlayerTurnEvent)=>{
                         e.player.model.off('change',changeHandler);
                         scope.$apply(()=>{
                            controller.turn = null;
                         });
                      },this);
                   }
+                  else if(newState.name === states.AppCombatState.NAME){
+                     var combatState:states.AppCombatState = <states.AppCombatState>newState;
+                     console.log(combatState);
+                     scope.$apply(()=>{
+                        controller.combat = combatState.machine;
+                     });
+                     combatState.parent.on(states.DorkaponCombatEnded.EVENT,(e:states.ICombatSummary)=>{
+                        console.log(e);
+                        scope.$apply(()=>{
+                           controller.combat = null;
+                        });
+                     },this);
+                  }
                });
                $dorkapon.machine.on(pow2.StateMachine.Events.EXIT,(oldState:pow2.IState)=>{
                   if(oldState.name === states.AppMapState.NAME){
-                     var state:states.AppMapState = <states.AppMapState>oldState;
-                     state.machine.off(states.DorkaponPlayerTurn.EVENT,null,this);
-                     state.machine.off(states.DorkaponPlayerTurnEnd.EVENT,null,this);
+                     var mapState:states.AppMapState = <states.AppMapState>oldState;
+                     mapState.machine.off(states.DorkaponPlayerTurn.EVENT,null,this);
+                     mapState.machine.off(states.DorkaponPlayerTurnEnd.EVENT,null,this);
+                  }
+                  else if(oldState.name === states.AppCombatState.NAME){
+                     var combatState:states.AppCombatState = <states.AppCombatState>oldState;
+                     scope.$apply(()=>{
+                        controller.combat = null;
+                     });
                   }
                });
 

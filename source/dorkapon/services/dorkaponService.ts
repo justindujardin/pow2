@@ -23,21 +23,19 @@ module dorkapon.services {
       loader:pow2.ResourceLoader;
       world:DorkaponGameWorld;
       machine:DorkaponAppStateMachine;
-      constructor(
-         public compile:ng.ICompileService,
-         public scope:ng.IRootScopeService){
+
+      constructor(public compile:ng.ICompileService,
+                  public scope:ng.IRootScopeService) {
          this.loader = pow2.ResourceLoader.get();
          this.world = new DorkaponGameWorld({
-            scene:new pow2.Scene({
+            scene: new pow2.Scene({
                autoStart: true,
-               debugRender:false
+               debugRender: false
             }),
-            model:new pow2.GameStateModel()
+            model: new pow2.GameStateModel()
          });
-         pow2.registerWorld(dorkapon.NAME,this.world);
-
-         this.machine = new DorkaponAppStateMachine();
-
+         pow2.registerWorld(dorkapon.NAME, this.world);
+         this.machine = <DorkaponAppStateMachine>this.world.setService('state', new DorkaponAppStateMachine());
          // Tell the world time manager to start ticking.
          this.world.time.start();
       }
@@ -46,7 +44,7 @@ module dorkapon.services {
        * Start a new game.
        * @param then
        */
-      newGame(then?:()=>any){
+      newGame(then?:()=>any) {
          this.machine.setCurrentState(dorkapon.states.AppMapState.NAME);
          then && then();
       }
@@ -54,8 +52,8 @@ module dorkapon.services {
    app.factory('$dorkapon', [
       '$compile',
       '$rootScope',
-      ($compile:ng.ICompileService,$rootScope:ng.IRootScopeService) => {
-         return new DorkaponService($compile,$rootScope);
+      ($compile:ng.ICompileService, $rootScope:ng.IRootScopeService) => {
+         return new DorkaponService($compile, $rootScope);
       }
    ]);
 }

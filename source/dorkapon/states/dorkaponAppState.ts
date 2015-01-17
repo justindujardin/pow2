@@ -19,35 +19,86 @@
 module dorkapon {
    export class DorkaponAppStateMachine extends pow2.StateMachine {
       states:pow2.IState[] = [
-         new states.AppMainMenuState(),
-         new states.AppMapState(),
-         new states.AppCombatState()
+         new states.AppMainMenuState(this),
+         new states.AppMapState(this),
+         new states.AppCombatState(this)
       ];
-  }
+   }
 }
 
 module dorkapon.states {
-   export class AppMainMenuState extends pow2.State {
+
+   export class AppStateBase extends pow2.State {
+      world:DorkaponGameWorld = pow2.getWorld<DorkaponGameWorld>(dorkapon.NAME);
+      constructor(
+         public parent:DorkaponAppStateMachine
+      ){
+         super();
+      }
+   }
+
+   export class AppMainMenuState extends AppStateBase {
       static NAME:string = "app.states.mainmenu";
       name:string = AppMainMenuState.NAME;
    }
 
 
-   export class AppCombatState extends pow2.State {
+   export class AppCombatState extends AppStateBase {
       static NAME:string = "app.states.combat";
       name:string = AppCombatState.NAME;
-   }
-
-
-   export class AppMapState extends pow2.State {
-      static NAME:string = "app.states.map";
-      name:string = AppMapState.NAME;
-
-      world:DorkaponGameWorld = pow2.getWorld<DorkaponGameWorld>(dorkapon.NAME);
+      attacker:objects.DorkaponEntity = null;
+      defender:objects.DorkaponEntity = null;
 
       map:DorkaponTileMap = null;
 
-      machine:DorkaponMapStateMachine = null;
+      machine:DorkaponCombatStateMachine;
+
+      scene:pow2.Scene = new pow2.Scene();
+
+      exit(machine:DorkaponAppStateMachine) {
+         if(this.world.mapView){
+            this.scene.removeView(this.world.mapView);
+         }
+         this.world.combatState = this.machine = null;
+         this.world.erase(this.scene);
+         super.exit(machine);
+      }
+      enter(machine:DorkaponAppStateMachine) {
+         super.enter(machine);
+         if(!this.world.mapView){
+            throw new Error("Entering map state without view to render it");
+         }
+         this.world.mark(this.scene);
+         this.scene.addView(this.world.mapView);
+         this.world.mapView.setTileMap(this.map);
+
+         this.world.combatState = this.machine = new DorkaponCombatStateMachine(this.attacker,this.defender,machine);
+         this.world.loader.load(pow2.getMapUrl('combat'),(map:pow2.TiledTMXResource)=>{
+            this.map = this.world.factory.createObject('DorkaponMapObject',{
+               resource:map
+            });
+            this.map.getLayer("world-plains").visible = true;
+            this.world.mapView.setTileMap(this.map);
+            this.scene.addObject(this.map);
+            this.machine.setCurrentState(states.DorkaponCombatInit.NAME);
+            this.map.loaded();
+         });
+      }
+
+   }
+
+
+   export class AppMapState extends AppStateBase {
+      static NAME:string = "app.states.map";
+      name:string = AppMapState.NAME;
+
+      map:DorkaponTileMap = null;
+
+      machine:DorkaponMapStateMachine = new DorkaponMapStateMachine();
+
+      scene:pow2.Scene = new pow2.Scene();
+
+      initialized:boolean = false;
 
       createPlayer(from:models.DorkaponEntity,at?:pow2.Point):objects.DorkaponEntity{
          if(!from){
@@ -63,7 +114,7 @@ module dorkapon.states {
          });
          sprite.name = from.attributes.name;
          sprite.icon = from.attributes.icon;
-         this.world.scene.addObject(sprite);
+         this.scene.addObject(sprite);
          sprite.setPoint(at);
          return sprite;
       }
@@ -73,14 +124,26 @@ module dorkapon.states {
             throw new Error("Entering map state without view to render it");
          }
          this.world.mapView.stateMachine = null;
+         this.scene.removeView(this.world.mapView);
+         this.world.erase(this.scene);
          super.exit(machine);
       }
       enter(machine:DorkaponAppStateMachine) {
+         super.enter(machine);
          if(!this.world.mapView){
             throw new Error("Entering map state without view to render it");
          }
-         this.machine = new DorkaponMapStateMachine();
+         this.world.mark(this.scene);
+         this.scene.addView(this.world.mapView);
+         this.world.mapView.setTileMap(this.map);
          this.world.mapView.stateMachine = this.machine;
+
+         if(!this.initialized){
+            this._loadMap();
+         }
+      }
+
+      private _loadMap() {
 
          this.world.loader.load(pow2.getMapUrl('dorkapon'),(map:pow2.TiledTMXResource)=>{
             // Create a map
@@ -88,7 +151,6 @@ module dorkapon.states {
                resource:map
             });
             this.world.mapView.setTileMap(this.map);
-
             DorkaponGameWorld.getDataSource((res:pow2.GameDataResource)=>{
                var classes:any = res.getSheetData('classes');
 
@@ -107,7 +169,7 @@ module dorkapon.states {
                model = new models.DorkaponEntity(tpl);
                players.push(this.createPlayer(model,new pow2.Point(12,11)));
 
-               this.world.scene.addObject(this.map);
+               this.scene.addObject(this.map);
 
                // Give the state machine our players.
                this.machine.playerPool = players;
@@ -117,9 +179,13 @@ module dorkapon.states {
                // Loaded!
                this.map.loaded();
 
+               this.world.mapView.setTileMap(this.map);
+
+               this.initialized = true;
                // TODO: Listen for changes?  To combat state?  Or just run forever until exit?
             });
          });
+
       }
    }
 

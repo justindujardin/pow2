@@ -1,4 +1,17 @@
-<ul class="dorkapon-hud">
-    <li class="name"><strong>{{hud.turn.player.model.attributes.name}}</strong></li>
-    <li class="moves"><strong>{{hud.turn.player.model.attributes.moves}} moves left</strong></li>
-</ul>
+<div class="dorkapon-hud">
+    <ul>
+        <li class="name"><strong>{{hud.turn.player.model.attributes.name}}</strong></li>
+        <li class="moves"><strong>{{hud.turn.player.model.attributes.moves}} moves left</strong></li>
+    </ul>
+
+    <div class="loading fade" ng-show="hud.combat">
+        <div class="loading-wrapper">
+            <div class="loading-wrapper-inner">
+                <div class="hero-container">
+                    <h1>Fighting</h1>
+                    <p>And stuff...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

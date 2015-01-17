@@ -27,14 +27,17 @@ module dorkapon.components.tiles {
        */
       doAction(object:objects.DorkaponEntity,then:()=>any){
 
-         //object.scene.paused = true;
-         this.world.combatState = new dorkapon.DorkaponCombatStateMachine(object,object);
-         this.world.combatState.on(pow2.StateMachine.Events.ENTER,(newState:pow2.IState)=>{
-            if(newState.name === states.DorkaponCombatEnded.NAME){
+         var combatState = <states.AppCombatState>this.world.state.getState(states.AppCombatState.NAME);
+         combatState.attacker = object;
+         combatState.defender = object;
+         this.world.state.setCurrentState(combatState);
+         object.scene.paused = true;
+         this.world.state.on(pow2.StateMachine.Events.EXIT,(newState:pow2.IState)=>{
+            if(newState.name === states.AppCombatState.NAME){
+               object.scene.paused = false;
                _.defer(then);
             }
          });
-         this.world.combatState.setCurrentState(dorkapon.states.DorkaponCombatInit.NAME);
          console.log("RANDOM ENCOUNTER LIKE WHOA");
       }
 

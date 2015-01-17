@@ -20,7 +20,7 @@ module dorkapon {
 
    export class DorkaponCombatStateMachine extends pow2.StateMachine {
       static Events:any = {
-        FINISHED:"combat:finished"
+         FINISHED: "combat:finished"
       };
 
       world:DorkaponGameWorld;
@@ -40,23 +40,22 @@ module dorkapon {
       defender:objects.DorkaponEntity = null;
 
       states:pow2.IState[] = [
-         new states.DorkaponCombatInit(),
-         new states.DorkaponCombatEnded(),
-         new states.DorkaponCombatChooseMoves(),
-         new states.DorkaponCombatExecuteMoves()
+         new states.DorkaponCombatInit(this),
+         new states.DorkaponCombatEnded(this),
+         new states.DorkaponCombatChooseMoves(this),
+         new states.DorkaponCombatExecuteMoves(this)
       ];
-      constructor(attacker:objects.DorkaponEntity,defender:objects.DorkaponEntity){
+
+      constructor(attacker:objects.DorkaponEntity, defender:objects.DorkaponEntity, public parent:DorkaponAppStateMachine) {
          super();
          this.attacker = attacker;
          this.defender = defender;
-         pow2.ResourceLoader.get().load('entities/dorkapon.powEntities',(factory:pow2.EntityContainerResource)=>{
+         pow2.ResourceLoader.get().load('entities/dorkapon.powEntities', (factory:pow2.EntityContainerResource)=> {
             this.factory = factory;
          });
          this.world = pow2.getWorld<DorkaponGameWorld>(dorkapon.NAME);
-
       }
    }
-
 }
 
 module dorkapon.states {
@@ -71,57 +70,92 @@ module dorkapon.states {
       report(player:objects.DorkaponEntity):any;
    }
 
+   export class AppCombatStateBase extends pow2.State {
+      constructor(public machine:DorkaponCombatStateMachine) {
+         super();
+      }
+   }
+
    /**
     * Initialize combat between two entities, roll turns and determine
     * who attacks first.
     *
     * Transitions to [DorkaponCombatChooseMoves].
     */
-   export class DorkaponCombatInit extends pow2.State {
+   export class DorkaponCombatInit extends AppCombatStateBase {
       static NAME:string = "dorkapon-init-combat";
+      static EVENT:string = DorkaponCombatInit.NAME;
       name:string = DorkaponCombatInit.NAME;
-      enter(machine:DorkaponCombatStateMachine){
+
+      enter(machine:DorkaponCombatStateMachine) {
          super.enter(machine);
 
          console.log("Roll turns and determine who attacks first.");
 
-         machine.setCurrentState(DorkaponCombatChooseMoves.NAME);
+         var currentTurn:objects.DorkaponEntity = null;
+         var data:ICombatDetermineTurnOrder = {
+            attacker: machine.attacker,
+            defender: machine.defender,
+            report: (player:objects.DorkaponEntity) => {
+               currentTurn = player;
+            }
+         };
+         machine.notify(DorkaponCombatInit.EVENT, data, ()=> {
+            machine.setCurrentState(DorkaponCombatChooseMoves.NAME);
+         });
+
       }
    }
 
-   export class DorkaponCombatEnded extends pow2.State {
+   export interface ICombatSummary {
+      winner:objects.DorkaponEntity;
+      loser:objects.DorkaponEntity;
+   }
+
+   export class DorkaponCombatEnded extends AppCombatStateBase {
       static NAME:string = "dorkapon-combat-ended";
+      static EVENT:string = DorkaponCombatEnded.NAME;
       name:string = DorkaponCombatEnded.NAME;
-      enter(machine:DorkaponCombatStateMachine){
+
+      enter(machine:DorkaponCombatStateMachine) {
          super.enter(machine);
-         console.log("Combat is done.");
+         var data:ICombatSummary = {
+            winner: machine.attacker,
+            loser: machine.defender
+         };
+         machine.notify(DorkaponCombatEnded.EVENT, data, ()=> {
+            console.log("Combat is done.");
+            machine.parent.setCurrentState(states.AppMapState.NAME);
+         });
       }
    }
 
 
-   export class DorkaponCombatChooseMoves extends pow2.State {
+   export class DorkaponCombatChooseMoves extends AppCombatStateBase {
       static NAME:string = "dorkapon-combat-choose-moves";
       name:string = DorkaponCombatChooseMoves.NAME;
-      enter(machine:DorkaponCombatStateMachine){
+
+      enter(machine:DorkaponCombatStateMachine) {
          super.enter(machine);
          console.log("choose moves");
          machine.setCurrentState(DorkaponCombatExecuteMoves.NAME);
       }
    }
-   export class DorkaponCombatExecuteMoves extends pow2.State {
+   export class DorkaponCombatExecuteMoves extends AppCombatStateBase {
       static NAME:string = "dorkapon-combat-move-execute";
       static EVENT:string = DorkaponCombatExecuteMoves.NAME;
       name:string = DorkaponCombatExecuteMoves.NAME;
       tileMap:pow2.GameTileMap;
-      enter(machine:DorkaponCombatStateMachine){
+
+      enter(machine:DorkaponCombatStateMachine) {
          super.enter(machine);
          // TODO: remove this scaffolding hacks to avoid horrible looping.
          console.log("execute attack from " + machine.attacker.model.get('name') + " to " + machine.defender.model.get('name'));
-         _.delay(()=>{
+         _.delay(()=> {
 
             var done:boolean = (Math.floor(Math.random() * 10) % 2) !== 0;
             machine.setCurrentState(done ? DorkaponCombatEnded.NAME : DorkaponCombatChooseMoves.NAME);
-         },500);
+         }, 500);
       }
    }
 }
