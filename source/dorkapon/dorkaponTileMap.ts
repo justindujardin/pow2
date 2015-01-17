@@ -163,6 +163,9 @@ module dorkapon {
        */
       getNodes():INodeTile[] {
          var nodes = this.getLayer(DorkaponTileMap.Layers.NODES);
+         if(!nodes) {
+            return [];
+         }
 
          // Build a list of INodeTile objects.
          var mapWidth:number = this.bounds.extent.x;
@@ -193,6 +196,9 @@ module dorkapon {
 
       getHorizPaths():IPathTile[] {
          var nodes = this.getLayer(DorkaponTileMap.Layers.HORIZONTAL_PATHS);
+         if(!nodes) {
+            return [];
+         }
 
          // Build a list of INodeTile objects.
          var mapWidth:number = this.bounds.extent.x;
@@ -219,6 +225,9 @@ module dorkapon {
       }
       getVertPaths():IPathTile[] {
          var nodes = this.getLayer(DorkaponTileMap.Layers.VERTICAL_PATHS);
+         if(!nodes) {
+            return [];
+         }
 
          // Build a list of INodeTile objects.
          var mapWidth:number = this.bounds.extent.x;
