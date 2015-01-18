@@ -79,7 +79,7 @@ module dorkapon.states {
    export interface ICombatDetermineTurnOrder {
       attacker:objects.DorkaponEntity;
       defender:objects.DorkaponEntity;
-      report(player:objects.DorkaponEntity):any;
+      report(first:objects.DorkaponEntity,second:objects.DorkaponEntity):any;
    }
 
    export class AppCombatStateBase extends pow2.State {
@@ -105,14 +105,21 @@ module dorkapon.states {
          console.log("Roll turns and determine who attacks first.");
 
          var currentTurn:objects.DorkaponEntity = null;
+         var nextTurn:objects.DorkaponEntity = null;
          var data:ICombatDetermineTurnOrder = {
             attacker: machine.attacker,
             defender: machine.defender,
-            report: (player:objects.DorkaponEntity) => {
-               currentTurn = player;
+            report: (first:objects.DorkaponEntity,second:objects.DorkaponEntity) => {
+               currentTurn = first;
+               nextTurn = second;
             }
          };
          machine.notify(DorkaponCombatInit.EVENT, data, ()=> {
+            if(!currentTurn || !nextTurn){
+               throw new Error("User did not report turn order.");
+            }
+            machine.attacker = currentTurn;
+            machine.defender = nextTurn;
             machine.setCurrentState(DorkaponCombatChooseMoves.NAME);
          });
 
@@ -167,6 +174,11 @@ module dorkapon.states {
          // TODO: remove this scaffolding hacks to avoid horrible looping.
          console.log("execute attack from " + machine.attacker.model.get('name') + " to " + machine.defender.model.get('name'));
          _.delay(()=> {
+
+            // Switch turns
+            var current = machine.attacker;
+            machine.attacker = machine.defender;
+            machine.defender = current;
 
             var done:boolean = (Math.floor(Math.random() * 10) % 2) !== 0;
             machine.setCurrentState(done ? DorkaponCombatEnded.NAME : DorkaponCombatChooseMoves.NAME);

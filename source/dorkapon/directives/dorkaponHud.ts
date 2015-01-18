@@ -19,13 +19,14 @@
 module dorkapon.directives {
 
    export class DorkaponHudController implements pow2.IProcessObject {
-      static $inject:string[] = ['$dorkapon','$scope','powAlert'];
+      static $inject:string[] = ['$dorkapon','$scope','$timeout','powAlert'];
       constructor(
          public $dorkapon:services.DorkaponService,
-         public $scope:any,
+         public scope:any,
+         public $timeout:any,
          public powAlert:pow2.ui.PowAlertService) {
          $dorkapon.world.time.addObject(this);
-         $scope.$on('$destroy',()=>{
+         scope.$on('$destroy',()=>{
             $dorkapon.world.time.removeObject(this);
          });
       }
@@ -37,18 +38,56 @@ module dorkapon.directives {
 
       combat:dorkapon.DorkaponCombatStateMachine = null;
 
-      /*
-       * Dumb hack to simulate turn ending and such.
-       * Called from the template with a button ng-click.
-       *
-       * TODO: Remove when actual turns are a thing.
-       */
-      doneCallback:any = null;
-      done() {
-         if(this.doneCallback){
-            this.doneCallback();
-            this.doneCallback = null;
-         }
+
+      // Card picking hacks
+      leftText:string;
+      rightText:string;
+      left:boolean;
+      right:boolean;
+      picking:boolean = false;
+      pickCorrect:boolean = false;
+      pick:any = null;
+
+      listenCombatEvents(state:states.AppCombatState) {
+         state.machine.on(states.DorkaponCombatEnded.EVENT,(e:states.ICombatSummary)=>{
+            console.log(e);
+            this.scope.$apply(()=>{
+               this.combat = null;
+            });
+         },this);
+         state.machine.on(states.DorkaponCombatInit.EVENT,(e:states.ICombatDetermineTurnOrder)=>{
+            var done = state.machine.notifyWait();
+            this.pickTurnOrderCard(e,done);
+         },this);
+      }
+      stopListeningCombatEvents(state:states.AppCombatState) {
+         state.machine.off(null,null,this);
+      }
+
+      pickTurnOrderCard(turnOrder:states.ICombatDetermineTurnOrder,then:()=>any) {
+         this.scope.$apply(()=>{
+            this.picking = true;
+            this.left = null;
+            this.right = null;
+            this.leftText = "?";
+            this.rightText = "?";
+            this.pickCorrect = false;
+            this.pick = (left:boolean) => {
+               var leftFirst:boolean = _.random(0,100) > 50;
+               this.leftText = leftFirst ? "✓" : "✗";
+               this.rightText = leftFirst ? "✗" : "✓";
+               this.pick = null;
+               this.pickCorrect = left === leftFirst;
+               var first = this.pickCorrect ? turnOrder.attacker : turnOrder.defender;
+               var second = this.pickCorrect ? turnOrder.defender : turnOrder.attacker;
+               this.$timeout(()=>{
+                  this.picking = false;
+                  turnOrder.report(first,second);
+                  then && then();
+               },2000);
+            };
+         });
+
       }
 
    }
@@ -90,12 +129,7 @@ module dorkapon.directives {
                      scope.$apply(()=>{
                         controller.combat = combatState.machine;
                      });
-                     combatState.parent.on(states.DorkaponCombatEnded.EVENT,(e:states.ICombatSummary)=>{
-                        console.log(e);
-                        scope.$apply(()=>{
-                           controller.combat = null;
-                        });
-                     },this);
+                     controller.listenCombatEvents(combatState);
                   }
                });
                $dorkapon.machine.on(pow2.StateMachine.Events.EXIT,(oldState:pow2.IState)=>{
@@ -106,6 +140,7 @@ module dorkapon.directives {
                   }
                   else if(oldState.name === states.AppCombatState.NAME){
                      var combatState:states.AppCombatState = <states.AppCombatState>oldState;
+                     controller.stopListeningCombatEvents(combatState);
                      scope.$apply(()=>{
                         controller.combat = null;
                      });

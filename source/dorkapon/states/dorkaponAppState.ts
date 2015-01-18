@@ -174,15 +174,11 @@ module dorkapon.states {
                // Give the state machine our players.
                this.machine.playerPool = players;
 
-               this.machine.setCurrentState(DorkaponInitGame.NAME);
-
                // Loaded!
                this.map.loaded();
-
                this.world.mapView.setTileMap(this.map);
-
                this.initialized = true;
-               // TODO: Listen for changes?  To combat state?  Or just run forever until exit?
+               this.machine.setCurrentState(DorkaponInitGame.NAME);
             });
          });
 
