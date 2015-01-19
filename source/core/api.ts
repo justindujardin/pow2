@@ -26,6 +26,8 @@ module pow2 {
     */
    export var SPREADSHEET_ID:string = "1IAQbt_-Zq1BUwRNiJorvt4iPEYb5HmZrpyMOkb-OuJo";
 
+   export var NAME:string = "pow2.core";
+
 
    export interface IGameItem {
       name:string; // The item name

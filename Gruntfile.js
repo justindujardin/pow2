@@ -107,7 +107,8 @@ module.exports = function(grunt) {
          dorkapon: {
             src: [
                "source/dorkapon/*.ts",
-               "source/dorkapon/**/*.ts"
+               "source/dorkapon/**/*.ts",
+               "source/angular/*.ts"
             ],
             dest: 'lib/<%= pkg.name %>.dorkapon.js'
          },

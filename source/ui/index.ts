@@ -17,10 +17,12 @@
 /// <reference path="../../types/backbone/backbone.d.ts"/>
 /// <reference path="../../types/angularjs/angular.d.ts"/>
 /// <reference path="../../web/bower/pow-core/lib/pow-core.d.ts"/>
+/// <reference path="../angular/iconRender.ts"/>
 
 module pow2.ui {
    export var app = angular.module('pow2', [
       'ngAnimate',
+      'pow2.angular',
       'ngSanitize',
       'ngTouch'
    ]);

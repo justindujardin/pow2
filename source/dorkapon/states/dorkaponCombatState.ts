@@ -51,8 +51,8 @@ module dorkapon {
                   public parent:DorkaponAppStateMachine) {
          super();
          this.world = pow2.getWorld<DorkaponGameWorld>(dorkapon.NAME);
-         this.attacker = this.createPlayer(attacker,new pow2.Point(3,10));
-         this.defender = this.createPlayer(defender,new pow2.Point(7,10));
+         this.attacker = this.createPlayer(attacker,new pow2.Point(3,6));
+         this.defender = this.createPlayer(defender,new pow2.Point(10,6));
       }
 
 

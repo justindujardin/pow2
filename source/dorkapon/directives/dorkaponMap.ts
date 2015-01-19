@@ -29,18 +29,19 @@ module dorkapon.directives {
                context.webkitImageSmoothingEnabled = false;
                context.mozImageSmoothingEnabled = false;
                window.addEventListener('resize',onResize,false);
-               var $window = $(window);
                function onResize(){
-                  context.canvas.width = $window.width();
-                  context.canvas.height = $window.height();
+                  context.canvas.width = 800;
+                  context.canvas.height = 600;
+                  element[0].width = 800;
+                  element[0].height = 600;
                   context.webkitImageSmoothingEnabled = false;
                   context.mozImageSmoothingEnabled = false;
                }
                var gameView = new DorkaponMapView(element[0], $dorkapon.loader);
                $dorkapon.world.setService('mapView',gameView);
-               gameView.camera.extent.set(10, 10);
+               gameView.camera.extent.set(8, 6);
                $dorkapon.world.scene.addView(gameView);
-               onResize();
+               //onResize();
             }
          };
       }

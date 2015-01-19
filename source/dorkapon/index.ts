@@ -19,6 +19,7 @@
 /// <reference path="../../web/bower/pow-core/lib/pow-core.d.ts"/>
 /// <reference path="../../lib/pow2.d.ts"/>
 /// <reference path="../../lib/pow2.game.d.ts"/>
+/// <reference path="../angular/iconRender.ts"/>
 
 module dorkapon {
 
@@ -43,9 +44,11 @@ module dorkapon {
    export var ENTITIES_CONTAINER:string = "entities/dorkapon.powEntities";
 
    export var app = angular.module('dorkapon', [
-      'ngAnimate',
-      'ngSanitize',
-      'pow2',
-      'ngTouch'
-   ]);
+      'ngMaterial',
+      'pow2.angular'
+   ]).config(function($mdThemingProvider) {
+      $mdThemingProvider.theme('default')
+         .primaryColor('blue-grey')
+         .accentColor('grey');
+   });
 }

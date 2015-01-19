@@ -12,10 +12,9 @@
         .ng-hide { display: none !important; }
     </style>
     <link rel="stylesheet" type="text/css" href="/css/dorkapon.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/bower/angular-material/angular-material.css" media="all" />
 </head>
 <body ng-controller="DorkaponGameController">
-
-<game-menu class="ng-hide" ng-show="loaded"></game-menu>
 <div class="loading fade pt-page-scaleUp" ng-show="loading">
     <div class="loading-wrapper">
         <div class="loading-wrapper-inner">
@@ -27,24 +26,39 @@
     </div>
 </div>
 
-<div class="game-container fade" ng-if="loaded" id="alertContainer">
-    <canvas class="game-view map fade" width="960" height="640" dorkapon-map>
-        Your browser doesn't support this.
-    </canvas>
-</div>
+<aside ng-controller="CombatHudController"></aside>
 
-<div class="ui-container container ng-hide fade" ng-show="loaded">
-    <dorkapon-hud ng-if="loaded"></dorkapon-hud>
+<div layout="column" layout-fill ng-show="loaded" class="ng-hide">
+    <section layout="row" flex>
+        <div layout="column" layout-fill>
+            <md-toolbar ng-controller="MapHudController as hud" layout="row" class="md-padding transition-in">
+                <h3 class="md-toolbar-tools">
+                    <i class="image" icon-render icon="hud.turn.player.model.attributes.icon" frame="7" width="48" height="48"></i>
+                    <span>{{hud.turn.player.model.attributes.name}}</span>
+                    <span flex></span>
+                    <span>{{hud.turn.player.model.attributes.moves}} Moves Left</span>
+                </h3>
+            </md-toolbar>
+            <div flex layout="row" layout-align="center center">
+                <canvas class="game-view map fade" width="800" height="600" dorkapon-map>
+                    Your browser doesn't support this.
+                </canvas>
+            </div>
+        </div>
+    </section>
 </div>
 
 <!-- Compiled Game Files -->
 <script type="text/javascript" src="/bower/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="/bower/underscore/underscore-min.js"></script>
 <script type="text/javascript" src="/bower/backbone/backbone.js"></script>
-<script type="text/javascript" src="/bower/angular/angular.min.js"></script>
-<script type="text/javascript" src="/bower/angular-animate/angular-animate.min.js"></script>
-<script type="text/javascript" src="/bower/angular-sanitize/angular-sanitize.min.js"></script>
-<script type="text/javascript" src="/bower/angular-touch/angular-touch.min.js"></script>
+
+<script src="/bower/angular/angular.js"></script>
+<script src="/bower/angular-aria/angular-aria.js"></script>
+<script src="/bower/angular-animate/angular-animate.js"></script>
+<script src="/bower/hammerjs/hammer.js"></script>
+<script src="/bower/angular-material/angular-material.js"></script>
+
 <script type="text/javascript" src="/bower/astar/astar.js"></script>
 <script type="text/javascript" src="/bower/tabletop/src/tabletop.js"></script>
 <script type="text/javascript" src="/bower/pow-core/lib/pow-core.js"></script>

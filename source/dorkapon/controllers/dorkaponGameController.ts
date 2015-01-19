@@ -14,7 +14,6 @@
  limitations under the License.
  */
 
-/// <reference path="../../ui/services/alertService.ts"/>
 /// <reference path="../services/dorkaponService.ts"/>
 
 module dorkapon.controllers {
@@ -22,8 +21,7 @@ module dorkapon.controllers {
       '$scope',
       '$timeout',
       '$dorkapon',
-      'powAlert',
-      function($scope,$timeout,$dorkapon:services.DorkaponService,powAlert:pow2.ui.PowAlertService){
+      function($scope,$timeout,$dorkapon:services.DorkaponService){
          $scope.loadingTitle = "Dorkapon!";
          $scope.loadingMessage = "Asking Google for data...";
          $scope.loading = true;

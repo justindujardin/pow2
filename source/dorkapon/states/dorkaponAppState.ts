@@ -70,7 +70,7 @@ module dorkapon.states {
          this.world.mark(this.scene);
          this.scene.addView(this.world.mapView);
          this.world.mapView.setTileMap(this.map);
-         this.world.mapView.camera.set(0,0,10,10);
+         this.world.mapView.camera.set(0,0,25,19);
 
          this.world.combatState = this.machine = new DorkaponCombatStateMachine(this.attacker,this.defender,this.scene,machine);
          this.world.loader.load(pow2.getMapUrl('combat'),(map:pow2.TiledTMXResource)=>{

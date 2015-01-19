@@ -1,28 +1,5 @@
-// Core variables and mixins
-@import "variables";
-@import "mixins";
 
-// Reset
-@import "normalize";
-@import "print";
 
-// Core CSS
-@import "scaffolding";
-@import "type";
-@import "code";
-@import "buttons";
-@import "progress-bars";
-@import "glyphicons";
-
-// Utility classes
-@import "utilities";
-
-// Other
-@import "./directives/dorkaponHud";
-@import "../ui/style/eightBitPanel";
-@import "../ui/style/pageTransitions";
-@import "../ui/style/animation";
-@import "../ui/style/animations/damageValue";
 
 @zCanvas: 10;
 @zCanvasGui: 20;
@@ -70,30 +47,20 @@ body {
   height:100%;
 }
 
-.hero-container {
-  margin-right: auto;
-  margin-left: auto;
-
-  > * {
-    font-family: @pixelFont;
-    text-align: center;
-    color:#fff;
-  }
-
-  > h1 {
-    margin-top:10px;
-    margin-bottom:25px;
-    font-size: 8em;
-    .extrude-stroke-text(4px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
-
-  }
-  p {
-    font-size:1.2em;
-    .inset-stroke-text(1px,rgba(255,255,255,0.2),rgba(0,0,0,0.1));
-    color:@contrastFontColor;
-  }
+canvas {
+  image-rendering: -moz-crisp-edges;         /* Firefox */
+  image-rendering:   -o-crisp-edges;         /* Opera */
+  image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+  z-index: auto;
+  min-width:800px;
 }
 
+.ebp {
+  font-family: 'GraphicPixel', sans-serif;
+  font-size: 20px;
+}
 
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
@@ -113,200 +80,5 @@ body {
     display: table-cell;
     vertical-align: middle;
     text-align:center;
-  }
-}
-
-
-canvas {
-  image-rendering: -moz-crisp-edges;         /* Firefox */
-  image-rendering:   -o-crisp-edges;         /* Opera */
-  image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
-  image-rendering: crisp-edges;
-  -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
-  z-index: auto;
-}
-.ebp {
-  font-family: 'GraphicPixel', sans-serif;
-  font-size: 20px;
-}
-
-/* Stroke Text Effect */
-@contrastFontColorA:rgba(244, 255, 0, 0.5);
-@contrastFontColor:#eeaa13;
-@contrastHighlight:#E8C627;
-@contrastShadow:#E85627;
-.extrude-stroke-text(@width:2px,@lightColor:@contrastHighlight,@shadowColor:@contrastShadow){
-  text-shadow: @width  @width 0 @shadowColor,
-    -@width -@width 0 @lightColor,
-    @width -@width 0 @shadowColor,
-  -@width  @width 0 @lightColor;
-}
-.inset-stroke-text(@width:2px,@lightColor:@contrastHighlight,@shadowColor:@contrastShadow){
-  text-shadow:-@width -@width 0 @lightColor,
-  @width  @width 0 @shadowColor,
-  -@width  @width 0 @lightColor,
-    @width -@width 0 @shadowColor;
-}
-.stroke-text(@width:2px,@color:@contrastShadow){
-  .extrude-stroke-text(@width,@color,@color);
-}
-
-
-.scale-down {
-}
-.scale-down.ng-hide {
-}
-.scale-down.ng-hide-add {
-  .pt-page-scaleDownUp;
-  .pt-page-ontop;
-  .pt-page-delay500;
-  display:block!important;
-}
-
-.scale-down.ng-hide-remove {
-  .pt-page-delay1000;
-  .pt-page-scaleUp;
-  display:block!important;
-}
-
-.drop-overlay {
-  padding: 0;
-  top: 0;
-  left: 0;
-  width: 100%;
-  min-height: 100%;
-  position: absolute;
-  background-color: transparent;
-  z-index: @zCanvasAlert;
-  text-align: center;
-  font-family: @pixelFont;
-  pointer-events:auto;
-
-  .message {
-    top:45%;
-    left: 0;
-    right:0;
-    background-color: rgba(0, 0, 0, 0.80);
-    border: none;
-    box-shadow: none;
-    margin:auto;
-    position: absolute;
-    padding: 10px;
-    font-size: 2em;
-    color:#fff;
-    .stroke-text(1px,#000);
-  }
-}
-
-
-.container {
-  z-index: 100;
-
-}
-
-.game-container {
-  position: fixed;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  border:none;
-  margin:0;
-  padding:0;
-  .damage-value {
-    font-family: 'GraphicPixel', sans-serif;
-    font-size:3em;
-    color:#F00;
-    .stroke-text(2px, rgba(255, 255, 255, 0.9));
-    &.miss {
-      color:#ccc;
-      .stroke-text(1px,#222);
-    }
-    &.heal {
-      color:#0E0;
-      .stroke-text(1px,#222);
-    }
-  }
-  canvas{
-    position: absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    border-right: none;
-    border-left: none;
-  }
-}
-
-.ui-container {
-  position: absolute;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  overflow-y:auto;
-  pointer-events:none;
-}
-
-/* Small devices (tablets, 768px and up) */
-@media (min-width: @screen-sm-min) {
-  .hero-container {
-    h1 {
-      font-size: 12em;
-    }
-    p {
-      font-size:1.8em;
-    }
-  }
-  .menu-overlay {
-    > span {
-      font-size:24px;
-    }
-  }
-  .game-container{
-    .damage-value {
-      font-size:5em;
-    }
-    .message {
-      .text {
-        font-size: 18px;
-      }
-    }
-  }
-}
-
-/* Medium devices (desktops, 992px and up) */
-@media (min-width: @screen-md-min) {
-  .drop-overlay {
-    .message {
-      padding:25px;
-      font-size:3em;
-    }
-  }
-  .game-container{
-    .message {
-      .text {
-        font-size: 20px;
-      }
-    }
-  }
-}
-
-/* Large devices (large desktops, 1200px and up) */
-@media (min-width: @screen-lg-min) {
-  .hero-container {
-    h1 {
-      font-size: 16em;
-    }
-    p {
-      font-size:1.8em;
-    }
-  }
-  .game-container{
-    .message {
-      .text {
-        font-size: 24px;
-      }
-    }
   }
 }
