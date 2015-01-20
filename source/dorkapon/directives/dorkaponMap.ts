@@ -30,10 +30,17 @@ module dorkapon.directives {
                context.mozImageSmoothingEnabled = false;
                window.addEventListener('resize',onResize,false);
                function onResize(){
-                  context.canvas.width = 800;
-                  context.canvas.height = 600;
-                  element[0].width = 800;
-                  element[0].height = 600;
+                  var w:number = 800;
+                  var h:number = 600;
+                  if(element.parent().width() < 800){
+                     w = 400;
+                     h = 300;
+                  }
+                  context.canvas.width = element[0].width = w;
+                  context.canvas.height = element[0].height = h;
+                  element.css({
+                     'min-width':w
+                  });
                   context.webkitImageSmoothingEnabled = false;
                   context.mozImageSmoothingEnabled = false;
                }
