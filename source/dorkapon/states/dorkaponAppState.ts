@@ -100,7 +100,7 @@ module dorkapon.states {
 
       initialized:boolean = false;
 
-      createPlayer(from:models.DorkaponEntity,at?:pow2.Point):objects.DorkaponEntity{
+      createPlayer(from:models.DorkaponPlayer,at?:pow2.Point):objects.DorkaponEntity{
          if(!from){
             throw new Error("Cannot create player without valid model");
          }
@@ -160,13 +160,13 @@ module dorkapon.states {
                var tpl:any = _.where(classes,{id:"warrior"})[0];
                tpl.icon = tpl.icon.replace("[gender]","male");
 
-               var model:models.DorkaponEntity = new models.DorkaponEntity(tpl);
+               var model:models.DorkaponPlayer = models.DorkaponPlayer.create(tpl);
                players.push(this.createPlayer(model,new pow2.Point(3,18)));
 
                // Mage player
                tpl = _.where(classes,{id:"mage"})[0];
                tpl.icon = tpl.icon.replace("[gender]","female");
-               model = new models.DorkaponEntity(tpl);
+               model = models.DorkaponPlayer.create(tpl);
                players.push(this.createPlayer(model,new pow2.Point(12,11)));
 
                this.scene.addObject(this.map);

@@ -30,7 +30,7 @@ module dorkapon.components.tiles {
          var enemies:any[] = this.world.tables.getSheetData("enemies");
          var combatState = <states.AppCombatState>this.world.state.getState(states.AppCombatState.NAME);
          combatState.attacker = object.model;
-         combatState.defender = new models.DorkaponEntity(enemies[_.random(0,enemies.length-1)]);
+         combatState.defender = models.DorkaponMonster.create(enemies[_.random(0,enemies.length-1)]);
          this.world.state.setCurrentState(combatState);
          this.world.state.on(pow2.StateMachine.Events.EXIT,(state:pow2.IState)=>{
             if(state.name === combatState.name){

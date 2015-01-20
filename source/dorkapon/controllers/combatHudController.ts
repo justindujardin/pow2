@@ -18,12 +18,14 @@ module dorkapon {
    export class CombatHudController {
       static $inject:string[] = [
          '$scope',
+         '$rootScope',
          '$timeout',
          '$mdDialog',
          '$dorkapon'
       ];
       constructor(
          public $scope:any,
+         public $rootScope:any,
          public $timeout:ng.ITimeoutService,
          public $mdDialog:any,
          public $dorkapon:services.DorkaponService
@@ -33,7 +35,9 @@ module dorkapon {
                var combatState:states.AppCombatState = <states.AppCombatState>newState;
                console.log(combatState);
                this.$scope.$apply(()=>{
+                  this.$rootScope.inCombat = true;
                   this.combat = combatState.machine;
+
                });
                this.listenCombatEvents(combatState);
             }
@@ -43,6 +47,7 @@ module dorkapon {
                var combatState:states.AppCombatState = <states.AppCombatState>oldState;
                this.stopListeningCombatEvents(combatState);
                this.$scope.$apply(()=>{
+                  this.$rootScope.inCombat = false;
                   this.combat = null;
                });
             }
@@ -58,6 +63,14 @@ module dorkapon {
       }
 
       combat:dorkapon.DorkaponCombatStateMachine = null;
+
+
+      getHitPointValue(object:objects.DorkaponEntity):number {
+         if(!object){
+            return 0;
+         }
+         return Math.round(object.model.get('hp') / object.model.get('maxhp') * 100);
+      }
 
       listenCombatEvents(state:states.AppCombatState) {
          state.machine.on(states.DorkaponCombatEnded.EVENT,(e:states.ICombatSummary)=>{
