@@ -29,13 +29,16 @@ module dorkapon.directives {
                context.webkitImageSmoothingEnabled = false;
                context.mozImageSmoothingEnabled = false;
                window.addEventListener('resize',onResize,false);
+               var firstSize:boolean = true;
+               var $window = $(window);
                function onResize(){
                   var w:number = 800;
                   var h:number = 600;
-                  if(element.parent().width() < 800){
+                  if(firstSize && $window.width() < 800 || !firstSize && element.parent().width() < 800){
                      w = 400;
                      h = 300;
                   }
+                  firstSize = false;
                   context.canvas.width = element[0].width = w;
                   context.canvas.height = element[0].height = h;
                   element.css({
