@@ -48,7 +48,7 @@ module dorkapon.directives {
                $dorkapon.world.setService('mapView',gameView);
                gameView.camera.extent.set(8, 6);
                $dorkapon.world.scene.addView(gameView);
-               //onResize();
+               onResize();
             }
          };
       }
