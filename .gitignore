@@ -8,3 +8,5 @@ web/bower
 .coverage
 data/textures/basictiles
 data/textures/environment-old
+server/**/*.js
+server/**/*.js.map
