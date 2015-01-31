@@ -43,12 +43,12 @@
                 <h3 class="md-toolbar-tools">
                     <i class="image" icon-render icon="hud.combat.attacker.model.attributes.icon" frame="7" width="48" height="48"></i>
                     <div layout="column" flex="30">
-                        <span>{{hud.combat.attacker.model.attributes.name}}</span>
+                        <span>LVL{{hud.combat.attacker.model.attributes.level}} {{hud.combat.attacker.model.attributes.name}}</span>
                         <md-progress-linear class="md-accent" md-mode="determinate" value="{{hud.getHitPointValue(hud.combat.attacker)}}"></md-progress-linear>
                     </div>
                     <span flex></span>
                     <div layout="column" flex="30">
-                        <span>{{hud.combat.defender.model.attributes.name}}</span>
+                        <span>LVL{{hud.combat.defender.model.attributes.level}} {{hud.combat.defender.model.attributes.name}}</span>
                         <md-progress-linear class="md-accent" md-mode="determinate" value="{{hud.getHitPointValue(hud.combat.defender)}}"></md-progress-linear>
                     </div>
                     <i class="image" icon-render icon="hud.combat.defender.model.attributes.icon" frame="7" width="48" height="48"></i>
