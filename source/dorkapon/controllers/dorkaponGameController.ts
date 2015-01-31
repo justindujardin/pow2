@@ -28,7 +28,7 @@ module dorkapon.controllers {
          $scope.range = function(n) {
             return new Array(n);
          };
-         pow2.GameStateModel.getDataSource(()=>{
+         DorkaponGameWorld.getDataSource(()=>{
             $scope.$apply(()=>{
                $scope.loadingMessage = "Loading the things...";
             });

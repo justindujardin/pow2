@@ -15,7 +15,6 @@
  */
 
 /// <reference path="../tileMap.ts" />
-/// <reference path="../../../lib/pow2.d.ts" />
 
 module pow2 {
    export class TileMapCameraComponent extends CameraComponent {

@@ -17,7 +17,7 @@
 /// <reference path="./../index.ts" />
 
 module dorkapon.objects {
-   export class DorkaponEntity extends pow2.GameObject {
+   export class DorkaponEntity extends pow2.TileObject {
       model:models.DorkaponEntity;
    }
 }

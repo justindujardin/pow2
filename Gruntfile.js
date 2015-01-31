@@ -74,12 +74,7 @@ module.exports = function(grunt) {
                "source/core/*.ts",
                "source/core/scene/*.ts",
                "source/core/scene/components/*.ts",
-               "source/interfaces/*.ts"
-            ],
-            dest: 'lib/<%= pkg.name %>.js'
-         },
-         game: {
-            src: [
+               "source/interfaces/*.ts",
                "source/tile/*.ts",
                "source/tile/components/*.ts",
                "source/tile/objects/*.ts",
@@ -87,38 +82,26 @@ module.exports = function(grunt) {
                "source/tile/features/*.ts",
                "source/tile/render/*.ts",
                "source/game/*.ts",
-               "source/game/components/gameComponent.ts",
-               "source/game/models/entityModel.ts",
-               "source/game/models/itemModel.ts",
-               "source/game/models/*.ts",
-               "source/game/states/*.ts",
-               "source/game/objects/*.ts",
-               "source/game/resources/*.ts",
                "source/game/components/*.ts",
-               "source/game/components/features/*.ts",
-               "source/combat/*.ts",
-               "source/combat/states/*.ts",
-               "source/combat/components/*.ts",
-               "source/combat/components/actions/*.ts",
-               "source/combat/components/players/*.ts"
+               "source/game/resources/*.ts"
             ],
-            dest: 'lib/<%= pkg.name %>.game.js'
+            dest: 'lib/<%= pkg.name %>.js'
          },
          dorkapon: {
             src: [
-               "source/dorkapon/*.ts",
+               "source/dorkapon/index.ts",
                "source/dorkapon/**/*.ts",
                "source/angular/*.ts"
             ],
             dest: 'lib/<%= pkg.name %>.dorkapon.js'
          },
-         ui: {
+         rpg: {
             src: [
-               "source/ui/index.ts",
-               "source/ui/*.ts",
-               "source/ui/**/*.ts"
+               "source/rpg/index.ts",
+               "source/rpg/**/*.ts",
+               "source/angular/*.ts"
             ],
-            dest: 'lib/<%= pkg.name %>.ui.js'
+            dest: 'lib/<%= pkg.name %>.rpg.js'
          },
          tests: {
             src: [
@@ -145,9 +128,8 @@ module.exports = function(grunt) {
          game: {
             files: {
                'lib/<%= pkg.name %>.min.js'    : ['lib/<%= pkg.name %>.js'],
-               'lib/<%= pkg.name %>.min.game.js'    : ['lib/<%= pkg.name %>.game.js'],
                'lib/<%= pkg.name %>.min.dorkapon.js'    : ['lib/<%= pkg.name %>.dorkapon.js'],
-               'lib/<%= pkg.name %>.min.ui.js'    : ['lib/<%= pkg.name %>.ui.js'],
+               'lib/<%= pkg.name %>.min.rpg.js'    : ['lib/<%= pkg.name %>.rpg.js'],
                'lib/<%= pkg.name %>.min.sprites.js' : ['lib/<%= pkg.name %>.sprites.js']
             }
          }
@@ -202,13 +184,13 @@ module.exports = function(grunt) {
       less: {
          options: {
             paths: [
-               "source/ui/",
+               "source/rpg/",
                "web/bower/bootstrap/less/"
             ]
          },
          game: {
             files: {
-               'web/css/index.css':'source/ui/index.less',
+               'web/css/rpg.css':'source/rpg/index.less',
                'web/css/dorkapon.css':'source/dorkapon/index.less'
             }
          }
@@ -236,23 +218,17 @@ module.exports = function(grunt) {
             ],
             tasks: ['typescript:pow2', 'notify:code']
          },
-         game: {
-            files: [
-               '<%= typescript.game.src %>'
-            ],
-            tasks: ['typescript:game', 'notify:code']
-         },
          dorkapon: {
             files: [
                '<%= typescript.dorkapon.src %>'
             ],
             tasks: ['typescript:dorkapon', 'notify:code']
          },
-         ui: {
+         rpg: {
             files: [
-               '<%= typescript.ui.src %>'
+               '<%= typescript.rpg.src %>'
             ],
-            tasks: ['typescript:ui', 'notify:code']
+            tasks: ['typescript:rpg', 'notify:code']
          },
 
 
@@ -267,9 +243,7 @@ module.exports = function(grunt) {
          },
          styles: {
             files: [
-               'source/ui/*.less',
-               'source/ui/**/*.less',
-               'source/dorkapon/*.less',
+               'source/rpg/**/*.less',
                'source/dorkapon/**/*.less'
             ],
             tasks: ['less', 'notify:less']

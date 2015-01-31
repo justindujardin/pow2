@@ -15,7 +15,6 @@
  */
 
 ///<reference path="../../web/bower/pow-core/lib/pow-core.d.ts"/>
-///<reference path="../interfaces/IScene.ts"/>
 
 module pow2 {
 

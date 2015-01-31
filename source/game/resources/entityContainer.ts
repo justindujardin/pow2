@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-/// <reference path="../../../lib/pow2.d.ts" />
+
 
 module pow2 {
    export enum EntityError {
@@ -196,7 +196,7 @@ module pow2 {
          }) : [inputs];
 
 
-         var object:GameEntityObject = this.constructObject(type,inputValues);
+         var object:SceneObject = this.constructObject(type,inputValues);
 
          // Create components.
          //

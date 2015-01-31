@@ -22,10 +22,10 @@
     }
   },
   {
-    "name":"SceneObjectWithModelInput",
-    "type":"pow2.GameEntityObject",
+    "name":"SceneObjectWithComponentInput",
+    "type":"pow2.SceneObject",
     "inputs":{
-      "model":"pow2.EntityModel"
+      "component":"pow2.SceneComponent"
     }
   },
 

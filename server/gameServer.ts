@@ -43,7 +43,7 @@ function getPageScripts(){
 }
 
 server.get('/', function(req,res){
-   res.render('../source/ui/index.html',{
+   res.render('../source/rpg/index.html',{
       scripts:getPageScripts()
    });
 });

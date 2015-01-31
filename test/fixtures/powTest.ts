@@ -1,6 +1,5 @@
 ///<reference path="../../types/jasmine/jasmine.d.ts"/>
 ///<reference path="../../lib/pow2.d.ts"/>
-///<reference path="../../lib/pow2.game.d.ts"/>
 module pow2.tests {
 
    export function NamespaceClassToType(fullTypeName:string):any {

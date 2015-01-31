@@ -14,8 +14,9 @@
  limitations under the License.
  */
 
-/// <reference path="../../lib/pow2.d.ts"/>
 /// <reference path="./tileMap.ts" />
+/// <reference path="../core/scene/sceneObject.ts" />
+/// <reference path="../core/scene/components/movableComponent.ts" />
 
 module pow2 {
    export interface TileObjectOptions {
@@ -110,5 +111,17 @@ module pow2 {
          this.icon = name;
          return oldSprite;
       }
+
+      getIcon() {
+         if(this.icon){
+            return this.icon;
+         }
+         var spriteComponent = <SpriteComponent>this.findComponent(SpriteComponent);
+         if(spriteComponent){
+            return spriteComponent.icon;
+         }
+         return null;
+      }
+
    }
 }

@@ -14,9 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../../lib/pow2.d.ts"/>
-/// <reference path="./tileObject.ts" />
-/// <reference path="./components/tileMapCameraComponent.ts" />
+/// <reference path="../core/scene/sceneObject.ts" />
 
 module pow2 {
 

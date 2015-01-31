@@ -14,9 +14,7 @@
  limitations under the License.
  */
 
-/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="./playerRenderComponent.ts" />
-/// <reference path="../objects/gameFeatureObject.ts" />
 
 module pow2.game.components {
 
@@ -28,7 +26,7 @@ module pow2.game.components {
       private _renderFrame:number = 3;
       heading:Point = new Point(0, -1);
       sprite:PlayerRenderComponent = null;
-      collideComponentType:any = GameComponent;
+      collideComponentType:any = SceneComponent;
 
       static Events:any = {
          MOVE_BEGIN: 'move:begin',
@@ -118,38 +116,7 @@ module pow2.game.components {
          return false;
       }
 
-      collideMove(x:number, y:number, results:GameFeatureObject[] = []) {
-         var collision:boolean = this.collider && this.collider.collide(x, y, GameFeatureObject, results);
-         if (collision) {
-            for (var i = 0; i < results.length; i++) {
-               var o = <GameFeatureObject>results[i];
-               if (o.passable === true || !o.type) {
-                  return false;
-               }
-               if (_.indexOf(PlayerComponent.COLLIDE_TYPES, o.type) !== -1) {
-                  return true;
-               }
-            }
-         }
-         // Iterate over all layers of the map, check point(x,y) and see if the tile
-         // has any unpassable attributes set on it.  If any unpassable attributes are
-         // found, there is a collision.
-         // TODO: This should probably respect layer visibility, and another flag?  collidable?
-         var map:TileMap = <TileMap>this.host.scene.objectByType(TileMap);
-         if (map) {
-            var layers:tiled.ITiledLayer[] = map.getLayers();
-            for (var i = 0; i < layers.length; i++) {
-               var terrain = map.getTileData(layers[i], x, y);
-               if (!terrain) {
-                  continue;
-               }
-               for (var j = 0; j < this.passableKeys.length; j++) {
-                  if (terrain[this.passableKeys[j]] === false) {
-                     return true;
-                  }
-               }
-            }
-         }
+      collideMove(x:number, y:number, results:SceneObject[] = []) {
          return false;
       }
 
@@ -160,9 +127,9 @@ module pow2.game.components {
          }
 
          var results = [];
-         this.collider.collide(move.from.x, move.from.y, GameObject, results);
+         this.collider.collide(move.from.x, move.from.y, TileObject, results);
          for (var i = 0; i < results.length; i++) {
-            var o:GameObject = results[i];
+            var o:TileObject = results[i];
             var comp:TileComponent = <TileComponent>o.findComponent(this.collideComponentType);
             if (!comp || !comp.enter) {
                continue;
@@ -172,9 +139,9 @@ module pow2.game.components {
             }
          }
          results.length = 0;
-         this.collider.collide(move.to.x, move.to.y, GameObject, results);
+         this.collider.collide(move.to.x, move.to.y, TileObject, results);
          for (var i = 0; i < results.length; i++) {
-            var o:GameObject = results[i];
+            var o:TileObject = results[i];
             var comp:TileComponent = <TileComponent>o.findComponent(this.collideComponentType);
             if (!comp || !comp.enter) {
                continue;
@@ -192,13 +159,13 @@ module pow2.game.components {
          }
 
          // Trigger exit on previous components
-         var hits:GameObject[] = [];
-         this.collider.collide(move.from.x, move.from.y, GameObject, hits);
-         var fromFeature:GameObject = _.find(hits, (o:GameObject)=> {
+         var hits:TileObject[] = [];
+         this.collider.collide(move.from.x, move.from.y, TileObject, hits);
+         var fromObject:TileObject = _.find(hits, (o:TileObject)=> {
             return o._uid !== this.host._uid;
          });
-         if (fromFeature) {
-            var comp = <TileComponent>fromFeature.findComponent(this.collideComponentType);
+         if (fromObject) {
+            var comp = <TileComponent>fromObject.findComponent(this.collideComponentType);
             if (comp && comp.host._uid !== this.host._uid) {
                comp.exited(this.host);
             }
@@ -206,12 +173,12 @@ module pow2.game.components {
 
          // Trigger enter on new components
          hits.length = 0;
-         this.collider.collide(move.to.x, move.to.y, GameObject, hits);
-         var toFeature:GameObject = _.find(hits, (o:GameObject)=> {
+         this.collider.collide(move.to.x, move.to.y, TileObject, hits);
+         var toObject:TileObject = _.find(hits, (o:TileObject)=> {
             return o._uid !== this.host._uid;
          });
-         if (toFeature) {
-            var comp = <TileComponent>toFeature.findComponent(this.collideComponentType);
+         if (toObject) {
+            var comp = <TileComponent>toObject.findComponent(this.collideComponentType);
             if (comp && comp.host._uid !== this.host._uid) {
                comp.entered(this.host);
             }

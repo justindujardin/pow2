@@ -19,9 +19,7 @@ module.exports = function(config) {
          "web/bower/tabletop/src/tabletop.js",
          "web/bower/pow-core/lib/pow-core.js",
          "lib/pow2.js",
-         "lib/pow2.game.js",
          "lib/pow2.sprites.js",
-         "lib/pow2.ui.js",
          "lib/test/*.js",
          {pattern: 'test/fixtures/*.*', watched: true, included: false, served: true}
       ],

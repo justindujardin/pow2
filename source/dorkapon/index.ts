@@ -18,7 +18,6 @@
 /// <reference path="../../types/angularjs/angular.d.ts"/>
 /// <reference path="../../web/bower/pow-core/lib/pow-core.d.ts"/>
 /// <reference path="../../lib/pow2.d.ts"/>
-/// <reference path="../../lib/pow2.game.d.ts"/>
 /// <reference path="../angular/iconRender.ts"/>
 
 module dorkapon {

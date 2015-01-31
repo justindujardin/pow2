@@ -17,7 +17,7 @@
 /// <reference path="../index.ts" />
 
 module dorkapon.components {
-   export class MapNodeComponent extends pow2.GameComponent {
+   export class MapNodeComponent extends pow2.TileComponent {
       public world:DorkaponGameWorld = <DorkaponGameWorld>pow2.getWorld(dorkapon.NAME);
 
       /**

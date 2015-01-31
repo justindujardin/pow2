@@ -61,7 +61,7 @@ module dorkapon {
     */
    export interface INodeTile extends pow2.IPoint {
       type:NodeTiles;
-      _object:pow2.GameEntityObject;
+      _object:objects.DorkaponEntity;
    }
 
    /**
@@ -69,7 +69,7 @@ module dorkapon {
     */
    export interface IPathTile extends pow2.IPoint {
       type:PathTiles;
-      _object:pow2.GameEntityObject;
+      _object:objects.DorkaponEntity;
    }
 
 
@@ -108,7 +108,7 @@ module dorkapon {
       removeFeaturesFromScene() {
          var nodes = this.getNodes();
          _.each(nodes,(obj:any) => {
-            var featureObject = obj._object;
+            var featureObject:objects.DorkaponEntity = obj._object;
             delete obj._object;
             if(featureObject){
                featureObject.destroy();
@@ -122,13 +122,13 @@ module dorkapon {
          }
          return true;
       }
-      createFeatureObject(node:INodeTile):pow2.GameEntityObject {
+      createFeatureObject(node:INodeTile):objects.DorkaponEntity {
          var options = {
             tileMap: this,
             type:node.type,
             point: new pow2.Point(node.x,node.y)
          };
-         var object = new pow2.GameEntityObject(options);
+         var object = new objects.DorkaponEntity(options);
          this.world.mark(object);
 
          var className:string = null;

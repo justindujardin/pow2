@@ -14,7 +14,6 @@
  limitations under the License.
  */
 
-/// <reference path="../../../lib/pow2.d.ts" />
 
 module pow2 {
    declare var Tabletop:any;

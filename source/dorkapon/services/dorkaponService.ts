@@ -31,8 +31,7 @@ module dorkapon.services {
             scene: new pow2.Scene({
                autoStart: true,
                debugRender: false
-            }),
-            model: new pow2.GameStateModel()
+            })
          });
          pow2.registerWorld(dorkapon.NAME, this.world);
          this.machine = <DorkaponAppStateMachine>this.world.setService('state', new DorkaponAppStateMachine());

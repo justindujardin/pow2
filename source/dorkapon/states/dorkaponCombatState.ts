@@ -167,7 +167,7 @@ module dorkapon.states {
       static NAME:string = "dorkapon-combat-move-execute";
       static EVENT:string = DorkaponCombatExecuteMoves.NAME;
       name:string = DorkaponCombatExecuteMoves.NAME;
-      tileMap:pow2.GameTileMap;
+      tileMap:DorkaponTileMap;
 
       enter(machine:DorkaponCombatStateMachine) {
          super.enter(machine);

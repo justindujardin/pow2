@@ -14,13 +14,11 @@
  limitations under the License.
  */
 
-/// <reference path="../../lib/pow2.d.ts" />
-/// <reference path="./gameTileMap.ts"/>
+/// <reference path="../tile/tileMapView.ts" />
 
 module pow2{
    export class GameMapView extends TileMapView {
       objectRenderer:TileObjectRenderer = new TileObjectRenderer;
-      tileMap:GameTileMap = null;
       mouse:NamedMouseElement = null;
       scene:Scene;
 
@@ -69,10 +67,8 @@ module pow2{
             e.preventDefault();
             return false;
          }
-
       }
 
-      private _features:pow2.GameFeatureObject[] = null;
       private _players:pow2.SceneObject[] = null;
       private _playerRenders:pow2.SceneObject[] = null;
       private _sprites:pow2.SpriteComponent[] = null;
@@ -82,12 +78,13 @@ module pow2{
          this.clearCache();
       }
 
-      private clearCache() {
-         this._features = null;
+      protected _renderables:any[] = [];
+      protected clearCache() {
          this._players = null;
          this._playerRenders = null;
          this._sprites = null;
          this._movers = null;
+         this._renderables = [];
       }
 
       /*
@@ -95,40 +92,23 @@ module pow2{
        */
       renderFrame(elapsed) {
          super.renderFrame(elapsed);
-         if(!this._features) {
-            this._features = <pow2.GameFeatureObject[]>this.scene.objectsByType(pow2.GameFeatureObject);
-         }
-         var l:number = this._features.length;
-         for(var i = 0; i < l; i++){
-            this.objectRenderer.render(this._features[i],this._features[i],this);
-         }
          if(!this._playerRenders) {
             this._playerRenders = <pow2.SceneObject[]>this.scene.objectsByComponent(pow2.PlayerRenderComponent);
-         }
-         l = this._playerRenders.length;
-         for(var i = 0; i < l; i++){
-            var renderObj:any = this._playerRenders[i];
-            this.objectRenderer.render(renderObj,renderObj,this);
+            this._renderables = this._renderables.concat(this._playerRenders);
          }
          if(!this._players){
             this._players = <pow2.SceneObject[]>this.scene.objectsByComponent(pow2.game.components.PlayerComponent);
+            this._renderables = this._renderables.concat(this._players);
          }
-         l = this._players.length;
-         for(var i = 0; i < l; i++){
-            var renderObj:any = this._players[i];
-            this.objectRenderer.render(renderObj,renderObj,this);
-         }
-
          if(!this._sprites){
             this._sprites = <SpriteComponent[]>this.scene.componentsByType(pow2.SpriteComponent);
+            this._renderables = this._renderables.concat(this._sprites);
          }
-
-         l = this._sprites.length;
+         var l:number = this._renderables.length;
          for(var i = 0; i < l; i++){
-            var sprite = this._sprites[i];
-            this.objectRenderer.render(sprite.host,sprite,this);
+            var renderObj:any = this._renderables[i];
+            this.objectRenderer.render(renderObj,renderObj,this);
          }
-
          if(!this._movers){
             this._movers = <MovableComponent[]>this.scene.componentsByType(pow2.MovableComponent);
          }

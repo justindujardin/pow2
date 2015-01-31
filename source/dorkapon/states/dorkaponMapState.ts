@@ -20,7 +20,6 @@ module dorkapon {
 
    export class DorkaponMapStateMachine extends pow2.StateMachine {
       world:DorkaponGameWorld;
-      model:pow2.GameStateModel = new pow2.GameStateModel();
 
       playerPool:objects.DorkaponEntity[] = [];
       playerQueue:objects.DorkaponEntity[] = [];
@@ -75,7 +74,7 @@ module dorkapon.states {
       static NAME:string = "player-turn";
       static EVENT:string = "player:turn";
       name:string = DorkaponPlayerTurn.NAME;
-      tileMap:pow2.GameTileMap;
+      tileMap:DorkaponTileMap;
       enter(machine:DorkaponMapStateMachine){
          super.enter(machine);
          var data:IPlayerTurnEvent = {
