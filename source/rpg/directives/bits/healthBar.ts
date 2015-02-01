@@ -24,7 +24,7 @@ module pow2.ui {
          templateUrl: '/source/rpg/directives/bits/healthBar.html',
          controller:($scope) => {
             $scope.getProgressClass = (model) => {
-               if(!model){
+               if(!model || !model.attributes){
                   return '';
                }
                var result:string[] = [];
@@ -44,7 +44,7 @@ module pow2.ui {
                return result.join(' ');
             };
             $scope.getProgressBarStyle = (model) => {
-               if(!model){
+               if(!model || !model.attributes){
                   return {};
                }
                var pct:number = Math.ceil(model.attributes.hp / model.attributes.maxHP * 100);
