@@ -119,19 +119,19 @@ module pow2.ui {
          this.scope.$apply(() => {
             this.paused = true;
             this.scope.powAlert = this._current;
-            this.animate.enter(this.element, this.container, null,() => {
+            this.animate.enter(this.element, this.container).then(() => {
                this.paused = false;
             });
          });
       }
 
       dismiss() {
-         if(this.paused){
+         if(!this._current || this.paused){
             return;
          }
          this.paused = true;
          this.scope.$apply(() => {
-            this.animate.leave(this.element, () => {
+            this.animate.leave(this.element).then(() => {
                if(this._current){
                   // Don't let exceptions in callback mess up current = null;
                   try{

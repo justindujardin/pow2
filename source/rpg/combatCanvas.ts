@@ -53,7 +53,7 @@ module pow2.ui {
                      '</span>'
                   ].join(''))($scope);
                   $scope.$apply(() => {
-                     $animate.enter(damageValue, element.parent(),null,() => {
+                     $animate.enter(damageValue, element.parent()).then(() => {
                         damageValue.remove();
                      });
                   });
