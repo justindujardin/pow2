@@ -15,6 +15,7 @@
  */
 
 /// <reference path="../../types/angularjs/angular.d.ts"/>
+/// <reference path="../../lib/pow2.d.ts"/>
 
 module pow2 {
    export var app = angular.module('pow2.angular', []);

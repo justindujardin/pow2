@@ -43,13 +43,13 @@ function getPageScripts(){
 }
 
 server.get('/', function(req,res){
-   res.render('../source/rpg/index.html',{
+   res.render('../games/rpg/index.html',{
       scripts:getPageScripts()
    });
 });
 
 server.get('/dorkapon', function(req,res){
-   res.render('../source/dorkapon/index.html',{
+   res.render('../games/dorkapon/index.html',{
       scripts:getPageScripts()
    });
 });
@@ -58,6 +58,7 @@ server.use(express.static(path.resolve(__dirname + "/../web")));
 server.use('/lib',express.static(path.resolve(__dirname + "/../lib")));
 server.use('/data', express.static(path.resolve(__dirname + "/../data")));
 server.use('/source', express.static(path.resolve(__dirname + "/../source")));
+server.use('/games', express.static(path.resolve(__dirname + "/../games")));
 server.use('/build', express.static(path.resolve(__dirname + "/../build")));
 
 // Use EJS templating with Express, and assign .html as the default extension.

@@ -1,5 +1,5 @@
-/**
- Copyright (C) 2013 by Justin DuJardin
+/*
+ Copyright (C) 2013-2015 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 /// <reference path="../tileMap.ts"/>
+/// <reference path="../../scene/sceneObjectRenderer.ts"/>
 
 module pow2 {
    export class TileObjectRenderer extends SceneObjectRenderer {
