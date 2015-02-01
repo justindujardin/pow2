@@ -61,6 +61,7 @@ module pow2 {
                this._animator.setAnimation('left');
                break;
          }
+         this._animator.updateTime(0);
          this.animating = animating;
       }
 
