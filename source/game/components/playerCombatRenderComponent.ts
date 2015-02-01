@@ -35,6 +35,7 @@ module pow2 {
       state:string = "";
       animating:boolean = false;
       animator:AnimatedComponent = null;
+      attackDirection:pow2.Headings = pow2.Headings.WEST;
 
       syncComponent():boolean {
          this.animator = <AnimatedComponent>this.host.findComponent(AnimatedComponent);
@@ -51,6 +52,24 @@ module pow2 {
       }
       magic(attackCb:() => any, cb?:() => void) {
          this._attack(cb,this.getMagicAnimation(attackCb));
+      }
+
+      getForwardDirection():number {
+         return this.attackDirection === pow2.Headings.WEST ? -1 : 1;
+      }
+      getBackwardDirection():number {
+         return this.attackDirection === pow2.Headings.WEST ? 1 : -1;
+      }
+
+      getForwardFrames():number[] {
+         return this.attackDirection === pow2.Headings.WEST ? [9, 11, 10] : [3, 5, 4];
+      }
+      getBackwardFrames():number[] {
+         return this.attackDirection === pow2.Headings.WEST ? [10, 11, 9] : [4, 5, 3];
+      }
+
+      getAttackFrames():number[] {
+         return this.attackDirection === pow2.Headings.WEST ? [12, 13, 14, 15, 14, 13, 12] : [4, 5, 6, 7, 6, 5, 4];
       }
 
 
@@ -90,8 +109,8 @@ module pow2 {
                name: "Move Forward for Attack",
                repeats: 0,
                duration: 250,
-               frames: [9, 11, 10],
-               move: new Point(-1, 0),
+               frames: this.getForwardFrames(),
+               move: new Point(this.getForwardDirection(), 0),
                callback: () => {
                   this.host.setSprite(this.host.icon.replace(".png", "-attack.png"), 12);
                }
@@ -100,7 +119,7 @@ module pow2 {
                name: "Strike at Opponent",
                repeats: 1,
                duration: 100,
-               frames: [12, 13, 14, 15, 14, 13, 12],
+               frames: this.getAttackFrames(),
                callback: () => {
                   this.host.setSprite(this.host.icon.replace("-attack.png", ".png"), 10);
                   strikeCb && strikeCb();
@@ -110,8 +129,8 @@ module pow2 {
                name: "Return to Party",
                duration: 250,
                repeats: 0,
-               frames: [10, 11, 9],
-               move: new Point(1, 0)
+               frames: this.getBackwardFrames(),
+               move: new Point(this.getBackwardDirection(), 0)
             }
          ];
       }
@@ -121,8 +140,8 @@ module pow2 {
             name: "Move Forward",
             repeats: 0,
             duration: 250,
-            frames: [9, 11, 10],
-            move: new Point(-1, 0)
+            frames: this.getForwardFrames(),
+            move: new Point(this.getForwardDirection(), 0)
          }],then);
       }
       moveBackward(then?:()=>any){
@@ -130,8 +149,8 @@ module pow2 {
             name: "Move Backward",
             repeats: 0,
             duration: 250,
-            frames: [9, 11, 10],
-            move: new Point(1, 0)
+            frames: this.getBackwardFrames(),
+            move: new Point(this.getBackwardDirection(), 0)
          }],then);
       }
 
