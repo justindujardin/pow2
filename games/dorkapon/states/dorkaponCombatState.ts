@@ -29,6 +29,16 @@ module dorkapon {
       world:DorkaponGameWorld;
 
       /**
+       * The [DorkaponEntity] on the left side of the fight.
+       */
+      left:objects.DorkaponEntity;
+
+      /**
+       * The [DorkaponEntity] on the right side of the fight.
+       */
+      right:objects.DorkaponEntity;
+
+      /**
        * The currently attacking [DorkaponEntity] object.
        */
       attacker:objects.DorkaponEntity;
@@ -51,8 +61,8 @@ module dorkapon {
                   public parent:DorkaponAppStateMachine) {
          super();
          this.world = pow2.getWorld<DorkaponGameWorld>(dorkapon.NAME);
-         this.attacker = this.createPlayer(attacker,new pow2.Point(3,6));
-         this.defender = this.createPlayer(defender,new pow2.Point(10,6));
+         this.left = this.attacker = this.createPlayer(attacker,new pow2.Point(3,6));
+         this.right = this.defender = this.createPlayer(defender,new pow2.Point(10,6));
       }
 
 
