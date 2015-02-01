@@ -92,7 +92,9 @@ module dorkapon {
          this.$mdDialog.show({
             controller: CombatTurnOrderController,
             templateUrl: 'games/dorkapon/controllers/combatTurnOrder.html',
-            controllerAs: 'combat'
+            controllerAs: 'combat',
+            clickOutsideToClose:false,
+            escapeToClose:false
          }).then((correct:boolean)=>{
             var first = correct ? turnOrder.attacker : turnOrder.defender;
             var second = correct ? turnOrder.defender : turnOrder.attacker;
