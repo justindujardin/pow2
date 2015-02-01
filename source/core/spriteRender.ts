@@ -96,9 +96,6 @@ module pow2 {
 
       getSpriteMeta(name:string):ISpriteMeta {
          var desc = pow2.data.sprites[name];
-         if(!desc){
-            throw new Error("Missing sprite data for: " + name);
-         }
          return desc;
       }
    }

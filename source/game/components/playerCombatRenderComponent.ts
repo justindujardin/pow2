@@ -112,7 +112,10 @@ module pow2 {
                frames: this.getForwardFrames(),
                move: new Point(this.getForwardDirection(), 0),
                callback: () => {
-                  this.host.setSprite(this.host.icon.replace(".png", "-attack.png"), 12);
+                  var attackAnimationsSource = this.host.icon.replace(".png", "-attack.png");
+                  if(this.host.world.sprites.getSpriteMeta(attackAnimationsSource)){
+                     this.host.setSprite(attackAnimationsSource, 12);
+                  }
                }
             },
             {

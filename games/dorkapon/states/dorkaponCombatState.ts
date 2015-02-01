@@ -114,6 +114,15 @@ module dorkapon.states {
 
          console.log("Roll turns and determine who attacks first.");
 
+         if(machine.left.model instanceof models.DorkaponPlayer) {
+            var render = <pow2.PlayerRenderComponent>machine.left.findComponent(pow2.PlayerRenderComponent);
+            render.setHeading(pow2.Headings.EAST,false);
+         }
+         else if(machine.right.model instanceof models.DorkaponPlayer) {
+            var render = <pow2.PlayerRenderComponent>machine.right.findComponent(pow2.PlayerRenderComponent);
+            render.setHeading(pow2.Headings.WEST,false);
+         }
+
          var currentTurn:objects.DorkaponEntity = null;
          var nextTurn:objects.DorkaponEntity = null;
          var data:ICombatDetermineTurnOrder = {
@@ -183,8 +192,7 @@ module dorkapon.states {
          super.enter(machine);
          // TODO: remove this scaffolding hacks to avoid horrible looping.
          console.log("execute attack from " + machine.attacker.model.get('name') + " to " + machine.defender.model.get('name'));
-         _.delay(()=> {
-
+         var done = ()=> {
             // Switch turns
             var current = machine.attacker;
             machine.attacker = machine.defender;
@@ -192,7 +200,20 @@ module dorkapon.states {
 
             var done:boolean = (Math.floor(Math.random() * 10) % 2) !== 0;
             machine.setCurrentState(done ? DorkaponCombatEnded.NAME : DorkaponCombatChooseMoves.NAME);
-         }, 1500);
+         };
+
+         var player = <pow2.PlayerCombatRenderComponent>machine.attacker.findComponent(pow2.PlayerCombatRenderComponent);
+         if(player){
+            var west:boolean = machine.attacker._uid === machine.right._uid;
+            player.attackDirection = west ? pow2.Headings.WEST : pow2.Headings.EAST;
+            player.attack(()=>{
+               _.delay(done, 500);
+            });
+         }
+         else {
+            _.delay(done, 1500);
+         }
+
       }
    }
 }
