@@ -59,7 +59,6 @@ server.use('/lib',express.static(path.resolve(__dirname + "/../lib")));
 server.use('/data', express.static(path.resolve(__dirname + "/../data")));
 server.use('/source', express.static(path.resolve(__dirname + "/../source")));
 server.use('/build', express.static(path.resolve(__dirname + "/../build")));
-server.use('/fonts', express.static(path.resolve(__dirname + "/../data/fonts")));
 
 // Use EJS templating with Express, and assign .html as the default extension.
 server.engine('.html', require('ejs').__express);
