@@ -39,7 +39,7 @@ module dorkapon {
     *
     * This file contains template descriptions for the various complex game objects.
     */
-   export var ENTITIES_CONTAINER:string = "entities/dorkapon.powEntities";
+   export var ENTITIES_CONTAINER:string = "games/dorkapon/entities/dorkapon.powEntities";
 
    export var app = angular.module('dorkapon', [
       'ngMaterial',

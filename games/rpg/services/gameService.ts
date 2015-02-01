@@ -55,7 +55,7 @@ module pow2.ui {
          pow2.registerWorld('pow2',this.world);
          // Tell the world time manager to start ticking.
          this.world.time.start();
-         this.entities = <pow2.EntityContainerResource>this.world.loader.load('entities/map.powEntities');
+         this.entities = <pow2.EntityContainerResource>this.world.loader.load('games/rpg/entities/map.powEntities');
       }
 
       getSaveData():any {

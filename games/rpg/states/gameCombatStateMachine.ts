@@ -136,7 +136,7 @@ module pow2 {
       spreadsheet:pow2.GameDataResource;
       constructor() {
          super();
-         pow2.GameWorld.get().loader.load('entities/combat.powEntities',(factory:pow2.EntityContainerResource)=>{
+         pow2.GameWorld.get().loader.load('games/rpg/entities/combat.powEntities',(factory:pow2.EntityContainerResource)=>{
             this.factory = factory;
          });
          GameStateModel.getDataSource((spreadsheet:pow2.GameDataResource) => {
