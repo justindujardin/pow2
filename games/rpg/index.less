@@ -21,7 +21,7 @@
 @import "style/eightBitPanel";
 @import "style/pageTransitions";
 @import "style/animation";
-@import "style/animations/damageValue";
+
 @import "style/buttons";
 
 
@@ -243,18 +243,7 @@ canvas {
   margin:0;
   padding:0;
   .damage-value {
-    font-family: 'GraphicPixel', sans-serif;
-    font-size:3em;
-    color:#F00;
-    .stroke-text(2px, rgba(255, 255, 255, 0.9));
-    &.miss {
-      color:#ccc;
-      .stroke-text(1px,#222);
-    }
-    &.heal {
-      color:#0E0;
-      .stroke-text(1px,#222);
-    }
+    z-index:@zCanvasAlert;
   }
   canvas{
     position: absolute;

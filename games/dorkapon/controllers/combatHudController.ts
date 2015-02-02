@@ -13,6 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
+/// <reference path="../../../lib/pow2.ui.d.ts"/>
 
 module dorkapon {
    export class CombatHudController {
@@ -21,14 +22,16 @@ module dorkapon {
          '$rootScope',
          '$timeout',
          '$mdDialog',
-         '$dorkapon'
+         '$dorkapon',
+         '$damageValue'
       ];
       constructor(
          public $scope:any,
          public $rootScope:any,
          public $timeout:ng.ITimeoutService,
          public $mdDialog:any,
-         public $dorkapon:services.DorkaponService
+         public $dorkapon:services.DorkaponService,
+         public $damageValue:pow2.ui.DamageValueService
       ){
          $dorkapon.machine.on(pow2.StateMachine.Events.ENTER,(newState:pow2.IState)=>{
             if(newState.name === states.AppCombatState.NAME){
@@ -73,6 +76,10 @@ module dorkapon {
       }
 
       listenCombatEvents(state:states.AppCombatState) {
+         state.machine.on(DorkaponCombatStateMachine.Events.ATTACK,(e:states.ICombatAttackSummary)=>{
+            var done = state.machine.notifyWait();
+            this.$damageValue.applyDamage(e.defender,10,this.$dorkapon.world.mapView,done);
+         });
          state.machine.on(states.DorkaponCombatEnded.EVENT,(e:states.ICombatSummary)=>{
             console.log(e);
             this.$scope.$apply(()=>{

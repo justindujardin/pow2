@@ -13,9 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-/// <reference path="./pow2.ts"/>
+/// <reference path="./../pow2.ts"/>
 
-module pow2 {
+module pow2.ui {
 
    export class IconRenderController {
       static WORLD_NAME:string = "icon-render-world";

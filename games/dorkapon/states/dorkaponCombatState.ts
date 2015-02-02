@@ -20,7 +20,8 @@ module dorkapon {
 
    export class DorkaponCombatStateMachine extends pow2.StateMachine {
       static Events:any = {
-         FINISHED: "combat:finished"
+         FINISHED: "combat:finished",
+         ATTACK: "combat:attack"
       };
 
       /**
@@ -81,6 +82,19 @@ module dorkapon {
 }
 
 module dorkapon.states {
+
+   export enum MoveChoice {
+      ROCK = 1,
+      PAPER = 2,
+      SCISSORS = 3
+   }
+
+   export interface ICombatAttackSummary {
+      attacker:objects.DorkaponEntity;
+      defender:objects.DorkaponEntity;
+      attackerMove:MoveChoice;
+      defenderMove:MoveChoice;
+   }
 
 
    /**
@@ -207,13 +221,18 @@ module dorkapon.states {
             var west:boolean = machine.attacker._uid === machine.right._uid;
             player.attackDirection = west ? pow2.Headings.WEST : pow2.Headings.EAST;
             player.attack(()=>{
-               _.delay(done, 500);
+               var data:ICombatAttackSummary = {
+                  attackerMove:MoveChoice.ROCK,
+                  defenderMove:MoveChoice.PAPER,
+                  attacker:machine.attacker,
+                  defender:machine.defender
+               };
+               this.machine.notify(DorkaponCombatStateMachine.Events.ATTACK,data,done);
             });
          }
          else {
-            _.delay(done, 1500);
+            throw new Error("No valid attack component for player: " + machine.attacker.model.get('name'));
          }
-
       }
    }
 }

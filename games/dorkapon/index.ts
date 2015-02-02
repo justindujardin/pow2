@@ -43,7 +43,7 @@ module dorkapon {
 
    export var app = angular.module('dorkapon', [
       'ngMaterial',
-      'pow2.angular'
+      'pow2.ui'
    ]).config(function($mdThemingProvider) {
       $mdThemingProvider.theme('default')
          .primaryColor('blue-grey')

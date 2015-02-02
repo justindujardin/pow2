@@ -80,7 +80,7 @@ module pow2.ui {
                powAlert.show("You found " + feature.gold + " gold!",null,0);
             }
             if(typeof feature.item === 'string'){
-               // Get enemies data from spreadsheet
+               // Get items data from spreadsheet
                GameStateModel.getDataSource((data:pow2.GameDataResource) => {
                   var item:ItemModel = null;
                   var desc:any = _.where(data.getSheetData('weapons'),{id:feature.item})[0];
