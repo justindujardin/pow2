@@ -54,8 +54,20 @@ module dorkapon.models {
          return _.extend(super.defaults(),DorkaponPlayer.DEFAULTS);
       }
 
-      static create(options:any):DorkaponPlayer{
+      static create(options:IDorkaponPlayerAttributes):DorkaponPlayer{
          var result = new DorkaponPlayer(options);
+         if(_.isUndefined(options.intelligence)){
+            result.set({intelligence:options.baseintelligence});
+         }
+         if(_.isUndefined(options.strength)){
+            result.set({strength:options.basestrength});
+         }
+         if(_.isUndefined(options.agility)){
+            result.set({agility:options.baseagility});
+         }
+         if(_.isUndefined(options.vitality)){
+            result.set({vitality:options.basevitality});
+         }
          result.set({
             hp:result.get('basehp'),
             maxhp:result.get('basehp')

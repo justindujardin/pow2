@@ -19,6 +19,14 @@
 /// <reference path="../../web/bower/pow-core/lib/pow-core.d.ts"/>
 /// <reference path="../../lib/pow2.d.ts"/>
 
+
+/**
+ * Dorkapon is constructed with a set of components and state machines.
+ *
+ * The front-end is built using Angular.JS directives and controllers that
+ * use an asynchronous state machine event handler to integrate the UI elements
+ * into the underlying states.
+ */
 module dorkapon {
 
    /**
@@ -46,7 +54,7 @@ module dorkapon {
       'pow2.ui'
    ]).config(function($mdThemingProvider) {
       $mdThemingProvider.theme('default')
-         .primaryColor('blue-grey')
-         .accentColor('grey');
+         .primaryPalette('blue-grey')
+         .accentPalette('deep-orange');
    });
 }

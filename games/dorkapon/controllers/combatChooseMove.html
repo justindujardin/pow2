@@ -1,0 +1,10 @@
+<md-dialog aria-label="Choose Player Move">
+    <md-content layout="column" layout-align="center center">
+        <i class="image" icon-render icon="choose.current.model.attributes.icon" frame="7" width="48" height="48"></i>
+        <h3>Choose Move</h3>
+        <md-button class="md-primary md-hue-1" ng-click="choose.select('physical')">{{choose.physicalText}}</md-button>
+        <md-button class="md-primary md-hue-1" ng-click="choose.select('magic')">{{choose.magicText}}</md-button>
+        <md-button class="md-primary md-hue-1" ng-click="choose.select('special')">{{choose.specialText}}</md-button>
+        <md-button class="md-primary md-hue-1" ng-click="choose.select('skill')">{{choose.skillText}}</md-button>
+    </md-content>
+</md-dialog>

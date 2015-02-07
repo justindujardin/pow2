@@ -49,6 +49,16 @@ module dorkapon {
        */
       defender:objects.DorkaponEntity;
 
+      /**
+       * The attacker's chosen action.
+       */
+      attackerMove:states.MoveChoice = null;
+
+      /**
+       * The defender's chosen action.
+       */
+      defenderMove:states.MoveChoice = null;
+
       states:pow2.IState[] = [
          new states.DorkaponCombatInit(this),
          new states.DorkaponCombatEnded(this),
@@ -84,9 +94,15 @@ module dorkapon {
 module dorkapon.states {
 
    export enum MoveChoice {
-      ROCK = 1,
-      PAPER = 2,
-      SCISSORS = 3
+      ATTACK = 1,
+      ATTACK_MAGIC,
+      ATTACK_SKILL,
+      STRIKE,
+
+      DEFEND,
+      DEFEND_MAGIC,
+      DEFEND_SKILL,
+      COUNTER
    }
 
    export interface ICombatAttackSummary {
@@ -94,6 +110,14 @@ module dorkapon.states {
       defender:objects.DorkaponEntity;
       attackerMove:MoveChoice;
       defenderMove:MoveChoice;
+      attackerDamage:number;
+      defenderDamage:number;
+   }
+
+   export interface ICombatChooseMove {
+      attacker:objects.DorkaponEntity;
+      defender:objects.DorkaponEntity;
+      report(player:objects.DorkaponEntity,move:MoveChoice);
    }
 
 
@@ -103,7 +127,7 @@ module dorkapon.states {
    export interface ICombatDetermineTurnOrder {
       attacker:objects.DorkaponEntity;
       defender:objects.DorkaponEntity;
-      report(first:objects.DorkaponEntity,second:objects.DorkaponEntity):any;
+      report(first:objects.DorkaponEntity,second:objects.DorkaponEntity);
    }
 
    export class AppCombatStateBase extends pow2.State {
@@ -188,12 +212,36 @@ module dorkapon.states {
 
    export class DorkaponCombatChooseMoves extends AppCombatStateBase {
       static NAME:string = "dorkapon-combat-choose-moves";
+      static EVENT:string = DorkaponCombatChooseMoves.NAME;
       name:string = DorkaponCombatChooseMoves.NAME;
 
       enter(machine:DorkaponCombatStateMachine) {
          super.enter(machine);
          console.log("choose moves");
-         machine.setCurrentState(DorkaponCombatExecuteMoves.NAME);
+         machine.attackerMove = null;
+         machine.defenderMove = null;
+         var data:ICombatChooseMove = {
+            attacker:machine.attacker,
+            defender:machine.defender,
+            report:(player:objects.DorkaponEntity, move:MoveChoice) => {
+               if(player._uid === machine.attacker._uid){
+                  machine.attackerMove = move;
+               }
+               else if(player._uid === machine.defender._uid){
+                  machine.defenderMove = move;
+               }
+            }
+         };
+         this.machine.notify(DorkaponCombatChooseMoves.EVENT,data,() => {
+            machine.setCurrentState(DorkaponCombatExecuteMoves.NAME);
+         });
+
+      }
+      exit(machine:DorkaponCombatStateMachine) {
+         //if(!machine.attackerMove || !machine.defenderMove){
+         //   throw new Error("Moves were not specified for attacker and defender.  State machine will not recover.");
+         //}
+         super.exit(machine);
       }
    }
    export class DorkaponCombatExecuteMoves extends AppCombatStateBase {
@@ -201,18 +249,18 @@ module dorkapon.states {
       static EVENT:string = DorkaponCombatExecuteMoves.NAME;
       name:string = DorkaponCombatExecuteMoves.NAME;
       tileMap:DorkaponTileMap;
-
       enter(machine:DorkaponCombatStateMachine) {
          super.enter(machine);
          // TODO: remove this scaffolding hacks to avoid horrible looping.
          console.log("execute attack from " + machine.attacker.model.get('name') + " to " + machine.defender.model.get('name'));
          var done = ()=> {
+            var done:boolean = machine.defender.model.isDefeated() || machine.attacker.model.isDefeated();
+
             // Switch turns
             var current = machine.attacker;
             machine.attacker = machine.defender;
             machine.defender = current;
 
-            var done:boolean = (Math.floor(Math.random() * 10) % 2) !== 0;
             machine.setCurrentState(done ? DorkaponCombatEnded.NAME : DorkaponCombatChooseMoves.NAME);
          };
 
@@ -221,11 +269,50 @@ module dorkapon.states {
             var west:boolean = machine.attacker._uid === machine.right._uid;
             player.attackDirection = west ? pow2.Headings.WEST : pow2.Headings.EAST;
             player.attack(()=>{
+               var attackDamage:number = 0;
+               var defendDamage:number = 0;
+               switch(machine.attackerMove){
+                  case MoveChoice.ATTACK_MAGIC:
+                     attackDamage = machine.attacker.model.get('intelligence');
+                     break;
+                  case MoveChoice.ATTACK:
+                     attackDamage = machine.attacker.model.get('strength');
+                     break;
+                  case MoveChoice.ATTACK_SKILL:
+                     attackDamage = 5; // TODO: Skills.
+                     break;
+                  case MoveChoice.STRIKE:
+                     attackDamage = machine.attacker.model.get('strength') * 2;
+                     break;
+               }
+               switch(machine.defenderMove){
+                  case MoveChoice.DEFEND:
+                     if(machine.attackerMove === MoveChoice.ATTACK || machine.attackerMove === MoveChoice.STRIKE){
+                        attackDamage /= 2;
+                     }
+                     break;
+                  case MoveChoice.DEFEND_MAGIC:
+                     if(machine.attackerMove === MoveChoice.ATTACK_MAGIC){
+                        attackDamage /= 2;
+                     }
+                     break;
+                  case MoveChoice.DEFEND_SKILL:
+                     // TODO: Defense skills.
+                     break;
+                  case MoveChoice.COUNTER:
+                     if(machine.attackerMove === MoveChoice.STRIKE){
+                        defendDamage = attackDamage * 2;
+                        attackDamage = 0;
+                     }
+                     break;
+               }
                var data:ICombatAttackSummary = {
-                  attackerMove:MoveChoice.ROCK,
-                  defenderMove:MoveChoice.PAPER,
+                  attackerMove:machine.attackerMove,
+                  defenderMove:machine.defenderMove,
                   attacker:machine.attacker,
-                  defender:machine.defender
+                  defender:machine.defender,
+                  attackerDamage:Math.round(defendDamage),
+                  defenderDamage:Math.round(attackDamage)
                };
                this.machine.notify(DorkaponCombatStateMachine.Events.ATTACK,data,done);
             });

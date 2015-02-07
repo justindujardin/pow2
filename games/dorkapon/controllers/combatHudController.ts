@@ -75,21 +75,50 @@ module dorkapon {
          return Math.round(object.model.get('hp') / object.model.get('maxhp') * 100);
       }
 
+      /**
+       * Listen to various combat events to coordinate combat action selection
+       * and dynamic state embellishments.
+       *
+       * @param state The combat state to listen in on.
+       */
       listenCombatEvents(state:states.AppCombatState) {
+
+         // When an attack happens, display a damage value above the character taking damage.
          state.machine.on(DorkaponCombatStateMachine.Events.ATTACK,(e:states.ICombatAttackSummary)=>{
             var done = state.machine.notifyWait();
-            this.$damageValue.applyDamage(e.defender,10,this.$dorkapon.world.mapView,done);
+
+            if(e.defenderDamage > 0){
+               e.defender.model.damage(e.defenderDamage);
+               this.$damageValue.applyDamage(e.defender,e.defenderDamage,this.$dorkapon.world.mapView,done);
+            }
+            if(e.attackerDamage > 0){
+               e.attacker.model.damage(e.attackerDamage);
+               this.$damageValue.applyDamage(e.attacker,e.attackerDamage,this.$dorkapon.world.mapView,done);
+            }
          });
+
+         // When combat has ended, clear the combat HUD ui.
          state.machine.on(states.DorkaponCombatEnded.EVENT,(e:states.ICombatSummary)=>{
-            console.log(e);
             this.$scope.$apply(()=>{
                this.combat = null;
             });
          },this);
+
+         // When combat starts, display a pick card UI to determine attack order.
          state.machine.on(states.DorkaponCombatInit.EVENT,(e:states.ICombatDetermineTurnOrder)=>{
             var done = state.machine.notifyWait();
             this.pickTurnOrderCard(e,done);
          },this);
+
+         // When it is time for a turn, pick moves.
+         state.machine.on(states.DorkaponCombatChooseMoves.EVENT,(e:states.ICombatChooseMove)=>{
+            var done = state.machine.notifyWait();
+            this.pickMove(e,true,()=>{
+               this.pickMove(e,false,done);
+            });
+         },this);
+
+
       }
       stopListeningCombatEvents(state:states.AppCombatState) {
          state.machine.off(null,null,this);
@@ -107,6 +136,30 @@ module dorkapon {
             var second = correct ? turnOrder.defender : turnOrder.attacker;
             this.$mdDialog.hide();
             turnOrder.report(first,second);
+            then && then();
+         });
+      }
+
+      /**
+       * Pick what type of move to execute for a player.
+       * @param chooseMove The [[ICombatChooseMove]] event with details about players.
+       * @param attacker True if picking for the attacker, false if for the defender.
+       * @param then The callback to invoke once a move has been chosen and reported.
+       */
+      pickMove(chooseMove:states.ICombatChooseMove,attacker:boolean,then:()=>any) {
+         this.$mdDialog.show({
+            controller: CombatChooseMoveController,
+            templateUrl: 'games/dorkapon/controllers/combatChooseMove.html',
+            controllerAs: 'choose',
+            clickOutsideToClose:false,
+            escapeToClose:false,
+            locals: {
+               event: chooseMove,
+               attack: attacker
+            },
+            bindToController:true
+         }).then((move:states.MoveChoice)=>{
+            chooseMove.report(attacker ? chooseMove.attacker : chooseMove.defender,move);
             then && then();
          });
       }

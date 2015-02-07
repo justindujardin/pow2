@@ -64,5 +64,26 @@ module dorkapon.models {
       defaults():any {
          return _.extend({},DorkaponEntity.DEFAULTS);
       }
+
+      /**
+       * Apply a given amount of damage to this entity.  If the HP falls
+       * below zero, it will be set to zero.
+       *
+       * @param value The amount of damage to apply.
+       */
+      damage(value:number) {
+         this.set('hp',this.get('hp') - value);
+         if(this.get('hp') < 0){
+            this.set('hp',0);
+         }
+      }
+
+      /**
+       * Determine if a player is defeated.
+       * @returns {boolean} True if the player's hp is 0.
+       */
+      isDefeated():boolean {
+         return this.get('hp') <= 0;
+      }
    }
 }
