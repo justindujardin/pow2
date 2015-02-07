@@ -268,7 +268,10 @@ module.exports = function(grunt) {
             }
          },
          express: {
-            files:  [ 'source/**/*.html' ],
+            files:  [
+               'source/**/*.html',
+               'games/**/*.html'
+            ],
             tasks:  [ 'express', 'notify:server' ],
             options: {
                nospawn: true //Without this option specified express won't be reloaded
