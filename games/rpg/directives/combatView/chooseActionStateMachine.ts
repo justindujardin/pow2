@@ -32,9 +32,13 @@ module pow2.ui {
     * A state machine to represent the various UI states involved in
     * choosing a combat action.
     *
+    * ```
+    *
     *     +------+   +--------+   +--------+
     *     | type |-->| target |-->| submit |
     *     +------+   +--------+   +--------+
+    *
+    * ```
     *
     * When the user properly selects an action type (Attack, Magic, Item)
     * and a target to apply the action to (Hero, All Enemies, etc.) the
