@@ -40,7 +40,7 @@ module pow2 {
          (<any>this.context).mozImageSmoothingEnabled = false;
       }
 
-      getSpriteSheet(name:string,done:(res?: IResource) => any):ImageResource{
+      getSpriteSheet(name:string,done?:(res?: IResource) => any):ImageResource{
          if(this.world){
             return this.world.loader.load("/images/" + name + ".png",done);
          }

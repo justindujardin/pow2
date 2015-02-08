@@ -56,10 +56,10 @@ module pow2 {
     * components that a host owns.
     */
    export interface ISceneComponentHost extends IObject {
-      addComponent(component:ISceneComponent,silent?:boolean):boolean;
-      addComponentDictionary(components:any,silent?:boolean):boolean;
-      removeComponent(component:ISceneComponent,silent?:boolean):boolean;
-      removeComponentDictionary(components:any,silent?:boolean):boolean;
+      addComponent(component:ISceneComponent, silent?:boolean):boolean;
+      addComponentDictionary(components:any, silent?:boolean):boolean;
+      removeComponent(component:ISceneComponent, silent?:boolean):boolean;
+      removeComponentDictionary(components:any, silent?:boolean):boolean;
 
       syncComponents();
 
@@ -95,7 +95,7 @@ module pow2 {
       // SceneObject management
       // -----------------------------------------------------------------------------
       addObject(object:ISceneObject):boolean;
-      removeObject(object:ISceneObject,destroy:boolean):boolean;
+      removeObject(object:ISceneObject, destroy:boolean):boolean;
       findObject(object):boolean;
 
       // Component and object lookups
@@ -109,7 +109,23 @@ module pow2 {
       objectByComponent(type):ISceneObject;
    }
 
+   /**
+    * A renderer object interface that is recognized by the
+    * scene view.  [[SceneViewComponent]] is an implementation
+    * of this interface that can be added to a [[SceneView]] and
+    * will be invoked during the scene render.
+    */
+   export interface ISceneViewRenderer {
+      beforeFrame(view:pow2.ISceneView, elapsed:number);
+      renderFrame(view:pow2.ISceneView, elapsed:number);
+      afterFrame(view:pow2.ISceneView, elapsed:number);
+   }
 
+
+   /**
+    * Renders a scene to a particular HTML5 Canvas object.
+    *
+    */
    export interface ISceneView {
       $el: any;
       canvas:HTMLCanvasElement;
@@ -128,7 +144,7 @@ module pow2 {
       renderToCanvas(width, height, renderFunction);
 
       // Render a frame. Subclass this to do your specific rendering.
-      renderFrame(elapsed: number);
+      renderFrame(elapsed:number);
       // Render post effects
       renderPost();
 
@@ -148,7 +164,9 @@ module pow2 {
       // Scene rendering utilities
       // -----------------------------------------------------------------------------
 
-      // TODO: actually clears the whole canvas.  useful? rename?
+      /**
+       * Clear the view.
+       */
       clearRect();
 
       // Coordinate Conversions (World/Screen)
@@ -156,28 +174,28 @@ module pow2 {
 
       // Convert a Rect/Point/Number from world coordinates (game units) to
       // screen coordinates (pixels)
-      worldToScreen(value: Point, scale?): Point;
-      worldToScreen(value: Rect, scale?): Rect;
-      worldToScreen(value: number, scale?): number;
-      worldToScreen(value: any, scale:number): any;
+      worldToScreen(value:Point, scale?): Point;
+      worldToScreen(value:Rect, scale?): Rect;
+      worldToScreen(value:number, scale?): number;
+      worldToScreen(value:any, scale:number): any;
 
       // Convert a Rect/Point/Number from screen coordinates (pixels) to
       // game world coordinates (game unit sizes)
-      screenToWorld(value: Point, scale?): Point;
-      screenToWorld(value: Rect, scale?): Rect;
-      screenToWorld(value: number, scale?): number;
-      screenToWorld(value: any, scale:number): any;
+      screenToWorld(value:Point, scale?): Point;
+      screenToWorld(value:Rect, scale?): Rect;
+      screenToWorld(value:number, scale?): number;
+      screenToWorld(value:any, scale:number): any;
 
       // Fast world to screen conversion, for high-volume usage situations.
       // avoid memory allocations.
-      fastWorldToScreenPoint(value: Point, to:Point, scale:number): Point;
-      fastWorldToScreenRect(value: Rect, to:Rect, scale:number): Rect;
-      fastWorldToScreenNumber(value: number, scale:number): number;
+      fastWorldToScreenPoint(value:Point, to:Point, scale:number): Point;
+      fastWorldToScreenRect(value:Rect, to:Rect, scale:number): Rect;
+      fastWorldToScreenNumber(value:number, scale:number): number;
 
       // Fast screen to world conversion, for high-volume usage situations.
       // avoid memory allocations.
-      fastScreenToWorldPoint(value: Point, to:Point, scale:number): Point;
-      fastScreenToWorldRect(value: Rect, to:Rect, scale:number): Rect;
-      fastScreenToWorldNumber(value: number, scale:number): number;
+      fastScreenToWorldPoint(value:Point, to:Point, scale:number): Point;
+      fastScreenToWorldRect(value:Rect, to:Rect, scale:number): Rect;
+      fastScreenToWorldNumber(value:number, scale:number): number;
    }
 }

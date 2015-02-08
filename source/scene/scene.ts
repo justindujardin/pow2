@@ -167,8 +167,8 @@ module pow2 {
       findView(view):boolean{
          return !!this.findIt('_views',view);
       }
-      getViewOfType(type:any):any{
-         return _.find(this._views,(v:ISceneView)=>{
+      getViewOfType<T>(type:any):T{
+         return <T>_.find(this._views,(v:any)=>{
             return v instanceof type;
          });
       }
