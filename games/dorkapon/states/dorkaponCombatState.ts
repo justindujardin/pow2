@@ -252,7 +252,7 @@ module dorkapon.states {
       enter(machine:DorkaponCombatStateMachine) {
          super.enter(machine);
          // TODO: remove this scaffolding hacks to avoid horrible looping.
-         console.log("execute attack from " + machine.attacker.model.get('name') + " to " + machine.defender.model.get('name'));
+         console.log("execute attack from " + machine.attacker.model.attributes.name + " to " + machine.defender.model.attributes.name);
          var done = ()=> {
             var done:boolean = machine.defender.model.isDefeated() || machine.attacker.model.isDefeated();
 
@@ -273,16 +273,16 @@ module dorkapon.states {
                var defendDamage:number = 0;
                switch(machine.attackerMove){
                   case MoveChoice.ATTACK_MAGIC:
-                     attackDamage = machine.attacker.model.get('intelligence');
+                     attackDamage = machine.attacker.model.attributes.magic;
                      break;
                   case MoveChoice.ATTACK:
-                     attackDamage = machine.attacker.model.get('strength');
+                     attackDamage = machine.attacker.model.attributes.attack;
                      break;
                   case MoveChoice.ATTACK_SKILL:
                      attackDamage = 5; // TODO: Skills.
                      break;
                   case MoveChoice.STRIKE:
-                     attackDamage = machine.attacker.model.get('strength') * 2;
+                     attackDamage = machine.attacker.model.attributes.attack * 2;
                      break;
                }
                switch(machine.defenderMove){
@@ -318,7 +318,7 @@ module dorkapon.states {
             });
          }
          else {
-            throw new Error("No valid attack component for player: " + machine.attacker.model.get('name'));
+            throw new Error("No valid attack component for player: " + machine.attacker.model.attributes.name);
          }
       }
    }

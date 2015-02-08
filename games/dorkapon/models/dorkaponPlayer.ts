@@ -69,8 +69,8 @@ module dorkapon.models {
             result.set({defense:options.basedefense});
          }
          result.set({
-            hp:result.get('basehp'),
-            maxhp:result.get('basehp')
+            hp:result.attributes.basehp,
+            maxhp:result.attributes.basehp
          });
          return result;
 

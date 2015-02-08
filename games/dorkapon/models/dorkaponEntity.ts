@@ -72,8 +72,8 @@ module dorkapon.models {
        * @param value The amount of damage to apply.
        */
       damage(value:number) {
-         this.set('hp',this.get('hp') - value);
-         if(this.get('hp') < 0){
+         this.set('hp',this.attributes.hp - value);
+         if(this.attributes.hp < 0){
             this.set('hp',0);
          }
       }
@@ -83,7 +83,7 @@ module dorkapon.models {
        * @returns {boolean} True if the player's hp is 0.
        */
       isDefeated():boolean {
-         return this.get('hp') <= 0;
+         return this.attributes.hp <= 0;
       }
    }
 }

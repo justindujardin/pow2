@@ -48,8 +48,8 @@ module dorkapon.models {
       static create(options:any):DorkaponMonster{
          var result = new DorkaponMonster(options);
          result.set({
-            hp:result.get('hp'),
-            maxhp:result.get('hp')
+            hp:result.attributes.hp,
+            maxhp:result.attributes.hp
          });
          return result;
 

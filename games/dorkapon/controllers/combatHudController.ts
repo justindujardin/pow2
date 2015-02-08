@@ -72,7 +72,7 @@ module dorkapon {
          if(!object){
             return 0;
          }
-         return Math.round(object.model.get('hp') / object.model.get('maxhp') * 100);
+         return Math.round(object.model.attributes.hp / object.model.attributes.maxhp * 100);
       }
 
       /**
