@@ -324,6 +324,34 @@ module.exports = function(grunt) {
             force: true,
             recursive: true
          }
+      },
+
+      typedoc: {
+         options : {
+            target: 'es5',
+            module: 'commonjs'
+         },
+         core: {
+            options: {
+               out: './web/docs/core',
+               name: '<%= pkg.name %>'
+            },
+            src: ['./source/**/*']
+         },
+         dorkapon: {
+            options: {
+               out: './web/docs/dorkapon',
+               name: 'Dorkapon Game'
+            },
+            src: ['./games/dorkapon/**/*']
+         },
+         rpg: {
+            options: {
+               out: './web/docs/rpg',
+               name: 'Final Funtasy'
+            },
+            src: ['./games/rpg/**/*']
+         }
       }
 
    });
@@ -398,6 +426,8 @@ module.exports = function(grunt) {
       grunt.registerTask('develop', ['default', 'watch']);
    }
 
+   // Code Documentation
+   grunt.loadNpmTasks('grunt-typedoc');
 
    // Test Coverage
    // --------------------------------------------------
