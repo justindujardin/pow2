@@ -139,7 +139,7 @@ module pow2.ui {
                if(!combatScene){
                   throw new Error("CombatView requires a combatScene to be present in the game world");
                }
-               controller.combatView = combatScene.getViewOfType(GameCombatView);
+               controller.combatView = combatScene.getViewOfType<GameCombatView>(GameCombatView);
                if(!controller.combatView){
                   throw new Error("CombatView requires a GameCombatView for coordinate conversions");
                }
