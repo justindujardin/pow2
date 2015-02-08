@@ -85,5 +85,18 @@ module dorkapon.models {
       isDefeated():boolean {
          return this.attributes.hp <= 0;
       }
+
+      getAttack():number {
+         return this.attributes.attack;
+      }
+      getDefense():number {
+         return this.attributes.defense;
+      }
+      getMagic():number {
+         return this.attributes.magic;
+      }
+      getSpeed():number {
+         return this.attributes.speed;
+      }
    }
 }

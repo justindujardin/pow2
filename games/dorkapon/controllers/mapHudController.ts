@@ -18,11 +18,13 @@ module dorkapon {
    export class MapHudController {
       static $inject:string[] = [
          '$scope',
-         '$dorkapon'
+         '$dorkapon',
+         '$mdDialog'
       ];
       constructor(
          public $scope:any,
-         public $dorkapon:services.DorkaponService
+         public $dorkapon:services.DorkaponService,
+         public $mdDialog:any
       ){
          var changeHandler:any = () => {
             this.$scope.$$phase || this.$scope.$digest();
@@ -64,6 +66,18 @@ module dorkapon {
        * The current player turn.
        */
       turn:dorkapon.states.IPlayerTurnEvent = null;
+
+      showPlayerCard(player:objects.DorkaponEntity) {
+         this.$mdDialog.show({
+            controller: CharacterCardController,
+            controllerAs:'character',
+            templateUrl: 'games/dorkapon/controllers/characterCard.html',
+            locals: {
+               model:player.model
+            },
+            bindToController:true
+         });
+      }
 
    }
 

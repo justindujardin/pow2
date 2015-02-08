@@ -20,7 +20,7 @@
 module dorkapon.components.tiles {
    export class ArmorTile extends MapNodeComponent {
       /**
-       * Display the weapon tile chance roll.
+       * Display the armor tile chance roll.
        */
       doAction(object:objects.DorkaponEntity,then:()=>any){
          var view = object.scene.getViewOfType<DorkaponMapView>(DorkaponMapView);
@@ -28,7 +28,6 @@ module dorkapon.components.tiles {
          var roller = new dorkapon.components.ChoiceRollComponent(object,choices);
          view.addComponent(roller);
          roller.on('disconnected',()=>{
-
             object.model.set('armor',roller.selection);
             _.delay(then,1000);
          });

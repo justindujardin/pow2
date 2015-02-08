@@ -33,7 +33,10 @@
             <!-- Map HUD -->
             <md-toolbar ng-controller="MapHudController as hud" layout="row" ng-show="!inCombat">
                 <h3 class="md-toolbar-tools">
-                    <i class="image" icon-render icon="hud.turn.player.model.attributes.icon" frame="7" width="48" height="48"></i>
+                    <i class="image" icon-render
+                       icon="hud.turn.player.model.attributes.icon"
+                       frame="7" width="48" height="48"
+                       ng-click="hud.showPlayerCard(hud.turn.player)"></i>
                     <span>{{hud.turn.player.model.attributes.name}}</span>
                     <span flex></span>
                     <span>{{hud.turn.player.model.attributes.moves}} Moves Left</span>

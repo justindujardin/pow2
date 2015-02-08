@@ -273,27 +273,27 @@ module dorkapon.states {
                var defendDamage:number = 0;
                switch(machine.attackerMove){
                   case MoveChoice.ATTACK_MAGIC:
-                     attackDamage = machine.attacker.model.attributes.magic;
+                     attackDamage = machine.attacker.model.getMagic();
                      break;
                   case MoveChoice.ATTACK:
-                     attackDamage = machine.attacker.model.attributes.attack;
+                     attackDamage = machine.attacker.model.getAttack();
                      break;
                   case MoveChoice.ATTACK_SKILL:
-                     attackDamage = 5; // TODO: Skills.
+                     // TODO: Attack skills.
                      break;
                   case MoveChoice.STRIKE:
-                     attackDamage = machine.attacker.model.attributes.attack * 2;
+                     attackDamage = machine.attacker.model.getAttack() * 2;
                      break;
                }
                switch(machine.defenderMove){
                   case MoveChoice.DEFEND:
                      if(machine.attackerMove === MoveChoice.ATTACK || machine.attackerMove === MoveChoice.STRIKE){
-                        attackDamage /= 2;
+                        attackDamage -= machine.defender.model.getDefense();
                      }
                      break;
                   case MoveChoice.DEFEND_MAGIC:
                      if(machine.attackerMove === MoveChoice.ATTACK_MAGIC){
-                        attackDamage /= 2;
+                        attackDamage -= machine.defender.model.getMagic();
                      }
                      break;
                   case MoveChoice.DEFEND_SKILL:
@@ -311,9 +311,10 @@ module dorkapon.states {
                   defenderMove:machine.defenderMove,
                   attacker:machine.attacker,
                   defender:machine.defender,
-                  attackerDamage:Math.round(defendDamage),
-                  defenderDamage:Math.round(attackDamage)
+                  attackerDamage:Math.max(Math.round(defendDamage),0),
+                  defenderDamage:Math.max(Math.round(attackDamage),0)
                };
+               console.log(data);
                this.machine.notify(DorkaponCombatStateMachine.Events.ATTACK,data,done);
             });
          }

@@ -32,7 +32,7 @@ module dorkapon.components {
       spinTime = 0;
       spinTimeTotal = 0;
 
-      selection:string = null;
+      selection:dorkapon.IDorkaponItem = null;
 
       ctx:CanvasRenderingContext2D = null;
 
@@ -102,9 +102,9 @@ module dorkapon.components {
             this.ctx.save();
             this.ctx.font = 'bold 8px GraphicPixel';
             this.ctx.fillStyle = "black";
-            this.ctx.fillText(this.selection, renderPoint.x + 1 - this.ctx.measureText(this.selection).width / 2, renderPoint.y + 11);
+            this.ctx.fillText(this.selection.name, renderPoint.x + 1 - this.ctx.measureText(this.selection.name).width / 2, renderPoint.y + 11);
             this.ctx.fillStyle = "white";
-            this.ctx.fillText(this.selection, renderPoint.x - this.ctx.measureText(this.selection).width / 2, renderPoint.y + 10);
+            this.ctx.fillText(this.selection.name, renderPoint.x - this.ctx.measureText(this.selection.name).width / 2, renderPoint.y + 10);
             this.ctx.restore();
          }
 
@@ -151,7 +151,7 @@ module dorkapon.components {
          var degrees = this.startAngle * 180 / Math.PI + 90;
          var arcd = this.arc * 180 / Math.PI;
          var index = Math.floor((360 - degrees % 360) / arcd);
-         this.selection = this.items[index].name;
+         this.selection = this.items[index];
          _.delay(()=>{
             this.spinTimeout = null;
             this.host.removeComponent(this);

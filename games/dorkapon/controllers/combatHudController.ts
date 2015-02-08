@@ -86,14 +86,13 @@ module dorkapon {
          // When an attack happens, display a damage value above the character taking damage.
          state.machine.on(DorkaponCombatStateMachine.Events.ATTACK,(e:states.ICombatAttackSummary)=>{
             var done = state.machine.notifyWait();
-
-            if(e.defenderDamage > 0){
-               e.defender.model.damage(e.defenderDamage);
-               this.$damageValue.applyDamage(e.defender,e.defenderDamage,this.$dorkapon.world.mapView,done);
-            }
             if(e.attackerDamage > 0){
                e.attacker.model.damage(e.attackerDamage);
                this.$damageValue.applyDamage(e.attacker,e.attackerDamage,this.$dorkapon.world.mapView,done);
+            }
+            else {
+               e.defender.model.damage(e.defenderDamage);
+               this.$damageValue.applyDamage(e.defender,e.defenderDamage,this.$dorkapon.world.mapView,done);
             }
          });
 

@@ -29,6 +29,7 @@ module dorkapon.components.tiles {
          var roller = new dorkapon.components.ChoiceRollComponent(object,choices);
          view.addComponent(roller);
          roller.on('disconnected',()=>{
+            object.model.set('weapon',roller.selection);
             _.delay(then,1000);
          });
          console.log("Roll for weapon drop");

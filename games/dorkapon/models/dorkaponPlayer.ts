@@ -33,6 +33,12 @@ module dorkapon.models {
       leveldefense:number;
       levelmagic:number;
       levelspeed:number;
+
+
+      armor:IDorkaponEquipment;
+      weapon:IDorkaponEquipment;
+      offenseMagic:IDorkaponEquipment;
+      defenseMagic:IDorkaponEquipment;
    }
 
    export class DorkaponPlayer extends DorkaponEntity {
@@ -48,10 +54,58 @@ module dorkapon.models {
          levelattack:1,
          leveldefense:1,
          levelmagic:1,
-         levelspeed:1
+         levelspeed:1,
+
+         armor:null,
+         weapon:null,
+         offenseMagic:null,
+         defenseMagic:null
       };
       defaults():any {
          return _.extend(super.defaults(),DorkaponPlayer.DEFAULTS);
+      }
+
+
+
+      getAttack():number {
+         var base:number = this.attributes.attack;
+         if(this.attributes.weapon){
+            base += this.attributes.weapon.attack;
+         }
+         if(this.attributes.armor){
+            base += this.attributes.armor.attack;
+         }
+         return base;
+      }
+      getDefense():number {
+         var base:number = this.attributes.defense;
+         if(this.attributes.weapon){
+            base += this.attributes.weapon.defense;
+         }
+         if(this.attributes.armor){
+            base += this.attributes.armor.defense;
+         }
+         return base;
+      }
+      getMagic():number {
+         var base:number = this.attributes.magic;
+         if(this.attributes.weapon){
+            base += this.attributes.weapon.magic;
+         }
+         if(this.attributes.armor){
+            base += this.attributes.armor.magic;
+         }
+         return base;
+      }
+      getSpeed():number {
+         var base:number = this.attributes.speed;
+         if(this.attributes.weapon){
+            base += this.attributes.weapon.speed;
+         }
+         if(this.attributes.armor){
+            base += this.attributes.armor.speed;
+         }
+         return base;
       }
 
       static create(options:IDorkaponPlayerAttributes):DorkaponPlayer{
