@@ -36,10 +36,10 @@ module dorkapon.models {
       hp:number;
       maxhp:number;
 
-      strength:number;
-      vitality:number;
-      intelligence:number;
-      agility:number;
+      attack:number;
+      defense:number;
+      magic:number;
+      speed:number;
    }
 
    export class DorkaponEntity extends Backbone.Model {
@@ -56,10 +56,10 @@ module dorkapon.models {
          hp:1,
          maxhp:1,
 
-         strength:1,
-         vitality:1,
-         intelligence:1,
-         agility:1
+         attack:1,
+         defense:1,
+         magic:1,
+         speed:1
       };
       defaults():any {
          return _.extend({},DorkaponEntity.DEFAULTS);

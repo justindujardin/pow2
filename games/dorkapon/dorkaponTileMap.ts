@@ -42,6 +42,9 @@ module dorkapon {
     */
    export enum NodeTiles {
       YELLOW = 54,
+      ARMOR = 58,
+      WEAPON = 59,
+      ITEM = 60,
       RED = 63,
       BLUE = 72,
       GREEN = 71
@@ -133,6 +136,15 @@ module dorkapon {
 
          var className:string = null;
          switch(node.type){
+            case NodeTiles.ARMOR:
+               className = "dorkapon.components.tiles.ArmorTile";
+               break;
+            case NodeTiles.WEAPON:
+               className = "dorkapon.components.tiles.WeaponTile";
+               break;
+            case NodeTiles.ITEM:
+               className = "dorkapon.components.tiles.ItemTile";
+               break;
             case NodeTiles.BLUE:
                className = "dorkapon.components.tiles.BlueTile";
                break;
@@ -171,6 +183,9 @@ module dorkapon {
          var mapWidth:number = this.bounds.extent.x;
          var asNodeTile = <INodeTile[]>_.map(nodes.data,(gid:number,index:number)=>{
             switch(gid){
+               case NodeTiles.ARMOR:
+               case NodeTiles.WEAPON:
+               case NodeTiles.ITEM:
                case NodeTiles.RED:
                case NodeTiles.GREEN:
                case NodeTiles.BLUE:

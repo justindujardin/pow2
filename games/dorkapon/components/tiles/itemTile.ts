@@ -14,11 +14,17 @@
  limitations under the License.
  */
 
-/// <reference path="./../index.ts" />
+/// <reference path="../mapNodeComponent.ts" />
+/// <reference path="../../states/dorkaponCombatState.ts" />
 
-module dorkapon.objects {
-   export class DorkaponEntity extends pow2.TileObject {
-      world:dorkapon.DorkaponGameWorld;
-      model:models.DorkaponEntity;
+module dorkapon.components.tiles {
+   export class ItemTile extends MapNodeComponent {
+      /**
+       * Display the weapon tile chance roll.
+       */
+      doAction(object:objects.DorkaponEntity,then:()=>any){
+         _.defer(then);
+         console.log("Roll for item drop");
+      }
    }
 }

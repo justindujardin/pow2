@@ -17,7 +17,19 @@
 /// <reference path="../index.ts" />
 
 module dorkapon.components {
-   export class MapNodeComponent extends pow2.TileComponent {
+
+   export interface IMapNodeComponent {
+      world:DorkaponGameWorld;
+
+      /**
+       * Perform any action associated with landing on this component.
+       * @param object The entity that landed on the node.
+       * @param then A callback to be invoked when the action is done.
+       */
+      doAction(object:objects.DorkaponEntity,then:()=>any);
+   }
+
+   export class MapNodeComponent extends pow2.TileComponent implements IMapNodeComponent {
       public world:DorkaponGameWorld = <DorkaponGameWorld>pow2.getWorld(dorkapon.NAME);
 
       /**

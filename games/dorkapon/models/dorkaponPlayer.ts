@@ -23,32 +23,32 @@ module dorkapon.models {
     */
    export interface IDorkaponPlayerAttributes extends IDorkaponEntityAttributes {
       basehp:number;
-      basestrength:number;
-      basevitality:number;
-      baseintelligence:number;
-      baseagility:number;
+      baseattack:number;
+      basedefense:number;
+      basemagic:number;
+      basespeed:number;
 
       levelhp:number;
-      levelstrength:number;
-      levelvitality:number;
-      levelintelligence:number;
-      levelagility:number;
+      levelattack:number;
+      leveldefense:number;
+      levelmagic:number;
+      levelspeed:number;
    }
 
    export class DorkaponPlayer extends DorkaponEntity {
       attributes:IDorkaponPlayerAttributes;
       static DEFAULTS:IDorkaponPlayerAttributes = <any>{
          basehp:1,
-         basestrength:1,
-         basevitality:1,
-         baseintelligence:1,
-         baseagility:1,
+         baseattack:1,
+         basedefense:1,
+         basemagic:1,
+         basespeed:1,
 
          levelhp:10,
-         levelstrength:1,
-         levelvitality:1,
-         levelintelligence:1,
-         levelagility:1
+         levelattack:1,
+         leveldefense:1,
+         levelmagic:1,
+         levelspeed:1
       };
       defaults():any {
          return _.extend(super.defaults(),DorkaponPlayer.DEFAULTS);
@@ -56,17 +56,17 @@ module dorkapon.models {
 
       static create(options:IDorkaponPlayerAttributes):DorkaponPlayer{
          var result = new DorkaponPlayer(options);
-         if(_.isUndefined(options.intelligence)){
-            result.set({intelligence:options.baseintelligence});
+         if(_.isUndefined(options.magic)){
+            result.set({magic:options.basemagic});
          }
-         if(_.isUndefined(options.strength)){
-            result.set({strength:options.basestrength});
+         if(_.isUndefined(options.attack)){
+            result.set({attack:options.baseattack});
          }
-         if(_.isUndefined(options.agility)){
-            result.set({agility:options.baseagility});
+         if(_.isUndefined(options.speed)){
+            result.set({speed:options.basespeed});
          }
-         if(_.isUndefined(options.vitality)){
-            result.set({vitality:options.basevitality});
+         if(_.isUndefined(options.defense)){
+            result.set({defense:options.basedefense});
          }
          result.set({
             hp:result.get('basehp'),

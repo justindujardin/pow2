@@ -21,6 +21,9 @@ module dorkapon {
 
    export class DorkaponMapView extends pow2.GameMapView {
 
+      world:dorkapon.DorkaponGameWorld;
+      tileMap:DorkaponTileMap;
+
       targetFill:string = "transparent";
       targetStroke:string = "white";
       targetStrokeWidth:number = 2;
@@ -60,10 +63,10 @@ module dorkapon {
       /*
        * Render the combat render objects.
        */
-      renderFrame(elapsed) {
+      renderFrame(elapsed: number) {
          super.renderFrame(elapsed);
          var players = this.scene.objectsByComponent(pow2.PlayerCombatRenderComponent);
-         _.each(players, (player) => {
+         _.each(players, (player:pow2.PlayerCombatRenderComponent) => {
             this.objectRenderer.render(player,player,this);
          });
          return this;

@@ -51,10 +51,43 @@ module dorkapon {
 
    export var app = angular.module('dorkapon', [
       'ngMaterial',
-      'pow2.ui'
+      'pow2.ui',
+      'material.components.icon'
    ]).config(function($mdThemingProvider) {
       $mdThemingProvider.theme('default')
          .primaryPalette('blue-grey')
          .accentPalette('deep-orange');
    });
+
+   /**
+    * Item with representative icon from google spreadsheet.
+    */
+   export interface IDorkaponItem {
+      /**
+       * The sprite icon name, e.g. "shortSword.png"
+       */
+      icon:string;
+
+      /**
+       * The hyphen-case unique item id.
+       */
+      id:string;
+
+      /**
+       * The human readable formatted name of the item.
+       */
+      name:string;
+   }
+
+   /**
+    * An equipment item from the spreadsheet that buffs
+    * character stats.
+    */
+   export interface IDorkaponEquipment extends IDorkaponItem {
+      attack:number;
+      defense:number;
+      speed:number;
+      magic:number;
+      hp:number;
+   }
 }
