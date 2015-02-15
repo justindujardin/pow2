@@ -126,7 +126,7 @@ module dorkapon {
       pickTurnOrderCard(turnOrder:states.ICombatDetermineTurnOrder,then:()=>any) {
          this.$mdDialog.show({
             controller: CombatTurnOrderController,
-            templateUrl: 'games/dorkapon/controllers/combatTurnOrder.html',
+            templateUrl: 'games/dorkapon/dialogs/combatTurnOrder.html',
             controllerAs: 'combat',
             clickOutsideToClose:false,
             escapeToClose:false
@@ -148,7 +148,7 @@ module dorkapon {
       pickMove(chooseMove:states.ICombatChooseMove,attacker:boolean,then:()=>any) {
          this.$mdDialog.show({
             controller: CombatChooseMoveController,
-            templateUrl: 'games/dorkapon/controllers/combatChooseMove.html',
+            templateUrl: 'games/dorkapon/dialogs/combatChooseMove.html',
             controllerAs: 'choose',
             clickOutsideToClose:false,
             escapeToClose:false,

@@ -35,14 +35,14 @@ module dorkapon {
                this.physicalText = "Attack";
                this.magicText = "Magic";
                this.specialText = "Strike";
-               this.skillText = "...SKILLS TODO...";
+               this.skillText = "Skill";
                this.current = this.event.attacker;
             }
             else {
                this.physicalText = "Defend";
-               this.magicText = "Magic Defend";
+               this.magicText = "M Defend";
                this.specialText = "Counter";
-               this.skillText = "...SKILLS TODO...";
+               this.skillText = "Skill";
                this.current = this.event.defender;
             }
          },0);
