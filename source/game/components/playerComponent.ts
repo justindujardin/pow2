@@ -26,7 +26,7 @@ module pow2.game.components {
       private _renderFrame:number = 3;
       heading:Point = new Point(0, -1);
       sprite:PlayerRenderComponent = null;
-      collideComponentType:any = SceneComponent;
+      collideComponentType:any = TileComponent;
 
       static Events:any = {
          MOVE_BEGIN: 'move:begin',
