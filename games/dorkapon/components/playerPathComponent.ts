@@ -44,7 +44,7 @@ module dorkapon.components {
             grid[p.x][p.y] = PathWeights.CAN_WALK;
          });
          // Mark that the path can end at nodes.
-         _.each(nodes,(p:IPathTile)=>{
+         _.each(nodes,(p:INodeTile)=>{
             grid[p.x][p.y] = PathWeights.CAN_REST;
          });
          return grid;

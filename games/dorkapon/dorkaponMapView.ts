@@ -66,7 +66,7 @@ module dorkapon {
       renderFrame(elapsed: number) {
          super.renderFrame(elapsed);
          var players = this.scene.objectsByComponent(pow2.PlayerCombatRenderComponent);
-         _.each(players, (player:pow2.PlayerCombatRenderComponent) => {
+         _.each(players, (player) => {
             this.objectRenderer.render(player,player,this);
          });
          return this;
