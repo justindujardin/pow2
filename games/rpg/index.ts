@@ -34,7 +34,7 @@ module pow2.ui {
          restrict: 'E',
          scope:true,
          templateUrl: '/games/rpg/directives/heroCard.html',
-         link: function ($scope, element, attrs) {
+         link: function ($scope:any, element, attrs) {
             $scope.hero = attrs.hero;
             $scope.$watch(attrs.hero, function(hero) {
                $scope.hero = hero;

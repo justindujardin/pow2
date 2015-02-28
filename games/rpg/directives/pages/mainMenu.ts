@@ -54,7 +54,7 @@ module pow2.ui {
          templateUrl: '/games/rpg/directives/pages/mainMenu.html',
          controllerAs:'mainMenu',
          controller:MainMenuController,
-         link: function ($scope, element, attrs) {
+         link: function ($scope:any, element, attrs) {
             $scope.hero = attrs.hero;
             $scope.$watch(attrs.hero, function(hero) {
                $scope.hero = hero;

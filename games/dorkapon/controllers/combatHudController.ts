@@ -15,7 +15,7 @@
  */
 /// <reference path="../../../lib/pow2.ui.d.ts"/>
 
-module dorkapon {
+module dorkapon.controllers {
    export class CombatHudController {
       static $inject:string[] = [
          '$scope',

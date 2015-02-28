@@ -95,7 +95,7 @@ module pow2 {
 
       // Render a frame. Subclass this to do your specific rendering.
       renderFrame(elapsed: number) {
-         _.each(this._components,(o:ISceneViewRenderer) => {
+         _.each(this._components,(o:any) => {
             o instanceof SceneViewComponent && o.renderFrame(this,elapsed);
          });
       }
@@ -131,13 +131,13 @@ module pow2 {
       _render(elapsed: number) {
          this.processCamera();
          this.setRenderState();
-         _.each(this._components,(o:ISceneViewRenderer) => {
+         _.each(this._components,(o:any) => {
             o instanceof SceneViewComponent && o.beforeFrame(this,elapsed);
          });
          this.renderFrame(elapsed);
          this.renderAnimations();
          this.renderPost();
-         _.each(this._components,(o:ISceneViewRenderer) => {
+         _.each(this._components,(o:any) => {
             o instanceof SceneViewComponent && o.afterFrame(this,elapsed);
          });
          this.restoreRenderState();

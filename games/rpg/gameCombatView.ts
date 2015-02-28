@@ -71,7 +71,7 @@ module pow2{
          });
 
          var sprites = <ISceneComponent[]>this.scene.componentsByType(pow2.SpriteComponent);
-         _.each(sprites, (sprite:SpriteComponent) => {
+         _.each(sprites, (sprite:any) => {
             this.objectRenderer.render(sprite.host,sprite, this);
          });
          return this;

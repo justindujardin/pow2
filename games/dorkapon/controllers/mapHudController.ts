@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-module dorkapon {
+module dorkapon.controllers {
    export class MapHudController {
       static $inject:string[] = [
          '$scope',
