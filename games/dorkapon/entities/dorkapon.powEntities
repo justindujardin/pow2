@@ -17,12 +17,32 @@
       "machine": "dorkapon.DorkaponMapStateMachine"
     },
     "components": [
-      { "name": "player",   "type": "dorkapon.components.PlayerComponent" },
-      { "name": "movement", "type": "dorkapon.components.PlayerPathComponent", "params": ["map"] },
-      { "name": "turn",     "type": "dorkapon.components.PlayerTurnComponent", "params": ["machine"] },
-      { "name": "collider", "type": "pow2.CollisionComponent" },
-      { "name": "render",   "type": "pow2.PlayerRenderComponent" },
-      { "name": "camera",   "type": "dorkapon.components.PlayerCamera" }
+      {
+        "name": "player",
+        "type": "dorkapon.components.PlayerComponent"
+      },
+      {
+        "name": "movement",
+        "type": "dorkapon.components.PlayerPathComponent",
+        "params": ["map"]
+      },
+      {
+        "name": "turn",
+        "type": "dorkapon.components.PlayerTurnComponent",
+        "params": ["machine"]
+      },
+      {
+        "name": "collider",
+        "type": "pow2.scene.components.CollisionComponent"
+      },
+      {
+        "name": "render",
+        "type": "pow2.game.components.PlayerRenderComponent"
+      },
+      {
+        "name": "camera",
+        "type": "dorkapon.components.PlayerCamera"
+      }
     ]
   },
   {
@@ -33,9 +53,18 @@
       "machine": "dorkapon.DorkaponCombatStateMachine"
     },
     "components": [
-      { "name":"player", "type":"pow2.PlayerCombatRenderComponent" },
-      { "name":"render", "type":"pow2.PlayerRenderComponent" },
-      { "name":"animation", "type":"pow2.AnimatedComponent" }
+      {
+        "name": "player",
+        "type": "pow2.game.components.PlayerCombatRenderComponent"
+      },
+      {
+        "name": "render",
+        "type": "pow2.game.components.PlayerRenderComponent"
+      },
+      {
+        "name": "animation",
+        "type": "pow2.game.components.AnimatedComponent"
+      }
     ]
   }
 ]

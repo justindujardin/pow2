@@ -17,25 +17,26 @@
 /// <reference path="./gameTileMap.ts"/>
 
 module rpg {
-   export class RPGMapView extends pow2.GameMapView {
-      tileMap:pow2.GameTileMap = null;
+  export class RPGMapView extends pow2.game.GameMapView {
+    tileMap:rpg.GameTileMap = null;
 
-      private _features:pow2.GameFeatureObject[] = null;
-      protected clearCache() {
-         this._features = null;
-         super.clearCache();
-      }
+    private _features:rpg.objects.GameFeatureObject[] = null;
 
-      /*
-       * Render the tile map, and any features it has.
-       */
-      renderFrame(elapsed) {
-         if(!this._features) {
-            this._features = <pow2.GameFeatureObject[]>this.scene.objectsByType(pow2.GameFeatureObject);
-            this._renderables = this._renderables.concat(this._features);
-         }
-         super.renderFrame(elapsed);
-         return this;
+    protected clearCache() {
+      this._features = null;
+      super.clearCache();
+    }
+
+    /*
+     * Render the tile map, and any features it has.
+     */
+    renderFrame(elapsed) {
+      if (!this._features) {
+        this._features = <rpg.objects.GameFeatureObject[]>this.scene.objectsByType(rpg.objects.GameFeatureObject);
+        this._renderables = this._renderables.concat(this._features);
       }
-   }
+      super.renderFrame(elapsed);
+      return this;
+    }
+  }
 }

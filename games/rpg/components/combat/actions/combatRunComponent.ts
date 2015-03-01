@@ -16,63 +16,65 @@
 
 /// <reference path="../combatActionComponent.ts" />
 
-module pow2 {
+module rpg.components.combat.actions {
 
-   /**
-    * Describe the result of a combat run action.
-    */
-   export interface CombatRunSummary {
-      success:boolean;
-      player:GameEntityObject;
-   }
+  /**
+   * Describe the result of a combat run action.
+   */
+  export interface CombatRunSummary {
+    success:boolean;
+    player:rpg.objects.GameEntityObject;
+  }
 
-   export class CombatRunComponent extends CombatActionComponent {
-      name:string = "run";
-      canTarget():boolean {
-         return false;
+  export class CombatRunComponent extends CombatActionComponent {
+    name:string = "run";
+
+    canTarget():boolean {
+      return false;
+    }
+
+    act(then?:rpg.states.IPlayerActionCallback):boolean {
+      if (!this.isCurrentTurn()) {
+        return false;
       }
-      act(then?:pow2.IPlayerActionCallback):boolean {
-         if(!this.isCurrentTurn()){
-            return false;
-         }
-         var success:boolean = this._rollEscape();
-         var data:CombatRunSummary = {
-            success:success,
-            player:this.combat.machine.current
-         };
-         this.combat.machine.notify("combat:run",data,()=>{
-            if(success){
-               this.combat.machine.setCurrentState(CombatEscapeState.NAME);
-            }
-            else {
-               this.combat.machine.setCurrentState(CombatEndTurnState.NAME);
-            }
-            then && then(this);
-         });
-         return true;
+      var success:boolean = this._rollEscape();
+      var data:CombatRunSummary = {
+        success: success,
+        player: this.combat.machine.current
+      };
+      this.combat.machine.notify("combat:run", data, ()=> {
+        if (success) {
+          this.combat.machine.setCurrentState(rpg.states.combat.CombatEscapeState.NAME);
+        }
+        else {
+          this.combat.machine.setCurrentState(rpg.states.combat.CombatEndTurnState.NAME);
+        }
+        then && then(this);
+      });
+      return true;
+    }
+
+
+    /**
+     * Determine if a run action results in a successful escape from
+     * combat.
+     *
+     * TODO: This should really consider character attributes.
+     *
+     * @returns {boolean} If the escape will succeed.
+     * @private
+     */
+    private _rollEscape():boolean {
+      var roll:number = _.random(0, 200);
+      var chance:number = 100;
+      if (roll === 200) {
+        return false;
       }
-
-
-      /**
-       * Determine if a run action results in a successful escape from
-       * combat.
-       *
-       * TODO: This should really consider character attributes.
-       *
-       * @returns {boolean} If the escape will succeed.
-       * @private
-       */
-      private _rollEscape():boolean {
-         var roll:number = _.random(0,200);
-         var chance:number = 100;
-         if(roll === 200){
-            return false;
-         }
-         if(roll === 0){
-            return true;
-         }
-         return roll <= chance;
+      if (roll === 0) {
+        return true;
       }
+      return roll <= chance;
+    }
 
-   }
+  }
 }

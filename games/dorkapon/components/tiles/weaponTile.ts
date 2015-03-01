@@ -19,22 +19,22 @@
 
 module dorkapon.components.tiles {
 
-   export class WeaponTile extends MapNodeComponent {
-      /**
-       * Display the weapon tile chance roll.
-       */
-      doAction(object:objects.DorkaponEntity,then:()=>any){
-         var view = object.scene.getViewOfType<DorkaponMapView>(DorkaponMapView);
-         var choices = _.where(this.world.tables.getSheetData('weapons'),{zone:1});
-         var roller = new dorkapon.components.ChoiceRollComponent(object,choices);
-         view.addComponent(roller);
-         roller.on('disconnected',()=>{
-            object.model.set('weapon',roller.selection);
-            _.delay(then,1000);
-         });
-         console.log("Roll for weapon drop");
-      }
+  export class WeaponTile extends MapNodeComponent {
+    /**
+     * Display the weapon tile chance roll.
+     */
+    doAction(object:objects.DorkaponEntity, then:()=>any) {
+      var view = object.scene.getViewOfType<DorkaponMapView>(DorkaponMapView);
+      var choices = _.where(this.world.tables.getSheetData('weapons'), {zone: 1});
+      var roller = new dorkapon.components.ChoiceRollComponent(object, choices);
+      view.addComponent(roller);
+      roller.on('disconnected', ()=> {
+        object.model.set('weapon', roller.selection);
+        _.delay(then, 1000);
+      });
+      console.log("Roll for weapon drop");
+    }
 
 
-   }
+  }
 }

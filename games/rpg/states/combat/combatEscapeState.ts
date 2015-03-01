@@ -16,19 +16,20 @@
 
 /// <reference path="../gameCombatStateMachine.ts" />
 
-module pow2 {
+module rpg.states.combat {
 
-   export class CombatEscapeState extends CombatState {
-      static NAME:string = "Combat Escaped";
-      name:string = CombatEscapeState.NAME;
-      enter(machine:CombatStateMachine){
-         super.enter(machine);
-         machine.notify("combat:escape",{
-            player:machine.current
-         },()=>{
-            machine.parent.world.reportEncounterResult(false);
-            machine.parent.setCurrentState(GameMapState.NAME);
-         });
-      }
-   }
+  export class CombatEscapeState extends CombatState {
+    static NAME:string = "Combat Escaped";
+    name:string = CombatEscapeState.NAME;
+
+    enter(machine:CombatStateMachine) {
+      super.enter(machine);
+      machine.notify("combat:escape", {
+        player: machine.current
+      }, ()=> {
+        machine.parent.world.reportEncounterResult(false);
+        machine.parent.setCurrentState(GameMapState.NAME);
+      });
+    }
+  }
 }

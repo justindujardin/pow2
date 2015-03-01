@@ -17,11 +17,11 @@
 /// <reference path="../mapNodeComponent.ts" />
 
 module dorkapon.components.tiles {
-   export class BlueTile extends MapNodeComponent {
-      enter(object:objects.DorkaponEntity):boolean {
-         super.enter(object);
-         console.log("BLUE NODE");
-         return true;
-      }
-   }
+  export class BlueTile extends MapNodeComponent {
+    enter(object:objects.DorkaponEntity):boolean {
+      super.enter(object);
+      console.log("BLUE NODE");
+      return true;
+    }
+  }
 }

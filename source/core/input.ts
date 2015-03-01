@@ -17,115 +17,115 @@
 /// <reference path="../../types/jquery/jquery.d.ts"/>
 /// <reference path="../scene/sceneView.ts"/>
 module pow2 {
-   export enum KeyCode {
-      UP = 38,
-      DOWN = 40,
-      LEFT = 37,
-      RIGHT = 39,
-      BACKSPACE = 8,
-      COMMA = 188,
-      DELETE = 46,
-      END = 35,
-      ENTER = 13,
-      ESCAPE = 27,
-      HOME = 36,
-      SPACE = 32,
-      TAB = 9
-   }
+  export enum KeyCode {
+    UP = 38,
+    DOWN = 40,
+    LEFT = 37,
+    RIGHT = 39,
+    BACKSPACE = 8,
+    COMMA = 188,
+    DELETE = 46,
+    END = 35,
+    ENTER = 13,
+    ESCAPE = 27,
+    HOME = 36,
+    SPACE = 32,
+    TAB = 9
+  }
 
-   export interface CanvasMouseCoords {
-      point:Point; // Point on the canvas in pixels.
-      world:Point; // Point in the world, accounting for camera scale and offset.
-   }
+  export interface CanvasMouseCoords {
+    point:Point; // Point on the canvas in pixels.
+    world:Point; // Point in the world, accounting for camera scale and offset.
+  }
 
-   export interface NamedMouseElement extends CanvasMouseCoords {
-      name:string;
-      view:SceneView;
-   }
+  export interface NamedMouseElement extends CanvasMouseCoords {
+    name:string;
+    view:pow2.scene.SceneView;
+  }
 
-   export class Input implements IWorldObject {
-      world:pow2.IWorld;
-      _keysDown:Object = {};
-      _mouseElements:NamedMouseElement[] = [];
+  export class Input implements IWorldObject {
+    world:pow2.IWorld;
+    _keysDown:Object = {};
+    _mouseElements:NamedMouseElement[] = [];
 
-      static mouseOnView(ev:MouseEvent,view:pow2.SceneView,coords?:CanvasMouseCoords) {
-         var relativeElement:any = ev.srcElement;
-         var touches:any = (<any>ev).touches;
-         if(touches && touches.length > 0){
-            ev = <any>touches[0];
-         }
-         var result:CanvasMouseCoords = coords || {
+    static mouseOnView(ev:MouseEvent, view:pow2.scene.SceneView, coords?:CanvasMouseCoords) {
+      var relativeElement:any = ev.srcElement;
+      var touches:any = (<any>ev).touches;
+      if (touches && touches.length > 0) {
+        ev = <any>touches[0];
+      }
+      var result:CanvasMouseCoords = coords || {
             point: new pow2.Point(),
             world: new pow2.Point()
-         };
-         var canoffset = $(relativeElement).offset();
-         var x = ev.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
-         var y = ev.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
-         result.point.set(x,y);
-         // Generate world mouse position
-         var worldMouse = view.screenToWorld(result.point,view.cameraScale).add(view.camera.point).round();
-         result.world.set(worldMouse.x,worldMouse.y);
-         return result;
+          };
+      var canoffset = $(relativeElement).offset();
+      var x = ev.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
+      var y = ev.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
+      result.point.set(x, y);
+      // Generate world mouse position
+      var worldMouse = view.screenToWorld(result.point, view.cameraScale).add(view.camera.point).round();
+      result.world.set(worldMouse.x, worldMouse.y);
+      return result;
+    }
+
+
+    constructor() {
+      window.addEventListener(<string>"keydown", (ev:KeyboardEvent) => {
+        this._keysDown[ev.which] = true;
+      });
+      window.addEventListener(<string>'keyup', (ev:KeyboardEvent) => {
+        this._keysDown[ev.which] = false;
+      });
+      var hooks = this._mouseElements;
+      window.addEventListener(<string>'mousemove touchmove', (ev:MouseEvent) => {
+        var l:number = hooks.length;
+        for (var i = 0; i < l; i++) {
+          var hook:NamedMouseElement = hooks[i];
+          if (ev.srcElement === hook.view.canvas) {
+            Input.mouseOnView(ev, hook.view, hook);
+          }
+          else {
+            hook.point.set(-1, -1);
+            hook.world.set(-1, -1);
+          }
+        }
+      });
+    }
+
+    mouseHook(view:pow2.scene.SceneView, name:string):NamedMouseElement {
+      var hooks = <NamedMouseElement[]>_.where(this._mouseElements, {name: name});
+      if (hooks.length > 0) {
+        return hooks[0];
       }
+      var result:NamedMouseElement = {
+        name: name,
+        view: view,
+        point: new Point(-1, -1),
+        world: new Point(-1, -1)
+      };
+      this._mouseElements.push(result);
+      return result;
+    }
 
+    mouseUnhook(name:string);
+    mouseUnhook(view:pow2.scene.SceneView);
+    mouseUnhook(nameOrView:any) {
+      this._mouseElements = _.filter(this._mouseElements, (hook:NamedMouseElement) => {
+        return hook.name === nameOrView || hook.view._uid === nameOrView._uid;
+      });
+    }
 
-      constructor() {
-         window.addEventListener(<string>"keydown", (ev:KeyboardEvent) => {
-            this._keysDown[ev.which] = true;
-         });
-         window.addEventListener(<string>'keyup', (ev:KeyboardEvent) => {
-            this._keysDown[ev.which] = false;
-         });
-         var hooks = this._mouseElements;
-         window.addEventListener(<string>'mousemove touchmove', (ev:MouseEvent) => {
-            var l:number = hooks.length;
-            for(var i = 0; i < l; i++){
-               var hook:NamedMouseElement = hooks[i];
-               if(ev.srcElement === hook.view.canvas){
-                  Input.mouseOnView(ev,hook.view,hook);
-               }
-               else {
-                  hook.point.set(-1,-1);
-                  hook.world.set(-1,-1);
-               }
-            }
-         });
-      }
+    getMouseHook(name:string):NamedMouseElement;
+    getMouseHook(view:pow2.scene.SceneView):NamedMouseElement;
+    getMouseHook(nameOrView:any):NamedMouseElement {
+      return <NamedMouseElement>_.find(this._mouseElements, (hook:NamedMouseElement) => {
+        return hook.name === nameOrView || hook.view._uid === nameOrView._uid;
+      });
+    }
 
-      mouseHook(view:SceneView,name:string):NamedMouseElement{
-         var hooks = <NamedMouseElement[]>_.where(this._mouseElements,{name:name});
-         if(hooks.length > 0){
-            return hooks[0];
-         }
-         var result:NamedMouseElement = {
-            name:name,
-            view:view,
-            point: new Point(-1,-1),
-            world: new Point(-1,-1)
-         };
-         this._mouseElements.push(result);
-         return result;
-      }
+    keyDown(key:number):boolean {
+      return !!this._keysDown[key];
+    }
 
-      mouseUnhook(name:string);
-      mouseUnhook(view:SceneView);
-      mouseUnhook(nameOrView:any){
-         this._mouseElements = _.filter(this._mouseElements,(hook:NamedMouseElement) => {
-            return hook.name === nameOrView || hook.view._uid === nameOrView._uid;
-         });
-      }
-
-      getMouseHook(name:string):NamedMouseElement;
-      getMouseHook(view:SceneView):NamedMouseElement;
-      getMouseHook(nameOrView:any):NamedMouseElement{
-         return <NamedMouseElement>_.find(this._mouseElements,(hook:NamedMouseElement) => {
-            return hook.name === nameOrView || hook.view._uid === nameOrView._uid;
-         });
-      }
-
-      keyDown(key:number):boolean {
-         return !!this._keysDown[key];
-      }
-
-   }
+  }
 }

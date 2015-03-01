@@ -16,27 +16,28 @@
 
 /// <reference path="../gameCombatStateMachine.ts" />
 
-module pow2 {
+module rpg.states.combat {
 
-   export interface CombatDefeatSummary {
-      party:GameEntityObject[];
-      enemies:GameEntityObject[];
-   }
+  export interface CombatDefeatSummary {
+    party:rpg.objects.GameEntityObject[];
+    enemies:rpg.objects.GameEntityObject[];
+  }
 
-   export class CombatDefeatState extends CombatState {
-      static NAME:string = "Combat Defeat";
-      name:string = CombatDefeatState.NAME;
-      enter(machine:CombatStateMachine){
-         super.enter(machine);
-         var data:CombatDefeatSummary = {
-            enemies:machine.enemies,
-            party:machine.party
-         };
-         machine.notify("combat:defeat",data,()=>{
-            machine.parent.world.reportEncounterResult(false);
-            machine.parent.setCurrentState(GameMapState.NAME);
-         });
-      }
-   }
+  export class CombatDefeatState extends CombatState {
+    static NAME:string = "Combat Defeat";
+    name:string = CombatDefeatState.NAME;
+
+    enter(machine:CombatStateMachine) {
+      super.enter(machine);
+      var data:CombatDefeatSummary = {
+        enemies: machine.enemies,
+        party: machine.party
+      };
+      machine.notify("combat:defeat", data, ()=> {
+        machine.parent.world.reportEncounterResult(false);
+        machine.parent.setCurrentState(GameMapState.NAME);
+      });
+    }
+  }
 
 }

@@ -15,71 +15,70 @@
  */
 
 module dorkapon.controllers {
-   export class MapHudController {
-      static $inject:string[] = [
-         '$scope',
-         '$dorkapon',
-         '$mdDialog'
-      ];
-      constructor(
-         public $scope:any,
-         public $dorkapon:services.DorkaponService,
-         public $mdDialog:any
-      ){
-         var changeHandler:any = () => {
-            this.$scope.$$phase || this.$scope.$digest();
-         };
-         $dorkapon.machine.on(pow2.StateMachine.Events.ENTER,(newState:pow2.IState)=>{
-            if(newState.name === states.AppMapState.NAME){
-               var mapState:states.AppMapState = <states.AppMapState>newState;
-               mapState.machine.on(states.DorkaponPlayerTurn.EVENT,(e:states.IPlayerTurnEvent)=>{
-                  this.$scope.$apply(()=>{
-                     this.turn = e;
-                  });
-                  e.player.model.on('change',changeHandler);
-               },this);
-               mapState.machine.on(states.DorkaponPlayerTurnEnd.EVENT,(e:states.IPlayerTurnEvent)=>{
-                  e.player.model.off('change',changeHandler);
-                  this.$scope.$apply(()=>{
-                     this.turn = null;
-                  });
-               },this);
-            }
-         });
-         $dorkapon.machine.on(pow2.StateMachine.Events.EXIT,(oldState:pow2.IState)=>{
-            if(oldState.name === states.AppMapState.NAME){
-               var mapState:states.AppMapState = <states.AppMapState>oldState;
-               mapState.machine.off(states.DorkaponPlayerTurn.EVENT,null,this);
-               mapState.machine.off(states.DorkaponPlayerTurnEnd.EVENT,null,this);
-            }
-         });
-         this.$scope.$on('$destroy',()=>{
-            if($dorkapon.machine){
-               $dorkapon.machine.off(pow2.StateMachine.Events.ENTER,null,this);
-               $dorkapon.machine.off(pow2.StateMachine.Events.EXIT,null,this);
-            }
-         });
-         return this;
-      }
+  export class MapHudController {
+    static $inject:string[] = [
+      '$scope',
+      '$dorkapon',
+      '$mdDialog'
+    ];
 
-      /**
-       * The current player turn.
-       */
-      turn:dorkapon.states.IPlayerTurnEvent = null;
+    constructor(public $scope:any,
+                public $dorkapon:services.DorkaponService,
+                public $mdDialog:any) {
+      var changeHandler:any = () => {
+        this.$scope.$$phase || this.$scope.$digest();
+      };
+      $dorkapon.machine.on(pow2.StateMachine.Events.ENTER, (newState:pow2.IState)=> {
+        if (newState.name === states.AppMapState.NAME) {
+          var mapState:states.AppMapState = <states.AppMapState>newState;
+          mapState.machine.on(states.DorkaponPlayerTurn.EVENT, (e:states.IPlayerTurnEvent)=> {
+            this.$scope.$apply(()=> {
+              this.turn = e;
+            });
+            e.player.model.on('change', changeHandler);
+          }, this);
+          mapState.machine.on(states.DorkaponPlayerTurnEnd.EVENT, (e:states.IPlayerTurnEvent)=> {
+            e.player.model.off('change', changeHandler);
+            this.$scope.$apply(()=> {
+              this.turn = null;
+            });
+          }, this);
+        }
+      });
+      $dorkapon.machine.on(pow2.StateMachine.Events.EXIT, (oldState:pow2.IState)=> {
+        if (oldState.name === states.AppMapState.NAME) {
+          var mapState:states.AppMapState = <states.AppMapState>oldState;
+          mapState.machine.off(states.DorkaponPlayerTurn.EVENT, null, this);
+          mapState.machine.off(states.DorkaponPlayerTurnEnd.EVENT, null, this);
+        }
+      });
+      this.$scope.$on('$destroy', ()=> {
+        if ($dorkapon.machine) {
+          $dorkapon.machine.off(pow2.StateMachine.Events.ENTER, null, this);
+          $dorkapon.machine.off(pow2.StateMachine.Events.EXIT, null, this);
+        }
+      });
+      return this;
+    }
 
-      showPlayerCard(player:objects.DorkaponEntity) {
-         this.$mdDialog.show({
-            controller: CharacterCardController,
-            controllerAs:'character',
-            templateUrl: 'games/dorkapon/controllers/characterCard.html',
-            locals: {
-               model:player.model
-            },
-            bindToController:true
-         });
-      }
+    /**
+     * The current player turn.
+     */
+    turn:dorkapon.states.IPlayerTurnEvent = null;
 
-   }
+    showPlayerCard(player:objects.DorkaponEntity) {
+      this.$mdDialog.show({
+        controller: CharacterCardController,
+        controllerAs: 'character',
+        templateUrl: 'games/dorkapon/controllers/characterCard.html',
+        locals: {
+          model: player.model
+        },
+        bindToController: true
+      });
+    }
 
-   app.controller('MapHudController', MapHudController);
+  }
+
+  app.controller('MapHudController', MapHudController);
 }

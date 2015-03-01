@@ -17,29 +17,33 @@
 /// <reference path="./gameComponent.ts" />
 /// <reference path="../objects/gameEntityObject.ts" />
 
-module pow2 {
+module rpg.components {
 
-   export class DamageComponent extends SceneComponent {
-      host:GameEntityObject;
-      animation:AnimatedSpriteComponent;
-      sprite:SpriteComponent;
-      sound:SoundComponent;
-      started:boolean = false;
-      syncComponent():boolean {
-         if(!super.syncComponent()){
-            return false;
-         }
-         this.animation = <AnimatedSpriteComponent>this.host.findComponent(AnimatedSpriteComponent);
-         this.sprite = <SpriteComponent>this.host.findComponent(SpriteComponent);
-         this.sound = <SoundComponent>this.host.findComponent(SoundComponent);
-         var ok = !!(this.animation && this.sprite);
-         if(!this.started && ok){
-            this.started = true;
-            this.animation.once('animation:done',() => {
-               this.trigger('damage:done',this);
-            });
-         }
-         return ok;
+  export class DamageComponent extends pow2.scene.SceneComponent {
+    host:rpg.objects.GameEntityObject;
+    animation:pow2.tile.components.AnimatedSpriteComponent;
+    sprite:pow2.tile.components.SpriteComponent;
+    sound:pow2.scene.components.SoundComponent;
+    started:boolean = false;
+
+    syncComponent():boolean {
+      if (!super.syncComponent()) {
+        return false;
       }
-   }
+      this.animation = <pow2.tile.components.AnimatedSpriteComponent>
+          this.host.findComponent(pow2.tile.components.AnimatedSpriteComponent);
+      this.sprite = <pow2.tile.components.SpriteComponent>
+          this.host.findComponent(pow2.tile.components.SpriteComponent);
+      this.sound = <pow2.scene.components.SoundComponent>
+          this.host.findComponent(pow2.scene.components.SoundComponent);
+      var ok = !!(this.animation && this.sprite);
+      if (!this.started && ok) {
+        this.started = true;
+        this.animation.once('animation:done', () => {
+          this.trigger('damage:done', this);
+        });
+      }
+      return ok;
+    }
+  }
 }

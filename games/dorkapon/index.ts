@@ -29,65 +29,65 @@
  */
 module dorkapon {
 
-   /**
-    * The name of this app.  You can fetch the game world at any time using pow2.getWorld and this name.
-    * @type {string}
-    */
-   export var NAME:string = "dorkapon";
+  /**
+   * The name of this app.  You can fetch the game world at any time using pow2.getWorld and this name.
+   * @type {string}
+   */
+  export var NAME:string = "dorkapon";
 
-   /**
-    * The Google Spreadsheet ID to load game data from.  This must be a published
-    * google spreadsheet key.
-    * @type {string} The google spreadsheet ID
-    */
-   export var SPREADSHEET_ID:string = "1KUkfnr0ndj_hL5ZvWhmOz6pqgE2VyMCcRyZjJKhO0a0";
+  /**
+   * The Google Spreadsheet ID to load game data from.  This must be a published
+   * google spreadsheet key.
+   * @type {string} The google spreadsheet ID
+   */
+  export var SPREADSHEET_ID:string = "1KUkfnr0ndj_hL5ZvWhmOz6pqgE2VyMCcRyZjJKhO0a0";
 
-   /**
-    * The location of the entities container for dorkapon.
-    *
-    * This file contains template descriptions for the various complex game objects.
-    */
-   export var ENTITIES_CONTAINER:string = "games/dorkapon/entities/dorkapon.powEntities";
+  /**
+   * The location of the entities container for dorkapon.
+   *
+   * This file contains template descriptions for the various complex game objects.
+   */
+  export var ENTITIES_CONTAINER:string = "games/dorkapon/entities/dorkapon.powEntities";
 
-   export var app = angular.module('dorkapon', [
-      'ngMaterial',
-      'pow2.ui',
-      'material.components.icon'
-   ]).config(function($mdThemingProvider) {
-      $mdThemingProvider.theme('default')
-         .primaryPalette('blue-grey')
-         .accentPalette('deep-orange');
-   });
+  export var app = angular.module('dorkapon', [
+    'ngMaterial',
+    'pow2',
+    'material.components.icon'
+  ]).config(function ($mdThemingProvider) {
+    $mdThemingProvider.theme('default')
+        .primaryPalette('blue-grey')
+        .accentPalette('deep-orange');
+  });
 
-   /**
-    * Item with representative icon from google spreadsheet.
-    */
-   export interface IDorkaponItem {
-      /**
-       * The sprite icon name, e.g. "shortSword.png"
-       */
-      icon:string;
+  /**
+   * Item with representative icon from google spreadsheet.
+   */
+  export interface IDorkaponItem {
+    /**
+     * The sprite icon name, e.g. "shortSword.png"
+     */
+    icon:string;
 
-      /**
-       * The hyphen-case unique item id.
-       */
-      id:string;
+    /**
+     * The hyphen-case unique item id.
+     */
+    id:string;
 
-      /**
-       * The human readable formatted name of the item.
-       */
-      name:string;
-   }
+    /**
+     * The human readable formatted name of the item.
+     */
+    name:string;
+  }
 
-   /**
-    * An equipment item from the spreadsheet that buffs
-    * character stats.
-    */
-   export interface IDorkaponEquipment extends IDorkaponItem {
-      attack:number;
-      defense:number;
-      speed:number;
-      magic:number;
-      hp:number;
-   }
+  /**
+   * An equipment item from the spreadsheet that buffs
+   * character stats.
+   */
+  export interface IDorkaponEquipment extends IDorkaponItem {
+    attack:number;
+    defense:number;
+    speed:number;
+    magic:number;
+    hp:number;
+  }
 }

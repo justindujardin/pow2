@@ -18,33 +18,33 @@
 /// <reference path="../../states/dorkaponCombatState.ts" />
 
 module dorkapon.components.tiles {
-   export class YellowTile extends MapNodeComponent {
+  export class YellowTile extends MapNodeComponent {
 
-      machine: dorkapon.DorkaponCombatStateMachine = null;
+    machine:dorkapon.DorkaponCombatStateMachine = null;
 
-      /**
-       * Roll and present a random encounter with a bad guy.
-       */
-      doAction(object:objects.DorkaponEntity,then:()=>any){
+    /**
+     * Roll and present a random encounter with a bad guy.
+     */
+    doAction(object:objects.DorkaponEntity, then:()=>any) {
 
-         var enemies:any[] = _.where(this.world.tables.getSheetData("enemies"),{level:1});
-         var combatState = <states.AppCombatState>this.world.state.getState(states.AppCombatState.NAME);
-         var nmeTemplate = enemies[_.random(0,enemies.length-1)];
-         combatState.attacker = object.model;
-         combatState.defender = models.DorkaponMonster.create(nmeTemplate);
-         this.world.state.setCurrentState(combatState);
-         this.world.state.on(pow2.StateMachine.Events.EXIT,(state:pow2.IState)=>{
-            if(state.name === combatState.name){
-               _.defer(then);
-            }
-         });
-         console.log("RANDOM ENCOUNTER LIKE WHOA");
-      }
+      var enemies:any[] = _.where(this.world.tables.getSheetData("enemies"), {level: 1});
+      var combatState = <states.AppCombatState>this.world.state.getState(states.AppCombatState.NAME);
+      var nmeTemplate = enemies[_.random(0, enemies.length - 1)];
+      combatState.attacker = object.model;
+      combatState.defender = models.DorkaponMonster.create(nmeTemplate);
+      this.world.state.setCurrentState(combatState);
+      this.world.state.on(pow2.StateMachine.Events.EXIT, (state:pow2.IState)=> {
+        if (state.name === combatState.name) {
+          _.defer(then);
+        }
+      });
+      console.log("RANDOM ENCOUNTER LIKE WHOA");
+    }
 
-      enter(object:objects.DorkaponEntity):boolean {
-         super.enter(object);
-         console.log("YELLOW NODE");
-         return true;
-      }
-   }
+    enter(object:objects.DorkaponEntity):boolean {
+      super.enter(object);
+      console.log("YELLOW NODE");
+      return true;
+    }
+  }
 }

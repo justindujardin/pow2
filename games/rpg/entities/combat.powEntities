@@ -1,76 +1,74 @@
 [
   {
-    "name":"GameCombatMap",
-    "type":"pow2.GameTileMap",
-    "inputs":{
-      "resource":"pow2.TiledTMXResource"
+    "name": "GameCombatMap",
+    "type": "rpg.GameTileMap",
+    "inputs": {
+      "resource": "pow2.TiledTMXResource"
     },
-    "params":["resource"],
+    "params": ["resource"],
     "components": [
       {
-        "type":"pow2.CombatCameraComponent"
+        "type": "rpg.components.combat.CombatCameraComponent"
       }
     ]
   },
   {
-    "name":"CombatPlayer",
-    "type":"pow2.GameEntityObject",
-    "inputs":{
-      "model":"pow2.HeroModel",
-      "combat":"pow2.GameCombatState"
+    "name": "CombatPlayer",
+    "type": "rpg.objects.GameEntityObject",
+    "inputs": {
+      "model": "rpg.models.HeroModel",
+      "combat": "rpg.states.GameCombatState"
     },
-    "components":[
+    "components": [
       {
-        "name":"render",
-        "type":"pow2.PlayerCombatRenderComponent"
+        "name": "render",
+        "type": "pow2.game.components.PlayerCombatRenderComponent"
       },
       {
-        "name":"animation",
-        "type":"pow2.AnimatedComponent"
+        "name": "animation",
+        "type": "pow2.game.components.AnimatedComponent"
       },
       {
-        "name":"attack",
-        "type":"pow2.CombatAttackComponent",
-        "params":["combat"]
+        "name": "attack",
+        "type": "rpg.components.combat.actions.CombatAttackComponent",
+        "params": ["combat"]
       },
       {
-        "name":"magic",
-        "type":"pow2.CombatMagicComponent",
-        "params":["combat"]
+        "name": "magic",
+        "type": "rpg.components.combat.actions.CombatMagicComponent",
+        "params": ["combat"]
       },
       {
-        "name":"run",
-        "type":"pow2.CombatRunComponent",
-        "params":["combat"]
+        "name": "run",
+        "type": "rpg.components.combat.actions.CombatRunComponent",
+        "params": ["combat"]
       },
       {
-        "name":"guard",
-        "type":"pow2.CombatGuardComponent",
-        "params":["combat"]
+        "name": "guard",
+        "type": "rpg.components.combat.actions.CombatGuardComponent",
+        "params": ["combat"]
       }
     ]
   },
   {
-    "name":"CombatEnemy",
-    "type":"pow2.GameEntityObject",
-    "inputs":{
-      "model":"pow2.EntityModel",
-      "combat":"pow2.GameCombatState",
-      "sprite":"Object"
+    "name": "CombatEnemy",
+    "type": "rpg.objects.GameEntityObject",
+    "inputs": {
+      "model": "rpg.models.EntityModel",
+      "combat": "rpg.states.GameCombatState",
+      "sprite": "Object"
     },
-    "components":[
+    "components": [
       {
-        "name":"sprite",
-        "type":"pow2.SpriteComponent",
-        "params":["sprite"]
+        "name": "sprite",
+        "type": "pow2.tile.components.SpriteComponent",
+        "params": ["sprite"]
       },
       {
-        "name":"attack",
-        "type":"pow2.CombatAttackComponent",
-        "params":["combat"]
+        "name": "attack",
+        "type": "rpg.components.combat.actions.CombatAttackComponent",
+        "params": ["combat"]
       }
     ]
   }
-
-
 ]

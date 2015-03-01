@@ -17,64 +17,67 @@
 /// <reference path="./index.ts"/>
 /// <reference path="./components/combat/combatCameraComponent.ts"/>
 
-module pow2{
-   export class GameCombatView extends TileMapView {
-      world:GameWorld;
-      objectRenderer:TileObjectRenderer = new TileObjectRenderer;
-      mouse:NamedMouseElement = null;
+module rpg {
+  export class GameCombatView extends pow2.tile.TileMapView {
+    world:rpg.GameWorld;
+    objectRenderer:pow2.tile.render.TileObjectRenderer = new pow2.tile.render.TileObjectRenderer;
+    mouse:pow2.NamedMouseElement = null;
 
-      constructor(canvas: HTMLCanvasElement, loader: any) {
-         super(canvas,loader);
-         this.mouseClick = _.bind(this.mouseClick,this);
-      }
-      onAddToScene(scene:Scene) {
-         super.onAddToScene(scene);
-         this.mouse = scene.world.input.mouseHook(this,"combat");
-         this.$el.on('click touchstart',this.mouseClick);
-      }
-      onRemoveFromScene(scene:Scene) {
-         scene.world.input.mouseUnhook("combat");
-         this.$el.off('click touchstart',this.mouseClick);
-      }
+    constructor(canvas:HTMLCanvasElement, loader:any) {
+      super(canvas, loader);
+      this.mouseClick = _.bind(this.mouseClick, this);
+    }
+
+    onAddToScene(scene:pow2.scene.Scene) {
+      super.onAddToScene(scene);
+      this.mouse = scene.world.input.mouseHook(this, "combat");
+      this.$el.on('click touchstart', this.mouseClick);
+    }
+
+    onRemoveFromScene(scene:pow2.scene.Scene) {
+      scene.world.input.mouseUnhook("combat");
+      this.$el.off('click touchstart', this.mouseClick);
+    }
 
 
-      /*
-       * Mouse input
-       */
-      mouseClick(e:any) {
-         //console.log("clicked at " + this.mouse.world);
-         var hits = [];
-         Input.mouseOnView(e.originalEvent,this.mouse.view,this.mouse);
-         if(this.world.combatScene.db.queryPoint(this.mouse.world,GameEntityObject,hits)) {
-            this.world.combatScene.trigger('click',this.mouse,hits);
-            e.stopImmediatePropagation();
-            return false;
-         }
+    /*
+     * Mouse input
+     */
+    mouseClick(e:any) {
+      //console.log("clicked at " + this.mouse.world);
+      var hits = [];
+      pow2.Input.mouseOnView(e.originalEvent, this.mouse.view, this.mouse);
+      if (this.world.combatScene.db.queryPoint(this.mouse.world, rpg.objects.GameEntityObject, hits)) {
+        this.world.combatScene.trigger('click', this.mouse, hits);
+        e.stopImmediatePropagation();
+        return false;
       }
-      /*
-       * Update the camera for this frame.
-       */
-      processCamera() {
-         this.cameraComponent = <CameraComponent>this.scene.componentByType(CombatCameraComponent);
-         super.processCamera();
-      }
+    }
 
-      /*
-       * Render the tile map, and any features it has.
-       */
-      renderFrame(elapsed) {
-         super.renderFrame(elapsed);
+    /*
+     * Update the camera for this frame.
+     */
+    processCamera() {
+      this.cameraComponent = <pow2.scene.components.CameraComponent>this.scene.componentByType(rpg.components.combat.CombatCameraComponent);
+      super.processCamera();
+    }
 
-         var players = this.scene.objectsByComponent(pow2.PlayerCombatRenderComponent);
-         _.each(players, (player) => {
-            this.objectRenderer.render(player,player,this);
-         });
+    /*
+     * Render the tile map, and any features it has.
+     */
+    renderFrame(elapsed) {
+      super.renderFrame(elapsed);
 
-         var sprites = <ISceneComponent[]>this.scene.componentsByType(pow2.SpriteComponent);
-         _.each(sprites, (sprite:any) => {
-            this.objectRenderer.render(sprite.host,sprite, this);
-         });
-         return this;
-      }
-   }
+      var players = this.scene.objectsByComponent(pow2.game.components.PlayerCombatRenderComponent);
+      _.each(players, (player) => {
+        this.objectRenderer.render(player, player, this);
+      });
+
+      var sprites = <pow2.ISceneComponent[]>this.scene.componentsByType(pow2.tile.components.SpriteComponent);
+      _.each(sprites, (sprite:any) => {
+        this.objectRenderer.render(sprite.host, sprite, this);
+      });
+      return this;
+    }
+  }
 }

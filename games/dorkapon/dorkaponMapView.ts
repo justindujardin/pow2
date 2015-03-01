@@ -19,58 +19,59 @@
 module dorkapon {
 
 
-   export class DorkaponMapView extends pow2.GameMapView {
+  export class DorkaponMapView extends pow2.game.GameMapView {
 
-      world:dorkapon.DorkaponGameWorld;
-      tileMap:DorkaponTileMap;
+    world:dorkapon.DorkaponGameWorld;
+    tileMap:DorkaponTileMap;
 
-      targetFill:string = "transparent";
-      targetStroke:string = "white";
-      targetStrokeWidth:number = 2;
+    targetFill:string = "transparent";
+    targetStroke:string = "white";
+    targetStrokeWidth:number = 2;
 
-      stateMachine:DorkaponMapStateMachine = null;
+    stateMachine:DorkaponMapStateMachine = null;
 
-      processCamera() {
-         if(this.stateMachine && this.stateMachine.currentPlayer) {
-            var camera = <pow2.CameraComponent>this.stateMachine.currentPlayer.findComponent(pow2.CameraComponent);
-            if(camera){
-               camera.process(this);
-            }
-         }
+    processCamera() {
+      if (this.stateMachine && this.stateMachine.currentPlayer) {
+        var camera = <pow2.scene.components.CameraComponent>
+            this.stateMachine.currentPlayer.findComponent(pow2.scene.components.CameraComponent);
+        if (camera) {
+          camera.process(this);
+        }
+      }
+    }
+
+    mouseClick(e:any) {
+      if (this.stateMachine && this.stateMachine.currentPlayer) {
+        var pathComponent = <dorkapon.components.PlayerPathComponent>this.stateMachine.currentPlayer.findComponent(dorkapon.components.PlayerPathComponent);
+        var playerComponent = <pow2.scene.components.PlayerComponent>this.stateMachine.currentPlayer.findComponent(pow2.scene.components.PlayerComponent);
+        if (pathComponent && playerComponent) {
+          pow2.Input.mouseOnView(e.originalEvent, this.mouse.view, this.mouse);
+          var nodes:INodeTile[] = pathComponent.tileMap.getNodes();
+          var hitNode = _.where(nodes, {
+            x: this.mouse.world.x,
+            y: this.mouse.world.y
+          });
+          if (hitNode.length) {
+            playerComponent.path = pathComponent.calculatePath(playerComponent.targetPoint, this.mouse.world);
+          }
+          e.preventDefault();
+          return false;
+        }
       }
 
-      mouseClick(e:any) {
-         if(this.stateMachine && this.stateMachine.currentPlayer){
-            var pathComponent = <dorkapon.components.PlayerPathComponent>this.stateMachine.currentPlayer.findComponent(dorkapon.components.PlayerPathComponent);
-            var playerComponent = <pow2.game.components.PlayerComponent>this.stateMachine.currentPlayer.findComponent(pow2.game.components.PlayerComponent);
-            if (pathComponent && playerComponent) {
-               pow2.Input.mouseOnView(e.originalEvent,this.mouse.view,this.mouse);
-               var nodes:INodeTile[] = pathComponent.tileMap.getNodes();
-               var hitNode = _.where(nodes,{
-                  x:this.mouse.world.x,
-                  y:this.mouse.world.y
-               });
-               if(hitNode.length){
-                  playerComponent.path = pathComponent.calculatePath(playerComponent.targetPoint,this.mouse.world);
-               }
-               e.preventDefault();
-               return false;
-            }
-         }
+    }
 
-      }
+    /*
+     * Render the combat render objects.
+     */
+    renderFrame(elapsed:number) {
+      super.renderFrame(elapsed);
+      var players = this.scene.objectsByComponent(pow2.game.components.PlayerCombatRenderComponent);
+      _.each(players, (player) => {
+        this.objectRenderer.render(player, player, this);
+      });
+      return this;
+    }
 
-      /*
-       * Render the combat render objects.
-       */
-      renderFrame(elapsed: number) {
-         super.renderFrame(elapsed);
-         var players = this.scene.objectsByComponent(pow2.PlayerCombatRenderComponent);
-         _.each(players, (player) => {
-            this.objectRenderer.render(player,player,this);
-         });
-         return this;
-      }
-
-   }
+  }
 }

@@ -18,35 +18,35 @@
 
 module dorkapon.components {
 
-   /**
-    * A centered camera on the host object, that is clamped
-    * inside the tile map.  The result is that the player will
-    * be camera center at all times except when he is near an
-    * edge of the map.
-    */
-   export class PlayerCamera extends pow2.CameraComponent {
-      host:objects.DorkaponEntity;
-      // Pre allocate spatial objects for this component because cameras are
-      // updated every frame.
-      private _worker:pow2.Point = new pow2.Point();
-      private _workerRect:pow2.Rect = new pow2.Rect();
+  /**
+   * A centered camera on the host object, that is clamped
+   * inside the tile map.  The result is that the player will
+   * be camera center at all times except when he is near an
+   * edge of the map.
+   */
+  export class PlayerCamera extends pow2.scene.components.CameraComponent {
+    host:objects.DorkaponEntity;
+    // Pre allocate spatial objects for this component because cameras are
+    // updated every frame.
+    private _worker:pow2.Point = new pow2.Point();
+    private _workerRect:pow2.Rect = new pow2.Rect();
 
-      process(view:pow2.TileMapView) {
-         super.process(view);
-         if(view.tileMap){
-            // Center on host object
-            view.camera.setCenter(this.host.renderPoint || this.host.point);
+    process(view:pow2.tile.TileMapView) {
+      super.process(view);
+      if (view.tileMap) {
+        // Center on host object
+        view.camera.setCenter(this.host.renderPoint || this.host.point);
 
-            // Clamp point to lower-right.
-            view.camera.point.x = Math.min(view.camera.point.x,view.tileMap.bounds.extent.x - view.camera.extent.x);
-            view.camera.point.y = Math.min(view.camera.point.y,view.tileMap.bounds.extent.y - view.camera.extent.y);
+        // Clamp point to lower-right.
+        view.camera.point.x = Math.min(view.camera.point.x, view.tileMap.bounds.extent.x - view.camera.extent.x);
+        view.camera.point.y = Math.min(view.camera.point.y, view.tileMap.bounds.extent.y - view.camera.extent.y);
 
-            // Clamp to top-left.
-            view.camera.point.x = Math.max(-0.5,view.camera.point.x);
-            view.camera.point.y = Math.max(-0.5,view.camera.point.y);
+        // Clamp to top-left.
+        view.camera.point.x = Math.max(-0.5, view.camera.point.x);
+        view.camera.point.y = Math.max(-0.5, view.camera.point.y);
 
-         }
       }
-   }
+    }
+  }
 
 }

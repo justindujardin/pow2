@@ -17,76 +17,76 @@
 /// <reference path="../services/gameService.ts"/>
 /// <reference path="../services/alertService.ts"/>
 
-module pow2.ui {
-   app.directive('inventoryView',['game','powAlert', function (game:PowGameService,powAlert:PowAlertService) {
-      return {
-         restrict: 'E',
-         templateUrl: '/games/rpg/directives/inventoryView.html',
-         controller : function($scope,$element){
-            var currentIndex:number = 0;
-            $scope.character = $scope.party[currentIndex]; 
-            $scope.nextCharacter = () => {
-               currentIndex++;
-               if(currentIndex >= $scope.party.length){
-                  currentIndex = 0;
-               }
-               $scope.character = $scope.party[currentIndex];
-            };
-            $scope.previousCharacter = () => {
-               currentIndex--;
-               if(currentIndex < 0){
-                  currentIndex = $scope.party.length - 1;
-               }
-               $scope.character = $scope.party[currentIndex];
-            };
-            $scope.equipItem = (item:ItemModel) => {
-               var hero:HeroModel = $scope.character;
-               if(!$scope.inventory || !item || !hero){
-                  return;
-               }
+module rpg.directives {
+  app.directive('inventoryView', ['game', 'powAlert', function (game:rpg.services.PowGameService, powAlert:rpg.services.PowAlertService) {
+    return {
+      restrict: 'E',
+      templateUrl: '/games/rpg/directives/inventoryView.html',
+      controller: function ($scope, $element) {
+        var currentIndex:number = 0;
+        $scope.character = $scope.party[currentIndex];
+        $scope.nextCharacter = () => {
+          currentIndex++;
+          if (currentIndex >= $scope.party.length) {
+            currentIndex = 0;
+          }
+          $scope.character = $scope.party[currentIndex];
+        };
+        $scope.previousCharacter = () => {
+          currentIndex--;
+          if (currentIndex < 0) {
+            currentIndex = $scope.party.length - 1;
+          }
+          $scope.character = $scope.party[currentIndex];
+        };
+        $scope.equipItem = (item:rpg.models.ItemModel) => {
+          var hero:rpg.models.HeroModel = $scope.character;
+          if (!$scope.inventory || !item || !hero) {
+            return;
+          }
 
-               var users = item.get('usedby');
-               if(users && _.indexOf(users,hero.get('type')) === -1) {
-                  powAlert.show(hero.get('name') + " cannot equip this item");
-                  return;
-               }
+          var users = item.get('usedby');
+          if (users && _.indexOf(users, hero.get('type')) === -1) {
+            powAlert.show(hero.get('name') + " cannot equip this item");
+            return;
+          }
 
-               if(item instanceof ArmorModel){
-                  var old:ArmorModel = hero.equipArmor(item);
-                  if(old){
-                     game.world.model.addInventory(old);
-                  }
-               }
-               else if(item instanceof WeaponModel){
-                  // Remove any existing weapon first
-                  if(hero.weapon){
-                     game.world.model.addInventory(hero.weapon);
-                  }
-                  hero.weapon = <WeaponModel>item;
-               }
-               game.world.model.removeInventory(item);
-               //powAlert.show("Equipped " + item.attributes.name + " to " + hero.attributes.name);
-            };
+          if (item instanceof rpg.models.ArmorModel) {
+            var old:rpg.models.ArmorModel = hero.equipArmor(item);
+            if (old) {
+              game.world.model.addInventory(old);
+            }
+          }
+          else if (item instanceof rpg.models.WeaponModel) {
+            // Remove any existing weapon first
+            if (hero.weapon) {
+              game.world.model.addInventory(hero.weapon);
+            }
+            hero.weapon = <rpg.models.WeaponModel>item;
+          }
+          game.world.model.removeInventory(item);
+          //powAlert.show("Equipped " + item.attributes.name + " to " + hero.attributes.name);
+        };
 
-            $scope.unequipItem = (item:ItemModel) => {
-               var hero:HeroModel = $scope.character;
-               if(!$scope.inventory || !item || !hero){
-                  return;
-               }
-               if(item instanceof ArmorModel){
-                  hero.unequipArmor(item);
-               }
-               else if(item instanceof WeaponModel){
-                  var weapon:WeaponModel = <WeaponModel>item;
-                  if(weapon.isNoWeapon()){
-                     return;
-                  }
-                  hero.weapon = null;
-               }
-               game.world.model.addInventory(item);
-               //powAlert.show("Unequipped " + item.attributes.name + " from " + hero.attributes.name);
-            };
-         }
-      };
-   }]);
+        $scope.unequipItem = (item:rpg.models.ItemModel) => {
+          var hero:rpg.models.HeroModel = $scope.character;
+          if (!$scope.inventory || !item || !hero) {
+            return;
+          }
+          if (item instanceof rpg.models.ArmorModel) {
+            hero.unequipArmor(item);
+          }
+          else if (item instanceof rpg.models.WeaponModel) {
+            var weapon:rpg.models.WeaponModel = <rpg.models.WeaponModel>item;
+            if (weapon.isNoWeapon()) {
+              return;
+            }
+            hero.weapon = null;
+          }
+          game.world.model.addInventory(item);
+          //powAlert.show("Unequipped " + item.attributes.name + " from " + hero.attributes.name);
+        };
+      }
+    };
+  }]);
 }

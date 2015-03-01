@@ -17,24 +17,26 @@
 /// <reference path="../../../types/backbone/backbone.d.ts" />
 /// <reference path="./itemModel.ts" />
 
-module pow2 {
-   export class WeaponModel extends ItemModel {
-      static DEFAULTS:IGameWeapon = {
-         name:"No Weapon",
-         icon:"",
-         attack:0,
-         hit:0,
-         cost:0
-      };
-      defaults():any {
-         return _.extend(super.defaults(),WeaponModel.DEFAULTS);
-      }
-      isNoWeapon():boolean{
-         return this.attributes.name === WeaponModel.DEFAULTS.name &&
-            this.attributes.icon === WeaponModel.DEFAULTS.icon &&
-            this.attributes.attack === WeaponModel.DEFAULTS.attack &&
-            this.attributes.hit === WeaponModel.DEFAULTS.hit &&
-            this.attributes.cost === WeaponModel.DEFAULTS.cost;
-      }
-   }
+module rpg.models {
+  export class WeaponModel extends ItemModel {
+    static DEFAULTS:IGameWeapon = {
+      name: "No Weapon",
+      icon: "",
+      attack: 0,
+      hit: 0,
+      cost: 0
+    };
+
+    defaults():any {
+      return _.extend(super.defaults(), WeaponModel.DEFAULTS);
+    }
+
+    isNoWeapon():boolean {
+      return this.attributes.name === WeaponModel.DEFAULTS.name &&
+          this.attributes.icon === WeaponModel.DEFAULTS.icon &&
+          this.attributes.attack === WeaponModel.DEFAULTS.attack &&
+          this.attributes.hit === WeaponModel.DEFAULTS.hit &&
+          this.attributes.cost === WeaponModel.DEFAULTS.cost;
+    }
+  }
 }

@@ -1,21 +1,23 @@
 
 .slide-anim {
 }
+
 .slide-anim.ng-hide {
 }
+
 .slide-anim.ng-hide-add {
   .pt-page-moveToLeft;
   .pt-page-ontop;
-  display:block!important;
+  display: block !important;
 }
 
 .slide-anim.ng-hide-remove {
   .pt-page-moveToRight;
-  display:block!important;
+  display: block !important;
 }
 
-@inventoryIconSize:64px;
-@inventoryLabelPaddingTop:30px;
+@inventoryIconSize: 64px;
+@inventoryLabelPaddingTop: 30px;
 
 inventory-view {
   text-align: center;
@@ -28,40 +30,40 @@ inventory-view {
   .btn {
     margin: 5px 5px;
     font-size: 2em;
-    &.next{
-      float:right;
+    &.next {
+      float: right;
     }
     &.previous {
-      float:left;
+      float: left;
     }
 
   }
   ul {
     list-style-type: none;
     text-align: center;
-    margin:0;
-    padding:10px;
+    margin: 0;
+    padding: 10px;
     > li {
       position: relative;
-      padding-top:@inventoryLabelPaddingTop;
+      padding-top: @inventoryLabelPaddingTop;
       height: @inventoryIconSize + @inventoryLabelPaddingTop;
-      width:@inventoryIconSize;
+      width: @inventoryIconSize;
       .desc {
         position: absolute;
         top: 0;
-        left:0;
-        right:0;
+        left: 0;
+        right: 0;
         font-size: 0.9em;
         line-height: @inventoryLabelPaddingTop / 2;
       }
       .icon {
-        left:0;
-        right:0;
-        margin:auto;
+        left: 0;
+        right: 0;
+        margin: auto;
         img {
           display: inline-block;
-          height:@inventoryIconSize;
-          width:@inventoryIconSize;
+          height: @inventoryIconSize;
+          width: @inventoryIconSize;
         }
       }
       .compare {
@@ -84,8 +86,8 @@ inventory-view {
   .equipped {
   }
   .character-equipment-map {
-    padding:10px;
-    margin:0;
+    padding: 10px;
+    margin: 0;
     position: relative;
     > li {
       display: inline-block;

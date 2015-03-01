@@ -19,29 +19,48 @@
 /// <reference path="../../lib/pow2.d.ts"/>
 /// <reference path="../../lib/pow2.ui.d.ts"/>
 
-module pow2.ui {
-   export var app = angular.module('pow2', [
-      'ngAnimate',
-      'pow2.ui',
-      'ngSanitize',
-      'ngTouch'
-   ]);
+module rpg {
+  export var app = angular.module('rpg', [
+    'ngAnimate',
+    'pow2',
+    'ngSanitize',
+    'ngTouch'
+  ]);
+
+
+  export interface IGameItem {
+    name:string; // The item name
+    cost:number; // The cost of this item
+    icon:string; // Sprite icon name, e.g. LongSword.png
+    usedby?:any[]; // `HeroType`s that can use this item.
+  }
+
+  export interface IGameWeapon extends IGameItem {
+    attack:number; // Damage value
+    hit:number; // 0-100%
+  }
+
+  export interface IGameArmor extends IGameItem {
+    defense:number; // Defensive value
+    evade:number; // Value to add to evasion <= 0
+  }
+
 
 // HeroView directive
 // ----------------------------------------------------------------------------
-   app.directive('heroCard', function () {
-      return {
-         restrict: 'E',
-         scope:true,
-         templateUrl: '/games/rpg/directives/heroCard.html',
-         link: function ($scope:any, element, attrs) {
-            $scope.hero = attrs.hero;
-            $scope.$watch(attrs.hero, function(hero) {
-               $scope.hero = hero;
-            });
-         }
-      };
-   });
+  app.directive('heroCard', function () {
+    return {
+      restrict: 'E',
+      scope: true,
+      templateUrl: '/games/rpg/directives/heroCard.html',
+      link: function ($scope:any, element, attrs) {
+        $scope.hero = attrs.hero;
+        $scope.$watch(attrs.hero, function (hero) {
+          $scope.hero = hero;
+        });
+      }
+    };
+  });
 
 }
 

@@ -1,54 +1,54 @@
 [
   {
-    "name":"GameMapObject",
-    "type":"pow2.GameTileMap",
-    "inputs":{
-      "resource":"pow2.TiledTMXResource"
+    "name": "GameMapObject",
+    "type": "rpg.GameTileMap",
+    "inputs": {
+      "resource": "pow2.TiledTMXResource"
     },
-    "params":["resource"],
+    "params": ["resource"],
     "components": [
       {
-        "name":"encounters",
-        "type":"pow2.CombatEncounterComponent"
+        "name": "encounters",
+        "type": "rpg.components.combat.CombatEncounterComponent"
       },
       {
-        "name":"input",
-        "type":"pow2.GameFeatureInputComponent"
+        "name": "input",
+        "type": "rpg.components.GameFeatureInputComponent"
       }
     ]
   },
   {
-    "name":"GameMapPlayer",
-    "type":"pow2.GameEntityObject",
-    "inputs":{
-      "model":"pow2.HeroModel",
-      "map":"pow2.GameTileMap"
+    "name": "GameMapPlayer",
+    "type": "rpg.objects.GameEntityObject",
+    "inputs": {
+      "model": "rpg.models.HeroModel",
+      "map": "rpg.GameTileMap"
     },
     "components": [
       {
-        "name":"render",
-        "type":"pow2.PlayerRenderComponent"
+        "name": "render",
+        "type": "pow2.game.components.PlayerRenderComponent"
       },
       {
-        "name":"collision",
-        "type":"pow2.CollisionComponent"
+        "name": "collision",
+        "type": "pow2.scene.components.CollisionComponent"
       },
       {
-        "name":"paths",
-        "type":"pow2.components.GameMapPathComponent",
-        "params":["map"]
+        "name": "paths",
+        "type": "pow2.game.components.GameMapPathComponent",
+        "params": ["map"]
       },
       {
-        "name":"player",
-        "type":"rpg.components.PlayerComponent"
+        "name": "player",
+        "type": "rpg.components.PlayerComponent"
       },
       {
-        "name":"camera",
-        "type":"pow2.PlayerCameraComponent"
+        "name": "camera",
+        "type": "pow2.game.components.PlayerCameraComponent"
       },
       {
-        "name":"touch",
-        "type":"pow2.PlayerTouchComponent"
+        "name": "touch",
+        "type": "rpg.components.PlayerTouchComponent"
       }
     ]
   }

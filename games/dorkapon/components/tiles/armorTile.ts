@@ -18,20 +18,20 @@
 /// <reference path="../../states/dorkaponCombatState.ts" />
 
 module dorkapon.components.tiles {
-   export class ArmorTile extends MapNodeComponent {
-      /**
-       * Display the armor tile chance roll.
-       */
-      doAction(object:objects.DorkaponEntity,then:()=>any){
-         var view = object.scene.getViewOfType<DorkaponMapView>(DorkaponMapView);
-         var choices = _.where(this.world.tables.getSheetData('armor'),{zone:1});
-         var roller = new dorkapon.components.ChoiceRollComponent(object,choices);
-         view.addComponent(roller);
-         roller.on('disconnected',()=>{
-            object.model.set('armor',roller.selection);
-            _.delay(then,1000);
-         });
-         console.log("Roll for armor drop");
-      }
-   }
+  export class ArmorTile extends MapNodeComponent {
+    /**
+     * Display the armor tile chance roll.
+     */
+    doAction(object:objects.DorkaponEntity, then:()=>any) {
+      var view = object.scene.getViewOfType<DorkaponMapView>(DorkaponMapView);
+      var choices = _.where(this.world.tables.getSheetData('armor'), {zone: 1});
+      var roller = new dorkapon.components.ChoiceRollComponent(object, choices);
+      view.addComponent(roller);
+      roller.on('disconnected', ()=> {
+        object.model.set('armor', roller.selection);
+        _.delay(then, 1000);
+      });
+      console.log("Roll for armor drop");
+    }
+  }
 }

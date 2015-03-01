@@ -16,46 +16,46 @@
 
 /// <reference path="../../services/gameService.ts"/>
 
-module pow2.ui {
-   app.directive('healthBar', () => {
-      return {
-         restrict: 'E',
-         scope :{
-            model:"="
-         },
-         templateUrl: '/games/rpg/directives/bits/healthBar.html',
-         controller:($scope) => {
-            $scope.getProgressClass = (model) => {
-               if(!model || !model.attributes){
-                  return '';
-               }
-               var result:string[] = [];
-               var pct:number = Math.round(model.attributes.hp / model.attributes.maxHP * 100);
-               if(pct === 0){
-                  result.push('dead');
-               }
-               if(pct < 33){
-                  result.push("critical");
-               }
-               else if(pct < 66){
-                  result.push("hurt");
-               }
-               else {
-                  result.push("fine");
-               }
-               return result.join(' ');
-            };
-            $scope.getProgressBarStyle = (model) => {
-               if(!model || !model.attributes){
-                  return {};
-               }
-               var pct:number = Math.ceil(model.attributes.hp / model.attributes.maxHP * 100);
-               return {
-                  width: pct + '%'
-               };
-            };
-         }
-      };
-   });
+module rpg.directives.bits {
+  app.directive('healthBar', () => {
+    return {
+      restrict: 'E',
+      scope: {
+        model: "="
+      },
+      templateUrl: '/games/rpg/directives/bits/healthBar.html',
+      controller: ($scope) => {
+        $scope.getProgressClass = (model) => {
+          if (!model || !model.attributes) {
+            return '';
+          }
+          var result:string[] = [];
+          var pct:number = Math.round(model.attributes.hp / model.attributes.maxHP * 100);
+          if (pct === 0) {
+            result.push('dead');
+          }
+          if (pct < 33) {
+            result.push("critical");
+          }
+          else if (pct < 66) {
+            result.push("hurt");
+          }
+          else {
+            result.push("fine");
+          }
+          return result.join(' ');
+        };
+        $scope.getProgressBarStyle = (model) => {
+          if (!model || !model.attributes) {
+            return {};
+          }
+          var pct:number = Math.ceil(model.attributes.hp / model.attributes.maxHP * 100);
+          return {
+            width: pct + '%'
+          };
+        };
+      }
+    };
+  });
 }
 

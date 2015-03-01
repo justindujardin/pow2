@@ -16,25 +16,25 @@
 
 /// <reference path="./sceneComponent.ts"/>
 
-module pow2 {
+module pow2.scene {
 
-   /**
-    * A component that can be added to a [[SceneView]] to add additional
-    * rendering to it.
-    */
-   export class SceneViewComponent extends SceneComponent implements ISceneViewRenderer {
-      beforeFrame(view:pow2.ISceneView, elapsed:number) {
+  /**
+   * A component that can be added to a [[SceneView]] to add additional
+   * rendering to it.
+   */
+  export class SceneViewComponent extends SceneComponent implements ISceneViewRenderer {
+    beforeFrame(view:pow2.ISceneView, elapsed:number) {
 
-      }
+    }
 
-      renderFrame(view:pow2.ISceneView, elapsed:number) {
+    renderFrame(view:pow2.ISceneView, elapsed:number) {
 
-      }
+    }
 
-      afterFrame(view:pow2.ISceneView, elapsed:number) {
+    afterFrame(view:pow2.ISceneView, elapsed:number) {
 
-      }
+    }
 
-   }
+  }
 
 }

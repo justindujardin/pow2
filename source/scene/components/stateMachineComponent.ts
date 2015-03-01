@@ -17,17 +17,18 @@
 /// <reference path="../../core/state.ts" />
 /// <reference path="../sceneComponent.ts" />
 
-module pow2 {
-   export class StateMachineComponent extends TickedComponent {
-      machine: IStateMachine = null;
-      paused:boolean = false;
-      tick(elapsed:number) {
-         if(this.paused){
-            return;
-         }
-         if(this.machine){
-            this.machine.update(this);
-         }
+module pow2.scene.components {
+  export class StateMachineComponent extends TickedComponent {
+    machine:IStateMachine = null;
+    paused:boolean = false;
+
+    tick(elapsed:number) {
+      if (this.paused) {
+        return;
       }
+      if (this.machine) {
+        this.machine.update(this);
+      }
+    }
   }
 }

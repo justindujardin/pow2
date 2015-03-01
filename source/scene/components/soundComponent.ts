@@ -16,69 +16,70 @@
 
 /// <reference path="../sceneComponent.ts" />
 
-module pow2 {
+module pow2.scene.components {
 
-   export interface SoundComponentOptions {
-      url:string;
-      loop?:boolean;
-      volume?:number;
-   }
+  export interface SoundComponentOptions {
+    url:string;
+    loop?:boolean;
+    volume?:number;
+  }
 
-   var DEFAULTS:SoundComponentOptions = {
-      url:null,
-      volume:1,
-      loop:false
-   };
+  var DEFAULTS:SoundComponentOptions = {
+    url: null,
+    volume: 1,
+    loop: false
+  };
 
-   export class SoundComponent extends SceneComponent implements SoundComponentOptions {
-      url:string;
-      volume:number;
-      loop:boolean;
-      audio:AudioResource;
-      constructor(options:SoundComponentOptions=DEFAULTS){
-         super();
-         if(typeof options !== 'undefined'){
-            _.extend(this,DEFAULTS,options);
-         }
+  export class SoundComponent extends SceneComponent implements SoundComponentOptions {
+    url:string;
+    volume:number;
+    loop:boolean;
+    audio:AudioResource;
+
+    constructor(options:SoundComponentOptions = DEFAULTS) {
+      super();
+      if (typeof options !== 'undefined') {
+        _.extend(this, DEFAULTS, options);
       }
+    }
 
-      disconnectComponent():boolean {
-         if(this.audio.isReady()){
-            this.audio.data.pause();
-            this.audio.data.currentTime = 0;
-         }
-         return super.disconnectComponent();
+    disconnectComponent():boolean {
+      if (this.audio.isReady()) {
+        this.audio.data.pause();
+        this.audio.data.currentTime = 0;
       }
+      return super.disconnectComponent();
+    }
 
-      connectComponent():boolean {
-         if(!super.connectComponent() || !this.url){
-            return false;
-         }
-         if(this.audio && this.audio.isReady()){
-            this.audio.data.currentTime = 0;
-            this.audio.data.volume = this.volume;
-            return true;
-         }
-         this.audio = pow2.ResourceLoader.get().load(this.url,() => {
-            if(this.audio.isReady()){
-               this.audio.data.currentTime = 0;
-               this.audio.data.volume = this.volume;
-               this.audio.data.loop = this.loop;
-               this.audio.data.play();
-               this.audio.data.addEventListener('timeupdate',() => {
-                  if(this.audio.data.currentTime >= this.audio.data.duration){
-                     if(!this.loop){
-                        this.audio.data.pause();
-                        this.trigger("audio:done",this);
-                     }
-                     else {
-                        this.trigger("audio:loop",this);
-                     }
-                  }
-               });
+    connectComponent():boolean {
+      if (!super.connectComponent() || !this.url) {
+        return false;
+      }
+      if (this.audio && this.audio.isReady()) {
+        this.audio.data.currentTime = 0;
+        this.audio.data.volume = this.volume;
+        return true;
+      }
+      this.audio = pow2.ResourceLoader.get().load(this.url, () => {
+        if (this.audio.isReady()) {
+          this.audio.data.currentTime = 0;
+          this.audio.data.volume = this.volume;
+          this.audio.data.loop = this.loop;
+          this.audio.data.play();
+          this.audio.data.addEventListener('timeupdate', () => {
+            if (this.audio.data.currentTime >= this.audio.data.duration) {
+              if (!this.loop) {
+                this.audio.data.pause();
+                this.trigger("audio:done", this);
+              }
+              else {
+                this.trigger("audio:loop", this);
+              }
             }
-         });
-         return true;
-      }
-   }
+          });
+        }
+      });
+      return true;
+    }
+  }
 }

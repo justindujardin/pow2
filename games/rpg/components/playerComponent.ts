@@ -18,52 +18,52 @@
 
 module rpg.components {
 
-   /**
-    * Basic Dorkapon player that can navigate around the map
-    * using the paths defined within.
-    */
-   export class PlayerComponent extends pow2.game.components.PlayerComponent {
-      host:pow2.GameEntityObject;
-      map:pow2.TileMap = null;
+  /**
+   * Basic Dorkapon player that can navigate around the map
+   * using the paths defined within.
+   */
+  export class PlayerComponent extends pow2.scene.components.PlayerComponent {
+    host:rpg.objects.GameEntityObject;
+    map:pow2.tile.TileMap = null;
 
-      /**
-       * Collide with the rpg tile map features and obstacles.
-       */
-      collideMove(x:number,y:number,results:pow2.SceneObject[]=[]){
-         if(this.host.scene && !this.map){
-            this.map = <pow2.TileMap>this.host.scene.objectByType(pow2.TileMap);
-         }
-
-         var collision:boolean = this.collider && this.collider.collide(x, y, pow2.GameFeatureObject, results);
-         if (collision) {
-            for (var i = 0; i < results.length; i++) {
-               var o = <pow2.GameFeatureObject>results[i];
-               if (o.passable === true || !o.type) {
-                  return false;
-               }
-               if (_.indexOf(PlayerComponent.COLLIDE_TYPES, o.type) !== -1) {
-                  return true;
-               }
-            }
-         }
-         // Iterate over all layers of the map, check point(x,y) and see if the tile
-         // has any unpassable attributes set on it.  If any unpassable attributes are
-         // found, there is a collision.
-         if (this.map) {
-            var layers:pow2.tiled.ITiledLayer[] = this.map.getLayers();
-            for (var i = 0; i < layers.length; i++) {
-               var terrain = this.map.getTileData(layers[i], x, y);
-               if (!terrain) {
-                  continue;
-               }
-               for (var j = 0; j < this.passableKeys.length; j++) {
-                  if (terrain[this.passableKeys[j]] === false) {
-                     return true;
-                  }
-               }
-            }
-         }
-         return false;
+    /**
+     * Collide with the rpg tile map features and obstacles.
+     */
+    collideMove(x:number, y:number, results:pow2.scene.SceneObject[] = []) {
+      if (this.host.scene && !this.map) {
+        this.map = <pow2.tile.TileMap>this.host.scene.objectByType(pow2.tile.TileMap);
       }
-   }
+
+      var collision:boolean = this.collider && this.collider.collide(x, y, rpg.objects.GameFeatureObject, results);
+      if (collision) {
+        for (var i = 0; i < results.length; i++) {
+          var o = <rpg.objects.GameFeatureObject>results[i];
+          if (o.passable === true || !o.type) {
+            return false;
+          }
+          if (_.indexOf(PlayerComponent.COLLIDE_TYPES, o.type) !== -1) {
+            return true;
+          }
+        }
+      }
+      // Iterate over all layers of the map, check point(x,y) and see if the tile
+      // has any unpassable attributes set on it.  If any unpassable attributes are
+      // found, there is a collision.
+      if (this.map) {
+        var layers:pow2.tiled.ITiledLayer[] = this.map.getLayers();
+        for (var i = 0; i < layers.length; i++) {
+          var terrain = this.map.getTileData(layers[i], x, y);
+          if (!terrain) {
+            continue;
+          }
+          for (var j = 0; j < this.passableKeys.length; j++) {
+            if (terrain[this.passableKeys[j]] === false) {
+              return true;
+            }
+          }
+        }
+      }
+      return false;
+    }
+  }
 }

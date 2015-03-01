@@ -17,49 +17,49 @@
 /// <reference path="./entityModel.ts" />
 /// <reference path="./heroModel.ts" />
 
-module pow2 {
+module rpg.models {
 
-   export interface CreatureModelOptions extends EntityModelOptions {
-      name:string; // The creature name
-      icon:string; // The file name of a sprite source file
-      groups: string[]; // Named groups this creature belongs to
-      level:number;
-      hp:number;
-      strength:number;
-      numAttacks:number;
-      armorClass:number;
-      description:string; // An description of the creature.
-   }
-   export class CreatureModel extends EntityModel {
-      static DEFAULTS:CreatureModelOptions = {
-         name: "Unnamed Creature",
-         icon: "noIcon.png",
-         groups: [],
-         level: 0,
-         hp: 0,
-         exp: 0,
-         strength:0,
-         numAttacks: 0,
-         armorClass: 0,
-         description: "",
-         evade:0,
-         hitpercent:1
-      };
+  export interface CreatureModelOptions extends EntityModelOptions {
+    name:string; // The creature name
+    icon:string; // The file name of a sprite source file
+    groups: string[]; // Named groups this creature belongs to
+    level:number;
+    hp:number;
+    strength:number;
+    numAttacks:number;
+    armorClass:number;
+    description:string; // An description of the creature.
+  }
+  export class CreatureModel extends EntityModel {
+    static DEFAULTS:CreatureModelOptions = {
+      name: "Unnamed Creature",
+      icon: "noIcon.png",
+      groups: [],
+      level: 0,
+      hp: 0,
+      exp: 0,
+      strength: 0,
+      numAttacks: 0,
+      armorClass: 0,
+      description: "",
+      evade: 0,
+      hitpercent: 1
+    };
 
-      defaults():any {
-         return _.extend(super.defaults(), CreatureModel.DEFAULTS);
+    defaults():any {
+      return _.extend(super.defaults(), CreatureModel.DEFAULTS);
+    }
+
+    attack(defender:EntityModel):number {
+      var hero = <HeroModel>defender;
+      var defense = hero.getDefense();
+      var min = this.attributes.attacklow;
+      var max = this.attributes.attackhigh;
+      var damage = Math.floor(Math.random() * (max - min + 1)) + min;
+      if (this.rollHit(defender)) {
+        return defender.damage(Math.max(1, damage - defense));
       }
-
-      attack(defender:EntityModel):number{
-         var hero = <HeroModel>defender;
-         var defense = hero.getDefense();
-         var min = this.attributes.attacklow;
-         var max = this.attributes.attackhigh;
-         var damage = Math.floor(Math.random() * (max - min + 1)) + min;
-         if(this.rollHit(defender)){
-            return defender.damage(Math.max(1,damage - defense));
-         }
-         return 0;
-      }
-   }
+      return 0;
+    }
+  }
 }

@@ -18,13 +18,13 @@
 /// <reference path="../../states/dorkaponCombatState.ts" />
 
 module dorkapon.components.tiles {
-   export class ItemTile extends MapNodeComponent {
-      /**
-       * Display the weapon tile chance roll.
-       */
-      doAction(object:objects.DorkaponEntity,then:()=>any){
-         _.defer(then);
-         console.log("Roll for item drop");
-      }
-   }
+  export class ItemTile extends MapNodeComponent {
+    /**
+     * Display the weapon tile chance roll.
+     */
+    doAction(object:objects.DorkaponEntity, then:()=>any) {
+      _.defer(then);
+      console.log("Roll for item drop");
+    }
+  }
 }

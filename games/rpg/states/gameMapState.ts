@@ -17,26 +17,27 @@
 /// <reference path="gameStateMachine.ts" />
 /// <reference path="./gameCombatState.ts" />
 
-module pow2 {
+module rpg.states {
 
-   export class GameMapState extends State {
-      static NAME:string = "map";
-      name:string = GameMapState.NAME;
-      mapPoint:Point = null;
-      map:pow2.GameTileMap = null;
+  export class GameMapState extends pow2.State {
+    static NAME:string = "map";
+    name:string = GameMapState.NAME;
+    mapPoint:pow2.Point = null;
+    map:rpg.GameTileMap = null;
 
-      enter(machine:GameStateMachine){
-         super.enter(machine);
-         if(machine.player && this.mapPoint){
-            machine.player.setPoint(this.mapPoint);
-            this.mapPoint = null;
-         }
-         console.log("MAPPPPPPP");
+    enter(machine:GameStateMachine) {
+      super.enter(machine);
+      if (machine.player && this.mapPoint) {
+        machine.player.setPoint(this.mapPoint);
+        this.mapPoint = null;
       }
-      exit(machine:GameStateMachine){
-         if(machine.player){
-            this.mapPoint = machine.player.point.clone();
-         }
+      console.log("MAPPPPPPP");
+    }
+
+    exit(machine:GameStateMachine) {
+      if (machine.player) {
+        this.mapPoint = machine.player.point.clone();
       }
-   }
+    }
+  }
 }

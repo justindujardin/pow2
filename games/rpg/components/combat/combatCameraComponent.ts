@@ -17,20 +17,22 @@
 /// <reference path="../../../../lib/pow2.d.ts" />
 /// <reference path="../../gameTileMap.ts" />
 
-module pow2 {
-   export class CombatCameraComponent extends CameraComponent {
-      host:GameTileMap;
-      connectComponent():boolean {
-         return super.connectComponent() && this.host instanceof GameTileMap;
+module rpg.components.combat {
+  export class CombatCameraComponent extends pow2.scene.components.CameraComponent {
+    host:GameTileMap;
+
+    connectComponent():boolean {
+      return super.connectComponent() && this.host instanceof GameTileMap;
+    }
+
+    process(view:pow2.scene.SceneView) {
+      if (!this.host) {
+        super.process(view);
+        return;
       }
-      process(view:SceneView) {
-         if(!this.host){
-            super.process(view);
-            return;
-         }
-         view.cameraScale = view.context.canvas.width > 768 ? 4 : 2;
-         view.camera = view.screenToWorld(new Rect(0,0,view.context.canvas.width,view.context.canvas.height),view.cameraScale);
-         view.camera.point.x = (this.host.bounds.extent.x / 2) - (view.camera.extent.x / 2);
-      }
-   }
+      view.cameraScale = view.context.canvas.width > 768 ? 4 : 2;
+      view.camera = view.screenToWorld(new pow2.Rect(0, 0, view.context.canvas.width, view.context.canvas.height), view.cameraScale);
+      view.camera.point.x = (this.host.bounds.extent.x / 2) - (view.camera.extent.x / 2);
+    }
+  }
 }

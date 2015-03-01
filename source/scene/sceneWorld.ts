@@ -18,18 +18,19 @@
 /// <reference path="../core/input.ts" />
 /// <reference path="../core/stateMachine.ts" />
 /// <reference path="../core/spriteRender.ts" />
-module pow2 {
-   export class SceneWorld extends World {
-      input:Input;
-      sprites:SpriteRender;
-      scene:IScene;
-      constructor(services?:any){
-         services = _.defaults(services || {},{
-            loader: pow2.ResourceLoader.get()
-         });
-         super(services);
-         this.setService('input',new Input());
-         this.setService('sprites',new SpriteRender());
-      }
-   }
+module pow2.scene {
+  export class SceneWorld extends World {
+    input:Input;
+    sprites:SpriteRender;
+    scene:IScene;
+
+    constructor(services?:any) {
+      services = _.defaults(services || {}, {
+        loader: pow2.ResourceLoader.get()
+      });
+      super(services);
+      this.setService('input', new Input());
+      this.setService('sprites', new SpriteRender());
+    }
+  }
 }

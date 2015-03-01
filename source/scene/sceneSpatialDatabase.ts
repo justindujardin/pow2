@@ -19,52 +19,54 @@
 
 // Very, very simple spatial database.  Because all the game objects have
 // an extent of 1 unit, we can just do a point in rect to determine object hits.
-module pow2 {
-   export class SceneSpatialDatabase {
-      private _objects: ISceneObject[];
-      private _pointRect: Rect = new Rect(0,0,1,1);
+module pow2.scene {
+  export class SceneSpatialDatabase {
+    private _objects:ISceneObject[];
+    private _pointRect:Rect = new Rect(0, 0, 1, 1);
 
-      constructor() {
-         this._objects = [];
-      }
-      addSpatialObject(obj: pow2.ISceneObject) {
-         if (obj && obj.point instanceof pow2.Point) {
-            this._objects.push(obj);
-         }
-      }
+    constructor() {
+      this._objects = [];
+    }
 
-      removeSpatialObject(obj: pow2.ISceneObject) {
-         this._objects = <ISceneObject[]>_.reject(this._objects, function(o:ISceneObject) {
-            return o._uid === obj._uid;
-         });
+    addSpatialObject(obj:pow2.ISceneObject) {
+      if (obj && obj.point instanceof pow2.Point) {
+        this._objects.push(obj);
       }
+    }
 
-      queryPoint(point:pow2.Point, type, results:ISceneObject[]):boolean {
-         this._pointRect.point.set(point);
-         return this.queryRect(this._pointRect,type,results);
+    removeSpatialObject(obj:pow2.ISceneObject) {
+      this._objects = <ISceneObject[]>_.reject(this._objects, function (o:ISceneObject) {
+        return o._uid === obj._uid;
+      });
+    }
+
+    queryPoint(point:pow2.Point, type, results:ISceneObject[]):boolean {
+      this._pointRect.point.set(point);
+      return this.queryRect(this._pointRect, type, results);
+    }
+
+    queryRect(rect:pow2.Rect, type, results:ISceneObject[]):boolean {
+      var foundAny:boolean;
+      if (!results) {
+        throw new Error("Results array must be provided to query scene spatial database");
       }
-      queryRect(rect:pow2.Rect, type, results:ISceneObject[]):boolean {
-         var foundAny:boolean;
-         if (!results) {
-            throw new Error("Results array must be provided to query scene spatial database");
-         }
-         foundAny = false;
-         var list = this._objects;
-         var i:number,len:number,o;
-         for (i = 0, len = list.length; i < len; i++) {
-            o = list[i];
-            if (type && !(o instanceof type)) {
-               continue;
-            }
-            if(o.enabled === false){
-               continue;
-            }
-            if (o.point && rect.pointInRect(o.point)) {
-               results.push(o);
-               foundAny = true;
-            }
-         }
-         return foundAny;
+      foundAny = false;
+      var list = this._objects;
+      var i:number, len:number, o;
+      for (i = 0, len = list.length; i < len; i++) {
+        o = list[i];
+        if (type && !(o instanceof type)) {
+          continue;
+        }
+        if (o.enabled === false) {
+          continue;
+        }
+        if (o.point && rect.pointInRect(o.point)) {
+          results.push(o);
+          foundAny = true;
+        }
       }
-   }
+      return foundAny;
+    }
+  }
 }

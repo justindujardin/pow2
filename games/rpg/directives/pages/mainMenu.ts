@@ -16,50 +16,52 @@
 
 /// <reference path="../../services/gameService.ts"/>
 
-module pow2.ui {
+module rpg.directives.pages {
 
-   export class MainMenuController {
-      static $inject:string[] = ['$scope'];
-      constructor(public $scope:any){
-         this.$scope.currentClass = "warrior";
-         GameStateModel.getDataSource((res:pow2.GameDataResource)=> {
-            var data = res.getSheetData('classes');
-            this.$scope.classes = data;
-            //console.log(JSON.stringify(data,null,3));
-         });
-      }
+  export class MainMenuController {
+    static $inject:string[] = ['$scope'];
 
-      getClassIcon(classData:any) {
-         return classData.icon.replace(/\[gender\]/i,"male");
-      }
+    constructor(public $scope:any) {
+      this.$scope.currentClass = "warrior";
+      rpg.models.GameStateModel.getDataSource((res:pow2.GameDataResource)=> {
+        var data = res.getSheetData('classes');
+        this.$scope.classes = data;
+        //console.log(JSON.stringify(data,null,3));
+      });
+    }
 
-      getItemClass(classData:any){
-         return classData.id === this.$scope.currentClass ? "active": "";
-      }
+    getClassIcon(classData:any) {
+      return classData.icon.replace(/\[gender\]/i, "male");
+    }
 
-      previousClass(){
-         var newClass = this.$scope.currentClass === "mage" ? "warrior" : "mage";
-         this.$scope.currentClass = newClass;
-      }
-      nextClass(){
-         var newClass = this.$scope.currentClass === "warrior" ? "mage" : "warrior";
-         this.$scope.currentClass = newClass;
-      }
-   }
+    getItemClass(classData:any) {
+      return classData.id === this.$scope.currentClass ? "active" : "";
+    }
 
-   app.directive('mainMenu', function () {
-      return {
-         restrict: 'E',
-         scope:true,
-         templateUrl: '/games/rpg/directives/pages/mainMenu.html',
-         controllerAs:'mainMenu',
-         controller:MainMenuController,
-         link: function ($scope:any, element, attrs) {
-            $scope.hero = attrs.hero;
-            $scope.$watch(attrs.hero, function(hero) {
-               $scope.hero = hero;
-            });
-         }
-      };
-   });
+    previousClass() {
+      var newClass = this.$scope.currentClass === "mage" ? "warrior" : "mage";
+      this.$scope.currentClass = newClass;
+    }
+
+    nextClass() {
+      var newClass = this.$scope.currentClass === "warrior" ? "mage" : "warrior";
+      this.$scope.currentClass = newClass;
+    }
+  }
+
+  app.directive('mainMenu', function () {
+    return {
+      restrict: 'E',
+      scope: true,
+      templateUrl: '/games/rpg/directives/pages/mainMenu.html',
+      controllerAs: 'mainMenu',
+      controller: MainMenuController,
+      link: function ($scope:any, element, attrs) {
+        $scope.hero = attrs.hero;
+        $scope.$watch(attrs.hero, function (hero) {
+          $scope.hero = hero;
+        });
+      }
+    };
+  });
 }

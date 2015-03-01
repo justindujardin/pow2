@@ -18,44 +18,44 @@
 
 module dorkapon.directives {
 
-   export class DorkaponHudController implements pow2.IProcessObject {
-      static $inject:string[] = ['$dorkapon','$scope','$timeout'];
-      constructor(
-         public $dorkapon:services.DorkaponService,
-         public scope:any,
-         public $timeout:any) {
-         $dorkapon.world.time.addObject(this);
-         scope.$on('$destroy',()=>{
-            $dorkapon.world.time.removeObject(this);
-         });
-      }
-   }
+  export class DorkaponHudController implements pow2.IProcessObject {
+    static $inject:string[] = ['$dorkapon', '$scope', '$timeout'];
 
-   app.directive('dorkaponHud', [
-      '$dorkapon',
-      '$compile',
-      function ($dorkapon:services.DorkaponService,$compile) {
-         return {
-            restrict: 'E',
-            replace:true,
-            templateUrl: '/games/dorkapon/directives/dorkaponHud.html',
-            controller:DorkaponHudController,
-            controllerAs:"hud",
-            link:(scope, element, attrs,controller:DorkaponHudController) => {
-               var changeHandler:any = () => {
-                  scope.$$phase || scope.$digest();
-               };
+    constructor(public $dorkapon:services.DorkaponService,
+                public scope:any,
+                public $timeout:any) {
+      $dorkapon.world.time.addObject(this);
+      scope.$on('$destroy', ()=> {
+        $dorkapon.world.time.removeObject(this);
+      });
+    }
+  }
+
+  app.directive('dorkaponHud', [
+    '$dorkapon',
+    '$compile',
+    function ($dorkapon:services.DorkaponService, $compile) {
+      return {
+        restrict: 'E',
+        replace: true,
+        templateUrl: '/games/dorkapon/directives/dorkaponHud.html',
+        controller: DorkaponHudController,
+        controllerAs: "hud",
+        link: (scope, element, attrs, controller:DorkaponHudController) => {
+          var changeHandler:any = () => {
+            scope.$$phase || scope.$digest();
+          };
 
 
-               scope.$on('$destroy',()=>{
-                  if($dorkapon.machine){
-                     $dorkapon.machine.off(pow2.StateMachine.Events.ENTER,null,this);
-                     $dorkapon.machine.off(pow2.StateMachine.Events.EXIT,null,this);
-                  }
-               });
+          scope.$on('$destroy', ()=> {
+            if ($dorkapon.machine) {
+              $dorkapon.machine.off(pow2.StateMachine.Events.ENTER, null, this);
+              $dorkapon.machine.off(pow2.StateMachine.Events.EXIT, null, this);
             }
-         };
-      }]);
+          });
+        }
+      };
+    }]);
 
 }
 

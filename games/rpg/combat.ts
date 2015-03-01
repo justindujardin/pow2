@@ -14,21 +14,21 @@
  limitations under the License.
  */
 
-module pow2 {
+module rpg {
 
-   export var COMBAT_ENCOUNTERS = {
-      FIXED: "fixed",
-      RANDOM: "random"
-   };
+  export var COMBAT_ENCOUNTERS = {
+    FIXED: "fixed",
+    RANDOM: "random"
+  };
 
-   export interface IGameEncounter {
-      type:string; // @see pow2.ENCOUNTERS
-      id:string; // unique id in spreadsheet
-      zones:string[]; // array of zones this encounter can happen in
-      enemies:string[]; // array of enemies in this encounter
-   }
+  export interface IGameEncounter {
+    type:string; // @see pow2.ENCOUNTERS
+    id:string; // unique id in spreadsheet
+    zones:string[]; // array of zones this encounter can happen in
+    enemies:string[]; // array of enemies in this encounter
+  }
 
-   export interface IGameEncounterCallback {
-      (victory:boolean):void;
-   }
+  export interface IGameEncounterCallback {
+    (victory:boolean):void;
+  }
 }

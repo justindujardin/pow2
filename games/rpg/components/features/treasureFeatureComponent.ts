@@ -17,32 +17,35 @@
 /// <reference path="../playerComponent.ts" />
 /// <reference path="../gameFeatureComponent.ts" />
 
-module pow2 {
-   export class TreasureFeatureComponent extends GameFeatureComponent {
-      gold:number;
-      item:string;
-      icon:string;
-      connectComponent():boolean {
-         if(typeof this.host.id === 'undefined'){
-            console.error("Treasure must have a given id so it may be hidden");
-            return false;
-         }
-         return super.connectComponent();
+module rpg.components.features {
+  export class TreasureFeatureComponent extends GameFeatureComponent {
+    gold:number;
+    item:string;
+    icon:string;
+
+    connectComponent():boolean {
+      if (typeof this.host.id === 'undefined') {
+        console.error("Treasure must have a given id so it may be hidden");
+        return false;
       }
-      syncComponent():boolean{
-         if(!super.syncComponent() || !this.host.feature){
-            return false;
-         }
-         this.name = "Treasure Chest";
-         this.gold = this.host.feature.gold;
-         this.item = this.host.feature.item;
-         this.icon = this.host.feature.icon;
-         return true;
+      return super.connectComponent();
+    }
+
+    syncComponent():boolean {
+      if (!super.syncComponent() || !this.host.feature) {
+        return false;
       }
-      enter(object:TileObject):boolean {
-         object.scene.trigger('treasure:entered',this);
-         this.setDataHidden(true);
-         return true;
-      }
-   }
+      this.name = "Treasure Chest";
+      this.gold = this.host.feature.gold;
+      this.item = this.host.feature.item;
+      this.icon = this.host.feature.icon;
+      return true;
+    }
+
+    enter(object:pow2.tile.TileObject):boolean {
+      object.scene.trigger('treasure:entered', this);
+      this.setDataHidden(true);
+      return true;
+    }
+  }
 }

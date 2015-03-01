@@ -16,35 +16,35 @@
 
 /// <reference path="../services/gameService.ts"/>
 
-module pow2.ui {
+module rpg.directives {
 
 // Game Menu overlay directive
 // ----------------------------------------------------------------------------
-   app.directive('gameMenu', [
-      'game',
-      function (game:PowGameService) {
-         return {
-            restrict: 'E',
-            templateUrl: '/games/rpg/directives/gameMenu.html',
-            controller: function($scope) {
-               $scope.page = 'party';
-               $scope.open = false;
+  app.directive('gameMenu', [
+    'game',
+    function (game:rpg.services.PowGameService) {
+      return {
+        restrict: 'E',
+        templateUrl: '/games/rpg/directives/gameMenu.html',
+        controller: function ($scope) {
+          $scope.page = 'party';
+          $scope.open = false;
 
-               $scope.toggle = () => {
-                  $scope.open = !$scope.open;
-               };
-               $scope.showParty = function(){
-                  $scope.page = 'party';
-               };
-               $scope.showSave = function(){
-                  $scope.page = 'save';
-               };
-               $scope.showInventory = function(){
-                  $scope.page = 'inventory';
-               };
-            }
-         };
-      }
-   ]);
+          $scope.toggle = () => {
+            $scope.open = !$scope.open;
+          };
+          $scope.showParty = function () {
+            $scope.page = 'party';
+          };
+          $scope.showSave = function () {
+            $scope.page = 'save';
+          };
+          $scope.showInventory = function () {
+            $scope.page = 'inventory';
+          };
+        }
+      };
+    }
+  ]);
 }
 

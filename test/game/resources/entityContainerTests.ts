@@ -10,12 +10,12 @@ module pow2.tests {
    // from the game.
 
 
-   export class BooleanConstructComponent extends pow2.SceneComponent {
+   export class BooleanConstructComponent extends pow2.scene.SceneComponent {
       constructor(public arg:boolean){
          super();
       }
    }
-   export class BooleanConstructObject extends pow2.SceneObject {
+   export class BooleanConstructObject extends pow2.scene.SceneObject {
       constructor(public arg:boolean){
          super();
       }
@@ -40,12 +40,12 @@ module pow2.tests {
          describe("should validate input names and types",()=>{
             it("works with exact input type match",()=>{
                expect(factory.createObject('SceneObjectWithComponentInput',{
-                  component:new pow2.SceneComponent()
+                  component:new pow2.scene.SceneComponent()
                })).not.toBeNull();
             });
             it("works with more specific instance type given common ancestor",()=>{
                expect(factory.createObject('SceneObjectWithComponentInput',{
-                  component:new pow2.TileComponent()
+                  component:new pow2.tile.TileComponent()
                })).not.toBeNull();
             });
             it("fails with invalid instance of model input",()=>{
@@ -73,14 +73,14 @@ module pow2.tests {
             entity.destroy();
          });
          it('should instantiate components with correct names',()=>{
-            var entity:pow2.SceneObject = factory.createObject('SceneObjectWithComponents');
+            var entity:pow2.scene.SceneObject = factory.createObject('SceneObjectWithComponents');
             expect(entity._components.length).toBe(2);
             expect(entity.findComponentByName('one')).not.toBeNull();
             expect(entity.findComponentByName('two')).not.toBeNull();
             entity.destroy();
          });
          it('should instantiate components with constructor arguments',()=>{
-            var entity:pow2.SceneObject = factory.createObject('ComponentWithParams',{
+            var entity:pow2.scene.SceneObject = factory.createObject('ComponentWithParams',{
                arg:true
             });
             var boolComponent = <BooleanConstructComponent>entity.findComponent(BooleanConstructComponent);
@@ -97,7 +97,7 @@ module pow2.tests {
             entity.destroy();
          });
          it("should instantiate components",()=>{
-            var object:pow2.SceneObject = factory.createObject('SceneObjectWithComponents');
+            var object:pow2.scene.SceneObject = factory.createObject('SceneObjectWithComponents');
 
             var tpl:any = factory.getTemplate('SceneObjectWithComponents');
             expect(tpl).not.toBeNull();
@@ -115,13 +115,13 @@ module pow2.tests {
             it("works with exact input type match",()=>{
                var tpl:any = factory.getTemplate('SceneObjectWithComponentInput');
                expect(factory.validateTemplate(tpl,{
-                  component:new pow2.SceneComponent()
+                  component:new pow2.scene.SceneComponent()
                })).toBe(pow2.EntityError.NONE);
             });
             it("works with more specific instance type given common ancestor",()=>{
                var tpl:any = factory.getTemplate('SceneObjectWithComponentInput');
                expect(factory.validateTemplate(tpl,{
-                  component:new pow2.TileComponent()
+                  component:new pow2.tile.TileComponent()
                })).toBe(EntityError.NONE);
 
             });

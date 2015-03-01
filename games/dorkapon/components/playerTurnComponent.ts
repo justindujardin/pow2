@@ -18,78 +18,78 @@
 
 module dorkapon.components {
 
-   /**
-     * Knows about the dorkapon game world and state machine.  Exposes methods
-     * for interacting with the state machine on a per-player basis.
-     *
-     * isCurrentTurn() - check host is state machine current player
-     *
-    */
-   export class PlayerTurnComponent extends pow2.SceneComponent {
+  /**
+   * Knows about the dorkapon game world and state machine.  Exposes methods
+   * for interacting with the state machine on a per-player basis.
+   *
+   * isCurrentTurn() - check host is state machine current player
+   *
+   */
+  export class PlayerTurnComponent extends pow2.scene.SceneComponent {
 
-      host:objects.DorkaponEntity;
+    host:objects.DorkaponEntity;
 
-      /**
-       * The callback to signal the state machine to move on to the
-       * next player's turn.
-       */
-      turnDone:()=>any = null;
+    /**
+     * The callback to signal the state machine to move on to the
+     * next player's turn.
+     */
+    turnDone:()=>any = null;
 
-      /**
-       * Constructs with a given state machine.
-       */
-      constructor(
-         public machine:DorkaponMapStateMachine){
-         super();
-         if(!machine){
-            throw new Error(pow2.errors.INVALID_ARGUMENTS);
-         }
+    /**
+     * Constructs with a given state machine.
+     */
+    constructor(public machine:DorkaponMapStateMachine) {
+      super();
+      if (!machine) {
+        throw new Error(pow2.errors.INVALID_ARGUMENTS);
       }
+    }
 
-      connectComponent():boolean {
-         this.machine.on(states.DorkaponPlayerTurn.EVENT,this._machineCapture,this);
-         return super.connectComponent();
-      }
-      disconnectComponent():boolean {
-         this.machine.off(states.DorkaponPlayerTurn.EVENT,this._machineCapture,this);
-         return super.disconnectComponent();
-      }
+    connectComponent():boolean {
+      this.machine.on(states.DorkaponPlayerTurn.EVENT, this._machineCapture, this);
+      return super.connectComponent();
+    }
 
-      /**
-       * Determine if the given entity is the currently active player.
-       */
-      isCurrentTurn(entity:objects.DorkaponEntity=this.host):boolean {
-         return this.machine.currentPlayer._uid === entity._uid;
-      }
+    disconnectComponent():boolean {
+      this.machine.off(states.DorkaponPlayerTurn.EVENT, this._machineCapture, this);
+      return super.disconnectComponent();
+    }
 
-      /**
-       * Subtract one move from the current player.
-       */
-      decrementMove(){
-         var model = this.machine.currentPlayer.model;
-         model.set({
-            moves:model.attributes.moves-1
-         });
-         if(this.turnDone && model.attributes.moves <= 0){
-            var playerComp = <PlayerComponent>this.host.findComponent(dorkapon.components.PlayerComponent);
-            if(playerComp){
-               playerComp.path.length = 0;
-            }
-            var cb:any = this.turnDone;
-            this.turnDone = null;
-            if(this.machine.currentNode){
-               this.machine.currentNode.doAction(this.machine.currentPlayer,cb);
-            }
-            else {
-               _.delay(cb,500);
-            }
-         }
-      }
+    /**
+     * Determine if the given entity is the currently active player.
+     */
+    isCurrentTurn(entity:objects.DorkaponEntity = this.host):boolean {
+      return this.machine.currentPlayer._uid === entity._uid;
+    }
 
-      private _machineCapture(data:states.IPlayerTurnEvent) {
-         if(data.player._uid === this.host._uid){
-            this.turnDone = this.machine.notifyWait();
-         }
+    /**
+     * Subtract one move from the current player.
+     */
+    decrementMove() {
+      var model = this.machine.currentPlayer.model;
+      model.set({
+        moves: model.attributes.moves - 1
+      });
+      if (this.turnDone && model.attributes.moves <= 0) {
+        var playerComp = <PlayerComponent>this.host.findComponent(dorkapon.components.PlayerComponent);
+        if (playerComp) {
+          playerComp.path.length = 0;
+        }
+        var cb:any = this.turnDone;
+        this.turnDone = null;
+        if (this.machine.currentNode) {
+          this.machine.currentNode.doAction(this.machine.currentPlayer, cb);
+        }
+        else {
+          _.delay(cb, 500);
+        }
       }
-   }
+    }
+
+    private _machineCapture(data:states.IPlayerTurnEvent) {
+      if (data.player._uid === this.host._uid) {
+        this.turnDone = this.machine.notifyWait();
+      }
+    }
+  }
 }

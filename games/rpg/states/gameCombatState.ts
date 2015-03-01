@@ -16,13 +16,13 @@
 
 /// <reference path="../../../lib/pow2.d.ts"/>
 
-module pow2 {
+module rpg.states {
 
-   /**
-    * CombatState is set when the player transitions in to a combat
-    * encounter.  This can be any type of triggered encounter, from
-    * the map or a feature interaction, or anything else.
-    */
-   export class CombatState extends State {
-   }
+  /**
+   * CombatState is set when the player transitions in to a combat
+   * encounter.  This can be any type of triggered encounter, from
+   * the map or a feature interaction, or anything else.
+   */
+  export class CombatState extends pow2.State {
+  }
 }

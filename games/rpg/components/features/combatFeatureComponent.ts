@@ -17,43 +17,45 @@
 /// <reference path="../playerComponent.ts" />
 /// <reference path="../gameFeatureComponent.ts" />
 
-module pow2 {
+module rpg.components.features {
 
-   /**
-    * A map feature that represents a fixed combat encounter.
-    *
-    * When a player enters the tile of a feature with this component
-    * it will trigger a combat encounter that must be defeated before
-    * the tile may be passed.
-    */
-   export class CombatFeatureComponent extends GameFeatureComponent {
-      party:pow2.game.components.PlayerComponent;
-      connectComponent():boolean {
-         if(typeof this.host.id === 'undefined'){
-            console.error("Fixed encounters must have a given id so they may be hidden");
-            return false;
-         }
-         return super.connectComponent();
+  /**
+   * A map feature that represents a fixed combat encounter.
+   *
+   * When a player enters the tile of a feature with this component
+   * it will trigger a combat encounter that must be defeated before
+   * the tile may be passed.
+   */
+  export class CombatFeatureComponent extends GameFeatureComponent {
+    party:pow2.scene.components.PlayerComponent = null;
+
+    connectComponent():boolean {
+      if (typeof this.host.id === 'undefined') {
+        console.error("Fixed encounters must have a given id so they may be hidden");
+        return false;
+      }
+      return super.connectComponent();
+    }
+
+    enter(object:rpg.objects.GameEntityObject):boolean {
+      this.party = <pow2.scene.components.PlayerComponent>
+          object.findComponent(pow2.scene.components.PlayerComponent);
+      if (!this.party) {
+        return false;
       }
 
-      enter(object:GameEntityObject):boolean {
-         this.party = <pow2.game.components.PlayerComponent>object.findComponent(pow2.game.components.PlayerComponent);
-         if(!this.party){
-            return false;
-         }
+      // Stop the moving entity until it has defeated the combat encounter.
+      this.party.velocity.zero();
+      object.setPoint(object.point);
 
-         // Stop the moving entity until it has defeated the combat encounter.
-         this.party.velocity.zero();
-         object.setPoint(object.point);
-
-         // Find the combat zone and launch a fixed encounter.
-         var zone:IZoneMatch = this.host.tileMap.getCombatZones(this.party.host.point);
-         this.host.world.fixedEncounter(zone,this.host.id,(victory:boolean)=>{
-            if(victory){
-               this.setDataHidden(true);
-            }
-         });
-         return true;
-      }
-   }
+      // Find the combat zone and launch a fixed encounter.
+      var zone:IZoneMatch = this.host.tileMap.getCombatZones(this.party.host.point);
+      this.host.world.fixedEncounter(zone, this.host.id, (victory:boolean)=> {
+        if (victory) {
+          this.setDataHidden(true);
+        }
+      });
+      return true;
+    }
+  }
 }

@@ -16,64 +16,67 @@
 
 /// <reference path="../gameCombatState.ts" />
 
-module pow2 {
+module rpg.states.combat {
 
-   export interface CombatAttackSummary {
-      damage:number;
-      attacker:GameEntityObject;
-      defender:GameEntityObject;
-   }
+  export interface CombatAttackSummary {
+    damage:number;
+    attacker:rpg.objects.GameEntityObject;
+    defender:rpg.objects.GameEntityObject;
+  }
 
-   // Combat Begin
-   //--------------------------------------------------------------------------
-   export class CombatBeginTurnState extends CombatState {
-      static NAME:string = "Combat Begin Turn";
-      name:string = CombatBeginTurnState.NAME;
-      current:GameEntityObject; // Used to restore scale on exit.
-      machine:CombatStateMachine;
-      enter(machine:CombatStateMachine){
-         super.enter(machine);
-         this.machine = machine;
-         machine.currentDone = false;
-         machine.current.scale = 1.25;
-         this.current = machine.current;
+  // Combat Begin
+  //--------------------------------------------------------------------------
+  export class CombatBeginTurnState extends CombatState {
+    static NAME:string = "Combat Begin Turn";
+    name:string = CombatBeginTurnState.NAME;
+    current:rpg.objects.GameEntityObject; // Used to restore scale on exit.
+    machine:CombatStateMachine;
 
-         if(machine.current && machine.isFriendlyTurn()){
-            machine.focus = machine.current;
-         }
+    enter(machine:CombatStateMachine) {
+      super.enter(machine);
+      this.machine = machine;
+      machine.currentDone = false;
+      machine.current.scale = 1.25;
+      this.current = machine.current;
 
-         machine.trigger("combat:beginTurn",machine.current);
-         var choice:IPlayerAction = null;
-         if(machine.isFriendlyTurn()) {
-            console.log("TURN: " + machine.current.model.get('name'));
-            choice = machine.playerChoices[machine.current._uid];
-         }
-         else {
-            choice = <pow2.CombatAttackComponent>machine.current.findComponent(pow2.CombatAttackComponent);
-            // TODO: This config should not be here.   Just pick a random person to attack.
-            if(choice){
-               choice.to = machine.getRandomPartyMember();
-               choice.from = machine.current;
-            }
-         }
-         if(!choice){
-            throw new Error("Invalid Combat Action Choice. This should not happen.");
-         }
-         if(choice.to && choice.to.isDefeated()){
-            choice.to = machine.getRandomEnemy();
-         }
-         _.defer(()=>{
-            choice.act((act:IPlayerAction,error?:any)=>{
-               if(error){
-                  console.error(error);
-               }
-            });
-         });
-      }
-      exit(machine:CombatStateMachine){
-         this.current.scale = 1;
-         super.exit(machine);
+      if (machine.current && machine.isFriendlyTurn()) {
+        machine.focus = machine.current;
       }
 
-   }
+      machine.trigger("combat:beginTurn", machine.current);
+      var choice:IPlayerAction = null;
+      if (machine.isFriendlyTurn()) {
+        console.log("TURN: " + machine.current.model.get('name'));
+        choice = machine.playerChoices[machine.current._uid];
+      }
+      else {
+        choice = <rpg.components.combat.actions.CombatAttackComponent>
+            machine.current.findComponent(rpg.components.combat.actions.CombatAttackComponent);
+        // TODO: This config should not be here.   Just pick a random person to attack.
+        if (choice) {
+          choice.to = machine.getRandomPartyMember();
+          choice.from = machine.current;
+        }
+      }
+      if (!choice) {
+        throw new Error("Invalid Combat Action Choice. This should not happen.");
+      }
+      if (choice.to && choice.to.isDefeated()) {
+        choice.to = machine.getRandomEnemy();
+      }
+      _.defer(()=> {
+        choice.act((act:IPlayerAction, error?:any)=> {
+          if (error) {
+            console.error(error);
+          }
+        });
+      });
+    }
+
+    exit(machine:CombatStateMachine) {
+      this.current.scale = 1;
+      super.exit(machine);
+    }
+
+  }
 }

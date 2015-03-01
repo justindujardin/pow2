@@ -16,20 +16,21 @@
 
 /// <reference path="../models/entityModel.ts" />
 
-module pow2 {
-   export class GameEntityObject extends TileObject {
-      model:EntityModel;
-      type: string; // TODO: enum?
-      groups:any;
-      constructor(options:any) {
-         super(_.omit(options || {},["x","y","type"]));
-         this.type = options.type || "player";
-         this.groups = typeof options.groups === 'string' ? JSON.parse(options.groups) : options.groups;
-         this.model = options.model || new EntityModel(options);
-      }
+module rpg.objects {
+  export class GameEntityObject extends pow2.tile.TileObject {
+    model:rpg.models.EntityModel;
+    type:string; // TODO: enum?
+    groups:any;
 
-      isDefeated():boolean {
-         return this.model.isDefeated();
-      }
-   }
+    constructor(options:any) {
+      super(_.omit(options || {}, ["x", "y", "type"]));
+      this.type = options.type || "player";
+      this.groups = typeof options.groups === 'string' ? JSON.parse(options.groups) : options.groups;
+      this.model = options.model || new rpg.models.EntityModel(options);
+    }
+
+    isDefeated():boolean {
+      return this.model.isDefeated();
+    }
+  }
 }

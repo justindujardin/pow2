@@ -17,59 +17,59 @@
 /// <reference path="../tileObject.ts" />
 
 
-module pow2 {
+module pow2.tile.components {
 
-   export interface SpriteComponentOptions {
-      icon:string;
-      name?:string;
-      frame?:number;
-   }
+  export interface SpriteComponentOptions {
+    icon:string;
+    name?:string;
+    frame?:number;
+  }
 
-   export class SpriteComponent extends SceneComponent {
-      host:TileObject;
-      image: HTMLImageElement;
-      visible:boolean;
-      enabled:boolean;
+  export class SpriteComponent extends pow2.scene.SceneComponent {
+    host:TileObject;
+    image:HTMLImageElement;
+    visible:boolean;
+    enabled:boolean;
 
-      // Game Sprite support.
-      // ----------------------------------------------------------------------
-      // The sprite name, e.g. "party.png" or "knight.png"
-      icon:string;
-      // The sprite sheet source information
-      meta:any;
-      // The sprite frame (if applicable)
-      frame:number = 0;
+    // Game Sprite support.
+    // ----------------------------------------------------------------------
+    // The sprite name, e.g. "party.png" or "knight.png"
+    icon:string;
+    // The sprite sheet source information
+    meta:any;
+    // The sprite frame (if applicable)
+    frame:number = 0;
 
-      constructor(options?:SpriteComponentOptions){
-         super();
-         if(typeof options !== 'undefined'){
-            _.extend(this,options);
-         }
+    constructor(options?:SpriteComponentOptions) {
+      super();
+      if (typeof options !== 'undefined') {
+        _.extend(this, options);
       }
+    }
 
-      syncComponent():boolean {
-         if(this.host.world){
-            this.setSprite(this.icon,this.frame);
-         }
-         return super.syncComponent();
+    syncComponent():boolean {
+      if (this.host.world) {
+        this.setSprite(this.icon, this.frame);
       }
+      return super.syncComponent();
+    }
 
-      /**
-       * Set the current sprite name.  Returns the previous sprite name.
-       */
-      setSprite(name:string,frame:number = 0):string {
-         var oldSprite:string = this.icon;
-         if (!name) {
-            this.meta = null;
-         }
-         else{
-            this.meta = this.host.world.sprites.getSpriteMeta(name);
-            this.host.world.sprites.getSpriteSheet(this.meta.source, (image:ImageResource) => {
-               return this.image = image.data;
-            });
-         }
-         this.icon = name;
-         return oldSprite;
+    /**
+     * Set the current sprite name.  Returns the previous sprite name.
+     */
+    setSprite(name:string, frame:number = 0):string {
+      var oldSprite:string = this.icon;
+      if (!name) {
+        this.meta = null;
       }
-   }
+      else {
+        this.meta = this.host.world.sprites.getSpriteMeta(name);
+        this.host.world.sprites.getSpriteSheet(this.meta.source, (image:ImageResource) => {
+          return this.image = image.data;
+        });
+      }
+      this.icon = name;
+      return oldSprite;
+    }
+  }
 }

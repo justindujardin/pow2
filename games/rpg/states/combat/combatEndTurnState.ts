@@ -16,35 +16,36 @@
 
 /// <reference path="../gameCombatStateMachine.ts" />
 
-module pow2 {
+module rpg.states.combat {
 
-   export class CombatEndTurnState extends CombatState {
-      static NAME:string = "Combat End Turn";
-      name:string = CombatEndTurnState.NAME;
-      enter(machine:CombatStateMachine){
-         super.enter(machine);
-         machine.current = null;
-         // Find the next turn.
-         while(machine.turnList.length > 0 && !machine.current){
-            machine.current = machine.turnList.shift();
-            // Strip out defeated players.
-            if(machine.current && machine.current.isDefeated()){
-               machine.current = null;
-            }
-         }
+  export class CombatEndTurnState extends CombatState {
+    static NAME:string = "Combat End Turn";
+    name:string = CombatEndTurnState.NAME;
 
-         var targetState:string = machine.current ? CombatBeginTurnState.NAME : CombatStartState.NAME;
-         if(machine.partyDefeated()){
-            targetState = CombatDefeatState.NAME;
-         }
-         else if(machine.enemiesDefeated()){
-            targetState = CombatVictoryState.NAME;
-         }
-         if(!targetState){
-            throw new Error("Invalid transition from end turn");
-         }
-         machine.setCurrentState(targetState);
+    enter(machine:CombatStateMachine) {
+      super.enter(machine);
+      machine.current = null;
+      // Find the next turn.
+      while (machine.turnList.length > 0 && !machine.current) {
+        machine.current = machine.turnList.shift();
+        // Strip out defeated players.
+        if (machine.current && machine.current.isDefeated()) {
+          machine.current = null;
+        }
       }
-   }
+
+      var targetState:string = machine.current ? CombatBeginTurnState.NAME : CombatStartState.NAME;
+      if (machine.partyDefeated()) {
+        targetState = CombatDefeatState.NAME;
+      }
+      else if (machine.enemiesDefeated()) {
+        targetState = CombatVictoryState.NAME;
+      }
+      if (!targetState) {
+        throw new Error("Invalid transition from end turn");
+      }
+      machine.setCurrentState(targetState);
+    }
+  }
 
 }

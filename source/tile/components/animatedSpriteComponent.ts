@@ -17,59 +17,62 @@
 /// <reference path="../../tile/tileObject.ts" />
 /// <reference path="./spriteComponent.ts" />
 
-module pow2 {
+module pow2.tile.components {
 
-   export interface AnimatedSpriteComponentOptions {
-      lengthMS?:number;
-      spriteName:string;
-   }
+  export interface AnimatedSpriteComponentOptions {
+    lengthMS?:number;
+    spriteName:string;
+  }
 
-   export class AnimatedSpriteComponent extends TickedComponent {
-      host:TileObject;
-      _elapsed: number = 0;
-      private _renderFrame:number = 3;
-      lengthMS:number = 500;
-      spriteComponent:SpriteComponent;
-      spriteName:string;
-      constructor(options:AnimatedSpriteComponentOptions={
-         lengthMS:500,
-         spriteName:null
-      }){
-         super();
-         if(typeof options !== 'undefined'){
-            _.extend(this,options);
-         }
-      }
+  export class AnimatedSpriteComponent extends pow2.scene.components.TickedComponent {
+    host:TileObject;
+    _elapsed:number = 0;
+    private _renderFrame:number = 3;
+    lengthMS:number = 500;
+    spriteComponent:SpriteComponent;
+    spriteName:string;
 
-      connectComponent():boolean {
-         this._renderFrame = 0;
-         this._elapsed = 0;
-         return super.connectComponent()
+    constructor(options:AnimatedSpriteComponentOptions = {
+      lengthMS: 500,
+      spriteName: null
+    }) {
+      super();
+      if (typeof options !== 'undefined') {
+        _.extend(this, options);
       }
-      syncComponent():boolean {
-         if(!super.syncComponent()){
-            return false;
-         }
-         var sprites = <SpriteComponent[]>this.host.findComponents(SpriteComponent);
-         this.spriteComponent = <SpriteComponent>_.where(sprites,{name:this.spriteName})[0];
-         return !!this.spriteComponent;
-      }
-      tick(elapsed:number){
-         this._elapsed += elapsed;
-         if(this._elapsed >= this.lengthMS){
-            this.trigger('animation:done',this);
-            this._elapsed = this._elapsed % this.lengthMS;
-         }
-         super.tick(elapsed);
-      }
+    }
 
-      interpolateTick(elapsed:number) {
-         if(this.spriteComponent){
-            // Choose frame for interpolated position
-            var factor = this._elapsed / this.lengthMS;
-            this.spriteComponent.frame = (factor * this.spriteComponent.meta.frames) | 0;
-         }
-         super.interpolateTick(elapsed);
+    connectComponent():boolean {
+      this._renderFrame = 0;
+      this._elapsed = 0;
+      return super.connectComponent();
+    }
+
+    syncComponent():boolean {
+      if (!super.syncComponent()) {
+        return false;
       }
-   }
+      var sprites = <SpriteComponent[]>this.host.findComponents(SpriteComponent);
+      this.spriteComponent = <SpriteComponent>_.where(sprites, {name: this.spriteName})[0];
+      return !!this.spriteComponent;
+    }
+
+    tick(elapsed:number) {
+      this._elapsed += elapsed;
+      if (this._elapsed >= this.lengthMS) {
+        this.trigger('animation:done', this);
+        this._elapsed = this._elapsed % this.lengthMS;
+      }
+      super.tick(elapsed);
+    }
+
+    interpolateTick(elapsed:number) {
+      if (this.spriteComponent) {
+        // Choose frame for interpolated position
+        var factor = this._elapsed / this.lengthMS;
+        this.spriteComponent.frame = (factor * this.spriteComponent.meta.frames) | 0;
+      }
+      super.interpolateTick(elapsed);
+    }
+  }
 }

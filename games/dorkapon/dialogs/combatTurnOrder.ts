@@ -15,48 +15,47 @@
  */
 
 module dorkapon.controllers {
-   export class CombatTurnOrderController {
-      combat:dorkapon.DorkaponCombatStateMachine = null;
+  export class CombatTurnOrderController {
+    combat:dorkapon.DorkaponCombatStateMachine = null;
 
-      // Card picking hacks
-      leftText:string;
-      rightText:string;
-      left:boolean;
-      right:boolean;
-      picking:boolean;
-      pickCorrect:boolean;
-      pick:any;
+    // Card picking hacks
+    leftText:string;
+    rightText:string;
+    left:boolean;
+    right:boolean;
+    picking:boolean;
+    pickCorrect:boolean;
+    pick:any;
 
-      static $inject:string[] = [
-         '$scope',
-         '$timeout',
-         '$mdDialog'
-      ];
-      constructor(
-         public $scope:any,
-         public $timeout:ng.ITimeoutService,
-         public $mdDialog:any
-      ){
-         this.picking = true;
-         this.left = null;
-         this.right = null;
-         this.leftText = "?";
-         this.rightText = "?";
-         this.pickCorrect = false;
-         this.pick = (left:boolean) => {
-            var leftFirst:boolean = _.random(0,100) > 50;
-            this.leftText = leftFirst ? "✓" : "✗";
-            this.rightText = leftFirst ? "✗" : "✓";
-            this.pick = null;
-            this.pickCorrect = left === leftFirst;
-            this.$timeout(()=>{
-               this.$mdDialog.hide(this.pickCorrect);
-            },2000);
-         };
-         return this;
-      }
+    static $inject:string[] = [
+      '$scope',
+      '$timeout',
+      '$mdDialog'
+    ];
 
-   }
+    constructor(public $scope:any,
+                public $timeout:ng.ITimeoutService,
+                public $mdDialog:any) {
+      this.picking = true;
+      this.left = null;
+      this.right = null;
+      this.leftText = "?";
+      this.rightText = "?";
+      this.pickCorrect = false;
+      this.pick = (left:boolean) => {
+        var leftFirst:boolean = _.random(0, 100) > 50;
+        this.leftText = leftFirst ? "✓" : "✗";
+        this.rightText = leftFirst ? "✗" : "✓";
+        this.pick = null;
+        this.pickCorrect = left === leftFirst;
+        this.$timeout(()=> {
+          this.$mdDialog.hide(this.pickCorrect);
+        }, 2000);
+      };
+      return this;
+    }
 
-   app.controller('CombatTurnOrderController', CombatTurnOrderController);
+  }
+
+  app.controller('CombatTurnOrderController', CombatTurnOrderController);
 }

@@ -18,63 +18,63 @@
 /// <reference path="./states/dorkaponMapState.ts" />
 
 module dorkapon {
-   export class DorkaponGameWorld extends pow2.SceneWorld {
+  export class DorkaponGameWorld extends pow2.scene.SceneWorld {
 
-      /**
-       * The main application state, e.g. Map, Combat, Menu.
-       */
-      state:DorkaponAppStateMachine;
+    /**
+     * The main application state, e.g. Map, Combat, Menu.
+     */
+    state:DorkaponAppStateMachine;
 
-      /**
-       * The current combat state (if any).  The presence of this
-       * state machine being valid may trigger the game UI to transition
-       * to combat.
-       *
-       * This variable should be set to null when no combat is taking place.
-       */
-      combatState:DorkaponCombatStateMachine = null;
+    /**
+     * The current combat state (if any).  The presence of this
+     * state machine being valid may trigger the game UI to transition
+     * to combat.
+     *
+     * This variable should be set to null when no combat is taking place.
+     */
+    combatState:DorkaponCombatStateMachine = null;
 
 
-      /**
-       * Dorkapon specific Google Spreadsheet data.
-       */
-      tables:pow2.GameDataResource;
+    /**
+     * Dorkapon specific Google Spreadsheet data.
+     */
+    tables:pow2.GameDataResource;
 
-      /**
-       * Factory for creating entity objects from templates.
-       */
-      factory:pow2.EntityContainerResource;
+    /**
+     * Factory for creating entity objects from templates.
+     */
+    factory:pow2.EntityContainerResource;
 
-      /**
-       * The view used for rendering the game map.
-       */
-      mapView:DorkaponMapView;
+    /**
+     * The view used for rendering the game map.
+     */
+    mapView:DorkaponMapView;
 
-      constructor(services?:any){
-         super(services);
-         //pow2.GameDataResource.clearCache();
-         this.loader.registerType('powEntities',pow2.EntityContainerResource);
-         this.tables = <pow2.GameDataResource>this.loader.loadAsType(dorkapon.SPREADSHEET_ID,pow2.GameDataResource);
-         this.factory = <pow2.EntityContainerResource>this.loader.load(dorkapon.ENTITIES_CONTAINER);
+    constructor(services?:any) {
+      super(services);
+      //pow2.GameDataResource.clearCache();
+      this.loader.registerType('powEntities', pow2.EntityContainerResource);
+      this.tables = <pow2.GameDataResource>this.loader.loadAsType(dorkapon.SPREADSHEET_ID, pow2.GameDataResource);
+      this.factory = <pow2.EntityContainerResource>this.loader.load(dorkapon.ENTITIES_CONTAINER);
+    }
+
+
+    /**
+     * Get the game data sheets from google and callback when they're loaded.
+     * @param then The function to call when spreadsheet data has been fetched
+     */
+    static getDataSource(then?:(data:pow2.GameDataResource)=>any):pow2.GameDataResource {
+      var world = <DorkaponGameWorld>pow2.getWorld(dorkapon.NAME);
+      if (world.tables.isReady()) {
+        then(world.tables);
       }
-
-
-      /**
-       * Get the game data sheets from google and callback when they're loaded.
-       * @param then The function to call when spreadsheet data has been fetched
-       */
-      static getDataSource(then?:(data:pow2.GameDataResource)=>any):pow2.GameDataResource {
-         var world = <DorkaponGameWorld>pow2.getWorld(dorkapon.NAME);
-         if(world.tables.isReady()){
-            then(world.tables);
-         }
-         else {
-            world.tables.once(pow2.Resource.READY,()=>{
-               then(world.tables);
-            });
-         }
-         return world.tables;
+      else {
+        world.tables.once(pow2.Resource.READY, ()=> {
+          then(world.tables);
+        });
       }
+      return world.tables;
+    }
 
-   }
+  }
 }

@@ -16,37 +16,39 @@
 
 /// <reference path="./gameCombatStateMachine.ts"/>
 
-module pow2 {
+module rpg.states {
 
-   export class GameDefaultState extends State {
-      static NAME:string = "default";
-      name:string = GameDefaultState.NAME;
-   }
+  export class GameDefaultState extends pow2.State {
+    static NAME:string = "default";
+    name:string = GameDefaultState.NAME;
+  }
 
-   export class GameStateMachine extends StateMachine {
-      world:GameWorld;
-      model:GameStateModel = null;
-      defaultState:string = GameDefaultState.NAME;
-      player:TileObject = null;
-      encounterInfo:IZoneMatch = null;
-      encounter:IGameEncounter = null;
-      states:IState[] = [
-         new GameDefaultState(),
-         new GameMapState(),
-         new GameCombatState()
-      ];
-      onAddToWorld(world){
-         super.onAddToWorld(world);
-         GameStateModel.getDataSource();
-         this.model = world.model || new GameStateModel();
+  export class GameStateMachine extends pow2.StateMachine {
+    world:rpg.GameWorld;
+    model:rpg.models.GameStateModel = null;
+    defaultState:string = GameDefaultState.NAME;
+    player:pow2.tile.TileObject = null;
+    encounterInfo:IZoneMatch = null;
+    encounter:IGameEncounter = null;
+    states:pow2.IState[] = [
+      new GameDefaultState(),
+      new GameMapState(),
+      new GameCombatState()
+    ];
+
+    onAddToWorld(world) {
+      super.onAddToWorld(world);
+      rpg.models.GameStateModel.getDataSource();
+      this.model = world.model || new rpg.models.GameStateModel();
+    }
+
+    setCurrentState(newState:any):boolean {
+      if (this.world && this.world.scene) {
+        var scene:pow2.scene.Scene = this.world.scene;
+        this.player = <pow2.tile.TileObject>scene.objectByComponent(pow2.scene.components.PlayerComponent);
       }
-      setCurrentState(newState:any):boolean {
-         if(this.world && this.world.scene){
-            var scene:Scene = this.world.scene;
-            this.player = <TileObject>scene.objectByComponent(pow2.game.components.PlayerComponent);
-         }
-         return super.setCurrentState(newState);
-      }
+      return super.setCurrentState(newState);
+    }
 
   }
 }

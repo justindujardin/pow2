@@ -18,143 +18,147 @@
 /// <reference path="./heroModel.ts" />
 /// <reference path="./itemModel.ts" />
 
-module pow2 {
+module rpg.models {
 
-   var _gameData:pow2.GameDataResource = null;
-   export class GameStateModel extends pow2.Events {
-      party:HeroModel[]; // The player's party
-      inventory:ItemModel[]; // The inventory of items owned by the player.
-      loader:pow2.ResourceLoader;
-      keyData:{
-         [key:string]:any
-      } = {};
-      gold:number;
-      combatZone:string;
+  var _gameData:pow2.GameDataResource = null;
+  export class GameStateModel extends pow2.Events {
+    party:HeroModel[]; // The player's party
+    inventory:ItemModel[]; // The inventory of items owned by the player.
+    loader:pow2.ResourceLoader;
+    keyData:{
+      [key:string]:any
+    } = {};
+    gold:number;
+    combatZone:string;
 
-      constructor(options?:any) {
-         super();
-         _.defaults(this,options||{},{
-            gold: 200,
-            playerPosition: new pow2.Point(),
-            playerMap:"",
-            combatZone:"world-plains",
-            party:[],
-            inventory:[]
-         });
+    constructor(options?:any) {
+      super();
+      _.defaults(this, options || {}, {
+        gold: 200,
+        playerPosition: new pow2.Point(),
+        playerMap: "",
+        combatZone: "world-plains",
+        party: [],
+        inventory: []
+      });
+    }
+
+    initData(then?:(data:pow2.GameDataResource)=>any) {
+      GameStateModel.getDataSource(then);
+    }
+
+    /**
+     * Get the game data sheets from google and callback when they're loaded.
+     * @param then The function to call when spreadsheet data has been fetched
+     */
+    static getDataSource(then?:(data:pow2.GameDataResource)=>any):pow2.GameDataResource {
+      if (_gameData) {
+        then && then(_gameData);
+        return _gameData;
       }
-      initData(then?:(data:GameDataResource)=>any){
-         GameStateModel.getDataSource(then);
+      else {
+        return <pow2.GameDataResource>pow2.ResourceLoader.get().loadAsType(pow2.SPREADSHEET_ID, pow2.GameDataResource, (resource:pow2.GameDataResource) => {
+          _gameData = resource;
+          then && then(resource);
+        });
       }
-      /**
-       * Get the game data sheets from google and callback when they're loaded.
-       * @param then The function to call when spreadsheet data has been fetched
-       */
-      static getDataSource(then?:(data:GameDataResource)=>any):pow2.GameDataResource {
-         if(_gameData){
-            then && then(_gameData);
-            return _gameData;
-         }
-         else {
-            return <pow2.GameDataResource>pow2.ResourceLoader.get().loadAsType(pow2.SPREADSHEET_ID,pow2.GameDataResource,(resource:pow2.GameDataResource) => {
-               _gameData = resource;
-               then && then(resource);
-            });
-         }
+    }
+
+    setKeyData(key:string, data:any) {
+      this.keyData[key] = data;
+    }
+
+    getKeyData(key:string):any {
+      return this.keyData[key];
+    }
+
+
+    addInventory(item:ItemModel):ItemModel {
+      this.inventory.push(item);
+      return item;
+    }
+
+    // Remove an inventory item.  Return true if the item was removed, or false
+    // if it was not found.
+    removeInventory(item:ItemModel):boolean {
+      for (var i = 0; i < this.inventory.length; i++) {
+        if (this.inventory[i].cid === item.cid) {
+          this.inventory.splice(i, 1);
+          return true;
+        }
       }
+      return false;
+    }
 
-      setKeyData(key:string,data:any){
-         this.keyData[key] = data;
+
+    addHero(model:HeroModel) {
+      this.party.push(model);
+      model.game = this;
+    }
+
+    addGold(amount:number) {
+      this.gold += amount;
+    }
+
+    parse(data:any, options?:any) {
+      if (!_gameData) {
+        throw new Error("cannot instantiate inventory without valid data source.\nCall model.initData(loader) first.")
       }
-      getKeyData(key:string):any{
-         return this.keyData[key];
+      try {
+        if (typeof data === 'string') {
+          data = JSON.parse(data);
+        }
       }
-
-
-      addInventory(item:ItemModel):ItemModel {
-         this.inventory.push(item);
-         return item;
+      catch (e) {
+        console.log("Failed to load save game.");
+        return;
       }
-      // Remove an inventory item.  Return true if the item was removed, or false
-      // if it was not found.
-      removeInventory(item:ItemModel):boolean{
-         for(var i = 0; i < this.inventory.length; i++) {
-            if(this.inventory[i].cid === item.cid){
-               this.inventory.splice(i, 1);
-               return true;
-            }
-         }
-         return false;
-      }
+      if (typeof data.keyData !== 'undefined') {
+        try {
+          this.keyData = JSON.parse(data.keyData);
+        }
+        catch (e) {
+          console.error("Failed to parse keyData");
+          this.keyData = data.keyData;
+        }
 
-
-      addHero(model:HeroModel){
-         this.party.push(model);
-         model.game = this;
-      }
-
-      addGold(amount:number){
-         this.gold += amount;
-      }
-
-      parse(data:any,options?:any) {
-         if(!_gameData){
-            throw new Error("cannot instantiate inventory without valid data source.\nCall model.initData(loader) first.")
-         }
-         try{
-            if(typeof data === 'string'){
-               data = JSON.parse(data);
-            }
-         }
-         catch(e){
-            console.log("Failed to load save game.");
-            return;
-         }
-         if(typeof data.keyData !== 'undefined'){
-            try{
-               this.keyData = JSON.parse(data.keyData);
-            }
-            catch(e){
-               console.error("Failed to parse keyData");
-               this.keyData = data.keyData;
-            }
-
-         }
-
-         var theChoices: any[] = [];
-         theChoices = theChoices.concat(_.map(_gameData.getSheetData('weapons'),(w)=>{
-            return _.extend({ instanceModel: new WeaponModel(w) },w);
-         }));
-         theChoices = theChoices.concat(_.map(_gameData.getSheetData('armor'), (a)=> {
-            return _.extend({ instanceModel: new ArmorModel(a) }, a);
-         }));
-
-
-         this.inventory = _.map(data.inventory,(item:any) => {
-            var choice:any = _.where(theChoices,{id:item.id})[0];
-            return <pow2.ItemModel>choice.instanceModel;
-         });
-         this.party = _.map(data.party,(partyMember) => {
-            return new HeroModel(partyMember,{parse:true});
-         });
-         _.extend(this,_.omit(data,'party','inventory','keyData'));
       }
 
-      toJSON() {
-         var result:any = _.omit(data,'party','inventory','keyData','world');
-         result.party = _.map(this.party,(p) => {
-            return p.toJSON();
-         });
-         result.inventory = _.map(this.inventory,(p) => {
-            return <any>_.pick(p.attributes,'id');
-         });
-         try{
-            result.keyData = JSON.stringify(this.keyData);
-         }
-         catch(e){
-            console.error("Failed to stringify keyData");
-            result.keyData = {};
-         }
-         return result;
+      var theChoices:any[] = [];
+      theChoices = theChoices.concat(_.map(_gameData.getSheetData('weapons'), (w)=> {
+        return _.extend({instanceModel: new WeaponModel(w)}, w);
+      }));
+      theChoices = theChoices.concat(_.map(_gameData.getSheetData('armor'), (a)=> {
+        return _.extend({instanceModel: new ArmorModel(a)}, a);
+      }));
+
+
+      this.inventory = _.map(data.inventory, (item:any) => {
+        var choice:any = _.where(theChoices, {id: item.id})[0];
+        return <rpg.models.ItemModel>choice.instanceModel;
+      });
+      this.party = _.map(data.party, (partyMember) => {
+        return new HeroModel(partyMember, {parse: true});
+      });
+      _.extend(this, _.omit(data, 'party', 'inventory', 'keyData'));
+    }
+
+    toJSON() {
+      var result:any = _.omit(this, 'party', 'inventory', 'keyData', 'world');
+      result.party = _.map(this.party, (p) => {
+        return p.toJSON();
+      });
+      result.inventory = _.map(this.inventory, (p) => {
+        return <any>_.pick(p.attributes, 'id');
+      });
+      try {
+        result.keyData = JSON.stringify(this.keyData);
       }
-   }
+      catch (e) {
+        console.error("Failed to stringify keyData");
+        result.keyData = {};
+      }
+      return result;
+    }
+  }
 }

@@ -17,17 +17,18 @@
 /// <reference path="../../../types/backbone/backbone.d.ts" />
 /// <reference path="../../../lib/pow2.d.ts" />
 
-module pow2 {
-   export class ItemModel extends Backbone.Model {
-      static DEFAULTS:IGameItem = {
-         name:"",
-         icon:"",
-         cost:0,
-         hero:null,
-         usedby:null
-      };
-      defaults():any {
-         return _.extend({},ItemModel.DEFAULTS);
-      }
-   }
+module rpg.models {
+  export class ItemModel extends Backbone.Model {
+    static DEFAULTS:IGameItem = {
+      name: "",
+      icon: "",
+      cost: 0,
+      hero: null,
+      usedby: null
+    };
+
+    defaults():any {
+      return _.extend({}, ItemModel.DEFAULTS);
+    }
+  }
 }

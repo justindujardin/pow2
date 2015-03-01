@@ -17,51 +17,38 @@
 /// <reference path="../core/api.ts" />
 /// <reference path="./scene.ts" />
 
-module pow2 {
+module pow2.scene {
 
-   /**
-    * Simplest ISceneComponent implementation.  Because Typescript interfaces are compile
-    * time constructs, we have to have an actual implementation to instanceof.  For that
-    * reason, all SceneComponents should derive this class.
-    */
-   export class SceneComponent extends Events implements ISceneComponent {
-      id:string = _.uniqueId('sc');
-      host:SceneObject;
-      name:string;
-      connectComponent():boolean {
-         return true;
+  /**
+   * Simplest ISceneComponent implementation.  Because Typescript interfaces are compile
+   * time constructs, we have to have an actual implementation to instanceof.  For that
+   * reason, all SceneComponents should derive this class.
+   */
+  export class SceneComponent extends Events implements ISceneComponent {
+    id:string = _.uniqueId('sc');
+    host:SceneObject;
+    name:string;
+
+    connectComponent():boolean {
+      return true;
+    }
+
+    disconnectComponent():boolean {
+      return true;
+    }
+
+    syncComponent():boolean {
+      return true;
+    }
+
+    toString():string {
+      var ctor:any = this.constructor;
+      if (ctor && ctor.name != "Function") {
+        return ctor.name || (this.toString().match(/function (.+?)\(/) || [, ''])[1];
+      } else {
+        return this.name;
       }
-      disconnectComponent():boolean {
-         return true;
-      }
-      syncComponent():boolean {
-         return true;
-      }
+    }
+  }
 
-      toString():string {
-         var ctor:any = this.constructor;
-         if (ctor && ctor.name != "Function") {
-            return ctor.name || (this.toString().match(/function (.+?)\(/) || [, ''])[1];
-         } else {
-            return this.name;
-         }
-      }
-   }
-
-   /**
-    * A component that supports tick/interpolateTick
-    */
-   export class TickedComponent extends SceneComponent {
-      tickRateMS:number = 300;
-
-      /**
-       * Update the component at a tick interval.
-       */
-      tick(elapsed:number) {}
-
-      /**
-       * Interpolate component state between ticks.
-       */
-      interpolateTick(elapsed:number){}
-   }
 }

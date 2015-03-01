@@ -16,17 +16,18 @@
 
 /// <reference path="./itemModel.ts" />
 
-module pow2 {
-   export class ArmorModel extends ItemModel {
-      static DEFAULTS:IGameArmor = {
-         name:"No Armor",
-         icon:"",
-         defense:0,
-         evade:0,
-         cost:0
-      };
-      defaults():any {
-         return _.extend(super.defaults(),ArmorModel.DEFAULTS);
-      }
-   }
+module rpg.models {
+  export class ArmorModel extends ItemModel {
+    static DEFAULTS:rpg.IGameArmor = {
+      name: "No Armor",
+      icon: "",
+      defense: 0,
+      evade: 0,
+      cost: 0
+    };
+
+    defaults():any {
+      return _.extend(super.defaults(), ArmorModel.DEFAULTS);
+    }
+  }
 }

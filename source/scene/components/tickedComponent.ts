@@ -14,9 +14,26 @@
  limitations under the License.
  */
 
-module dorkapon.controllers {
-  export class CharacterCardController {
-    model:models.DorkaponEntity;
+/// <reference path="../sceneComponent.ts" />
+
+module pow2.scene.components {
+
+  /**
+   * A component that supports tick/interpolateTick
+   */
+  export class TickedComponent extends SceneComponent {
+    tickRateMS:number = 300;
+
+    /**
+     * Update the component at a tick interval.
+     */
+    tick(elapsed:number) {
+    }
+
+    /**
+     * Interpolate component state between ticks.
+     */
+    interpolateTick(elapsed:number) {
+    }
   }
-  app.controller('CharacterCardController', CharacterCardController);
 }

@@ -6,7 +6,7 @@ module pow2.tests {
       if(!fullTypeName){
          return null;
       }
-      var parts = fullTypeName.split(".");
+      var parts:string[] = fullTypeName.split(".");
       for (var i = 0, len = parts.length, obj = window; i < len; ++i) {
          obj = obj[parts[i]];
          if(!obj){

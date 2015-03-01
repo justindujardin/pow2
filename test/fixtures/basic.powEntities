@@ -1,15 +1,15 @@
 [
   {
     "name":"SceneObjectWithComponents",
-    "type":"pow2.SceneObject",
+    "type":"pow2.scene.SceneObject",
     "components":[
       {
         "name":"one",
-        "type":"pow2.SceneComponent"
+        "type":"pow2.scene.SceneComponent"
       },
       {
         "name":"two",
-        "type":"pow2.SceneComponent"
+        "type":"pow2.scene.SceneComponent"
       }
     ]
   },
@@ -23,15 +23,15 @@
   },
   {
     "name":"SceneObjectWithComponentInput",
-    "type":"pow2.SceneObject",
+    "type":"pow2.scene.SceneObject",
     "inputs":{
-      "component":"pow2.SceneComponent"
+      "component":"pow2.scene.SceneComponent"
     }
   },
 
   {
     "name":"ComponentWithParams",
-    "type":"pow2.SceneObject",
+    "type":"pow2.scene.SceneObject",
     "inputs":{
       "arg":"boolean"
     },

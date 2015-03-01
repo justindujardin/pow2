@@ -18,41 +18,43 @@
 
 module dorkapon.models {
 
-   /**
-    * The model attributes of a dorkapon entity
-    */
-   export interface IDorkaponMonsterAttributes extends IDorkaponEntityAttributes {
-   }
+  /**
+   * The model attributes of a dorkapon entity
+   */
+  export interface IDorkaponMonsterAttributes extends IDorkaponEntityAttributes {
+  }
 
-   export class DorkaponMonster extends DorkaponEntity {
-      attributes:IDorkaponMonsterAttributes;
-      static DEFAULTS:IDorkaponMonsterAttributes = <any>{
-         name:"InvalidName",
-         type:"InvalidClass",
-         icon:"",
+  export class DorkaponMonster extends DorkaponEntity {
+    attributes:IDorkaponMonsterAttributes;
+    static DEFAULTS:IDorkaponMonsterAttributes = <any>{
+      name: "InvalidName",
+      type: "InvalidClass",
+      icon: "",
 
-         level:1,
-         exp:0,
+      level: 1,
+      exp: 0,
 
-         hp:1,
-         maxhp:1,
+      hp: 1,
+      maxhp: 1,
 
-         attack:1,
-         defense:1,
-         magic:1,
-         speed:1
-      };
-      defaults():any {
-         return _.extend(super.defaults(),DorkaponMonster.DEFAULTS);
-      }
-      static create(options:any):DorkaponMonster{
-         var result = new DorkaponMonster(options);
-         result.set({
-            hp:result.attributes.hp,
-            maxhp:result.attributes.hp
-         });
-         return result;
+      attack: 1,
+      defense: 1,
+      magic: 1,
+      speed: 1
+    };
 
-      }
-   }
+    defaults():any {
+      return _.extend(super.defaults(), DorkaponMonster.DEFAULTS);
+    }
+
+    static create(options:any):DorkaponMonster {
+      var result = new DorkaponMonster(options);
+      result.set({
+        hp: result.attributes.hp,
+        maxhp: result.attributes.hp
+      });
+      return result;
+
+    }
+  }
 }

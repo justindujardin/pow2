@@ -17,27 +17,29 @@
 /// <reference path="../sceneObject.ts" />
 /// <reference path="../sceneComponent.ts" />
 
-module pow2 {
-   export class CollisionComponent extends SceneComponent {
-      collideBox: pow2.Rect = new pow2.Rect(0, 0, 1, 1);
-      resultsArray: any[] = [];
-      collide(x:number, y:number,type:Function=SceneObject,results=[]):boolean {
-         if(!this.host || !this.host.scene){
-            return false;
-         }
-         this.collideBox.point.x = x;
-         this.collideBox.point.y = y;
-         return this.host.scene.db.queryRect(this.collideBox, type, results);
+module pow2.scene.components {
+  export class CollisionComponent extends SceneComponent {
+    collideBox:pow2.Rect = new pow2.Rect(0, 0, 1, 1);
+    resultsArray:any[] = [];
+
+    collide(x:number, y:number, type:Function = SceneObject, results = []):boolean {
+      if (!this.host || !this.host.scene) {
+        return false;
       }
-      collideFirst(x:number, y:number,type:Function=SceneObject):SceneObject {
-         if(!this.host || !this.host.scene){
-            return null;
-         }
-         this.collideBox.point.x = x;
-         this.collideBox.point.y = y;
-         this.resultsArray.length = 0;
-         var hit:boolean = this.host.scene.db.queryRect(this.collideBox, type, this.resultsArray);
-         return hit ? this.resultsArray[0] : null;
+      this.collideBox.point.x = x;
+      this.collideBox.point.y = y;
+      return this.host.scene.db.queryRect(this.collideBox, type, results);
+    }
+
+    collideFirst(x:number, y:number, type:Function = SceneObject):SceneObject {
+      if (!this.host || !this.host.scene) {
+        return null;
       }
+      this.collideBox.point.x = x;
+      this.collideBox.point.y = y;
+      this.resultsArray.length = 0;
+      var hit:boolean = this.host.scene.db.queryRect(this.collideBox, type, this.resultsArray);
+      return hit ? this.resultsArray[0] : null;
+    }
   }
 }

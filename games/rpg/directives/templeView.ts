@@ -17,64 +17,64 @@
 /// <reference path="../services/gameService.ts"/>
 /// <reference path="../services/alertService.ts"/>
 
-module pow2.ui {
+module rpg.directives {
 
 // TempleView directive
 // ----------------------------------------------------------------------------
-   app.directive('templeView', ['game', 'powAlert', function (game:PowGameService,powAlert:PowAlertService) {
-      return {
-         restrict: 'E',
-         templateUrl: '/games/rpg/directives/templeView.html',
-         controller: function($scope) {
-            $scope.heal = () => {
-               if(!$scope.temple){
-                  return;
-               }
-               var model:GameStateModel = game.world.model;
-               var money:number = model.gold;
-               var cost:number = parseInt($scope.temple.cost);
+  app.directive('templeView', ['game', 'powAlert', function (game:rpg.services.PowGameService, powAlert:rpg.services.PowAlertService) {
+    return {
+      restrict: 'E',
+      templateUrl: '/games/rpg/directives/templeView.html',
+      controller: function ($scope) {
+        $scope.heal = () => {
+          if (!$scope.temple) {
+            return;
+          }
+          var model:rpg.models.GameStateModel = game.world.model;
+          var money:number = model.gold;
+          var cost:number = parseInt($scope.temple.cost);
 
-               var alreadyHealed:boolean = !_.find(model.party,(hero:HeroModel) => {
-                  return hero.get('hp') !== hero.get('maxHP');
-               });
+          var alreadyHealed:boolean = !_.find(model.party, (hero:rpg.models.HeroModel) => {
+            return hero.get('hp') !== hero.get('maxHP');
+          });
 
 
-               if(cost > money){
-                  powAlert.show("You don't have enough money");
-               }
-               else if(alreadyHealed) {
-                  powAlert.show("Keep your monies.\nYour party is already fully healed.");
-               }
-               else {
-                  //console.log("You have (" + money + ") monies.  Spending (" + cost + ") on temple");
-                  model.gold -= cost;
-                  _.each(model.party,(hero:HeroModel) => {
-                     hero.set({ hp: hero.get('maxHP') });
-                  });
-                  powAlert.show("Your party has been healed! \nYou now have (" + model.gold + ") monies.",null,2500);
-
-               }
-               $scope.temple = null;
-
-            };
-            $scope.cancel = () => {
-               $scope.temple = null;
-            };
-
-         },
-         link: function ($scope) {
-            game.world.scene.on('temple:entered',function(feature){
-               $scope.$apply(function(){
-                  $scope.temple = feature;
-               });
+          if (cost > money) {
+            powAlert.show("You don't have enough money");
+          }
+          else if (alreadyHealed) {
+            powAlert.show("Keep your monies.\nYour party is already fully healed.");
+          }
+          else {
+            //console.log("You have (" + money + ") monies.  Spending (" + cost + ") on temple");
+            model.gold -= cost;
+            _.each(model.party, (hero:rpg.models.HeroModel) => {
+              hero.set({hp: hero.get('maxHP')});
             });
-            game.world.scene.on('temple:exited',function(){
-               $scope.$apply(function(){
-                  $scope.temple = null;
-               });
-            });
-         }
-      };
-   }]);
+            powAlert.show("Your party has been healed! \nYou now have (" + model.gold + ") monies.", null, 2500);
+
+          }
+          $scope.temple = null;
+
+        };
+        $scope.cancel = () => {
+          $scope.temple = null;
+        };
+
+      },
+      link: function ($scope) {
+        game.world.scene.on('temple:entered', function (feature) {
+          $scope.$apply(function () {
+            $scope.temple = feature;
+          });
+        });
+        game.world.scene.on('temple:exited', function () {
+          $scope.$apply(function () {
+            $scope.temple = null;
+          });
+        });
+      }
+    };
+  }]);
 }
 

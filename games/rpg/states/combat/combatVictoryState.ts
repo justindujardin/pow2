@@ -17,55 +17,56 @@
 /// <reference path="../gameCombatStateMachine.ts" />
 
 
-module pow2 {
+module rpg.states.combat {
 
-   export interface CombatVictorySummary {
-      party:GameEntityObject[];
-      enemies:GameEntityObject[];
-      levels:HeroModel[];
-      gold:number;
-      exp:number;
-      state:CombatVictoryState;
-   }
+  export interface CombatVictorySummary {
+    party:rpg.objects.GameEntityObject[];
+    enemies:rpg.objects.GameEntityObject[];
+    levels:rpg.models.HeroModel[];
+    gold:number;
+    exp:number;
+    state:CombatVictoryState;
+  }
 
-   export class CombatVictoryState extends CombatState {
-      static NAME:string = "Combat Victory";
-      name:string = CombatVictoryState.NAME;
-      enter(machine:CombatStateMachine){
-         super.enter(machine);
-         var gold:number = 0;
-         var exp: number = 0;
-         _.each(machine.enemies,(nme:GameEntityObject) => {
-            gold += nme.model.get('gold') || 0;
-            exp += nme.model.get('exp') || 0;
-         });
-         machine.parent.model.addGold(gold);
+  export class CombatVictoryState extends CombatState {
+    static NAME:string = "Combat Victory";
+    name:string = CombatVictoryState.NAME;
 
-         var players:GameEntityObject[] = _.reject(machine.party,(p:GameEntityObject) => {
-            return p.isDefeated();
-         });
-         var expPerParty:number = Math.round(exp / players.length);
-         var leveledHeros:HeroModel[] = [];
-         _.each(players,(p:GameEntityObject) => {
-            var heroModel:HeroModel = <HeroModel>p.model;
-            var leveled:boolean = heroModel.awardExperience(expPerParty);
-            if(leveled){
-               leveledHeros.push(heroModel);
-            }
-         });
+    enter(machine:CombatStateMachine) {
+      super.enter(machine);
+      var gold:number = 0;
+      var exp:number = 0;
+      _.each(machine.enemies, (nme:rpg.objects.GameEntityObject) => {
+        gold += nme.model.get('gold') || 0;
+        exp += nme.model.get('exp') || 0;
+      });
+      machine.parent.model.addGold(gold);
 
-         var summary:CombatVictorySummary = {
-            state:this,
-            party:machine.party,
-            enemies:machine.enemies,
-            levels:leveledHeros,
-            gold:gold,
-            exp:exp
-         };
-         machine.notify("combat:victory",summary,()=>{
-            machine.parent.world.reportEncounterResult(true);
-            machine.parent.setCurrentState(GameMapState.NAME);
-         });
-      }
-   }
+      var players:rpg.objects.GameEntityObject[] = _.reject(machine.party, (p:rpg.objects.GameEntityObject) => {
+        return p.isDefeated();
+      });
+      var expPerParty:number = Math.round(exp / players.length);
+      var leveledHeros:rpg.models.HeroModel[] = [];
+      _.each(players, (p:rpg.objects.GameEntityObject) => {
+        var heroModel = <rpg.models.HeroModel>p.model;
+        var leveled:boolean = heroModel.awardExperience(expPerParty);
+        if (leveled) {
+          leveledHeros.push(heroModel);
+        }
+      });
+
+      var summary:CombatVictorySummary = {
+        state: this,
+        party: machine.party,
+        enemies: machine.enemies,
+        levels: leveledHeros,
+        gold: gold,
+        exp: exp
+      };
+      machine.notify("combat:victory", summary, ()=> {
+        machine.parent.world.reportEncounterResult(true);
+        machine.parent.setCurrentState(GameMapState.NAME);
+      });
+    }
+  }
 }

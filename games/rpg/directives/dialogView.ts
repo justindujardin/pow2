@@ -16,32 +16,32 @@
 
 /// <reference path="../services/gameService.ts"/>
 
-module pow2.ui {
+module rpg.directives {
 
 // DialogBubble directive
 // ----------------------------------------------------------------------------
-   app.directive('dialogView', ['game',function (game:PowGameService) {
-      return {
-         restrict: 'E',
-         replace:true,
-         templateUrl: '/games/rpg/directives/dialogView.html',
-         link: function($scope) {
+  app.directive('dialogView', ['game', function (game:rpg.services.PowGameService) {
+    return {
+      restrict: 'E',
+      replace: true,
+      templateUrl: '/games/rpg/directives/dialogView.html',
+      link: function ($scope) {
 
-            // Dialog bubbles
-            game.world.scene.on('dialog:entered',function(feature){
-               $scope.$apply(function(){
-                  $scope.dialog = feature;
-               });
-            });
-            game.world.scene.on('dialog:exited',function(){
-               $scope.$apply(function(){
-                  $scope.dialog = null;
-               });
-            });
+        // Dialog bubbles
+        game.world.scene.on('dialog:entered', function (feature) {
+          $scope.$apply(function () {
+            $scope.dialog = feature;
+          });
+        });
+        game.world.scene.on('dialog:exited', function () {
+          $scope.$apply(function () {
+            $scope.dialog = null;
+          });
+        });
 
-         }
-      };
-   }]);
+      }
+    };
+  }]);
 
 }
 

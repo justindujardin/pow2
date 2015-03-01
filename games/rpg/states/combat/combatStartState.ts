@@ -16,20 +16,21 @@
 
 /// <reference path="../gameCombatStateMachine.ts" />
 
-module pow2 {
+module rpg.states.combat {
 
-   // Combat Begin
-   //--------------------------------------------------------------------------
-   export class CombatStartState extends CombatState {
-      static NAME:string = "Combat Started";
-      name:string = CombatStartState.NAME;
-      enter(machine:CombatStateMachine){
-         super.enter(machine);
-         machine.turnList = <GameEntityObject[]>_.shuffle(_.union(machine.getLiveParty(),machine.getLiveEnemies()));
-         machine.current = machine.turnList.shift();
-         machine.currentDone = true;
-         machine.setCurrentState(CombatChooseActionState.NAME);
-      }
-   }
+  // Combat Begin
+  //--------------------------------------------------------------------------
+  export class CombatStartState extends CombatState {
+    static NAME:string = "Combat Started";
+    name:string = CombatStartState.NAME;
+
+    enter(machine:CombatStateMachine) {
+      super.enter(machine);
+      machine.turnList = <rpg.objects.GameEntityObject[]>_.shuffle(_.union(machine.getLiveParty(), machine.getLiveEnemies()));
+      machine.current = machine.turnList.shift();
+      machine.currentDone = true;
+      machine.setCurrentState(CombatChooseActionState.NAME);
+    }
+  }
 
 }

@@ -16,33 +16,36 @@
 
 /// <reference path="../gameFeatureComponent.ts" />
 
-module pow2 {
-   export class DialogFeatureComponent extends GameFeatureComponent {
-      title:string;
-      text:string;
-      icon:string;
-      syncComponent():boolean{
-         if(!super.syncComponent() || !this.host.feature){
-            return false;
-         }
-         this.title = this.host.feature.title;
-         this.text = this.host.feature.text;
-         this.icon = this.host.feature.icon;
-         return true;
-      }
-      enter(object:TileObject):boolean {
-         if(this.title && this.text){
-            object.scene.trigger('dialog:entered',this);
-         }
-         return true;
-      }
-      exit(object:TileObject):boolean {
-         if(this.title && this.text){
-            object.scene.trigger('dialog:exited',this);
-         }
-         return true;
-      }
+module rpg.components.features {
+  export class DialogFeatureComponent extends GameFeatureComponent {
+    title:string;
+    text:string;
+    icon:string;
 
-   }
+    syncComponent():boolean {
+      if (!super.syncComponent() || !this.host.feature) {
+        return false;
+      }
+      this.title = this.host.feature.title;
+      this.text = this.host.feature.text;
+      this.icon = this.host.feature.icon;
+      return true;
+    }
+
+    enter(object:pow2.tile.TileObject):boolean {
+      if (this.title && this.text) {
+        object.scene.trigger('dialog:entered', this);
+      }
+      return true;
+    }
+
+    exit(object:pow2.tile.TileObject):boolean {
+      if (this.title && this.text) {
+        object.scene.trigger('dialog:exited', this);
+      }
+      return true;
+    }
+
+  }
 
 }

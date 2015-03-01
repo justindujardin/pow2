@@ -18,7 +18,7 @@
 /// <reference path="../../lib/pow2.d.ts"/>
 
 module pow2.ui {
-   export var app = angular.module('pow2.ui', [
-      'ngAnimate'
-   ]);
+  export var app = angular.module('pow2', [
+    'ngAnimate'
+  ]);
 }

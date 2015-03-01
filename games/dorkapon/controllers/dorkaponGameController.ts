@@ -17,29 +17,29 @@
 /// <reference path="../services/dorkaponService.ts"/>
 
 module dorkapon.controllers {
-   app.controller('DorkaponGameController',[
-      '$scope',
-      '$timeout',
-      '$dorkapon',
-      function($scope,$timeout,$dorkapon:services.DorkaponService){
-         $scope.loadingTitle = "Dorkapon!";
-         $scope.loadingMessage = "Asking Google for data...";
-         $scope.loading = true;
-         $scope.range = function(n) {
-            return new Array(n);
-         };
-         DorkaponGameWorld.getDataSource(()=>{
-            $scope.$apply(()=>{
-               $scope.loadingMessage = "Loading the things...";
-            });
-            $dorkapon.newGame(()=>{
-               $scope.$apply(()=>{
-                  $scope.loading = false;
-                  $scope.loaded = true;
-               });
-            });
-         });
-      }
-   ]);
+  app.controller('DorkaponGameController', [
+    '$scope',
+    '$timeout',
+    '$dorkapon',
+    function ($scope, $timeout, $dorkapon:services.DorkaponService) {
+      $scope.loadingTitle = "Dorkapon!";
+      $scope.loadingMessage = "Asking Google for data...";
+      $scope.loading = true;
+      $scope.range = function (n) {
+        return new Array(n);
+      };
+      DorkaponGameWorld.getDataSource(()=> {
+        $scope.$apply(()=> {
+          $scope.loadingMessage = "Loading the things...";
+        });
+        $dorkapon.newGame(()=> {
+          $scope.$apply(()=> {
+            $scope.loading = false;
+            $scope.loaded = true;
+          });
+        });
+      });
+    }
+  ]);
 }
 

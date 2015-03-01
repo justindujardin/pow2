@@ -17,83 +17,85 @@
 /// <reference path="../playerComponent.ts" />
 /// <reference path="../gameFeatureComponent.ts" />
 
-module pow2 {
-   export class ShipFeatureComponent extends GameFeatureComponent {
-      party:pow2.game.components.PlayerComponent;
-      partyObject:TileObject;
-      partySprite:string;
-      private _tickInterval:number = -1;
+module rpg.components.features {
+  export class ShipFeatureComponent extends GameFeatureComponent {
+    party:pow2.scene.components.PlayerComponent;
+    partyObject:pow2.tile.TileObject;
+    partySprite:string;
+    private _tickInterval:number = -1;
 
-      syncComponent():boolean {
-         if(super.syncComponent()){
-            var gameWorld:GameWorld = <GameWorld>this.host.world;
-            if(gameWorld && gameWorld.state){
-               var gameState:GameStateModel = gameWorld.state.model;
-               var location = gameState.getKeyData('shipPosition');
-               if(location){
-                  this.host.setPoint(new Point(location.x,location.y));
-               }
-            }
-         }
-         return false;
+    syncComponent():boolean {
+      if (super.syncComponent()) {
+        var gameWorld:GameWorld = <GameWorld>this.host.world;
+        if (gameWorld && gameWorld.state) {
+          var gameState:rpg.models.GameStateModel = gameWorld.state.model;
+          var location = gameState.getKeyData('shipPosition');
+          if (location) {
+            this.host.setPoint(new pow2.Point(location.x, location.y));
+          }
+        }
       }
+      return false;
+    }
 
-      enter(object:GameFeatureObject):boolean {
-         // Must have a party component to board a ship.  Don't want buildings
-         // and NPCs boarding ships... or do we?  [maniacal laugh]
-         this.party = <pow2.game.components.PlayerComponent>object.findComponent(pow2.game.components.PlayerComponent);
-         if(!this.party){
-            return false;
-         }
-         this.partySprite = object.icon;
-         this.party.passableKeys = ['shipPassable'];
-         return true;
+    enter(object:rpg.objects.GameFeatureObject):boolean {
+      // Must have a party component to board a ship.  Don't want buildings
+      // and NPCs boarding ships... or do we?  [maniacal laugh]
+      this.party = <pow2.scene.components.PlayerComponent>
+          object.findComponent(pow2.scene.components.PlayerComponent);
+      if (!this.party) {
+        return false;
       }
-      entered(object:GameFeatureObject):boolean {
-         return this.board(object);
+      this.partySprite = object.icon;
+      this.party.passableKeys = ['shipPassable'];
+      return true;
+    }
+
+    entered(object:rpg.objects.GameFeatureObject):boolean {
+      return this.board(object);
+    }
+
+    /**
+     * Board an object onto the ship component.  This will modify the
+     * @param object
+     */
+    board(object:rpg.objects.GameFeatureObject):boolean {
+      if (this.partyObject || !this.party) {
+        return false;
       }
+      this.partyObject = object;
+      object.setSprite(this.host.icon);
+      this.host.visible = false;
+      this.host.enabled = false;
 
-      /**
-       * Board an object onto the ship component.  This will modify the
-       * @param object
-       */
-      board(object:GameFeatureObject):boolean{
-         if(this.partyObject || !this.party){
-            return false;
-         }
-         this.partyObject = object;
-         object.setSprite(this.host.icon);
-         this.host.visible = false;
-         this.host.enabled = false;
+      this._tickInterval = setInterval(()=> {
+        if (this.partyObject.point.equal(this.party.targetPoint) && !this.party.heading.isZero()) {
+          var from:pow2.Point = this.partyObject.point;
+          var to:pow2.Point = from.clone().add(this.party.heading);
+          if (!this.party.collideWithMap(from, 'shipPassable') && !this.party.collideWithMap(to, 'passable')) {
+            this.disembark(from, to, this.party.heading.clone());
+          }
+        }
+      }, 32);
+      return true;
+    }
 
-         this._tickInterval = setInterval(()=>{
-            if(this.partyObject.point.equal(this.party.targetPoint) && !this.party.heading.isZero()){
-               var from:pow2.Point = this.partyObject.point;
-               var to:pow2.Point = from.clone().add(this.party.heading);
-               if(!this.party.collideWithMap(from,'shipPassable') && !this.party.collideWithMap(to,'passable')){
-                  this.disembark(from,to,this.party.heading.clone());
-               }
-            }
-         },32);
-         return true;
+    disembark(from:pow2.Point, to:pow2.Point, heading:pow2.Point) {
+      clearInterval(this._tickInterval);
+      this.partyObject.setSprite(this.partySprite);
+      this.party.targetPoint.set(to);
+      this.party.velocity.set(heading);
+      this.party.passableKeys = ['passable'];
+      this.host.point.set(from);
+      this.host.visible = true;
+      this.host.enabled = true;
+      this.partyObject = null;
+      this.party = null;
+
+      var gameWorld:GameWorld = <GameWorld>this.host.world;
+      if (gameWorld && gameWorld.state && gameWorld.state.model) {
+        gameWorld.state.model.setKeyData('shipPosition', this.host.point);
       }
-
-      disembark(from:pow2.Point,to:pow2.Point,heading:pow2.Point){
-         clearInterval(this._tickInterval);
-         this.partyObject.setSprite(this.partySprite);
-         this.party.targetPoint.set(to);
-         this.party.velocity.set(heading);
-         this.party.passableKeys = ['passable'];
-         this.host.point.set(from);
-         this.host.visible = true;
-         this.host.enabled = true;
-         this.partyObject = null;
-         this.party = null;
-
-         var gameWorld:GameWorld = <GameWorld>this.host.world;
-         if(gameWorld && gameWorld.state && gameWorld.state.model){
-            gameWorld.state.model.setKeyData('shipPosition',this.host.point);
-         }
-      }
-   }
+    }
+  }
 }
