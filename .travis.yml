@@ -9,8 +9,5 @@ before_install:
  - npm install -g bower
  - bower install
 
-before_script:
- - grunt typescript
-
 after_script:
  - ./node_modules/.bin/grunt coveralls
