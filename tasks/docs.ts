@@ -166,7 +166,7 @@ module.exports = (grunt) => {
       };
 
       var entityContainer = grunt.file.readJSON(e);
-      _.each(entityContainer || [], (template:pow2.IEntityTemplate)=> {
+      _.each(entityContainer || [], (template:any)=> {
         entityDescription.templates.push({
           name: template.name,
           url: fileRelative
