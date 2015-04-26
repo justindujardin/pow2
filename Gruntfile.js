@@ -315,7 +315,10 @@ module.exports = function (grunt) {
     },
     artifacts: {
       options: {
-        files: ['lib/*.*']
+        files: [
+          'lib/*.*',
+          'web/images/*.*'
+        ]
       }
     },
     changelog: {},
