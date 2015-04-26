@@ -43,5 +43,11 @@ can edit your files and refresh your webpage a few moments later when the new bu
 
 ### Committing
 
-Commit messages should [follow conventions](https://github.com/justindujardin/pow2/blob/develop/CONVENTIONS.md)
+Commit messages should [follow conventions](https://github.com/justindujardin/pow2/blob/master/CONVENTIONS.md)
 
+### JetBrains Open Source
+
+The folks over at [JetBrains](https://www.jetbrains.com/) have been kind enough to sponsor this open source project by providing 
+free licenses of [WebStorm](https://www.jetbrains.com/webstorm/) to any serious contributors to the project.  
+
+![JetBrains](https://github.com/justindujardin/pow2/blob/master/data/jetbrains/logo_jetbrains.svg)![WebStorm](https://github.com/justindujardin/pow2/blob/master/data/jetbrains/logo_webstorm.svg)
