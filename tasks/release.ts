@@ -11,9 +11,9 @@ module.exports = (grunt) => {
       type = type || 'patch';
       grunt.task.run([
          'npm-contributors',
+         'bump:' + type + ':bump-only',
          'default',
          'uglify',
-         'bump:' + type + ':bump-only',
          'changelog',
          'artifacts:add',
          'bump-commit',
