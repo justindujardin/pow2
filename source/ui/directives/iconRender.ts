@@ -81,7 +81,7 @@ module pow2.ui.directives {
         element.append(renderImage);
         $scope.$watch(attrs.icon, function (icon) {
           if (!icon) {
-            renderImage[0].src = '/images/blank.gif';
+            renderImage[0].src = '/images/a/blank.gif';
             return;
           }
           controller.renderer.getSingleSprite(icon, attrs.frame || 0, function (sprite) {
