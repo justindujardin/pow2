@@ -1,5 +1,5 @@
-/**
- Copyright (C) 2013 by Justin DuJardin
+/*
+ Copyright (C) 2013-2015 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,67 +14,68 @@
  limitations under the License.
  */
 
-/// <reference path="../../../lib/pow2.d.ts" />
 /// <reference path="../../tile/tileObject.ts" />
 
-module pow2 {
+module pow2.game.components {
 
-   export enum MoveFrames {
-      LEFT = 10,
-      RIGHT = 4,
-      DOWN = 7,
-      UP = 1,
-      LEFTALT = 11,
-      RIGHTALT = 5,
-      DOWNALT = 8,
-      UPALT = 2
-   }
+  export enum MoveFrames {
+    LEFT = 10,
+    RIGHT = 4,
+    DOWN = 7,
+    UP = 1,
+    LEFTALT = 11,
+    RIGHTALT = 5,
+    DOWNALT = 8,
+    UPALT = 2
+  }
 
-   // The order here maps to the first four frames in MoveFrames above.
-   // It matters, don't change without care.
-   export enum Headings {
-      WEST = 0,
-      EAST = 1,
-      SOUTH = 2,
-      NORTH = 3
-   }
-   export class PlayerRenderComponent extends TickedComponent {
-      host:TileObject;
-      private _animator:Animator = new Animator();
-      heading:Headings = Headings.WEST;
-      animating:boolean = false;
-      setHeading(direction:Headings,animating:boolean){
-         if(!this._animator.sourceAnims){
-            this._animator.setAnimationSource(this.host.icon);
-         }
-         this.heading = direction;
-         switch(this.heading){
-            case Headings.SOUTH:
-               this._animator.setAnimation('down');
-               break;
-            case Headings.NORTH:
-               this._animator.setAnimation('up');
-               break;
-            case Headings.EAST:
-               this._animator.setAnimation('right');
-               break;
-            case Headings.WEST:
-               this._animator.setAnimation('left');
-               break;
-         }
-         this.animating = animating;
+  // The order here maps to the first four frames in MoveFrames above.
+  // It matters, don't change without care.
+  export enum Headings {
+    WEST = 0,
+    EAST = 1,
+    SOUTH = 2,
+    NORTH = 3
+  }
+  export class PlayerRenderComponent extends pow2.scene.components.TickedComponent {
+    host:pow2.tile.TileObject;
+    private _animator:Animator = new Animator();
+    heading:Headings = Headings.WEST;
+    animating:boolean = false;
+
+    setHeading(direction:Headings, animating:boolean) {
+      if (!this._animator.sourceAnims) {
+        this._animator.setAnimationSource(this.host.icon);
       }
-
-      setMoving(moving:boolean){
-         this.animating = moving;
+      this.heading = direction;
+      switch (this.heading) {
+        case Headings.SOUTH:
+          this._animator.setAnimation('down');
+          break;
+        case Headings.NORTH:
+          this._animator.setAnimation('up');
+          break;
+        case Headings.EAST:
+          this._animator.setAnimation('right');
+          break;
+        case Headings.WEST:
+          this._animator.setAnimation('left');
+          break;
       }
+      this._animator.updateTime(0);
+      this.animating = animating;
+    }
 
-      interpolateTick(elapsed:number) {
-         super.interpolateTick(elapsed);
-         if(this.animating){
-            this._animator.updateTime(elapsed);
-         }
-         this.host.frame = this._animator.getFrame();
+    setMoving(moving:boolean) {
+      this.animating = moving;
+    }
+
+    interpolateTick(elapsed:number) {
+      super.interpolateTick(elapsed);
+      if (this.animating) {
+        this._animator.updateTime(elapsed);
       }
-   }
+      this.host.frame = this._animator.getFrame();
+    }
+  }
 }

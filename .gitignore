@@ -8,3 +8,9 @@ web/bower
 .coverage
 data/textures/basictiles
 data/textures/environment-old
+server/**/*.js
+server/**/*.d.ts
+server/**/*.js.map
+tasks/*.js
+tasks/*.d.ts
+tasks/*.js.map

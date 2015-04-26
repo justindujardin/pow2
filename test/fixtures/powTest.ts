@@ -1,13 +1,12 @@
 ///<reference path="../../types/jasmine/jasmine.d.ts"/>
 ///<reference path="../../lib/pow2.d.ts"/>
-///<reference path="../../lib/pow2.game.d.ts"/>
 module pow2.tests {
 
    export function NamespaceClassToType(fullTypeName:string):any {
       if(!fullTypeName){
          return null;
       }
-      var parts = fullTypeName.split(".");
+      var parts:string[] = fullTypeName.split(".");
       for (var i = 0, len = parts.length, obj = window; i < len; ++i) {
          obj = obj[parts[i]];
          if(!obj){

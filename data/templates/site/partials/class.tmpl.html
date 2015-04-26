@@ -1,0 +1,17 @@
+<div layout="column" layout-fill class="doc-content">
+  <div flex layout="column" style="z-index:1">
+    <h2 class="class-name">{{class}}</h2>
+    <span class="class-comment" ng-bind-html="reflection.comment.shortText | toHtml" ng-if="reflection.comment.shortText"></span>
+
+    <h3>Properties</h3>
+    <div ng-repeat="child in reflection.children">
+      <span ng-if="child.kindString == 'Property' && child.flags.isPrivate != true">{{child.name}}</span>
+    </div>
+
+    <h3>Methods</h3>
+    <div ng-repeat="child in reflection.children">
+      <span ng-if="child.kindString == 'Method' && child.flags.isPrivate != true">{{child.name}}</span>
+    </div>
+
+  </div>
+</div>

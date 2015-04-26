@@ -18,42 +18,20 @@ server.use(express.session({
    secret: process.env.SESSION_SECRET || require("../.env.json").SESSION_SECRET
 }));
 
-/**
- * Enumerate output files for page inclusion.
- */
-function getPageScripts(){
-   require("../Gruntfile")(grunt);
-   var ts = grunt.config.get('typescript');
-   var names = ['pow2','game','ui'];
-   var src = grunt.config.get('typescript.options.base_path');
-   var scripts:string[] = [];
-   _.each(names, (name:string) => {
-      var app = grunt.config.get('typescript.' + name);
-      if(!app){
-         console.log("Failed to include specified app: " + name);
-         return;
-      }
-      var outputFile:string = grunt.file.expand(app.dest)[0];
-      if(process.env.NODE_ENV === 'production'){
-         outputFile = outputFile.replace(/.js/,'.min.js');
-      }
-      scripts.push(outputFile);
-   });
-   return scripts;
-}
-
 server.get('/', function(req,res){
-   res.render('../source/ui/index.html',{
-      scripts:getPageScripts()
-   });
+   res.render('../games/rpg/index.html',{});
+});
+
+server.get('/dorkapon', function(req,res){
+   res.render('../games/dorkapon/index.html',{});
 });
 
 server.use(express.static(path.resolve(__dirname + "/../web")));
 server.use('/lib',express.static(path.resolve(__dirname + "/../lib")));
 server.use('/data', express.static(path.resolve(__dirname + "/../data")));
 server.use('/source', express.static(path.resolve(__dirname + "/../source")));
+server.use('/games', express.static(path.resolve(__dirname + "/../games")));
 server.use('/build', express.static(path.resolve(__dirname + "/../build")));
-server.use('/fonts', express.static(path.resolve(__dirname + "/../data/fonts")));
 
 // Use EJS templating with Express, and assign .html as the default extension.
 server.engine('.html', require('ejs').__express);

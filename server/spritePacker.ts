@@ -1,13 +1,10 @@
 ///<reference path="../types/node/node.d.ts"/>
 ///<reference path="../types/q/Q.d.ts"/>
 
-/* jslint node: true */
-"use strict";
-
 import path = require('path');
 import Q = require('q');
 var _ = require('underscore');
-var fs = require('graceful-fs');
+var fs:any = require('graceful-fs');
 var PNG = require('pngjs').PNG;
 var boxPacker = require('binpacking').GrowingPacker;
 

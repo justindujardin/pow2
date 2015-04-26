@@ -1,5 +1,5 @@
-/**
- Copyright (C) 2013 by Justin DuJardin
+/*
+ Copyright (C) 2013-2015 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,50 +14,49 @@
  limitations under the License.
  */
 
-/// <reference path="../../../lib/pow2.d.ts"/>
+/// <reference path="../tileMap.ts"/>
+/// <reference path="../../scene/sceneObjectRenderer.ts"/>
 
-module pow2 {
-   export class TileObjectRenderer extends SceneObjectRenderer {
-      private _renderPoint:pow2.Point = new pow2.Point();
-      render(object:any, data:any, view:pow2.SceneView) { // TODO: typedef
+module pow2.tile.render {
+  export class TileObjectRenderer extends pow2.scene.SceneObjectRenderer {
+    private _renderPoint:pow2.Point = new pow2.Point();
 
-         if (!data.image || !object.visible) {
-            return;
-         }
+    render(object:any, data:any, view:pow2.scene.SceneView) { // TODO: typedef
 
-         // Build render data.
-         this._renderPoint.set(object.renderPoint || object.point);
-         var point = this._renderPoint;
-         var c = data.meta; // TODO: interface this
-         var sourceWidth:number = view.unitSize;
-         var sourceHeight:number = view.unitSize;
-         if(c && typeof c.cellWidth !== 'undefined' && typeof c.cellHeight !== 'undefined') {
-            sourceWidth = c.cellWidth;
-            sourceHeight = c.cellHeight;
-         }
-         var objWidth = view.fastScreenToWorldNumber(sourceWidth);
-         var objHeight = view.fastScreenToWorldNumber(sourceHeight);
-         point.x -= objWidth * object.scale / 2;
-         point.y -= objHeight * object.scale / 2;
-         view.fastWorldToScreenPoint(point,point);
-
-         if (data.icon && data.meta) {
-            var cx = c.x;
-            var cy = c.y;
-            if(data.meta.frames > 1){
-               if(data.frame > 4){
-                  var bar = "baz";
-               }
-               var cwidth = c.width / sourceWidth;
-               var fx = (data.frame % (cwidth));
-               var fy = Math.floor((data.frame - fx) / cwidth);
-               cx += fx * sourceWidth;
-               cy += fy * sourceHeight;
-            }
-            view.context.drawImage(data.image, cx, cy, sourceWidth, sourceHeight, point.x, point.y, sourceWidth * object.scale, sourceHeight * object.scale);
-         } else {
-            view.context.drawImage(data.image, point.x, point.y, sourceWidth * object.scale, sourceHeight * object.scale);
-         }
+      if (!data.image || !object.visible) {
+        return;
       }
-   }
+
+      // Build render data.
+      this._renderPoint.set(object.renderPoint || object.point);
+      var point = this._renderPoint;
+      var c = data.meta; // TODO: interface this
+      var sourceWidth:number = view.unitSize;
+      var sourceHeight:number = view.unitSize;
+      if (c && typeof c.cellWidth !== 'undefined' && typeof c.cellHeight !== 'undefined') {
+        sourceWidth = c.cellWidth;
+        sourceHeight = c.cellHeight;
+      }
+      var objWidth = view.fastScreenToWorldNumber(sourceWidth);
+      var objHeight = view.fastScreenToWorldNumber(sourceHeight);
+      point.x -= objWidth * object.scale / 2;
+      point.y -= objHeight * object.scale / 2;
+      view.fastWorldToScreenPoint(point, point);
+
+      if (data.icon && data.meta) {
+        var cx = c.x;
+        var cy = c.y;
+        if (data.meta.frames > 1) {
+          var cwidth = c.width / sourceWidth;
+          var fx = (data.frame % (cwidth));
+          var fy = Math.floor((data.frame - fx) / cwidth);
+          cx += fx * sourceWidth;
+          cy += fy * sourceHeight;
+        }
+        view.context.drawImage(data.image, cx, cy, sourceWidth, sourceHeight, point.x, point.y, sourceWidth * object.scale, sourceHeight * object.scale);
+      } else {
+        view.context.drawImage(data.image, point.x, point.y, sourceWidth * object.scale, sourceHeight * object.scale);
+      }
+    }
+  }
 }

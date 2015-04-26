@@ -1,0 +1,70 @@
+[
+  {
+    "name": "DorkaponMapObject",
+    "type": "dorkapon.DorkaponTileMap",
+    "inputs": {
+      "resource": "pow2.TiledTMXResource"
+    },
+    "params": ["resource"],
+    "components": []
+  },
+  {
+    "name": "DorkaponMapPlayer",
+    "type": "dorkapon.objects.DorkaponEntity",
+    "inputs": {
+      "model": "dorkapon.models.DorkaponEntity",
+      "map": "dorkapon.DorkaponTileMap",
+      "machine": "dorkapon.DorkaponMapStateMachine"
+    },
+    "components": [
+      {
+        "name": "player",
+        "type": "dorkapon.components.PlayerComponent"
+      },
+      {
+        "name": "movement",
+        "type": "dorkapon.components.PlayerPathComponent",
+        "params": ["map"]
+      },
+      {
+        "name": "turn",
+        "type": "dorkapon.components.PlayerTurnComponent",
+        "params": ["machine"]
+      },
+      {
+        "name": "collider",
+        "type": "pow2.scene.components.CollisionComponent"
+      },
+      {
+        "name": "render",
+        "type": "pow2.game.components.PlayerRenderComponent"
+      },
+      {
+        "name": "camera",
+        "type": "dorkapon.components.PlayerCamera"
+      }
+    ]
+  },
+  {
+    "name": "DorkaponCombatPlayer",
+    "type": "dorkapon.objects.DorkaponEntity",
+    "inputs": {
+      "model": "dorkapon.models.DorkaponEntity",
+      "machine": "dorkapon.DorkaponCombatStateMachine"
+    },
+    "components": [
+      {
+        "name": "player",
+        "type": "pow2.game.components.PlayerCombatRenderComponent"
+      },
+      {
+        "name": "render",
+        "type": "pow2.game.components.PlayerRenderComponent"
+      },
+      {
+        "name": "animation",
+        "type": "pow2.game.components.AnimatedComponent"
+      }
+    ]
+  }
+]

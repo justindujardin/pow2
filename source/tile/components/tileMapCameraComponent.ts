@@ -1,5 +1,5 @@
-/**
- Copyright (C) 2013 by Justin DuJardin
+/*
+ Copyright (C) 2013-2015 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -15,33 +15,35 @@
  */
 
 /// <reference path="../tileMap.ts" />
-/// <reference path="../../../lib/pow2.d.ts" />
+/// <reference path="../../scene/components/cameraComponent.ts" />
 
 module pow2 {
-   export class TileMapCameraComponent extends CameraComponent {
-      host:TileMap;
-      connectComponent():boolean {
-         return super.connectComponent() && this.host instanceof TileMap;
-      }
-      process(view:SceneView) {
-         view.camera.point.set(this.host.bounds.point);
-         view.cameraScale = Math.min(6,Math.round(view.screenToWorld(view.context.canvas.width) / view.camera.extent.x));
+  export class TileMapCameraComponent extends pow2.scene.components.CameraComponent {
+    host:pow2.tile.TileMap;
 
-         // Clamp to tile map if it is present.
-         if(this.host){
-            view.camera.point.x = Math.max(0,view.camera.point.x);
-            view.camera.point.y = Math.max(0,view.camera.point.y);
-            view.camera.point.x = Math.min(view.camera.point.x,this.host.bounds.extent.x - view.camera.extent.x);
-            view.camera.point.y = Math.min(view.camera.point.y,this.host.bounds.extent.y - view.camera.extent.y);
+    connectComponent():boolean {
+      return super.connectComponent() && this.host instanceof pow2.tile.TileMap;
+    }
 
-            // Center in viewport if tilemap is smaller than camera.
-            if(this.host.bounds.extent.x < view.camera.extent.x){
-               view.camera.point.x = (this.host.bounds.extent.x - view.camera.extent.x) / 2;
-            }
-            if(this.host.bounds.extent.y < view.camera.extent.y){
-               view.camera.point.y = (this.host.bounds.extent.y - view.camera.extent.y) / 2;
-            }
-         }
+    process(view:pow2.scene.SceneView) {
+      view.camera.point.set(this.host.bounds.point);
+      view.cameraScale = Math.min(6, Math.round(view.screenToWorld(view.context.canvas.width) / view.camera.extent.x));
+
+      // Clamp to tile map if it is present.
+      if (this.host) {
+        view.camera.point.x = Math.max(0, view.camera.point.x);
+        view.camera.point.y = Math.max(0, view.camera.point.y);
+        view.camera.point.x = Math.min(view.camera.point.x, this.host.bounds.extent.x - view.camera.extent.x);
+        view.camera.point.y = Math.min(view.camera.point.y, this.host.bounds.extent.y - view.camera.extent.y);
+
+        // Center in viewport if tilemap is smaller than camera.
+        if (this.host.bounds.extent.x < view.camera.extent.x) {
+          view.camera.point.x = (this.host.bounds.extent.x - view.camera.extent.x) / 2;
+        }
+        if (this.host.bounds.extent.y < view.camera.extent.y) {
+          view.camera.point.y = (this.host.bounds.extent.y - view.camera.extent.y) / 2;
+        }
       }
+    }
   }
 }

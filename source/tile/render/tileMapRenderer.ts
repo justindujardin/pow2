@@ -1,5 +1,5 @@
 /*
- Copyright (C) 2014 by Justin DuJardin
+ Copyright (C) 2013-2015 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,118 +14,117 @@
  limitations under the License.
  */
 
-/// <reference path="../../../lib/pow2.d.ts"/>
 /// <reference path="../tileObject.ts" />
 /// <reference path="../tileMapView.ts" />
 /// <reference path="../tileMap.ts" />
 
-module pow2 {
-   export class TileMapRenderer extends pow2.SceneObjectRenderer {
-      buffer:HTMLCanvasElement[][] = null; // A 2d grid of rendered canvas textures.
-      bufferMapName:string = null; // The name of the rendered map.  If the map name changes, the buffer is re-rendered.
-      bufferComplete:boolean = false; // True if the entire map was rendered with all textures loaded and ready.
+module pow2.tile.render {
+  export class TileMapRenderer extends pow2.scene.SceneObjectRenderer {
+    buffer:HTMLCanvasElement[][] = null; // A 2d grid of rendered canvas textures.
+    bufferMapName:string = null; // The name of the rendered map.  If the map name changes, the buffer is re-rendered.
+    bufferComplete:boolean = false; // True if the entire map was rendered with all textures loaded and ready.
 
-      private _clipRect:Rect = new pow2.Rect();
-      private _renderRect:Rect = new pow2.Rect();
+    private _clipRect:Rect = new pow2.Rect();
+    private _renderRect:Rect = new pow2.Rect();
 
-      // TODO: only render tiles that are in the clipRect.  This can be expensive at initial
-      // load for expansive maps like the Browser Quest tmx.
-      render(object:TileMap, view:TileMapView) {
-         var squareUnits = 8;
-         var squareSize = squareUnits * view.unitSize;
-         if(!object.isLoaded()){
-            return;
-         }
-         if(object.dirtyLayers){
-            object.dirtyLayers = false;
-            this.buffer = null;
-            this.bufferComplete = false;
-         }
-         if(!this.bufferComplete || this.buffer === null || this.bufferMapName === null || this.bufferMapName !== object.map.url){
-            var tileUnitSize = squareSize / view.unitSize;
-            // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
-            var columns = Math.ceil(object.bounds.extent.x / squareUnits);
-            var rows = Math.ceil(object.bounds.extent.y / squareUnits);
-            this.buffer = new Array(columns);
-            for(var col:number = 0; col < columns; col++){
-               this.buffer[col] = new Array(rows);
-            }
-            this.bufferComplete = true;
-            var layers:tiled.ITiledLayer[] = object.getLayers();
-            for(var col:number = 0; col < columns; col++){
-               for(var row:number = 0; row < rows; row++){
-                  var xOffset = col * tileUnitSize;
-                  var xEnd = xOffset + tileUnitSize;
-                  var yOffset = row * tileUnitSize;
-                  var yEnd = yOffset + tileUnitSize;
-                  this.buffer[col][row] = view.renderToCanvas(squareSize,squareSize,(ctx) => {
-                     for(var x = xOffset; x < xEnd; x++){
-                        for(var y = yOffset; y < yEnd; y++){
-
-                           // Each layer
-                           _.each(layers,(l:tiled.ITiledLayer) => {
-                              if(!l.visible){
-                                 return;
-                              }
-                              var gid:number = object.getTileGid(l.name,x, y);
-                              var meta:pow2.tiled.ITileInstanceMeta = object.getTileMeta(gid);
-                              if (meta) {
-                                 var image:HTMLImageElement = (<any>meta.image).data;
-                                 // Keep this inline to avoid more function calls.
-                                 var dstH, dstW, dstX, dstY, srcH, srcW, srcX, srcY;
-                                 if (!image || !image.complete) {
-                                    this.bufferComplete = false;
-                                    return;
-                                 }
-                                 srcX = meta.x;
-                                 srcY = meta.y;
-                                 srcW = meta.width;
-                                 srcH = meta.height;
-                                 dstX = (x - xOffset) * view.unitSize;
-                                 dstY = (y - yOffset) * view.unitSize;
-                                 dstW = dstH = view.unitSize;
-                                 ctx.drawImage(image, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
-                              }
-                           });
-                        }
-                     }
-                     // Append chunks to body (DEBUG HACKS)
-
-                     // var dataImage = new Image();
-                     // dataImage.src = ctx.canvas.toDataURL();
-                     // $('body').append(dataImage);
-                  });
-               }
-            }
-            this.bufferMapName = object.map.url;
-         }
-         var squareScreen = view.fastWorldToScreenNumber(squareUnits);
-
-         view.fastWorldToScreenRect(view.getCameraClip(),this._clipRect);
-         var cols:number = this.buffer.length;
-         var rows:number = this.buffer[0].length;
-         // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
-         for(var col:number = 0; col < cols; col++){
-            for(var row:number = 0; row < rows; row++){
-               this._renderRect.set(col * squareUnits - 0.5,row * squareUnits - 0.5,squareUnits,squareUnits);
-               view.fastWorldToScreenRect(this._renderRect,this._renderRect);
-               if(!this._renderRect.intersect(this._clipRect)){
-                  continue;
-               }
-               //console.log("Tile " + renderRect.toString())
-               view.context.drawImage(this.buffer[col][row],
-                  // From source
-                  0,
-                  0,
-                  squareSize,
-                  squareSize,
-                  // Scaled to camera
-                  this._renderRect.point.x,
-                  this._renderRect.point.y,
-                  squareScreen,
-                  squareScreen);
-            }
-         }
+    // TODO: only render tiles that are in the clipRect.  This can be expensive at initial
+    // load for expansive maps like the Browser Quest tmx.
+    render(object:TileMap, view:TileMapView) {
+      var squareUnits = 8;
+      var squareSize = squareUnits * view.unitSize;
+      if (!object.isLoaded()) {
+        return;
       }
-   }
+      if (object.dirtyLayers) {
+        object.dirtyLayers = false;
+        this.buffer = null;
+        this.bufferComplete = false;
+      }
+      if (!this.bufferComplete || this.buffer === null || this.bufferMapName === null || this.bufferMapName !== object.map.url) {
+        var tileUnitSize = squareSize / view.unitSize;
+        // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
+        var columns = Math.ceil(object.bounds.extent.x / squareUnits);
+        var rows = Math.ceil(object.bounds.extent.y / squareUnits);
+        this.buffer = new Array(columns);
+        for (var col:number = 0; col < columns; col++) {
+          this.buffer[col] = new Array(rows);
+        }
+        this.bufferComplete = true;
+        var layers:tiled.ITiledLayer[] = object.getLayers();
+        for (var col:number = 0; col < columns; col++) {
+          for (var row:number = 0; row < rows; row++) {
+            var xOffset = col * tileUnitSize;
+            var xEnd = xOffset + tileUnitSize;
+            var yOffset = row * tileUnitSize;
+            var yEnd = yOffset + tileUnitSize;
+            this.buffer[col][row] = view.renderToCanvas(squareSize, squareSize, (ctx) => {
+              for (var x = xOffset; x < xEnd; x++) {
+                for (var y = yOffset; y < yEnd; y++) {
+
+                  // Each layer
+                  _.each(layers, (l:tiled.ITiledLayer) => {
+                    if (!l.visible) {
+                      return;
+                    }
+                    var gid:number = object.getTileGid(l.name, x, y);
+                    var meta:pow2.tiled.ITileInstanceMeta = object.getTileMeta(gid);
+                    if (meta) {
+                      var image:HTMLImageElement = (<any>meta.image).data;
+                      // Keep this inline to avoid more function calls.
+                      var dstH, dstW, dstX, dstY, srcH, srcW, srcX, srcY;
+                      if (!image || !image.complete) {
+                        this.bufferComplete = false;
+                        return;
+                      }
+                      srcX = meta.x;
+                      srcY = meta.y;
+                      srcW = meta.width;
+                      srcH = meta.height;
+                      dstX = (x - xOffset) * view.unitSize;
+                      dstY = (y - yOffset) * view.unitSize;
+                      dstW = dstH = view.unitSize;
+                      ctx.drawImage(image, srcX, srcY, srcW, srcH, dstX, dstY, dstW, dstH);
+                    }
+                  });
+                }
+              }
+              // Append chunks to body (DEBUG HACKS)
+
+              // var dataImage = new Image();
+              // dataImage.src = ctx.canvas.toDataURL();
+              // $('body').append(dataImage);
+            });
+          }
+        }
+        this.bufferMapName = object.map.url;
+      }
+      var squareScreen = view.fastWorldToScreenNumber(squareUnits);
+
+      view.fastWorldToScreenRect(view.getCameraClip(), this._clipRect);
+      var cols:number = this.buffer.length;
+      var rows:number = this.buffer[0].length;
+      // Unit size is 16px, so rows/columns should be 16*16 for 256px each.
+      for (var col:number = 0; col < cols; col++) {
+        for (var row:number = 0; row < rows; row++) {
+          this._renderRect.set(col * squareUnits - 0.5, row * squareUnits - 0.5, squareUnits, squareUnits);
+          view.fastWorldToScreenRect(this._renderRect, this._renderRect);
+          if (!this._renderRect.intersect(this._clipRect)) {
+            continue;
+          }
+          //console.log("Tile " + renderRect.toString())
+          view.context.drawImage(this.buffer[col][row],
+              // From source
+              0,
+              0,
+              squareSize,
+              squareSize,
+              // Scaled to camera
+              this._renderRect.point.x,
+              this._renderRect.point.y,
+              squareScreen,
+              squareScreen);
+        }
+      }
+    }
+  }
 }

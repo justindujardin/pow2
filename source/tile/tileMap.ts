@@ -1,5 +1,5 @@
-/**
- Copyright (C) 2013 by Justin DuJardin
+/*
+ Copyright (C) 2013-2015 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,124 +14,122 @@
  limitations under the License.
  */
 
-/// <reference path="../../lib/pow2.d.ts"/>
-/// <reference path="./tileObject.ts" />
-/// <reference path="./components/tileMapCameraComponent.ts" />
+/// <reference path="../scene/sceneObject.ts" />
 
-module pow2 {
+module pow2.tile {
 
-   // TODO: TileMap isn't getting added to Spatial DB properly.  Can't query for it!
-   // Scene assuming something about the spatial properties on objects?
+  // TODO: TileMap isn't getting added to Spatial DB properly.  Can't query for it!
+  // Scene assuming something about the spatial properties on objects?
 
-   export class TileMap extends SceneObject {
-      map: TiledTMXResource;
-      tiles:any = []; // TODO: TilesetProperties
-      scene:Scene;
-      features:any;
-      zones:any;
-      bounds: pow2.Rect;
-      dirtyLayers:boolean = false;
-      private _loaded:boolean = false;
+  export class TileMap extends pow2.scene.SceneObject {
+    map:TiledTMXResource;
+    tiles:any = []; // TODO: TilesetProperties
+    scene:pow2.scene.Scene;
+    features:any;
+    zones:any;
+    bounds:pow2.Rect;
+    dirtyLayers:boolean = false;
+    private _loaded:boolean = false;
 
-      static Events:any = {
-         LOADED:"loaded",
-         UNLOADED:"unloaded",
-         MAP_LOADED:"map:loaded",
-         MAP_UNLOADED:"map:unloaded"
-      };
+    static Events:any = {
+      LOADED: "loaded",
+      UNLOADED: "unloaded",
+      MAP_LOADED: "map:loaded",
+      MAP_UNLOADED: "map:unloaded"
+    };
 
-      constructor(map:pow2.TiledTMXResource) {
-         super();
-         this.bounds = new pow2.Rect(0, 0, 10,10);
-         this.setMap(map);
+    constructor(map:pow2.TiledTMXResource) {
+      super();
+      this.bounds = new pow2.Rect(0, 0, 10, 10);
+      this.setMap(map);
+    }
+
+    isLoaded():boolean {
+      return this._loaded;
+    }
+
+    loaded() {
+      this.trigger(pow2.tile.TileMap.Events.LOADED, this);
+      if (this.scene) {
+        this.scene.trigger(pow2.tile.TileMap.Events.MAP_LOADED, this);
       }
+      this._loaded = true;
+    }
 
-      isLoaded():boolean {
-         return this._loaded;
+    unloaded() {
+      this.trigger(pow2.tile.TileMap.Events.UNLOADED, this);
+      if (this.scene) {
+        this.scene.trigger(pow2.tile.TileMap.Events.MAP_UNLOADED, this);
       }
+      this._loaded = false;
+    }
 
-      loaded(){
-         this.trigger(pow2.TileMap.Events.LOADED,this);
-         if(this.scene){
-            this.scene.trigger(pow2.TileMap.Events.MAP_LOADED,this);
-         }
-         this._loaded = true;
+    setMap(map:TiledTMXResource) {
+      if (!map || !map.isReady()) {
+        return false;
       }
+      if (this.map) {
+        this.unloaded();
+      }
+      this.map = map;
+      this.bounds = new pow2.Rect(0, 0, this.map.width, this.map.height);
+      var idSortedSets = _.sortBy(this.map.tilesets, (o:TiledTSXResource) => {
+        return o.firstgid;
+      });
+      this.tiles.length = 0;
+      _.each(idSortedSets, (tiles:TiledTSXResource) => {
+        while (this.tiles.length < tiles.firstgid) {
+          this.tiles.push(null);
+        }
+        this.tiles = this.tiles.concat(tiles.tiles);
+      });
+      this.features = _.where(this.map.layers, {name: "Features"})[0] || [];
+      this.zones = _.where(this.map.layers, {name: "Zones"})[0] || [];
+      this.loaded();
+      return true;
+    }
 
-      unloaded(){
-         this.trigger(pow2.TileMap.Events.UNLOADED,this);
-         if(this.scene){
-            this.scene.trigger(pow2.TileMap.Events.MAP_UNLOADED,this);
-         }
-         this._loaded = false;
-      }
+    getLayers():tiled.ITiledLayer[] {
+      return this.map ? this.map.layers : [];
+    }
 
-      setMap(map:TiledTMXResource) {
-         if (!map || !map.isReady()) {
-            return false;
-         }
-         if(this.map){
-            this.unloaded();
-         }
-         this.map = map;
-         this.bounds = new pow2.Rect(0, 0, this.map.width, this.map.height);
-         var idSortedSets = _.sortBy(this.map.tilesets, (o:TiledTSXResource) => {
-            return o.firstgid;
-         });
-         this.tiles.length = 0;
-         _.each(idSortedSets,(tiles:TiledTSXResource) => {
-            while(this.tiles.length < tiles.firstgid){
-               this.tiles.push(null);
-            }
-            this.tiles = this.tiles.concat(tiles.tiles);
-         });
-         this.features = _.where(this.map.layers,{name:"Features"})[0] || [];
-         this.zones = _.where(this.map.layers,{name:"Zones"})[0] || [];
-         this.loaded();
-         return true;
-      }
+    getLayer(name:string):tiled.ITiledLayer {
+      return <tiled.ITiledLayer>_.where(this.map.layers, {name: name})[0];
+    }
 
-      getLayers():tiled.ITiledLayer[] {
-         return this.map ? this.map.layers : [];
-      }
+    getTerrain(layer:string, x:number, y:number) {
+      return this.getTileData(this.getLayer(layer), x, y);
+    }
 
-      getLayer(name:string):tiled.ITiledLayer{
-         return <tiled.ITiledLayer>_.where(this.map.layers,{name:name})[0];
+    getTileData(layer:tiled.ITiledLayer, x:number, y:number) {
+      if (!this.map || !layer || !layer.data || !this.bounds.pointInRect(x, y)) {
+        return null;
       }
+      var terrainIndex = y * this.map.width + x;
+      var tileIndex = layer.data[terrainIndex];
+      return this.tiles[tileIndex];
+    }
 
-      getTerrain(layer:string, x:number, y:number) {
-         return this.getTileData(this.getLayer(layer),x,y);
+    getTileGid(layer:string, x:number, y:number):number {
+      var terrain:tiled.ITiledLayer = this.getLayer(layer);
+      if (!this.map || !terrain || !terrain.data || !this.bounds.pointInRect(x, y)) {
+        return null;
       }
+      var terrainIndex = y * this.map.width + x;
+      return terrain.data[terrainIndex];
+    }
 
-      getTileData(layer:tiled.ITiledLayer, x:number, y:number) {
-         if (!this.map || !layer || !layer.data || !this.bounds.pointInRect(x, y)) {
-            return null;
-         }
-         var terrainIndex = y * this.map.width + x;
-         var tileIndex = layer.data[terrainIndex];
-         return this.tiles[tileIndex];
+    getTileMeta(gid:number):pow2.tiled.ITileInstanceMeta {
+      if (this.tiles.length <= gid) {
+        return null;
       }
-
-      getTileGid(layer:string, x:number, y:number):number {
-         var terrain:tiled.ITiledLayer = this.getLayer(layer);
-         if (!this.map || !terrain || !terrain.data || !this.bounds.pointInRect(x, y)) {
-            return null;
-         }
-         var terrainIndex = y * this.map.width + x;
-         return terrain.data[terrainIndex];
+      var source = _.find(this.map.tilesets, (t:TiledTSXResource) => {
+        return t.hasGid(gid);
+      });
+      if (!source) {
+        return null;
       }
-
-      getTileMeta(gid:number):pow2.tiled.ITileInstanceMeta {
-         if(this.tiles.length <= gid){
-            return null;
-         }
-         var source = _.find(this.map.tilesets,(t:TiledTSXResource) => {
-            return t.hasGid(gid);
-         });
-         if(!source){
-            return null;
-         }
-         return source.getTileMeta(gid);
-      }
-   }
+      return source.getTileMeta(gid);
+    }
+  }
 }

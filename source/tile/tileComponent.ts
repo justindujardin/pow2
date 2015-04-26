@@ -1,5 +1,5 @@
-/**
- Copyright (C) 2013 by Justin DuJardin
+/*
+ Copyright (C) 2013-2015 by Justin DuJardin and Contributors
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -14,35 +14,49 @@
  limitations under the License.
  */
 
-/// <reference path="../../lib/pow2.d.ts"/>
 /// <reference path="./tileObject.ts" />
 /// <reference path="./tileMap.ts" />
 
-module pow2 {
-   export class TileComponent extends SceneComponent {
-      host:TileObject;
-      isEntered:boolean;
+module pow2.tile {
+  export class TileComponent extends pow2.scene.SceneComponent {
+    host:TileObject;
+    isEntered:boolean;
 
-      syncComponent():boolean{
-         return !!this.host.tileMap && this.host.tileMap instanceof TileMap;
-      }
-      disconnectComponent():boolean{
-         return true;
-      }
+    /**
+     * Events triggered on host object for enter/exit of
+     * tiles.
+     */
+    static Events:any = {
+      ENTERED: "tile:entered",
+      EXITED: "tile:exited"
+    };
 
-      enter(object:TileObject):boolean {
-         return true;
-      }
-      entered(object:TileObject) {
-         this.isEntered = true;
-         return true;
-      }
-      exit(object:TileObject):boolean {
-         return true;
-      }
-      exited(object:TileObject) {
-         this.isEntered = false;
-         return true;
-      }
-   }
+    syncComponent():boolean {
+      return !!this.host.tileMap && this.host.tileMap instanceof TileMap;
+    }
+
+    disconnectComponent():boolean {
+      return true;
+    }
+
+    enter(object:TileObject):boolean {
+      return true;
+    }
+
+    entered(object:TileObject) {
+      this.host.trigger(TileComponent.Events.ENTERED, this);
+      this.isEntered = true;
+      return true;
+    }
+
+    exit(object:TileObject):boolean {
+      return true;
+    }
+
+    exited(object:TileObject) {
+      this.host.trigger(TileComponent.Events.EXITED, this);
+      this.isEntered = false;
+      return true;
+    }
+  }
 }

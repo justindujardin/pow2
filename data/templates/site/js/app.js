@@ -1,0 +1,523 @@
+var DocsApp = angular.module('docsApp', ['ngMaterial', 'ngRoute', 'ngMessages'])
+      .constant('COMPONENTS',[])
+      .constant('BUILDCONFIG',[])
+      .constant('DEMOS',[])
+      .constant('PAGES',[])
+.config([
+  'COMPONENTS',
+  'METADATA',
+  'DEMOS',
+  'PAGES',
+  '$routeProvider',
+  '$mdThemingProvider',
+function(COMPONENTS, METADATA, DEMOS, PAGES, $routeProvider, $mdThemingProvider) {
+  $routeProvider
+    .when('/', {
+      templateUrl: '/partials/home.tmpl.html'
+    })
+    .when('/layout/:tmpl', {
+      templateUrl: function(params){
+        return '/partials/layout-' + params.tmpl + '.tmpl.html';
+      }
+    })
+    .when('/layout/', {
+      redirectTo: function() {
+        return "/layout/container";
+      }
+    })
+    .when('/demo/', {
+      redirectTo: function() {
+        return DEMOS[0].url;
+      }
+    })
+    .when('/api/', {
+      redirectTo: function() {
+        return COMPONENTS[0].docs[0].url;
+      }
+    })
+    .when('/module/:name', {
+      redirectTo: function() {
+        return METADATA.modules[0].docs[0].url;
+      }
+    })
+    .when('/:module/classes/:class', {
+      templateUrl: function(params){
+        return '/partials/class.tmpl.html';
+      },
+      controller:'ClassController'
+    })
+    .when('/:module/interfaces/:name', {
+      templateUrl: function(params){
+        return '/partials/layout-' + params.tmpl + '.tmpl.html';
+      }
+    })
+    .when('/:module/enumerations/:name', {
+      templateUrl: function(params){
+        return '/partials/layout-' + params.tmpl + '.tmpl.html';
+      }
+    })
+    .when('/getting-started', {
+      templateUrl: '/partials/getting-started.tmpl.html'
+    });
+
+  $mdThemingProvider.theme('docs-dark', 'default')
+    .primaryPalette('yellow')
+    .dark();
+
+  angular.forEach(PAGES, function(pages, area) {
+    angular.forEach(pages, function(page) {
+      $routeProvider
+        .when(page.url, {
+          templateUrl: page.outputPath,
+          controller: 'GuideCtrl'
+        });
+    });
+  });
+
+  angular.forEach(COMPONENTS, function(component) {
+    angular.forEach(component.docs, function(doc) {
+      doc.url = '/' + doc.url;
+      $routeProvider.when(doc.url, {
+        templateUrl: doc.outputPath,
+        resolve: {
+          component: function() { return component; },
+          doc: function() { return doc; }
+        },
+        controller: 'ComponentDocCtrl'
+      });
+    });
+  });
+
+  angular.forEach(DEMOS, function(componentDemos) {
+    var demoComponent;
+    angular.forEach(COMPONENTS, function(component) {
+      if (componentDemos.name === component.name) {
+        demoComponent = component;
+      }
+    });
+    demoComponent = demoComponent || angular.extend({}, componentDemos);
+    $routeProvider.when(componentDemos.url, {
+      templateUrl: '/partials/demo.tmpl.html',
+      controller: 'DemoCtrl',
+      resolve: {
+        component: function() { return demoComponent; },
+        demos: function() { return componentDemos.demos; }
+      }
+    });
+  });
+
+  $routeProvider.otherwise('/');
+}])
+
+.factory('menu', [
+  'COMPONENTS',
+  'METADATA',
+  'DEMOS',
+  'PAGES',
+  '$location',
+  '$rootScope',
+function(COMPONENTS, METADATA, DEMOS, PAGES, $location, $rootScope) {
+
+  var sections = [{
+    name: 'Play Now',
+    url: '/play',
+    type: 'link'
+  }];
+
+  var demoDocs = [];
+  angular.forEach(DEMOS, function(componentDemos) {
+    demoDocs.push({
+      name: componentDemos.label,
+      url: componentDemos.url
+    });
+  });
+
+  var docsByModule = {};
+  var apiDocs = {};
+  COMPONENTS.forEach(function(component) {
+    component.docs.forEach(function(doc) {
+      if (angular.isDefined(doc.private)) return;
+      apiDocs[doc.type] = apiDocs[doc.type] || [];
+      apiDocs[doc.type].push(doc);
+
+      docsByModule[doc.module] = docsByModule[doc.module] || [];
+      docsByModule[doc.module].push(doc);
+    });
+  });
+
+
+   var apiReference = {
+      name: 'Modules',
+      type: 'heading',
+      children: []
+   };
+
+  METADATA.modules.forEach(function(component) {
+   apiReference.children.push({
+      name: component.name,
+      pages: component.classes,
+      type: component.type
+    });
+  });
+
+
+   var entities = {
+      name: 'Entities',
+      type: 'heading',
+      children: []
+   };
+
+  (METADATA.entities || []).forEach(function(component) {
+    var menuItem = {
+      name:component.name,
+      type:'toggle',
+      pages:[]
+    };
+    (component.templates || []).forEach(function(template) {
+      menuItem.pages.push({
+        name:template.name,
+        url:component.url,
+        type:'link'
+      })
+    });
+    entities.children.push(menuItem);
+  });
+
+   sections.push(entities);
+   sections.push(apiReference);
+
+  function sortByName(a,b) {
+    return a.name < b.name ? -1 : 1;
+  }
+
+  var self;
+
+  $rootScope.$on('$locationChangeSuccess', onLocationChange);
+
+  return self = {
+    sections: sections,
+
+    selectSection: function(section) {
+      self.openedSection = section;
+    },
+    toggleSelectSection: function(section) {
+      self.openedSection = (self.openedSection === section ? null : section);
+    },
+    isSectionSelected: function(section) {
+      return self.openedSection === section;
+    },
+
+    selectPage: function(section, page) {
+      page && page.url && $location.path(page.url);
+      self.currentSection = section;
+      self.currentPage = page;
+    },
+    isPageSelected: function(page) {
+      return self.currentPage === page;
+    }
+  };
+
+  function sortByHumanName(a,b) {
+    return (a.humanName < b.humanName) ? -1 :
+      (a.humanName > b.humanName) ? 1 : 0;
+  }
+
+  function onLocationChange() {
+    var path = $location.path();
+
+    var matchPage = function(section, page) {
+      if (path === page.url) {
+        self.selectSection(section);
+        self.selectPage(section, page);
+      }
+    };
+
+    sections.forEach(function(section) {
+      if(section.children) {
+        // matches nested section toggles, such as API or Customization
+        section.children.forEach(function(childSection){
+          if(childSection.pages){
+            childSection.pages.forEach(function(page){
+              matchPage(childSection, page);
+            });
+          }
+        });
+      }
+      else if(section.pages) {
+        // matches top-level section toggles, such as Demos
+        section.pages.forEach(function(page) {
+          matchPage(section, page);
+        });
+      }
+      else if (section.type === 'link') {
+        // matches top-level links, such as "Getting Started"
+        matchPage(section, section);
+      }
+    });
+  }
+}])
+
+.directive('menuLink', function() {
+  return {
+    scope: {
+      section: '='
+    },
+    templateUrl: '/partials/menu-link.tmpl.html',
+    link: function($scope, $element) {
+      var controller = $element.parent().controller();
+
+      $scope.isSelected = function() {
+        return controller.isSelected($scope.section);
+      };
+    }
+  };
+})
+
+.directive('menuToggle', function() {
+  return {
+    scope: {
+      section: '='
+    },
+    templateUrl: '/partials/menu-toggle.tmpl.html',
+    link: function($scope, $element) {
+      var controller = $element.parent().controller();
+
+      $scope.isOpen = function() {
+        return controller.isOpen($scope.section);
+      };
+      $scope.toggle = function() {
+        controller.toggleOpen($scope.section);
+      };
+
+      var parentNode = $element[0].parentNode.parentNode.parentNode;
+      if(parentNode.classList.contains('parent-list-item')) {
+        var heading = parentNode.querySelector('h2');
+        $element[0].firstChild.setAttribute('aria-describedby', heading.id);
+      }
+    }
+  };
+})
+
+.controller('DocsCtrl', [
+  '$scope',
+  'COMPONENTS',
+  'BUILDCONFIG',
+  '$mdSidenav',
+  '$timeout',
+  '$mdDialog',
+  'menu',
+  '$location',
+  '$rootScope',
+  '$log',
+function($scope, COMPONENTS, BUILDCONFIG, $mdSidenav, $timeout, $mdDialog, menu, $location, $rootScope, $log) {
+  $scope.COMPONENTS = COMPONENTS;
+  $scope.BUILDCONFIG = BUILDCONFIG;
+  $scope.menu = menu;
+
+  $scope.path = path;
+  $scope.goHome = goHome;
+  $scope.openMenu = openMenu;
+  $scope.closeMenu = closeMenu;
+  $scope.isSectionSelected = isSectionSelected;
+
+  $rootScope.$on('$locationChangeSuccess', openPage);
+
+  // Methods used by menuLink and menuToggle directives
+  this.isOpen = isOpen;
+  this.isSelected = isSelected;
+  this.toggleOpen = toggleOpen;
+
+  var mainContentArea = document.querySelector("[role='main']");
+
+  // *********************
+  // Internal methods
+  // *********************
+
+  function closeMenu() {
+    $timeout(function() { $mdSidenav('left').close(); });
+  }
+
+  function openMenu() {
+    $timeout(function() { $mdSidenav('left').open(); });
+  }
+
+  function path() {
+    return $location.path();
+  }
+
+  function goHome($event) {
+    menu.selectPage(null, null);
+    $location.path( '/' );
+  }
+
+  function openPage() {
+    $scope.closeMenu();
+    mainContentArea.focus();
+  }
+
+  function isSelected(page) {
+    return menu.isPageSelected(page);
+  }
+
+  function isSectionSelected(section) {
+    var selected = false;
+    var openedSection = menu.openedSection;
+    if(openedSection === section){
+      selected = true;
+    }
+    else if(section.children) {
+      section.children.forEach(function(childSection) {
+        if(childSection === openedSection){
+          selected = true;
+        }
+      });
+    }
+    return selected;
+  }
+
+  function isOpen(section) {
+    return menu.isSectionSelected(section);
+  }
+
+  function toggleOpen(section) {
+    menu.toggleSelectSection(section);
+  }
+}])
+
+.controller('HomeCtrl', [
+  '$scope',
+  '$rootScope',
+  '$http',
+function($scope, $rootScope, $http) {
+  $rootScope.currentComponent = $rootScope.currentDoc = null;
+
+  $scope.version = "";
+  $scope.versionURL = "";
+
+  // Load build version information; to be
+  // used in the header bar area
+  var now = Math.round(new Date().getTime()/1000);
+  var versionFile = "version.json" + "?ts=" + now;
+
+  $http.get("version.json")
+    .then(function(response){
+      var sha = response.data.sha || "";
+      var url = response.data.url;
+
+      if (sha) {
+        $scope.versionURL = url + sha;
+        $scope.version = sha.substr(0,6);
+      }
+    });
+
+
+}])
+
+
+
+.filter('toHtml', ['$sce', function($sce) {
+  return function(str) {
+    return $sce.trustAsHtml(str);
+  };
+}])
+
+.controller('ClassController', [
+  '$scope',
+  '$rootScope',
+  '$routeParams',
+  '$http',
+function($scope, $rootScope, $routeParams, $http) {
+  $scope.class = $routeParams.class;
+  $http.get('data/classes/' + $routeParams.module + '.' + $routeParams.class + ".json")
+    .then(function(response){
+      $scope.reflection = response.data;
+
+    });
+
+
+}])
+
+
+.controller('GuideCtrl', [
+  '$rootScope',
+function($rootScope) {
+  $rootScope.currentComponent = $rootScope.currentDoc = null;
+}])
+
+.controller('ComponentDocCtrl', [
+  '$scope',
+  'doc',
+  'component',
+  '$rootScope',
+  '$templateCache',
+  '$http',
+  '$q',
+function($scope, doc, component, $rootScope, $templateCache, $http, $q) {
+  $rootScope.currentComponent = component;
+  $rootScope.currentDoc = doc;
+}])
+
+.controller('DemoCtrl', [
+  '$rootScope',
+  '$scope',
+  'component',
+  'demos',
+  '$http',
+  '$templateCache',
+  '$q',
+function($rootScope, $scope, component, demos, $http, $templateCache, $q) {
+  $rootScope.currentComponent = component;
+  $rootScope.currentDoc = null;
+
+  $scope.demos = [];
+
+  angular.forEach(demos, function(demo) {
+    // Get displayed contents (un-minified)
+    var files = [demo.index]
+      .concat(demo.js || [])
+      .concat(demo.css || [])
+      .concat(demo.html || []);
+    files.forEach(function(file) {
+      file.httpPromise =$http.get(file.outputPath, {cache: $templateCache})
+        .then(function(response) {
+          file.contents = response.data
+            .replace('<head/>', '');
+          return file.contents;
+        });
+    });
+    demo.$files = files;
+    $scope.demos.push(demo);
+  });
+
+  $scope.demos = $scope.demos.sort(function(a,b) {
+    return a.name > b.name ? 1 : -1;
+  });
+
+}])
+
+.filter('nospace', function () {
+  return function (value) {
+    return (!value) ? '' : value.replace(/ /g, '');
+  };
+})
+.filter('humanizeDoc', function() {
+  return function(doc) {
+    if (!doc) return;
+    if (doc.type === 'directive') {
+      return doc.name.replace(/([A-Z])/g, function($1) {
+        return '-'+$1.toLowerCase();
+      });
+    }
+    return doc.label || doc.name;
+  };
+})
+
+.filter('directiveBrackets', function() {
+  return function(str) {
+    if (str.indexOf('-') > -1) {
+      return '<' + str + '>';
+    }
+    return str;
+  };
+})
+;

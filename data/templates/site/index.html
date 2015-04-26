@@ -1,0 +1,128 @@
+<!doctype html>
+<html ng-app="docsApp" ng-controller="DocsCtrl" lang="en" ng-strict-di>
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Pow2</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="/css/angular-material.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/layout-demo.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:400,500,700,400italic">
+</head>
+<body layout="row">
+
+<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
+            md-component-id="left"
+            md-is-locked-open="$media('gt-sm')">
+
+  <md-toolbar>
+    <h1 class="md-toolbar-tools">
+      <a ng-href="/" layout="row" flex>
+        <md-icon md-svg-src="img/icons/ic_sword_24px.svg"></md-icon>
+        <div flex style="line-height:40px; text-indent: 15px;">Pow2</div>
+      </a>
+    </h1>
+  </md-toolbar>
+
+  <md-content flex>
+    <ul class="docs-menu">
+      <li ng-repeat="section in menu.sections" class="parent-list-item"
+          ng-class="{'parentActive' : isSectionSelected(section)}">
+        <h2 class="menu-heading" ng-if="section.type === 'heading'" id="heading_{{ section.name | nospace }}">
+          {{section.name}}
+        </h2>
+        <menu-link section="section" ng-if="section.type === 'link'"></menu-link>
+
+        <menu-toggle section="section" ng-if="section.type === 'toggle'"></menu-toggle>
+
+        <ul ng-if="section.children" class="menu-nested-list">
+          <li ng-repeat="child in section.children" ng-class="{'childActive' : isSectionSelected(child)}">
+            <menu-toggle section="child"></menu-toggle>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </md-content>
+</md-sidenav>
+
+<div layout="column" tabIndex="-1" role="main" flex>
+  <md-toolbar>
+
+    <div class="md-toolbar-tools" ng-click="openMenu()">
+      <button class="menu-icon" hide-gt-sm aria-label="Toggle Menu">
+        <md-icon md-svg-src="img/icons/ic_menu_24px.svg"></md-icon>
+      </button>
+
+      <div layout="row" flex class="fill-height">
+        <div class="md-toolbar-item md-breadcrumb">
+            <span ng-if="menu.currentPage.name !== menu.currentSection.name">
+              <span hide-sm hide-md>{{menu.currentSection.name}}</span>
+              <span class="menu-separator-icon" style="padding: 0 10px;" hide-sm hide-md>
+                <img style="height: 16px;" src="img/docArrow.png" alt="" aria-hidden="true">
+              </span>
+            </span>
+          <span style="display: inline-block;">{{(menu.currentPage | humanizeDoc) || 'Game Builder' }}</span>
+        </div>
+
+        <span flex></span> <!-- use up the empty space -->
+
+        <div class="md-toolbar-item md-tools" layout="row">
+          <div ng-repeat="doc in currentComponent.docs">
+            <md-button ng-href="#{{doc.url}}"
+                       ng-class="{hide: path().indexOf('demo') == -1}"
+                       aria-label="{{ doc | humanizeDoc }}">
+              {{doc | humanizeDoc | directiveBrackets}}
+            </md-button>
+          </div>
+          <md-button ng-class="{hide: !currentDoc || !currentDoc.hasDemo}"
+                     ng-href="#/demo/{{currentComponent.name}}"
+                     style="position: relative; padding-left: 30px; margin-right: 15px;">
+            <md-icon md-svg-src="img/icons/ic_play_arrow_24px.svg" style="
+                  height: 36px;
+                  position: absolute;
+                  left: 0px;
+                  top: -3px;
+                  margin-top: 0;"></md-icon>
+            <span>View Demo</span>
+          </md-button>
+
+          <md-button ng-class="{hide: !currentDoc}"
+                     ng-href="{{currentDoc.githubUrl}}"
+                     hide-sm hide-md
+                     style="position: relative; padding-left: 30px; margin-right: 15px;">
+            <md-icon md-svg-src="img/icons/ic_launch_24px.svg" style="
+                  height: 36px;
+                  position: absolute;
+                  left: 0px;
+                  top: -3px;
+                  margin-top: 0;"></md-icon>
+            <span>View on Github</span>
+          </md-button>
+        </div>
+      </div>
+    </div>
+
+  </md-toolbar>
+
+  <md-content ng-view md-scroll-y flex class="md-padding"></md-content>
+
+</div>
+
+<script src="js/angular.js"></script>
+<script src="js/angular-aria.js"></script>
+<script src="js/angular-messages.js"></script>
+<script src="js/angular-route.js"></script>
+<script src="js/angular-material.js"></script>
+<script src="js/angular-animate.js"></script>
+<script src="js/app.js"></script>
+<script src="js/ngPanel.js"></script>
+<script src="metadata.js"></script>
+
+</body>
+</html>
+
+
