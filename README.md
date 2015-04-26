@@ -50,4 +50,4 @@ Commit messages should [follow conventions](CONVENTIONS.md)
 The folks over at [JetBrains](https://www.jetbrains.com/) have been kind enough to sponsor this open source project by providing 
 free licenses of [WebStorm](https://www.jetbrains.com/webstorm/) to any serious contributors to the project.  
 
-![JetBrains](data/jetbrains/logo_jetbrains.svg)![WebStorm](data/jetbrains/logo_webstorm.svg)
+[![JetBrains](data/jetbrains/logo_jetbrains.svg)](https://www.jetbrains.com/) [![WebStorm](data/jetbrains/logo_webstorm.svg)](https://www.jetbrains.com/webstorm/)
