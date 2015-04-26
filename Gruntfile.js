@@ -344,8 +344,9 @@ module.exports = function (grunt) {
 
     docs: {
       dorkapon: {
+        entities: ['games/dorkapon/**/*.powEntities'],
         files: [
-          {src: 'games/dorkapon/components/*.ts', dest: 'web/docs/dorkapon'}
+          {src: 'games/dorkapon/services/*.ts', dest: 'web/docs/dorkapon'}
         ]
       },
       api: {
@@ -354,37 +355,10 @@ module.exports = function (grunt) {
         ]
       },
       rpg: {
+        entities: ['games/rpg/**/*.powEntities'],
         files: [
           {src: 'games/rpg/**/*.ts', dest: 'web/docs/rpg'}
         ]
-      }
-    },
-
-    typedoc: {
-      options: {
-        target: 'es5',
-        module: 'commonjs'
-      },
-      core: {
-        options: {
-          out: './web/docs/core',
-          name: '<%= pkg.name %>'
-        },
-        src: ['./source/**/*']
-      },
-      dorkapon: {
-        options: {
-          out: './web/docs/dorkapon',
-          name: 'Dorkapon Game'
-        },
-        src: ['./games/dorkapon/']
-      },
-      rpg: {
-        options: {
-          out: './web/docs/rpg',
-          name: 'Final Funtasy'
-        },
-        src: ['./games/rpg/**/*']
       }
     }
 

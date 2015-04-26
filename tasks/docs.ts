@@ -20,18 +20,18 @@ module.exports = (grunt) => {
           }
           var modName:string = ns.join('.');
 
-          if(!modules[modName]){
+          if (!modules[modName]) {
             modules[modName] = {
-              classes:[],
-              interfaces:[],
-              enumerations:[],
-              reflections:[]
+              classes: [],
+              interfaces: [],
+              enumerations: [],
+              reflections: []
             };
           }
           modules[modName].reflections.push(c);
-          modules[modName].classes = enumerateClasses(c,modules[modName].classes);
-          modules[modName].enumerations = enumerateEnums(c,modules[modName].enumerations);
-          modules[modName].interfaces = enumerateInterfaces(c,modules[modName].interfaces);
+          modules[modName].classes = enumerateClasses(c, modules[modName].classes);
+          modules[modName].enumerations = enumerateEnums(c, modules[modName].enumerations);
+          modules[modName].interfaces = enumerateInterfaces(c, modules[modName].interfaces);
       }
       enumerateModules(c, modules);
     });
@@ -43,7 +43,7 @@ module.exports = (grunt) => {
       switch (c.kind) {
         case td.ReflectionKind.Class:
           items.push({
-            name:c.name,
+            name: c.name,
             reflection: c
           });
       }
@@ -56,7 +56,7 @@ module.exports = (grunt) => {
       switch (c.kind) {
         case td.ReflectionKind.Interface:
           items.push({
-            name:c.name,
+            name: c.name,
             reflection: c
           });
       }
@@ -69,7 +69,7 @@ module.exports = (grunt) => {
       switch (c.kind) {
         case td.ReflectionKind.Enum:
           items.push({
-            name:c.name,
+            name: c.name,
             reflection: c
           });
       }
@@ -109,34 +109,11 @@ module.exports = (grunt) => {
     });
     return _.uniq(result);
   }
+
   function buildClasses(modules:any[]) {
     var result = [];
     _.each(modules, (value:any, key:string) => {
-      _.each(value.classes,(c) => {
-        result.push({
-          name: key + '.' + c.name,
-          data: c.reflection.toObject()
-        })
-      });
-    });
-    return result;
-  }
-  function buildEnumerations(modules:any[]) {
-    var result = [];
-    _.each(modules, (value:any, key:string) => {
-      _.each(value.enumerations,(c) => {
-        result.push({
-          name: key + '.' + c.name,
-          data: c.reflection.toObject()
-        })
-      });
-    });
-    return result;
-  }
-  function buildInterfaces(modules:any[]) {
-    var result = [];
-    _.each(modules, (value:any, key:string) => {
-      _.each(value.interfaces,(c) => {
+      _.each(value.classes, (c) => {
         result.push({
           name: key + '.' + c.name,
           data: c.reflection.toObject()
@@ -146,12 +123,71 @@ module.exports = (grunt) => {
     return result;
   }
 
+  function buildInterfaces(modules:any[]) {
+    var result = [];
+    _.each(modules, (value:any, key:string) => {
+      _.each(value.interfaces, (c) => {
+        result.push({
+          name: key + '.' + c.name,
+          data: c.reflection.toObject()
+        })
+      });
+    });
+    return result;
+  }
+
+  function buildEnumerations(modules:any[]) {
+    var result = [];
+    _.each(modules, (value:any, key:string) => {
+      _.each(value.enumerations, (c) => {
+        result.push({
+          name: key + '.' + c.name,
+          data: c.reflection.toObject()
+        })
+      });
+    });
+    return result;
+  }
+
+  function buildEntities(workingPath:string,entities:any[]) {
+    var result = [];
+
+    // Enumerate Entities used in game, and pull out some metadata for site navigation.
+    _.each(entities, (e:string) => {
+      var fileName:string = e.substr(e.lastIndexOf('/') + 1).replace('.powEntities', '.json');
+      var fileRelative:string = path.join("data/entities", fileName);
+      var destFile:string = path.join(workingPath, fileRelative);
+
+      // Metadata about entities
+      var entityDescription = {
+        name: fileName.replace('.json', ''),
+        url: fileRelative,
+        templates: []
+      };
+
+      var entityContainer = grunt.file.readJSON(e);
+      _.each(entityContainer || [], (template:pow2.IEntityTemplate)=> {
+        entityDescription.templates.push({
+          name: template.name,
+          url: fileRelative
+        });
+      });
+      result.push(entityDescription);
+      grunt.file.copy(e, destFile);
+    });
+    return result;
+  }
 
   grunt.registerMultiTask('docs', function () {
     var done = this.async();
     var app = new td.Application();
 
     var queue = this.files.slice();
+
+    var entities = grunt.file.expand(this.data.entities || []);
+
+    var foo = 2;
+    //var entities = this.data.
 
     function _next() {
       if (queue.length > 0) {
@@ -182,20 +218,21 @@ module.exports = (grunt) => {
 
         var indexObject = {
           reflections: reflectionsIndex,
-          modules: buildModules(enumerateModules(result.project))
+          modules: buildModules(modules),
+          entities: buildEntities(exec.dest,entities)
         };
 
-        _.each(classes,(c) => {
+        _.each(classes, (c) => {
           var classFile:string = path.join(exec.dest, "data/classes", c.name + '.json');
-          grunt.file.write(classFile, JSON.stringify(c.data,null,2));
+          grunt.file.write(classFile, JSON.stringify(c.data, null, 2));
         });
-        _.each(enumerations,(c) => {
+        _.each(enumerations, (c) => {
           var classFile:string = path.join(exec.dest, "data/enumerations", c.name + '.json');
-          grunt.file.write(classFile, JSON.stringify(c.data,null,2));
+          grunt.file.write(classFile, JSON.stringify(c.data, null, 2));
         });
-        _.each(interfaces,(c) => {
+        _.each(interfaces, (c) => {
           var classFile:string = path.join(exec.dest, "data/interfaces", c.name + '.json');
-          grunt.file.write(classFile, JSON.stringify(c.data,null,2));
+          grunt.file.write(classFile, JSON.stringify(c.data, null, 2));
         });
         var jsSlug = "DocsApp.constant('METADATA', " + JSON.stringify(indexObject, null, 2) + ");";
         grunt.file.write(indexFile, jsSlug);

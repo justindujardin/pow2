@@ -119,8 +119,8 @@ function(COMPONENTS, METADATA, DEMOS, PAGES, $routeProvider, $mdThemingProvider)
 function(COMPONENTS, METADATA, DEMOS, PAGES, $location, $rootScope) {
 
   var sections = [{
-    name: 'Getting Started',
-    url: '/getting-started',
+    name: 'Play Now',
+    url: '/play',
     type: 'link'
   }];
 
@@ -131,35 +131,6 @@ function(COMPONENTS, METADATA, DEMOS, PAGES, $location, $rootScope) {
       url: componentDemos.url
     });
   });
-
-  //sections.push({
-  //  name: 'Customization',
-  //  type: 'heading',
-  //  children: [{
-  //    name: 'Theming',
-  //    type: 'toggle',
-  //    pages: [{
-  //      name: 'Introduction and Terms',
-  //      url: '/Theming/01_introduction',
-  //      type: 'link'
-  //    },
-  //    {
-  //      name: 'Declarative Syntax',
-  //      url: '/Theming/02_declarative_syntax',
-  //      type: 'link'
-  //    },
-  //    {
-  //      name: 'Configuring a Theme',
-  //      url: '/Theming/03_configuring_a_theme',
-  //      type: 'link'
-  //    },
-  //    {
-  //      name: 'Multiple Themes',
-  //      url: '/Theming/04_multiple_themes',
-  //      type: 'link'
-  //    }]
-  //  }]
-  //});
 
   var docsByModule = {};
   var apiDocs = {};
@@ -189,6 +160,30 @@ function(COMPONENTS, METADATA, DEMOS, PAGES, $location, $rootScope) {
     });
   });
 
+
+   var entities = {
+      name: 'Entities',
+      type: 'heading',
+      children: []
+   };
+
+  (METADATA.entities || []).forEach(function(component) {
+    var menuItem = {
+      name:component.name,
+      type:'toggle',
+      pages:[]
+    };
+    (component.templates || []).forEach(function(template) {
+      menuItem.pages.push({
+        name:template.name,
+        url:component.url,
+        type:'link'
+      })
+    });
+    entities.children.push(menuItem);
+  });
+
+   sections.push(entities);
    sections.push(apiReference);
 
   function sortByName(a,b) {
