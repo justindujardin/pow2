@@ -1,3 +1,77 @@
+<a name="0.1.0"></a>
+## 0.1.0 (2015-04-26)
+
+
+#### Bug Fixes
+
+* combat lockup and menu alerts ([d7a3c0bf](http://github.com/justindujardin/pow2/commit/d7a3c0bf14db1fecb48656492305761363766a24))
+* make health bar directive more resilient ([6faf9e46](http://github.com/justindujardin/pow2/commit/6faf9e46146f5bd583cfcdb55557456981aab526))
+* **$powAlert:** race conditions and exception handling for callbacks ([c55c18dd](http://github.com/justindujardin/pow2/commit/c55c18dd05098b7789396bd4f23e5ba17a44551d))
+* **Combat:** running from fixed encounter does not defeat it ([c5722840](http://github.com/justindujardin/pow2/commit/c5722840c8194dc1ea62702bc578332ab9f69132))
+* **CombatEncounterComponent:** fix issue with map combat detection ([097d889a](http://github.com/justindujardin/pow2/commit/097d889ad34f36310a8d959403a028d8a4bd8e65))
+* **CombatView:** issue where touch events generate two clicks ([625617b2](http://github.com/justindujardin/pow2/commit/625617b216ce283ea4bb5901a6b3cc5fbcd6e847))
+* **ShipFeatureComponent:** issue where ship could not be boarded ([e28041c7](http://github.com/justindujardin/pow2/commit/e28041c70299592985ba04164282f4ee0a32c6d9))
+* **TileComponent:** fix trigger event notifications ([2a966b8c](http://github.com/justindujardin/pow2/commit/2a966b8ca4f7e2267afe1e0c7f8c0c4354cf59ae))
+* **combatHudController:** never allow escaping from turn order dialog ([73c9e467](http://github.com/justindujardin/pow2/commit/73c9e4672b5d000ce55b32bdfe327f25dafa71d8))
+* **dorkapon:** always show left and right fighters in combat ([42995341](http://github.com/justindujardin/pow2/commit/42995341c0634b520071df7d458b603a16d37246))
+* **playerRenderComponent:** set heading even if not animating ([bbb7b7fe](http://github.com/justindujardin/pow2/commit/bbb7b7fec244d439e5c612ef0f30207a73f01eb1))
+
+
+#### Features
+
+* add basic documentation site generation ([307bd1ec](http://github.com/justindujardin/pow2/commit/307bd1ecc1587c2970c0d2c2aa408f720b149f63))
+* generate documentation on heroku app ([e87c1c14](http://github.com/justindujardin/pow2/commit/e87c1c1444f62dbe39a210821466447d568e33d4))
+* support weapon and armor stats in battle ([e5eb9325](http://github.com/justindujardin/pow2/commit/e5eb9325bfb89a62e4284ac02dcad8e957cc1c89))
+* support weapon and armor nodes in map ([aa8e4106](http://github.com/justindujardin/pow2/commit/aa8e41063e371660415b1021f79fbf2d786c3af1))
+* add SceneViewComponent for view decoration ([511cd326](http://github.com/justindujardin/pow2/commit/511cd3269abaf69efa791746d9d3d3386d77992f))
+* add basic combat hud with character stats ([46819bd5](http://github.com/justindujardin/pow2/commit/46819bd5b665b8d87b7ee47723dbc957d856d469))
+* add specific monster and player models ([c18517e2](http://github.com/justindujardin/pow2/commit/c18517e24d5e59bbd344234d80b72d20126a7e5b))
+* build dorkapon ui in angular material system ([849bff47](http://github.com/justindujardin/pow2/commit/849bff4713b1f4e4e8f8a6e19c0449b55a6a8091))
+* pick turn order on combat start ([aa187a45](http://github.com/justindujardin/pow2/commit/aa187a45a2209d21ace13b8ea8468ccf4dfecb0f))
+* fight a random monster on empty tiles ([c6eaa855](http://github.com/justindujardin/pow2/commit/c6eaa855ec4a4e153270b7e0472372019c0b4f0a))
+* support transitioning to and from combat on empty tiles ([16c77867](http://github.com/justindujardin/pow2/commit/16c7786758be1a590f9bd43acc16d9c6a72a18ee))
+* add application state machine and load map state at startup ([753ef0f7](http://github.com/justindujardin/pow2/commit/753ef0f75c1f0274c9b604cccd483438ccabd850))
+* dorkapon combat state machine ([90b696c8](http://github.com/justindujardin/pow2/commit/90b696c884476502ab3e0b75c805709415d79580))
+* dorkaponEntity object and model for compositions ([1d850e7e](http://github.com/justindujardin/pow2/commit/1d850e7e49203a379c3ca446722b03a11f7c50a7))
+* add map node component ([82880e8a](http://github.com/justindujardin/pow2/commit/82880e8a6dd860547f43f7cee317f83891023f87))
+* camera that tracks active player on map ([2e6beab4](http://github.com/justindujardin/pow2/commit/2e6beab49b77b3a372b8478c4b6aabe7a8f800cc))
+* allow entity creation from template files ([a30fda09](http://github.com/justindujardin/pow2/commit/a30fda097088226c2c480b3a1a90f08e78da55a6))
+* **Combat:**
+  * basic hurt and heal magic ([2fb33e2b](http://github.com/justindujardin/pow2/commit/2fb33e2b5c550832b9490f877b42853166a3459f))
+  * support an arbitrary number of actions ([84ae36c0](http://github.com/justindujardin/pow2/commit/84ae36c09456f571622a5913e4d75bedc434273b))
+  * scaffolding combat action components ([50dce17e](http://github.com/justindujardin/pow2/commit/50dce17e3b0692aabc1f83238f79b0c73510efe5))
+  * choose all player moves up front ([a82bbccf](http://github.com/justindujardin/pow2/commit/a82bbccf7bb828f73d5df70293fabc9c52bb97f4))
+* **CombatView:**
+  * target selection from menu items ([92c1ec52](http://github.com/justindujardin/pow2/commit/92c1ec52e92df8b2ad3f52207f21fa6369e1d5ef))
+  * combat action chooser ui states ([0dd7412a](http://github.com/justindujardin/pow2/commit/0dd7412a7384d6ff5529796f5d1bbd04a38249d8))
+* **Dorkapon:**
+  * player camera and node clicking ([da55f0d3](http://github.com/justindujardin/pow2/commit/da55f0d36b312f36447478265f6d9f42857c56fb))
+  * map with path movement prototype ([0ec7e856](http://github.com/justindujardin/pow2/commit/0ec7e8563d87c75e162d9a455d194fc690a83f2a))
+* **DorkaponHud:** add basic player HUD ([fb2c254a](http://github.com/justindujardin/pow2/commit/fb2c254a0bfef2f550ec5291ce90d0232e3880e2))
+* **DorkaponMap:** scale canvas for smaller viewports ([85455902](http://github.com/justindujardin/pow2/commit/85455902392e7b28a45f30f69780907c1de53bfc))
+* **DorkaponTileMap:** node features with enter exit events ([085aa3e9](http://github.com/justindujardin/pow2/commit/085aa3e9d010a1c3c1e92f8afa139e9ff0645c29))
+* **EntityContainer:** support user specified object constructor args ([66b0cb63](http://github.com/justindujardin/pow2/commit/66b0cb634d2c2bc93ba839762bdb506cd050306d))
+* **GameMapView:** allow path target outline render customization ([6d46f399](http://github.com/justindujardin/pow2/commit/6d46f39951a4cbb72dbc874fae5a4f18b7bebc84))
+* **PlayerComponent:** add collideWithMap method ([496c141d](http://github.com/justindujardin/pow2/commit/496c141d9a65779162e527095be578651e7c05a1))
+* **PlayerTurnComponent:** scaffolding for moves and node components ([4d31ced3](http://github.com/justindujardin/pow2/commit/4d31ced3b92bf99e4998234473e55c853ef87bb1))
+* **StateMachine:**
+  * support multiple async notify callbacks ([b08784b2](http://github.com/justindujardin/pow2/commit/b08784b256d459125e268cb36fab49fb02e0c958))
+  * unwind the callstack before changing states ([d1b48959](http://github.com/justindujardin/pow2/commit/d1b48959f935730f56e2fc421f62b710f3de9639))
+* **StoreView:** support buying and selling inventory ([0135a090](http://github.com/justindujardin/pow2/commit/0135a09012f816b409921cb240a36d998050eb52))
+* **combat:**
+  * add magic action instead of attack for magic users ([730cdbe4](http://github.com/justindujardin/pow2/commit/730cdbe44ee0d179d57101b28342bd54cb3168dc))
+  * add guard action in combat to buff defense ([6c4ecce3](http://github.com/justindujardin/pow2/commit/6c4ecce30ae32c31aa5aa8d03d253b1902166dca))
+* **docs:** enumerate pow entities and list them in documentation ([a2f8e6fc](http://github.com/justindujardin/pow2/commit/a2f8e6fc69d96365fe2f137ed8ffd73680a7be84))
+* **dorkapon:** clear game data cache when ?dev is on the url ([81120e67](http://github.com/justindujardin/pow2/commit/81120e671ad3f08de94887c59d0adc4586cfa65f))
+* **dorkaponCombat:**
+  * real interactive combat simulation ([74d0d26a](http://github.com/justindujardin/pow2/commit/74d0d26acc7b9aae44f08da519ec9080426c2cde))
+  * basic animations for fighters ([f4b1a0b8](http://github.com/justindujardin/pow2/commit/f4b1a0b8129fe308b7dcd87f9fd231499dbc3249))
+* **gameMapPlayer:** add path component for touch movement ([b17e6f32](http://github.com/justindujardin/pow2/commit/b17e6f32cdf6c4f9b3f68a369d6e704b603a0e24))
+* **grunt:** add typedoc generation support ([64847edf](http://github.com/justindujardin/pow2/commit/64847edf54197e7b023c6feb708f0d579d7c761e))
+* **playerCombatRenderComponent:** attack to the left and right ([22576863](http://github.com/justindujardin/pow2/commit/2257686368dbade5e79449da986af6788483c6ae))
+* **release:** version generated sprite sheets artifacts ([13911d25](http://github.com/justindujardin/pow2/commit/13911d2547490fb27bca873f8abe809edc3f1441))
+
+
 <a name="0.0.22"></a>
 ### 0.0.22 (2014-11-28)
 
