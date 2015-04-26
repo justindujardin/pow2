@@ -65,7 +65,7 @@ module rpg {
     /*
      * Render the tile map, and any features it has.
      */
-    renderFrame(elapsed) {
+    renderFrame(elapsed:number) {
       super.renderFrame(elapsed);
 
       var players = this.scene.objectsByComponent(pow2.game.components.PlayerCombatRenderComponent);

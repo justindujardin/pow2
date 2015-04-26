@@ -103,7 +103,7 @@ module pow2.tile {
     /*
      * Render the tile $map, and any features it has.
      */
-    renderFrame(elapsed) {
+    renderFrame(elapsed:number) {
       this.clearRect();
       if (!this.tileMap) {
         return;

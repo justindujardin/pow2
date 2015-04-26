@@ -30,7 +30,7 @@ module rpg {
     /*
      * Render the tile map, and any features it has.
      */
-    renderFrame(elapsed) {
+    renderFrame(elapsed:number) {
       if (!this._features) {
         this._features = <rpg.objects.GameFeatureObject[]>this.scene.objectsByType(rpg.objects.GameFeatureObject);
         this._renderables = this._renderables.concat(this._features);
