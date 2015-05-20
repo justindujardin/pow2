@@ -21,6 +21,7 @@ module rpg.objects {
     model:rpg.models.EntityModel;
     type:string; // TODO: enum?
     groups:any;
+    world:GameWorld = pow2.getWorld<GameWorld>('pow2');
 
     constructor(options:any) {
       super(_.omit(options || {}, ["x", "y", "type"]));
@@ -31,6 +32,15 @@ module rpg.objects {
 
     isDefeated():boolean {
       return this.model.isDefeated();
+    }
+
+    getSpells():any[] {
+      var spells:any = this.world.spreadsheet.getSheetData('magic');
+      var userLevel:number = this.model.get('level');
+      var userClass:string = this.model.get('type');
+      return _.filter(spells, (spell:any)=> {//TODO: spell type
+        return spell.level <= userLevel && _.indexOf(spell.usedby, userClass) !== -1;
+      });
     }
   }
 }

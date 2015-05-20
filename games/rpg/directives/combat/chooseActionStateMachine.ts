@@ -103,7 +103,13 @@ module rpg.directives.combat {
         machine.scene.off('click', clickSelect);
 
         if (machine.action instanceof rpg.components.combat.actions.CombatMagicComponent) {
-          machine.setCurrentState(ChooseMagicSpell.NAME);
+          if(machine.current.getSpells().length === 1){
+            machine.spell = machine.current.getSpells()[0];
+            machine.setCurrentState(ChooseActionTarget.NAME);
+          }
+          else {
+            machine.setCurrentState(ChooseMagicSpell.NAME);
+          }
         }
         else if (machine.action.canTarget()) {
           machine.setCurrentState(ChooseActionTarget.NAME);

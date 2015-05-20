@@ -101,18 +101,12 @@ module rpg.directives {
     }
 
     getSpells():any {
-      if (!this.choosingSpell) {
+      if (!this.choosingSpell || !this.choosingSpell.host) {
         return [];
       }
-      var spells:any = this.game.world.spreadsheet.getSheetData('magic');
       var host = <rpg.objects.GameEntityObject>this.choosingSpell.host;
-      var userLevel:number = host.model.get('level');
-      var userClass:string = host.model.get('type');
-      var results = _.filter(spells, (spell:any)=> {//TODO: spell type
-        return spell.level <= userLevel && _.indexOf(spell.usedby, userClass) !== -1;
-      });
-      console.error(spells);
-      return results;
+      var spells:any = host.getSpells();
+      return spells;
     }
 
     getTargets():rpg.objects.GameEntityObject[] {
