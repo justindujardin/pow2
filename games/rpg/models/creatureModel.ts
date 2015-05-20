@@ -50,6 +50,15 @@ module rpg.models {
       return _.extend(super.defaults(), CreatureModel.DEFAULTS);
     }
 
+    initialize(attributes?:any):void {
+      super.initialize(attributes);
+      // Set max values to the specified value for the creature.
+      this.set({
+        maxHP:attributes.hp,
+        maxMP:attributes.mp
+      })
+    }
+
     attack(defender:EntityModel):number {
       var hero = <HeroModel>defender;
       var defense = hero.getDefense();
