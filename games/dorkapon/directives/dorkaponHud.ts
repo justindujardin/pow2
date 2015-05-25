@@ -38,7 +38,7 @@ module dorkapon.directives {
       return {
         restrict: 'E',
         replace: true,
-        templateUrl: '/games/dorkapon/directives/dorkaponHud.html',
+        templateUrl: 'games/dorkapon/directives/dorkaponHud.html',
         controller: DorkaponHudController,
         controllerAs: "hud",
         link: (scope, element, attrs, controller:DorkaponHudController) => {

@@ -123,7 +123,7 @@ module rpg.directives {
     return {
       restrict: 'E',
       replace: true,
-      templateUrl: '/games/rpg/directives/combatView.html',
+      templateUrl: 'games/rpg/directives/combatView.html',
       controller: CombatViewController,
       controllerAs: "combatCtrl",
       link: (scope, element, attrs, controller:CombatViewController) => {

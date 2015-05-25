@@ -53,7 +53,7 @@ module rpg {
     return {
       restrict: 'E',
       scope: true,
-      templateUrl: '/games/rpg/directives/heroCard.html',
+      templateUrl: 'games/rpg/directives/heroCard.html',
       link: function ($scope:any, element, attrs) {
         $scope.hero = attrs.hero;
         $scope.$watch(attrs.hero, function (hero) {

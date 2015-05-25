@@ -23,7 +23,7 @@ module rpg.directives.bits {
       scope: {
         model: "="
       },
-      templateUrl: '/games/rpg/directives/bits/healthBar.html',
+      templateUrl: 'games/rpg/directives/bits/healthBar.html',
       controller: ($scope) => {
         $scope.getProgressClass = (model) => {
           if (!model || !model.attributes) {

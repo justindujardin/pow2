@@ -24,7 +24,7 @@ module rpg.directives {
     return {
       restrict: 'E',
       replace: true,
-      templateUrl: '/games/rpg/directives/dialogView.html',
+      templateUrl: 'games/rpg/directives/dialogView.html',
       link: function ($scope) {
 
         // Dialog bubbles

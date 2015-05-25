@@ -53,7 +53,7 @@ module rpg.directives.pages {
     return {
       restrict: 'E',
       scope: true,
-      templateUrl: '/games/rpg/directives/pages/mainMenu.html',
+      templateUrl: 'games/rpg/directives/pages/mainMenu.html',
       controllerAs: 'mainMenu',
       controller: MainMenuController,
       link: function ($scope:any, element, attrs) {

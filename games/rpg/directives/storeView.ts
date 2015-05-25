@@ -157,7 +157,7 @@ module rpg.directives {
   app.directive('storeView', ['game', (game:rpg.services.PowGameService, powAlert:rpg.services.PowAlertService) => {
     return {
       restrict: 'E',
-      templateUrl: '/games/rpg/directives/storeView.html',
+      templateUrl: 'games/rpg/directives/storeView.html',
       controller: StoreViewController,
       controllerAs: 'storeCtrl',
       link: ($scope, element, attrs, controller:StoreViewController) => {

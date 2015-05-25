@@ -24,7 +24,7 @@ module rpg.directives {
   app.directive('templeView', ['game', 'powAlert', function (game:rpg.services.PowGameService, powAlert:rpg.services.PowAlertService) {
     return {
       restrict: 'E',
-      templateUrl: '/games/rpg/directives/templeView.html',
+      templateUrl: 'games/rpg/directives/templeView.html',
       controller: function ($scope) {
         $scope.heal = () => {
           if (!$scope.temple) {

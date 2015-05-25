@@ -25,7 +25,7 @@ module rpg.directives {
     function (game:rpg.services.PowGameService) {
       return {
         restrict: 'E',
-        templateUrl: '/games/rpg/directives/gameMenu.html',
+        templateUrl: 'games/rpg/directives/gameMenu.html',
         controller: function ($scope) {
           $scope.page = 'party';
           $scope.open = false;
