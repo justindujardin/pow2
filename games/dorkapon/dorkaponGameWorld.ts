@@ -55,7 +55,7 @@ module dorkapon {
       //pow2.GameDataResource.clearCache();
       this.loader.registerType('powEntities', pow2.EntityContainerResource);
       this.tables = <pow2.GameDataResource>this.loader.loadAsType(dorkapon.SPREADSHEET_ID, pow2.GameDataResource);
-      this.factory = <pow2.EntityContainerResource>this.loader.load(dorkapon.ENTITIES_CONTAINER);
+      this.factory = <pow2.EntityContainerResource>this.loader.load(pow2.GAME_ROOT + dorkapon.ENTITIES_CONTAINER);
     }
 
 

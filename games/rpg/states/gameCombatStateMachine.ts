@@ -139,7 +139,7 @@ module rpg.states {
 
     constructor() {
       super();
-      rpg.GameWorld.get().loader.load('games/rpg/entities/combat.powEntities', (factory:pow2.EntityContainerResource)=> {
+      rpg.GameWorld.get().loader.load(pow2.GAME_ROOT + 'games/rpg/entities/combat.powEntities', (factory:pow2.EntityContainerResource)=> {
         this.factory = factory;
       });
       rpg.models.GameStateModel.getDataSource((spreadsheet:pow2.GameDataResource) => {

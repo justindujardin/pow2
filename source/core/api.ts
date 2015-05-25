@@ -27,6 +27,11 @@ module pow2 {
 
   export var NAME:string = "pow2.core";
 
+  /**
+   * Specified root path.  Used when loading game asset files, to support cross-domain usage.
+   */
+  export var GAME_ROOT:string = '';
+
   export interface ISpriteMeta {
     width: number;// Pixel width
     height: number;// Pixel height
@@ -81,7 +86,7 @@ module pow2 {
    */
   export function getMapUrl(name:string):string {
     if (name.indexOf('.tmx') === -1) {
-      return '/maps/' + name + '.tmx';
+      return pow2.GAME_ROOT + 'web/maps/' + name + '.tmx';
     }
     return name;
   }

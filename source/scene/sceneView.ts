@@ -48,7 +48,7 @@ module pow2.scene {
         throw new Error("A Canvas is required");
       }
       this.$el = $(canvas);
-      this.context = canvas.getContext("2d");
+      this.context = <CanvasRenderingContext2D>canvas.getContext("2d");
       if (!this.context) {
         throw new Error("Could not retrieve Canvas context");
       }

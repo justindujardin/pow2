@@ -27,6 +27,7 @@ server.get('/dorkapon', function(req,res){
 });
 
 server.use(express.static(path.resolve(__dirname + "/../web")));
+server.use('/web',express.static(path.resolve(__dirname + "/../web")));
 server.use('/lib',express.static(path.resolve(__dirname + "/../lib")));
 server.use('/data', express.static(path.resolve(__dirname + "/../data")));
 server.use('/source', express.static(path.resolve(__dirname + "/../source")));

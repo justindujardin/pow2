@@ -39,7 +39,9 @@ module pow2 {
     sizeCanvas(width:number, height:number) {
       this.canvas.width = width;
       this.canvas.height = height;
-      this.context = this.canvas.getContext('2d');
+      this.context = <CanvasRenderingContext2D>this.canvas.getContext('2d');
+      this.context.msImageSmoothingEnabled = false;
+      (<any>this.context).imageSmoothingEnabled = false;
       (<any>this.context).webkitImageSmoothingEnabled = false;
       (<any>this.context).mozImageSmoothingEnabled = false;
     }

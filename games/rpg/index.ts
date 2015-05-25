@@ -23,6 +23,7 @@ module rpg {
   export var app = angular.module('rpg', [
     'ngAnimate',
     'pow2',
+    'templates-rpg',
     'ngSanitize',
     'ngTouch'
   ]);

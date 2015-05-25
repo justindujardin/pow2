@@ -190,6 +190,32 @@ module.exports = function (grunt) {
       }
     },
 
+    html2js: {
+      options: {
+        rename: function (moduleName) {
+          return moduleName.replace('../','');
+        }
+      },
+      ui: {
+        src: [
+          "source/ui/**/*.html"
+        ],
+        dest: 'lib/<%= pkg.name %>.ui.templates.js'
+      },
+      dorkapon: {
+        src: [
+          "games/dorkapon/**/*.html"
+        ],
+        dest: 'lib/<%= pkg.name %>.dorkapon.templates.js'
+      },
+      rpg: {
+        src: [
+          "games/rpg/**/*.html"
+        ],
+        dest: 'lib/<%= pkg.name %>.rpg.templates.js'
+      }
+    },
+
 
     /**
      * Compile game LESS styles to CSS
@@ -240,19 +266,19 @@ module.exports = function (grunt) {
         files: [
           '<%= typescript.dorkapon.src %>'
         ],
-        tasks: ['typescript:dorkapon', 'notify:code']
+        tasks: ['typescript:dorkapon', 'html2js:dorkapon', 'notify:code']
       },
       ui: {
         files: [
           '<%= typescript.ui.src %>'
         ],
-        tasks: ['typescript:ui', 'notify:code']
+        tasks: ['typescript:ui', 'html2js:ui', 'notify:code']
       },
       rpg: {
         files: [
           '<%= typescript.rpg.src %>'
         ],
-        tasks: ['typescript:rpg', 'notify:code']
+        tasks: ['typescript:rpg', 'html2js:rpg', 'notify:code']
       },
 
 
@@ -317,7 +343,8 @@ module.exports = function (grunt) {
       options: {
         files: [
           'lib/*.*',
-          'web/images/*.*'
+          'web/images/*.*',
+          'web/css/*.*'
         ]
       }
     },
@@ -374,16 +401,17 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-notify');
+  grunt.loadNpmTasks('grunt-html2js');
   // Support system notifications in non-production environments
   if (process && process.env && process.env.NODE_ENV === 'production') {
-    grunt.registerTask('default', ['typescript', 'less', 'sprites']);
+    grunt.registerTask('default', ['typescript', 'less', 'sprites', 'html2js']);
     grunt.registerTask('heroku:production', ['default', 'uglify']);
   }
   else {
     grunt.loadNpmTasks('grunt-express-server');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['typescript', 'less', 'sprites']);
+    grunt.registerTask('default', ['typescript', 'less', 'sprites', 'html2js']);
     grunt.registerTask('develop', ['default', 'watch']);
   }
 

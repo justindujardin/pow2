@@ -51,7 +51,8 @@
     "grunt-karma-coveralls": "~2.5.3",
     "karma-coverage": "~0.2.6",
     "typedoc": "~0.2.3",
-    "wrench": "~1.5.8"
+    "wrench": "~1.5.8",
+    "grunt-html2js": "~0.3.2"
   },
   "contributors": [
     "John Watkinson <watkinson@gmail.com>",
