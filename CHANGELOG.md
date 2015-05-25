@@ -1,3 +1,17 @@
+<a name="0.1.2"></a>
+### 0.1.2 (2015-05-25)
+
+
+#### Bug Fixes
+
+* one-hit-kill on enemies ([413ceffb](http://github.com/justindujardin/pow2/commit/413ceffb3c3b5a02e2921a6a55ab8d3f944a79c7))
+
+
+#### Features
+
+* support loading game assets from arbitrary root path ([c8c09f6d](http://github.com/justindujardin/pow2/commit/c8c09f6d1cabf0b4f5f08c16c5fd27aa6d1db08a))
+
+
 <a name="0.1.1"></a>
 ### 0.1.1 (2015-04-26)
 
