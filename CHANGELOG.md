@@ -1,3 +1,12 @@
+<a name="0.1.4"></a>
+### 0.1.4 (2015-06-13)
+
+
+#### Features
+
+* publish bower package ([1d609c9f](http://github.com/justindujardin/pow2/commit/1d609c9f7045a4dabf848deecf0fd1978836353f))
+
+
 <a name="0.1.3"></a>
 ### 0.1.3 (2015-05-25)
 
