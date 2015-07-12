@@ -1,3 +1,12 @@
+<a name="0.1.6"></a>
+### 0.1.6 (2015-07-12)
+
+
+#### Bug Fixes
+
+* **bower:** remove unused bloated angular dependencies ([83469104](http://github.com/justindujardin/pow2/commit/834691043d7ecf421f11ceaf3dfbd0cafdad5905))
+
+
 <a name="0.1.5"></a>
 ### 0.1.5 (2015-07-12)
 
