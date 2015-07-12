@@ -33,6 +33,7 @@ server.use('/data', express.static(path.resolve(__dirname + "/../data")));
 server.use('/source', express.static(path.resolve(__dirname + "/../source")));
 server.use('/games', express.static(path.resolve(__dirname + "/../games")));
 server.use('/build', express.static(path.resolve(__dirname + "/../build")));
+server.use('/bower', express.static(path.resolve(__dirname + "/../bower_components")));
 
 // Use EJS templating with Express, and assign .html as the default extension.
 server.engine('.html', require('ejs').__express);

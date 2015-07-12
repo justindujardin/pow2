@@ -16,7 +16,7 @@
 
 /// <reference path="../../types/backbone/backbone.d.ts"/>
 /// <reference path="../../types/angularjs/angular.d.ts"/>
-/// <reference path="../../web/bower/pow-core/lib/pow-core.d.ts"/>
+///<reference path="../../bower_components/pow-core/lib/pow-core.d.ts"/>
 /// <reference path="../../lib/pow2.d.ts"/>
 
 
