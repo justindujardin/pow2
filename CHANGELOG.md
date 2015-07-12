@@ -1,3 +1,13 @@
+<a name="0.1.5"></a>
+### 0.1.5 (2015-07-12)
+
+
+#### Bug Fixes
+
+* issue where sprite render would assume absolute url path for images ([e721b347](http://github.com/justindujardin/pow2/commit/e721b347c41af000d6858560f9bf37c2c4d391e5))
+* issue where pow2.d.ts was incompatible with pow-core.d.ts outside of this repo ([43daa530](http://github.com/justindujardin/pow2/commit/43daa530593fb9909af703fcc31f9e7e4f821de9))
+
+
 <a name="0.1.4"></a>
 ### 0.1.4 (2015-06-13)
 

@@ -1,6 +1,6 @@
 {
   "name": "pow2",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Pow2 - TypeScript RPG game.",
   "main": "Gruntfile.js",
   "directories": {
