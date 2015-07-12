@@ -19,6 +19,11 @@ module pow2 {
 
   export class SpriteRender implements IWorldObject {
     static SIZE:number = 16;
+
+    static getSpriteSheetUrl(name:string):string {
+      return "images/" + name + ".png";
+    }
+
     canvas:HTMLCanvasElement = null;
     context:CanvasRenderingContext2D = null;
 
@@ -48,7 +53,7 @@ module pow2 {
 
     getSpriteSheet(name:string, done?:(res?:IResource) => any):ImageResource {
       if (this.world) {
-        return this.world.loader.load("/images/" + name + ".png", done);
+        return this.world.loader.load(SpriteRender.getSpriteSheetUrl(name), done);
       }
       return null;
     }
