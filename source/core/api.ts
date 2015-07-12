@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-///<reference path="../../bower_components/pow-core/lib/pow-core.d.ts"/>
+///<reference path="../../types/pow-core/pow-core.d.ts"/>
 
 module pow2 {
 
