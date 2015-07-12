@@ -223,7 +223,7 @@ module.exports = function (grunt) {
     less: {
       options: {
         paths: [
-          "web/bower/bootstrap/less/"
+          "bower_components/bootstrap/less/"
         ]
       },
       game: {

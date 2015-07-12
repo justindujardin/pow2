@@ -4,7 +4,7 @@ eburpReference/
 web/pow2*.*
 concepts
 lib
-web/bower
+bower_components/
 .coverage
 data/textures/basictiles
 data/textures/environment-old
