@@ -40,8 +40,7 @@
     "wrench": "~1.5.8"
   },
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start karma.conf.js --single-run",
-    "postinstall": "./node_modules/.bin/bower install && ./node_modules/.bin/grunt typescript && ./node_modules/.bin/grunt"
+    "test": "./node_modules/karma/bin/karma start karma.conf.js --single-run"
   },
   "contributors": [
     "John Watkinson <watkinson@gmail.com>",
