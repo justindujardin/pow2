@@ -196,7 +196,7 @@ module.exports = function (grunt) {
      */
     coveralls: {
       options: {
-        coverage_dir: '.coverage/',
+        coverageDir: '.coverage/',
         debug: process.env.TRAVIS ? false : true,
         dryRun: process.env.TRAVIS ? false : true,
         force: true,

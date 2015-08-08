@@ -9,7 +9,9 @@ before_install:
  - sh -e /etc/init.d/xvfb start
  - bower install
 
-script: grunt clean default
+script:
+ - grunt clean default
+ - npm test
 
 after_script:
  - grunt coveralls
