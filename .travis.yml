@@ -9,5 +9,7 @@ before_install:
  - npm install -g bower
  - bower install
 
+script: grunt clean default
+
 after_script:
- - ./node_modules/.bin/grunt coveralls
+ - grunt coveralls
