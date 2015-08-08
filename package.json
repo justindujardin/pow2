@@ -37,11 +37,12 @@
     "grunt-karma-coveralls": "~2.5.3",
     "karma-coverage": "~0.2.6",
     "typedoc": "~0.2.3",
-    "wrench": "~1.5.8"
+    "wrench": "~1.5.8",
+    "typescript": "~1.5.3"
   },
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js --single-run",
-    "postinstall": "grunt typescript:tasks"
+    "postinstall": "cd tasks && ../node_modules/.bin/tsc && cd .."
   },
   "contributors": [
     "John Watkinson <watkinson@gmail.com>",
