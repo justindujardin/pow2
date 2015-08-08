@@ -178,8 +178,7 @@ module.exports = function (grunt) {
       options: {
         files: [
           'lib/*.*',
-          'lib/images/*.*',
-          'web/css/*.*'
+          'lib/images/*.*'
         ]
       }
     },
