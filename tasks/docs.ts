@@ -2,14 +2,14 @@
 
 var _:any = require('underscore');
 
-module.exports = (grunt) => {
+module.exports = (grunt:any) => {
   var td:any = require('typedoc');
   var path = require('path');
   var wrench = require('wrench');
 
 
-  function enumerateModules(project, modules:any = {}):any {
-    project.traverse((c) => {
+  function enumerateModules(project:any, modules:any = {}):any {
+    project.traverse((c:any) => {
       switch (c.kind) {
         case td.ReflectionKind.Module:
           var a = c;
@@ -38,8 +38,8 @@ module.exports = (grunt) => {
     return modules;
   }
 
-  function enumerateClasses(fromModule, items:any = []):any {
-    fromModule.traverse((c) => {
+  function enumerateClasses(fromModule:any, items:any = []):any {
+    fromModule.traverse((c:any) => {
       switch (c.kind) {
         case td.ReflectionKind.Class:
           items.push({
@@ -51,8 +51,8 @@ module.exports = (grunt) => {
     return items;
   }
 
-  function enumerateInterfaces(fromModule, items:any = []):any {
-    fromModule.traverse((c) => {
+  function enumerateInterfaces(fromModule:any, items:any = []):any {
+    fromModule.traverse((c:any) => {
       switch (c.kind) {
         case td.ReflectionKind.Interface:
           items.push({
@@ -64,8 +64,8 @@ module.exports = (grunt) => {
     return items;
   }
 
-  function enumerateEnums(fromModule, items:any = []):any {
-    fromModule.traverse((c) => {
+  function enumerateEnums(fromModule:any, items:any = []):any {
+    fromModule.traverse((c:any) => {
       switch (c.kind) {
         case td.ReflectionKind.Enum:
           items.push({
@@ -79,26 +79,26 @@ module.exports = (grunt) => {
   }
 
   function buildModules(modules:any[]) {
-    var result = [];
+    var result:any[] = [];
     _.each(modules, (value:any, key:string) => {
       result.push({
         name: key,
         type: 'toggle',
-        classes: _.map(value.classes, (c) => {
+        classes: _.map(value.classes, (c:any) => {
           return {
             name: c.name,
             url: '/' + key + '/classes/' + c.name,
             type: 'link'
           };
         }),
-        interfaces: _.map(value.interfaces, (c) => {
+        interfaces: _.map(value.interfaces, (c:any) => {
           return {
             name: c.name,
             url: '/' + key + '/interfaces/' + c.name,
             type: 'link'
           };
         }),
-        enumerations: _.map(value.enumerations, (c) => {
+        enumerations: _.map(value.enumerations, (c:any) => {
           return {
             name: c.name,
             url: '/' + key + '/enumerations/' + c.name,
@@ -111,9 +111,9 @@ module.exports = (grunt) => {
   }
 
   function buildClasses(modules:any[]) {
-    var result = [];
+    var result:any[] = [];
     _.each(modules, (value:any, key:string) => {
-      _.each(value.classes, (c) => {
+      _.each(value.classes, (c:any) => {
         result.push({
           name: key + '.' + c.name,
           data: c.reflection.toObject()
@@ -124,9 +124,9 @@ module.exports = (grunt) => {
   }
 
   function buildInterfaces(modules:any[]) {
-    var result = [];
+    var result:any[] = [];
     _.each(modules, (value:any, key:string) => {
-      _.each(value.interfaces, (c) => {
+      _.each(value.interfaces, (c:any) => {
         result.push({
           name: key + '.' + c.name,
           data: c.reflection.toObject()
@@ -137,9 +137,9 @@ module.exports = (grunt) => {
   }
 
   function buildEnumerations(modules:any[]) {
-    var result = [];
+    var result:any[] = [];
     _.each(modules, (value:any, key:string) => {
-      _.each(value.enumerations, (c) => {
+      _.each(value.enumerations, (c:any) => {
         result.push({
           name: key + '.' + c.name,
           data: c.reflection.toObject()
@@ -150,7 +150,7 @@ module.exports = (grunt) => {
   }
 
   function buildEntities(workingPath:string,entities:any[]) {
-    var result = [];
+    var result:any[] = [];
 
     // Enumerate Entities used in game, and pull out some metadata for site navigation.
     _.each(entities, (e:string) => {
@@ -159,7 +159,7 @@ module.exports = (grunt) => {
       var destFile:string = path.join(workingPath, fileRelative);
 
       // Metadata about entities
-      var entityDescription = {
+      var entityDescription:any = {
         name: fileName.replace('.json', ''),
         url: fileRelative,
         templates: []
@@ -189,7 +189,7 @@ module.exports = (grunt) => {
     var foo = 2;
     //var entities = this.data.
 
-    function _next() {
+    function _next():void {
       if (queue.length > 0) {
         var exec = queue.shift();
         var result = app.converter.convert(exec.src, app.settings);
@@ -222,15 +222,15 @@ module.exports = (grunt) => {
           entities: buildEntities(exec.dest,entities)
         };
 
-        _.each(classes, (c) => {
+        _.each(classes, (c:any) => {
           var classFile:string = path.join(exec.dest, "data/classes", c.name + '.json');
           grunt.file.write(classFile, JSON.stringify(c.data, null, 2));
         });
-        _.each(enumerations, (c) => {
+        _.each(enumerations, (c:any) => {
           var classFile:string = path.join(exec.dest, "data/enumerations", c.name + '.json');
           grunt.file.write(classFile, JSON.stringify(c.data, null, 2));
         });
-        _.each(interfaces, (c) => {
+        _.each(interfaces, (c:any) => {
           var classFile:string = path.join(exec.dest, "data/interfaces", c.name + '.json');
           grunt.file.write(classFile, JSON.stringify(c.data, null, 2));
         });

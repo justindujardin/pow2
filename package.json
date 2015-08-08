@@ -17,42 +17,32 @@
   "license": "Apache2",
   "readmeFilename": "README.md",
   "dependencies": {
-    "express": "3.4.8",
     "grunt": "~0.4.5",
     "q": "1.0.0",
     "pngjs": "~0.4.0",
     "underscore": "~1.5.2",
     "binpacking": "0.0.1",
     "grunt-contrib-uglify": "~0.3.0",
-    "grunt-typescript": "~0.6.1",
+    "grunt-typescript": "~0.7.0",
     "grunt-contrib-copy": "0.5.0",
     "graceful-fs": "~2.0.1",
-    "grunt-contrib-less": "0.10.0",
-    "ejs": "~0.8.4",
-    "xml2js": "~0.4.0",
-    "grunt-cli": "~0.1.10",
-    "karma": "~0.12.16",
-    "bower": "~1.3.2",
-    "karma-firefox-launcher": "~0.1.3"
-  },
-  "scripts": {
-    "test": "./node_modules/karma/bin/karma start karma.conf.js --single-run",
-    "postinstall": "./node_modules/.bin/bower install && ./node_modules/.bin/grunt typescript && ./node_modules/.bin/grunt"
-  },
-  "devDependencies": {
+    "karma-firefox-launcher": "~0.1.3",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-notify": "~0.2.15",
-    "grunt-express-server": "~0.4.5",
     "grunt-contrib-clean": "~0.5.0",
     "karma-jasmine": "0.2.2",
     "grunt-bump": "0.0.16",
     "grunt-npm": "0.0.2",
     "grunt-conventional-changelog": "~1.1.0",
-    "grunt-karma-coveralls": "~2.5.3",
-    "karma-coverage": "~0.2.6",
+    "grunt-karma-coveralls": "~2.5.4",
+    "karma-coverage": "0.2.2",
     "typedoc": "~0.2.3",
     "wrench": "~1.5.8",
-    "grunt-html2js": "~0.3.2"
+    "typescript": "~1.5.3"
+  },
+  "scripts": {
+    "test": "./node_modules/karma/bin/karma start karma.conf.js --single-run",
+    "postinstall": "cd tasks && ../node_modules/.bin/tsc && cd .."
   },
   "contributors": [
     "John Watkinson <watkinson@gmail.com>",
