@@ -1,3 +1,18 @@
+<a name="0.2.0"></a>
+## 0.2.0 (2015-08-08)
+
+
+#### Bug Fixes
+
+* **package.json:** remove postinstall step and replace with readme notes ([f5da1aae](http://github.com/justindujardin/pow2/commit/f5da1aaeeeee17d6aa4e5aa582bb71770ef069e6))
+* **travis:** use false for sudo to run builds on faster new infrastructure ([67de4111](http://github.com/justindujardin/pow2/commit/67de411147766a7ac521f86b3648d00d33a8dbe1))
+
+
+#### Features
+
+* remove games and build as library only ([63e08d26](http://github.com/justindujardin/pow2/commit/63e08d264c00a8386c607f6f580c57452b73756f))
+
+
 <a name="0.1.6"></a>
 ### 0.1.6 (2015-07-12)
 
