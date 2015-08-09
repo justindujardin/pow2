@@ -27,6 +27,10 @@ module pow2.scene.components {
     to:Point;
   }
 
+  /**
+   * Add movable behavior to an object.  Supports moving in X/Y directions, one
+   * at a time.  Good for 2D tile games.
+   */
   export class MovableComponent extends TickedComponent {
     _elapsed:number = 0;
     targetPoint:pow2.Point;

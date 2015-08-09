@@ -20,35 +20,10 @@
 module pow2.scene {
 
   /**
-   * Simplest ISceneComponent implementation.  Because Typescript interfaces are compile
-   * time constructs, we have to have an actual implementation to instanceof.  For that
-   * reason, all SceneComponents should derive this class.
+   * Simplest component that is hosted by an object in a scene.
    */
-  export class SceneComponent extends Events implements ISceneComponent {
-    id:string = _.uniqueId('sc');
+  export class SceneComponent extends pow2.Component {
     host:SceneObject;
-    name:string;
-
-    connectComponent():boolean {
-      return true;
-    }
-
-    disconnectComponent():boolean {
-      return true;
-    }
-
-    syncComponent():boolean {
-      return true;
-    }
-
-    toString():string {
-      var ctor:any = this.constructor;
-      if (ctor && ctor.name != "Function") {
-        return ctor.name || (this.toString().match(/function (.+?)\(/) || [, ''])[1];
-      } else {
-        return this.name;
-      }
-    }
   }
 
 }

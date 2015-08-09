@@ -198,12 +198,12 @@ module pow2.scene {
       return !!this.findIt('_objects', object);
     }
 
-    componentByType(type):ISceneComponent {
+    componentByType(type):IComponent {
       var values:any[] = this._objects;
       var l:number = this._objects.length;
       for (var i = 0; i < l; i++) {
         var o:ISceneObject = values[i];
-        var c:ISceneComponent = o.findComponent(type);
+        var c:IComponent = o.findComponent(type);
         if (c) {
           return c;
         }
@@ -211,13 +211,13 @@ module pow2.scene {
       return null;
     }
 
-    componentsByType(type):ISceneComponent[] {
+    componentsByType(type):IComponent[] {
       var values:any[] = this._objects;
       var l:number = this._objects.length;
-      var results:ISceneComponent[] = [];
+      var results:IComponent[] = [];
       for (var i = 0; i < l; i++) {
         var o:ISceneObject = values[i];
-        var c:ISceneComponent[] = o.findComponents(type);
+        var c:IComponent[] = o.findComponents(type);
         if (c) {
           results = results.concat(c);
         }

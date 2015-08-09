@@ -21,9 +21,13 @@
 module pow2.scene {
 
   /**
-   * A view that renders a `Scene`.
+   * A view that renders a `Scene` through a given HTMLCanvasElement.
    *
-   * You should probably only have one of these per Canvas that you render to.
+   *  - a camera that can be moved, sized, and scaled
+   *  - utilities for converting coordinates between World and Screen.
+   *  - render decorators via [SceneViewComponent]
+   *  - rendering a set of sprites with [spriteName].json files that describe
+   *    the frames and timing.
    */
   export class SceneView extends SceneObject implements IWorldObject, ISceneView {
     static UNIT:number = 16;
@@ -36,7 +40,6 @@ module pow2.scene {
     cameraComponent:any = null; // TODO: ICameraComponent
     cameraScale:number;
     unitSize:number;
-    _sheets:any;
     scene:Scene = null;
     loader:ResourceLoader = null;
 
@@ -58,7 +61,6 @@ module pow2.scene {
       this.camera = new Rect(0, 0, 9, 9);
       this.cameraScale = 1.0;
       this.unitSize = SceneView.UNIT;
-      this._sheets = {};
       this.loader = loader;
     }
 

@@ -18,61 +18,10 @@
 
 module pow2 {
 
-  export interface IObject {
-    id:string;
-    name:string;
-  }
-
-  /**
-   * Basic component interface.  Supports component host lifetime implementations, and
-   * hot-swapping components.
-   */
-  export interface ISceneComponent extends IObject, IEvents {
-
-    /**
-     * The host object that this component belongs to.
-     */
-    host:ISceneObject;
-
-    /**
-     * Connect this component to its host.  Initialization logic goes here.
-     */
-    connectComponent():boolean;
-    /**
-     * Disconnect this component from its host.  Destruction logic goes here.
-     */
-    disconnectComponent():boolean;
-
-    /**
-     * Components on the host have changed.  If this component depends on other
-     * host object components, the references to them should be looked up and
-     * stored here.
-     */
-    syncComponent():boolean;
-  }
-
-  /**
-   * Basic component host object interface.  Exposes methods for adding/removing/searching
-   * components that a host owns.
-   */
-  export interface ISceneComponentHost extends IObject {
-    addComponent(component:ISceneComponent, silent?:boolean):boolean;
-    addComponentDictionary(components:any, silent?:boolean):boolean;
-    removeComponent(component:ISceneComponent, silent?:boolean):boolean;
-    removeComponentDictionary(components:any, silent?:boolean):boolean;
-
-    syncComponents();
-
-    findComponent(type:Function):ISceneComponent;
-    findComponents(type:Function):ISceneComponent[];
-
-    findComponentByName(name:string):ISceneComponent;
-  }
-
   /**
    * SceneObject interface
    */
-  export interface ISceneObject extends IObject, IProcessObject, ISceneComponentHost {
+  export interface ISceneObject extends IObject, IProcessObject, IComponentHost {
     scene: IScene;
     enabled:boolean;
     point:Point;
@@ -99,8 +48,8 @@ module pow2 {
     findObject(object):boolean;
 
     // Component and object lookups
-    componentByType(type):ISceneComponent;
-    componentsByType(type):ISceneComponent[];
+    componentByType(type):IComponent;
+    componentsByType(type):IComponent[];
     objectsByName(name:string):ISceneObject[];
     objectByName(name:string):ISceneObject;
     objectsByType(type):ISceneObject[];
