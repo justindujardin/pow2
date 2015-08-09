@@ -1,3 +1,12 @@
+<a name="0.2.1"></a>
+### 0.2.1 (2015-08-09)
+
+
+#### Features
+
+* update to pow-core 0.2 which includes components and entities ([fba9eb7b](http://github.com/justindujardin/pow2/commit/fba9eb7b2a95aac362cc73450b1c0d104fcae21b))
+
+
 <a name="0.2.0"></a>
 ## 0.2.0 (2015-08-08)
 
