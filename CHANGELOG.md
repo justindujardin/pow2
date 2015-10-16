@@ -1,3 +1,12 @@
+<a name="0.2.2"></a>
+### 0.2.2 (2015-10-16)
+
+
+#### Bug Fixes
+
+* remove usage jquery types for angular2 compatibility ([90119147](http://github.com/justindujardin/pow2/commit/9011914724eb1404967d2567fffce5743aa46644))
+
+
 <a name="0.2.1"></a>
 ### 0.2.1 (2015-08-09)
 
