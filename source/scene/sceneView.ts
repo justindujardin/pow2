@@ -14,7 +14,6 @@
  limitations under the License.
  */
 
-/// <reference path="../../types/jquery/jquery.d.ts" />
 /// <reference path="../core/api.ts" />
 /// <reference path="./sceneObject.ts" />
 
@@ -33,7 +32,7 @@ module pow2.scene {
     static UNIT:number = 16;
 
     animations:any[];
-    $el:JQuery;
+    $el:any; // JQuery
     canvas:HTMLCanvasElement;
     context:CanvasRenderingContext2D;
     camera:Rect;
@@ -50,7 +49,7 @@ module pow2.scene {
       if (!canvas) {
         throw new Error("A Canvas is required");
       }
-      this.$el = $(canvas);
+      this.$el = (<any>window).$(canvas);
       this.context = <CanvasRenderingContext2D>canvas.getContext("2d");
       if (!this.context) {
         throw new Error("Could not retrieve Canvas context");

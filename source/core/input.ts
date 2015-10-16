@@ -14,7 +14,6 @@
  limitations under the License.
  */
 /// <reference path="./api.ts"/>
-/// <reference path="../../types/jquery/jquery.d.ts"/>
 /// <reference path="../scene/sceneView.ts"/>
 module pow2 {
   export enum KeyCode {
@@ -58,7 +57,7 @@ module pow2 {
             point: new pow2.Point(),
             world: new pow2.Point()
           };
-      var canoffset = $(relativeElement).offset();
+      var canoffset = (<any>window).$(relativeElement).offset();
       var x = ev.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - Math.floor(canoffset.left);
       var y = ev.clientY + document.body.scrollTop + document.documentElement.scrollTop - Math.floor(canoffset.top);
       result.point.set(x, y);
